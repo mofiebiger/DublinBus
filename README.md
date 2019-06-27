@@ -2,7 +2,7 @@
 
 ## Code Guidelines
 
-These are some generic gudilines for keeping our code clear and readable. 
+These are some generic guidelines for keeping our code clear and readable. 
 They can be found on "https://code.tutsplus.com/tutorials/top-15-best-practices-for-writing-super-readable-code--net-8118".
 
 * Use descriptive variable names
@@ -22,6 +22,8 @@ They can be found on "https://code.tutsplus.com/tutorials/top-15-best-practices-
     - ensure all code goes through the code review process before commiting to master.
 * Testing
     - where possible write tests before writing code. 
+* Git commit messages
+    - use descriptive commit messages (not like I did by typing "updated readme" ever time I edit this)
 
 If there are and errors/issues just add/edit the above list. 
 
