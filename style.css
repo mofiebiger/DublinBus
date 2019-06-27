@@ -1,0 +1,223 @@
+#map {
+  height: 700px;  /* The height is 400 pixels */
+  width: 100%;  /* The width is the width of the web page */
+ }
+
+
+/* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
+ ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+header {
+  background-color: yellow;
+  height: 20%;
+  text-align: center;
+
+}
+
+header h1 {
+  margin: auto;
+}
+
+.center {
+  width: 50%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.flash {
+  background-color: black;
+  min-height: 100vh;
+  color: white;
+  text-align: center;
+  display: block;
+}
+
+#overlay1 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay2 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay3 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay4 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay5 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay6 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay7 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#overlay8 {
+  position: fixed;
+  display: none;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+  cursor: pointer;
+}
+
+#journeyInfo{
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#touristInfo {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#favouritesInfo {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#FAQInfo {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#ContactInfo {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#logIn {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#trafficInfo {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
+
+#weatherInfo {
+  text-align: center;
+  top; 40%;
+  color: white;
+}
