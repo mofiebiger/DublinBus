@@ -2,8 +2,8 @@ import unittest
 
 class DublinBusUnitTests(unittest.TestCase):
 
-    def travisTest(self):
-        return True
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FOO')
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

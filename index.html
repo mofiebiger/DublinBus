@@ -80,21 +80,23 @@
     <div id="map"></div>
 
 
+
     <script>
 
     var xmlhttp = new XMLHttpRequest();
-    var url = "../stops_info.json";
+    var url = "stops_info.json";
 
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
             parsedObj = JSON.parse(xmlhttp.responseText);
-            console.log(parsedObj)
+            console.log(parsedObj);
         }
     };
 
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
+
 
 
   var infoWindow;
