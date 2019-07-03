@@ -126,12 +126,11 @@ class RegisterView(TemplateView):
   
         # 激活链接中需要包含用户的身份信息, 并且要把身份信息进行加密
   
-        # 加密用户的身份信息，生成激活token
+        # encript the information about user，生成激活token
         serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
         token = serializer.dumps(user.id).decode() # bytes
   
-        # 发邮件
-        # 组织邮件信息
+        # send email
         subject = 'Welcome to register dublin bus API'
         message = ''
         sender = settings.EMAIL_FROM
