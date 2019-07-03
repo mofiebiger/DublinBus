@@ -221,3 +221,7 @@ header h1 {
   top; 40%;
   color: white;
 }
+
+input{
+  font-size: 1em;
+}

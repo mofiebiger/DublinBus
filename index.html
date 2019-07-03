@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-
-      <head>
+  <head>
         <!--external stylesheet-->
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
@@ -12,12 +11,21 @@
         <!--Overlay-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Dublin Bus</title>
+        <!--the use of jquery in javascript - may not need later-->
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
-      </head>
+        <!--Google Maps API-->
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization&callback=initMap">
+        </script>
+
+        <!--title - dublin bus-->
+        <title>Dublin Bus</title>
+  </head>
 
   <body>
     <header><h1>Dublin Bus</h1></header>
+    <!--NavBar - displays overlays (above map)-->
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a onclick="on1()">Journey Planner</a></li>
@@ -30,120 +38,273 @@
       <li style="float:right"><a onclick="on8()"><i class="fa fa-cloud"></i></a></li>
     </ul>
 
-
+    <!--Journey Planner overlay -->
     <div id="overlay1" onclick="off1()">
+      <a href="javascript:void(0)" class="closebtn1" onclick="off1()">&times;</a>
       <div id="journeyInfo">
         <h1> Journey Planner </h1>
+            <!--The following code is one single form, that will send results back to the Flask app for use in M-L model-->
+            <!--The divs are empty but populated by JS functions-->
+            <form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
+              <input type="text" name="fname" placeholder="Current Location" id="address">
+              <input type="text" name="fname" placeholder="Final Destination">
+              <input id="today" type="date" name="fname">
+              <input type="time" value="now" name="fname">
+              <input type="submit" value="Navigate">
+              </form>
       </div>
     </div>
 
+    <!--tourism overlay -->
     <div id="overlay2" onclick="off2()">
+      <a href="javascript:void(0)" class="closebtn2" onclick="off2()">&times;</a>
       <div id="touristInfo">
         <h1> Tourism Via Dublin Bus </h1>
       </div>
     </div>
 
+    <!--favourites overlay -->
     <div id="overlay3" onclick="off3()">
+      <a href="javascript:void(0)" class="closebtn3" onclick="off3()">&times;</a>
       <div id="favouritesInfo">
         <h1> Your Favourites </h1>
       </div>
     </div>
 
+    <!--FAQ overlay -->
     <div id="overlay4" onclick="off4()">
+      <a href="javascript:void(0)" class="closebtn4" onclick="off4()">&times;</a>
       <div id="FAQInfo">
         <h1> FAQ </h1>
       </div>
     </div>
 
+    <!--contact info overlay -->
     <div id="overlay5" onclick="off5()">
+      <a href="javascript:void(0)" class="closebtn5" onclick="off5()">&times;</a>
       <div id="ContactInfo">
         <h1> Contact Information </h1>
+        <h1> Send Us A Message </h1>
+        <textarea rows="10" cols="50">
+          Give us feedback about how we can make your
+          experience on the Dublin Bus App better!!!
+        </textarea>
+        <input type="submit" value="Send">
       </div>
     </div>
 
+    <!--logIn overlay -->
     <div id="overlay6" onclick="off6()">
+      <a href="javascript:void(0)" class="closebtn6" onclick="off6()">&times;</a>
       <div id="logIn">
         <h1> Log-In </h1>
       </div>
     </div>
-    <div id="overlay7" onclick="off7()">
+
+    <!--traffic overlay -->
+    <div id="overlay7" >
+      <a href="javascript:void(0)" class="closebtn7" onclick="off7()">&times;</a>
       <div id="trafficInfo">
         <h1> Current Traffic </h1>
+
+        <!--checkbox-->
+        <div id="checkbox_inline">
+          <input type="checkbox" onchange="displayTraffic(this)"/>
+          <label for="traffic">Traffic</label>
+        </div>
+
       </div>
     </div>
+
+    <!--weather overlay -->
     <div id="overlay8" onclick="off8()">
+      <a href="javascript:void(0)" class="closebtn8" onclick="off8()">&times;</a>
       <div id="weatherInfo">
         <h1> Current Weather </h1>
+
+        <!--checkbox-->
+        <div id="checkbox_inline">
+          <input type="checkbox" onclick="displayHeatmap(this)"/>
+          <label for="heatmap">Heat Map</label>
+        </div>
+
       </div>
     </div>
+
     <!--The div element for the map -->
     <div id="map"></div>
 
 
-
     <script>
 
-    var xmlhttp = new XMLHttpRequest();
-    var url = "stops_info.json";
+    // var xmlhttp = new XMLHttpRequest();
+    // var url = "../DB_FrontEnd/stops_info.json";
+    //
+    // xmlhttp.onreadystatechange = function() {
+    //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    //
+    //         parsedObj = JSON.parse(xmlhttp.responseText);
+    //         console.log(parsedObj);
+    //     }
+    // };
+    //
+    // xmlhttp.open("GET", url, true);
+    // xmlhttp.send();
 
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    var jqxhr = $.getJSON( "stops_info.json", function(json) {
+  console.log( "success" );
+  })
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    console.log( "error" );
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
 
-            parsedObj = JSON.parse(xmlhttp.responseText);
-            console.log(parsedObj);
-        }
-    };
+  // Set another completion function for the request above
+  jqxhr.complete(function() {
+    console.log( "second complete" );
+  });
 
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+  // used code from 'https://css-tricks.com/prefilling-date-input/'
+  // this is used for a default of todays date
+  let today = new Date().toISOString().substr(0, 10);
+  document.querySelector("#today").value = today;
 
+  // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
+  // this is used for a default of the exact time
+  $(function(){
+  var d = new Date(),
+      h = d.getHours(),
+      m = d.getMinutes();
+  if(h < 10) h = '0' + h;
+  if(m < 10) m = '0' + m;
+  $('input[type="time"][value="now"]').each(function(){
+    $(this).attr({'value': h + ':' + m});
+  });
+  });
+  </script>
 
+  <script>
 
-  var infoWindow;
+  function writeAddressName(latLng) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      "location": latLng
+    },
+    function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK)
+        document.getElementById("address").innerHTML = results[0].formatted_address;
+      else
+        document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+    });
+  }
+  // Initialize and add the map;
+  var map;
+  var heatmap;
 
-  // Initialize and add the map
-  function initMap() {
+  function initMap(position) {
 
-  // The location of Dubin
-  var dublin = {lat: 53.3498, lng: -6.2603};
-  // The map, centered at Uluru
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 14, center: dublin});
-  // The marker, positioned at Dubin
-  var marker = new google.maps.Marker({position: dublin, map: map});
+    userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    // Write the formatted address
+    writeAddressName(userLatLng);
 
-  //Traffic Layer
-  var trafficLayer = new google.maps.TrafficLayer();
-  trafficLayer.setMap(map);
+    // The location of Dubin
+    var dublin = {lat: 53.3498, lng: -6.2603};
+    // The map, centered in Dublin
+    map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 14, center: dublin});
 
-  /* Data points defined as an array of LatLng objects */
-  var heatmapData = [
-  new google.maps.LatLng(53.3505, -6.2610),
-  new google.maps.LatLng(53.3504, -6.2609),
-  new google.maps.LatLng(53.3503, -6.2608),
-  new google.maps.LatLng(53.3502, -6.2607),
-  new google.maps.LatLng(53.3501, -6.2606),
-  new google.maps.LatLng(53.3500, -6.2605),
-  new google.maps.LatLng(53.3499, -6.2604),
-  new google.maps.LatLng(53.3498, -6.2603),
-  new google.maps.LatLng(53.3497, -6.2602),
-  new google.maps.LatLng(53.3496, -6.2601),
-  new google.maps.LatLng(53.3495, -6.2600),
-  new google.maps.LatLng(53.3494, -6.2599),
-  new google.maps.LatLng(53.3493, -6.2598),
-  new google.maps.LatLng(53.3492, -6.2597),
-  new google.maps.LatLng(53.3491, -6.2596)
-];
+    // The marker, positioned at Dubin
+    //var marker = new google.maps.Marker({position: dublin, map: map});
 
+    // create traffic layer variable
+    trafficLayer = new google.maps.TrafficLayer();
+
+    // create heatmap layter variable
+    heatmap = new google.maps.visualization.HeatmapLayer({
+    data: getPoints(),
+    });
+
+    var circle = new google.maps.Circle({
+      center: userLatLng,
+      radius: position.coords.accuracy,
+      map: map,
+      fillColor: '#0000FF',
+      fillOpacity: 0.5,
+      strokeColor: '#0000FF',
+      strokeOpacity: 1.0
+    });
+    map.fitBounds(circle.getBounds());
 }
-    </script>
-    <script async defer type="text/javascript"
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&callback=initMap">
+    function getPoints() {
+        return [
+          new google.maps.LatLng(53.3505, -6.2610),
+          new google.maps.LatLng(53.3504, -6.2609),
+          new google.maps.LatLng(53.3503, -6.2608),
+          new google.maps.LatLng(53.3502, -6.2607),
+          new google.maps.LatLng(53.3501, -6.2606),
+          new google.maps.LatLng(53.3500, -6.2605),
+          new google.maps.LatLng(53.3499, -6.2604),
+          new google.maps.LatLng(53.3498, -6.2603),
+          new google.maps.LatLng(53.3497, -6.2602),
+          new google.maps.LatLng(53.3496, -6.2601),
+          new google.maps.LatLng(53.3495, -6.2600),
+          new google.maps.LatLng(53.3494, -6.2599),
+          new google.maps.LatLng(53.3493, -6.2598),
+          new google.maps.LatLng(53.3492, -6.2597),
+          new google.maps.LatLng(53.3491, -6.2596)
+        ];
+    }
+
+    //Display Heat Map Layer
+    function displayHeatmap(checkbox){
+      if(checkbox.checked){
+        heatmap.setMap(map);
+      } else {
+        heatmap.setMap(null);
+      }
+    }
+
+    // Display Traffic Layer
+    function displayTraffic(checkbox){
+
+      if (checkbox.checked){
+        trafficLayer.setMap(map);
+      } else {
+        trafficLayer.setMap(null);
+      }
+    }
+
+    function geolocationError(positionError) {
+      document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+    }
+
+    function geolocateUser() {
+      // If the browser supports the Geolocation API
+      if (navigator.geolocation)
+      {
+        var positionOptions = {
+          enableHighAccuracy: true,
+          timeout: 10 * 1000 // 10 seconds
+        };
+        navigator.geolocation.getCurrentPosition(initMap, geolocationError, positionOptions);
+      }
+      else
+        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+    }
+
+    window.onload = geolocateUser;
     </script>
 
-    <!--onclick navBar with Overlay-->
+
+
+
+    <!--This section includes the onclick navBar with Overlay-->
     <script>
-
       //journey planner overlay
       function on1() {
         document.getElementById("overlay1").style.display = "block";
@@ -170,42 +331,49 @@
       function off3() {
         document.getElementById("overlay3").style.display = "none";
         }
-//FAQInfo
-        function on4() {
-          document.getElementById("overlay4").style.display = "block";
-          }
+      //FAQInfo
+      function on4() {
+        document.getElementById("overlay4").style.display = "block";
+        }
 
-        function off4() {
-          document.getElementById("overlay4").style.display = "none";
-          }
-          function on5() {
-            document.getElementById("overlay5").style.display = "block";
-            }
+      function off4() {
+        document.getElementById("overlay4").style.display = "none";
+        }
+      // x
+      function on5() {
+        document.getElementById("overlay5").style.display = "block";
+        }
 
-          function off5() {
-            document.getElementById("overlay5").style.display = "none";
-            }
-            function on6() {
-              document.getElementById("overlay6").style.display = "block";
-              }
+      function off5() {
+        document.getElementById("overlay5").style.display = "none";
+        }
 
-            function off6() {
-              document.getElementById("overlay6").style.display = "none";
-              }
-              function on7() {
-                document.getElementById("overlay7").style.display = "block";
-                }
+      //x
+      function on6() {
+        document.getElementById("overlay6").style.display = "block";
+        }
 
-              function off7() {
-                document.getElementById("overlay7").style.display = "none";
-                }
-                function on8() {
-                  document.getElementById("overlay8").style.display = "block";
-                  }
+      function off6() {
+        document.getElementById("overlay6").style.display = "none";
+        }
 
-                function off8() {
-                  document.getElementById("overlay8").style.display = "none";
-                }
+      //Traffic
+      function on7() {
+        document.getElementById("overlay7").style.display = "block";
+        }
+
+      function off7() {
+        document.getElementById("overlay7").style.display = "none";
+        }
+
+      //x
+      function on8() {
+        document.getElementById("overlay8").style.display = "block";
+        }
+
+      function off8() {
+        document.getElementById("overlay8").style.display = "none";
+        }
 
       </script>
 
