@@ -126,12 +126,11 @@ class RegisterView(TemplateView):
   
         # 激活链接中需要包含用户的身份信息, 并且要把身份信息进行加密
   
-        # 加密用户的身份信息，生成激活token
+        # encript the information about user，生成激活token
         serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
         token = serializer.dumps(user.id).decode() # bytes
   
-        # 发邮件
-        # 组织邮件信息
+        # send email
         subject = 'Welcome to register dublin bus API'
         message = ''
         sender = settings.EMAIL_FROM
@@ -196,7 +195,7 @@ class LoginView(TemplateView):
             checked = ''
   
         # 使用模板
-        return render(request, 'login.html', {'username':username, 'checked':checked})
+        return render(request, 'index.html', {'username':username, 'checked':checked})
   
     def post(self, request):
         '''登录校验'''
@@ -205,7 +204,7 @@ class LoginView(TemplateView):
         password = request.POST.get('pwd')
         # 校验数据
         if not all([username, password]):
-            return render(request, 'login.html', {'errmsg':'Data is not complete'}) 
+            return render(request, 'index.html', {'errmsg':'Data is not complete'}) 
         # 业务处理:登录校验
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -233,11 +232,11 @@ class LoginView(TemplateView):
                 return response
             else:
                 # 用户未激活
-                return render(request, 'login.html', {'errmsg':'Account has not been activated'})
+                return render(request, 'index.html', {'errmsg':'Account has not been activated'})
         else:
             # 用户名或密码错误
             print('3')
-            return render(request, 'login.html', {'errmsg':'username or password wrong'})
+            return render(request, 'index.html', {'errmsg':'username or password wrong'})
   
   
 # /user/logout
