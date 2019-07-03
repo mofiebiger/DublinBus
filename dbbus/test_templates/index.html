@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+<!--
+<script type="text/javascript">
+	  $('#submit-btn').on('click',function () {
+	    formdata = new FormData();
+	    formdata.append("avatar",$("#avatar-input")[0].files[0]);
+	    formdata.append("csrfmiddlewaretoken",$("[name='csrfmiddlewaretoken']").val()); 
+	 $.ajax({
+	 processData:false,
+	 contentType:false,
+	 url:'/upload',
+	 type:'post', 
+	 data:formdata,success:function (arg){ 
+		if (arg.state == 1){ alert('成功')
+		}
+		else
+		{ alert('失败！') } 
+		}
+		})
+		});
+ </script>
+-->
+<body>
+<h1>index</h1>	
+{% if user.is_authenticated %}
+
+<h1>{{ request.path}}</h1>
+<h1>{{ request.get_host}}</h1>
+<h1>login success</h1>
+<h2>hello {{user.username}} !</h2>
+<a href={% url "user:change_avatar" %}><img src="{{ user.user_profile.url }}" alt=""></a>
+
+					<form action={% url "user:change_avatar" %} enctype="multipart/form-data" method="post">
+					    {% csrf_token %}
+						  <input id="avatar-input" type="file" value="change avatar" name = "avatar">
+						  <input type="submit" id="submit-btn" type="button" value="提交">
+					</form>
+
+					<form method="get"  action = {% url "user:logout" %}>
+						<input type="submit" name="" value="Login out" class="input_submit">
+					</form>
+					<form method="get"  action = {% url "user:change_password" %}>
+						<input type="submit" name="" value="change password" class="input_submit">
+					</form>
+<h3>Your favorite bus numbers are:</h3>
+<ul>
+	{% for i in user_bus_number %}
+		<li> {{ i.bus_number}}({{i.start_point}}→{{i.end_point}})</li>
+	{% endfor%}
+</ul>
+<br />
+<br />
+<h3>Your favorite bus routes are:</h3>
+<ul>
+	{% for i in user_route %}
+	<li> {{ i.route_start}} → {{ i.route_end}}</li>
+	{% endfor%}
+</ul>
+
+<br />
+<br />
+<h3>Your favorite bus stops are:</h3>
+<ul>
+	{% for i in user_stop %}
+	<li> {{ i.stop}}</li>
+	{% endfor%}
+{% else %}
+<h1>please login</h1>
+					<form method="get"  action = {% url "user:login" %}>
+						<input type="submit" name="" value="login in" class="input_submit">
+					</form>
+{% endif %}
+
+</ul>
+</body>
+</html>

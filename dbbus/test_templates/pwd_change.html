@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+ 
+<head>
+  <meta charset="UTF-8">
+  <title> password change</title>
+ 
+<style>
+.out{
+  width: 500px;
+  height: 900px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+</style>
+</head>
+<body>
+ 
+ 
+  <div class="out">
+    <h1>Dear {{user.username}}:</h1>
+    <form method="post" >
+      {% csrf_token %}
+      <P><span>Original Password：</span><input type="password" name="original_pwd" placeholder="至少6位"></P>
+      <P><span>Password：</span><input type="password" name="new_pwd" placeholder="至少6位"></P>
+      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder="至少6位"></P>
+      <p><input type="submit" value="submit"></p>
+    </form>
+    <h1>{{ change_password_form.errors }}{{errmsg}}</h1>
+  </div>
+ 
+</body>
+</html>
