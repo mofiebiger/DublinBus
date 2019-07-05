@@ -10,6 +10,9 @@ To access each piece of data use config."information_name", e.g.
 - config.host = host address
 - config.user = Username
 - config.port = Access port 
+- config.TunnelPort = SSH Tunnel port
+- config.TunnelHost = SSH Tunnel Host
+- DarkSkyKeys =  API key for Dark Sky 
 
 ## BusEnvReq.txt
 Environment requirements list. Must install requirements for accompanying files. 
