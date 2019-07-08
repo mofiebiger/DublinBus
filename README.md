@@ -1,5 +1,3 @@
-# Dublin Bus Project Team 1: The Bold Toads
-
 Git Commands (Mo's Magic Git Cheat Sheet)
 ============
 
