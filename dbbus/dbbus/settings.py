@@ -44,13 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'captcha',
+    'prediction',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -86,11 +87,24 @@ DATABASES = {
         'NAME': 'dublinbus',
         'USER': 'postgres',
         'PASSWORD': 'boldToads',
-        #'HOST': 'csi420-01-vm7.ucd.ie',
         'HOST': 'localhost',
-        'PORT': 5000,
+#         'HOST': 'localhost',
+        'PORT':5000,
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'dublinbus',
+#         'USER': 'postgres',
+#         'PASSWORD': 'boldToads',
+# #         'HOST': '137.43.49.60',
+#         'HOST': 'localhost',
+#         'PORT': 5000,
+#     }
+# }
 # DATABASES = {
 #      'default': {
 #          'ENGINE': 'django.db.backends.mysql',
@@ -167,4 +181,19 @@ EMAIL_USE_TLS = True
 
 
 
-LOGOUT_REDIRECT_URL = '/user/login'
+LOGIN_URL = '/user/login'
+LOGOUT_REDIRECT_URL = '/user/index'
+
+
+
+SESSION_ENGINE = 'redis_sessions.session'
+# redis服务的ip地址
+SESSION_REDIS = {
+    'host': 'localhost',
+#     'host': '137.43.49.60',    
+    'port': 6379,
+    'db': 2,
+    'password': '',
+    'prefix': 'session5',
+    'socket_timeout': 3
+}
