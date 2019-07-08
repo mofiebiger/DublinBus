@@ -199,7 +199,7 @@
     "stop_lat": 53.37157673,
     "stop_lon": -6.253183204,
     "stop_id": "8220DB07603",
-    "actual_stop_id": 603,
+    "actual_stop_id": 7603,
     "stop_name": "St Patricks College of Education Drumcondra"
   },
   {
@@ -2740,7 +2740,7 @@
     "stop_lat": 53.37242562,
     "stop_lon": -6.298882106,
     "stop_id": "gen:57102:7730:0:1",
-    "actual_stop_id": "2:7730:0:1",
+    "actual_stop_id": 7730,
     "stop_name": "The Grange (Dublin), Cappagh Road"
   },
   {
@@ -6324,7 +6324,7 @@
     "stop_lat": 53.52203743,
     "stop_lon": -6.092208019,
     "stop_id": "gen:57102:7743:0:1",
-    "actual_stop_id": "2:7743:0:1",
+    "actual_stop_id": 7743,
     "stop_name": "Rush, The Strand Bar"
   },
   {
@@ -9635,7 +9635,7 @@
     "stop_lat": 53.41287832,
     "stop_lon": -6.348655835,
     "stop_id": "gen:57102:7732:0:1",
-    "actual_stop_id": "2:7732:0:1",
+    "actual_stop_id": 7732,
     "stop_name": "Northwest Business Park (Dublin), Mitchelstown Road"
   },
   {
@@ -9649,7 +9649,7 @@
     "stop_lat": 53.40843751,
     "stop_lon": -6.345353243,
     "stop_id": "gen:57102:7731:0:1",
-    "actual_stop_id": "2:7731:0:1",
+    "actual_stop_id": 7731,
     "stop_name": "Northwest Business Park (Dublin), Business Park"
   },
   {
@@ -10013,7 +10013,7 @@
     "stop_lat": 53.34651169,
     "stop_lon": -6.257061999,
     "stop_id": "gen:57102:3543:0:1",
-    "actual_stop_id": "2:3543:0:1",
+    "actual_stop_id": 3543,
     "stop_name": "Near Tara Station, Virtual Stop Townsend St"
   },
   {
@@ -17377,7 +17377,7 @@
     "stop_lat": 53.38368967,
     "stop_lon": -6.316141947,
     "stop_id": "gen:57102:7948:0:1",
-    "actual_stop_id": "2:7948:0:1",
+    "actual_stop_id": 7948,
     "stop_name": "Finglas, Rathvilly Road"
   },
   {
@@ -23642,7 +23642,7 @@
     "stop_lat": 53.41405321,
     "stop_lon": -6.353680021,
     "stop_id": "gen:57102:7733:0:1",
-    "actual_stop_id": "2:7733:0:1",
+    "actual_stop_id": 7733,
     "stop_name": "Cloghran, Mitchelstown Road"
   },
   {
@@ -25490,7 +25490,7 @@
     "stop_lat": 53.37733191,
     "stop_lon": -6.309553808,
     "stop_id": "gen:57102:7943:0:1",
-    "actual_stop_id": "2:7943:0:1",
+    "actual_stop_id": 7943,
     "stop_name": "Cabra West, Ratoath Road"
   },
   {
