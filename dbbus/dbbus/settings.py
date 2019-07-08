@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test',
+        'NAME': 'dublinbus',
         'USER': 'postgres',
         'PASSWORD': 'boldToads',
-        'HOST': '137.43.49.60',
-#         'HOST': '192.168.1.105',
-        'PORT': 3306,
+        #'HOST': 'csi420-01-vm7.ucd.ie',
+        'HOST': 'localhost',
+        'PORT': 5000,
     }
 }
 # DATABASES = {
