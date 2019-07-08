@@ -312,9 +312,9 @@ class PasswordForgetView(TemplateView):
                 sender = settings.EMAIL_FROM
                 receiver = [email]
                 host_name = request.get_host()
-                html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>' 
+                # html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
              
-                send_mail(subject, message, sender, receiver, html_message=html_message)
+                # send_mail(subject, message, sender, receiver, html_message=html_message)
                 return render(request,'send_success.html')
 
             return render(request,'pwd_forget.html',{'errormg':'email has not been found'})
@@ -390,6 +390,11 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
                   
 #         return JsonResponse(data)
         return render(request,'index.html')
+
+    class FavouritesView(TemplateView):
+        def get(self, request):
+            '''favourites page'''
+            return render(request, 'favourites.html')
      
        
     
