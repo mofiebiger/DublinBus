@@ -1,3 +1,9 @@
 config.py
+<<<<<<< Updated upstream
 *.pyc
 .idea/workspace.xml
+=======
+
+*.py[cod]
+.idea/workspace.xml
+>>>>>>> Stashed changes
