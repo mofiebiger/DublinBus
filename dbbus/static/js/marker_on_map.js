@@ -1,4 +1,6 @@
-      function writeAddressName(latLng) {
+console.log("load");
+
+function writeAddressName(latLng) {
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({
               "location": latLng
@@ -15,7 +17,9 @@
       var map;
       var heatmap;
       var stops = [];
+console.log("vars initialized");
       function initMap(position) {
+        console.log("init map function");
         var xmlhttp = new XMLHttpRequest();
     var url = "../static/json/stops_info.json";
          xmlhttp.onreadystatechange = function() {
@@ -34,6 +38,7 @@
         stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
         // console.log(stops[i]);
       }
+
       var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // Write the formatted address
         writeAddressName(userLatLng);
@@ -119,6 +124,7 @@
       function geolocateUser() {
         // If the browser supports the Geolocation API
         if (navigator.geolocation) {
+          console.log("geolocater executed");
           var positionOptions = {
             enableHighAccuracy: true,
             timeout: 10 * 1000,
