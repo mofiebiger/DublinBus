@@ -91,8 +91,12 @@ ul{
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
         <!--Google Maps API-->
-        <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization&callback=initMap">
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization&callback=initMap" async defer>
+        </script>
+
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback=initMap" async defer>
         </script>
         <!--MarkerClusterer -->
         <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
@@ -150,24 +154,26 @@ window.onload = function(){
     </ul>
 
     <!--Journey Planner overlay -->
-    <div id="overlay1" onclick="off1()">
+    <div id="overlay1">
       <a href="javascript:void(0)" class="closebtn1" onclick="off1()">&times;</a>
       <div id="journeyInfo">
         <h1> Journey Planner </h1>
             <!--The following code is one single form, that will send results back to the Flask app for use in M-L model-->
             <!--The divs are empty but populated by JS functions-->
-            <form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
-              <input type="text" name="fname" placeholder="Current Location" id="address">
-              <input type="text" name="fname" placeholder="Final Destination">
-              <input id="today" type="date" name="fname">
-              <input type="time" value="now" name="fname">
-              <input type="submit" value="Navigate">
-              </form>
+            <div id="floating-panel">
+              <input id="pac-input1" class="controls" type="text" placeholder="Start">
+              <input id="pac-input2" class="controls" type="text" placeholder="End">
+
+            </div>
+            <input id="today" type="date" name="fname">
+            <input type="time" value="now" name="fname">
+            <input type="submit" value="Navigate">
+              <p id="error"></p>
       </div>
     </div>
 
     <!--tourism overlay -->
-    <div id="overlay2" onclick="off2()">
+    <div id="overlay2">
       <a href="javascript:void(0)" class="closebtn2" onclick="off2()">&times;</a>
       <div id="touristInfo">
         <h1> Tourism Via Dublin Bus </h1>
@@ -175,7 +181,7 @@ window.onload = function(){
     </div>
 
     <!--favourites overlay -->
-    <div id="overlay3" onclick="off3()">
+    <div id="overlay3">
       <a href="javascript:void(0)" class="closebtn3" onclick="off3()">&times;</a>
       <div id="favouritesInfo">
         <h1> Your Favourites </h1>
@@ -221,7 +227,7 @@ window.onload = function(){
     </div>
 
     <!--FAQ overlay -->
-    <div id="overlay4" onclick="off4()">
+    <div id="overlay4">
       <a href="javascript:void(0)" class="closebtn4" onclick="off4()">&times;</a>
       <div id="FAQInfo">
         <h1> FAQ </h1>
@@ -229,7 +235,7 @@ window.onload = function(){
     </div>
 
     <!--contact info overlay -->
-    <div id="overlay5" onclick="off5()">
+    <div id="overlay5">
       <a href="javascript:void(0)" class="closebtn5" onclick="off5()">&times;</a>
       <div id="ContactInfo">
         <h1> Contact Information </h1>
@@ -266,7 +272,7 @@ window.onload = function(){
     </div>
 
     <!--traffic overlay -->
-    <div id="overlay7" >
+    <div id="overlay7">
       <a href="javascript:void(0)" class="closebtn7" onclick="off7()">&times;</a>
       <div id="trafficInfo">
         <h1> Current Traffic </h1>
@@ -281,10 +287,14 @@ window.onload = function(){
     </div>
 
     <!--weather overlay -->
-    <div id="overlay8" onclick="off8()">
+    <div id="overlay8">
       <a href="javascript:void(0)" class="closebtn8" onclick="off8()">&times;</a>
       <div id="weatherInfo">
         <h1> Current Weather </h1>
+
+        <div class="weather_heading"></div>
+
+        <div id="weather_stats"></div>
 
         <!--checkbox-->
         <div id="checkbox_inline">
@@ -296,153 +306,178 @@ window.onload = function(){
     </div>
 
     <!--The div element for the map -->
-    <div id="map"></div>
+    <div id="map" onload="geolocateUser()"></div>
 
 
     <script>
-    // var xmlhttp = new XMLHttpRequest();
-    // var url = "../DB_FrontEnd/stops_info.json";
-    //
-    // xmlhttp.onreadystatechange = function() {
-    //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-    //
-    //         parsedObj = JSON.parse(xmlhttp.responseText);
-    //         console.log(parsedObj);
-    //     }
-    // };
-    //
-    // xmlhttp.open("GET", url, true);
-    // xmlhttp.send();
-    var jqxhr = $.getJSON( "{% static 'json/stops_info.json' %}", function(json) {
-  console.log( "success" );
-  })
-  .done(function() {
-    console.log( "second success" );
-  })
-  .fail(function() {
-    console.log( "error" );
-  })
-  .always(function() {
-    console.log( "complete" );
-  });
-  // Set another completion function for the request above
-  jqxhr.complete(function() {
-    console.log( "second complete" );
-  });
-  // used code from 'https://css-tricks.com/prefilling-date-input/'
-  // this is used for a default of todays date
-  let today = new Date().toISOString().substr(0, 10);
-  document.querySelector("#today").value = today;
-  // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
-  // this is used for a default of the exact time
-  $(function(){
-  var d = new Date(),
-      h = d.getHours(),
-      m = d.getMinutes();
-  if(h < 10) h = '0' + h;
-  if(m < 10) m = '0' + m;
-  $('input[type="time"][value="now"]').each(function(){
-    $(this).attr({'value': h + ':' + m});
-  });
-  });
+      // used code from 'https://css-tricks.com/prefilling-date-input/'
+      // this is used for a default of todays date
+      let today = new Date().toISOString().substr(0, 10);
+      document.querySelector("#today").value = today;
+
+      // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
+      // this is used for a default of the exact time
+      $(function(){
+      var d = new Date(),
+          h = d.getHours(),
+          m = d.getMinutes();
+      if(h < 10) h = '0' + h;
+      if(m < 10) m = '0' + m;
+      $('input[type="time"][value="now"]').each(function(){
+        $(this).attr({'value': h + ':' + m});
+      });
+      });
   </script>
 
   <script>
-{#  function writeAddressName(latLng) {#}
-{#    var geocoder = new google.maps.Geocoder();#}
-{#    geocoder.geocode({#}
-{#      "location": latLng#}
-{#    },#}
-{#    function(results, status) {#}
-{#      if (status == google.maps.GeocoderStatus.OK)#}
-{#        document.getElementById("address").innerHTML = results[0].formatted_address;#}
-{#      else#}
-{#        document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";#}
-{#    });#}
-{#  }#}
-{#  // Initialize and add the map;#}
-{#  var map;#}
-{#  var heatmap;#}
-{#  function initMap(position) {#}
-{#    userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);#}
-{#    // Write the formatted address#}
-{#    writeAddressName(userLatLng);#}
-{#    // The location of Dubin#}
-{#    var dublin = {lat: 53.3498, lng: -6.2603};#}
-{#    // The map, centered in Dublin#}
-{#    map = new google.maps.Map(#}
-{#        document.getElementById('map'), {zoom: 14, center: dublin});#}
-{#    // The marker, positioned at Dubin#}
-{#    //var marker = new google.maps.Marker({position: dublin, map: map});#}
-{#    // create traffic layer variable#}
-{#    trafficLayer = new google.maps.TrafficLayer();#}
-{#    // create heatmap layter variable#}
-{#    heatmap = new google.maps.visualization.HeatmapLayer({#}
-{#    data: getPoints(),#}
-{#    });#}
-{#    var circle = new google.maps.Circle({#}
-{#      center: userLatLng,#}
-{#      radius: position.coords.accuracy,#}
-{#      map: map,#}
-{#      fillColor: '#0000FF',#}
-{#      fillOpacity: 0.5,#}
-{#      strokeColor: '#0000FF',#}
-{#      strokeOpacity: 1.0#}
-{#    });#}
-{#    map.fitBounds(circle.getBounds());#}
-{# }#}
-{#    function getPoints() {#}
-{#        return [#}
-{#          new google.maps.LatLng(53.3505, -6.2610),#}
-{#          new google.maps.LatLng(53.3504, -6.2609),#}
-{#          new google.maps.LatLng(53.3503, -6.2608),#}
-{#          new google.maps.LatLng(53.3502, -6.2607),#}
-{#          new google.maps.LatLng(53.3501, -6.2606),#}
-{#          new google.maps.LatLng(53.3500, -6.2605),#}
-{#          new google.maps.LatLng(53.3499, -6.2604),#}
-{#          new google.maps.LatLng(53.3498, -6.2603),#}
-{#          new google.maps.LatLng(53.3497, -6.2602),#}
-{#          new google.maps.LatLng(53.3496, -6.2601),#}
-{#          new google.maps.LatLng(53.3495, -6.2600),#}
-{#          new google.maps.LatLng(53.3494, -6.2599),#}
-{#          new google.maps.LatLng(53.3493, -6.2598),#}
-{#          new google.maps.LatLng(53.3492, -6.2597),#}
-{#          new google.maps.LatLng(53.3491, -6.2596)#}
-{#        ];#}
-{#    }#}
-{#    //Display Heat Map Layer#}
-{#    function displayHeatmap(checkbox){#}
-{#      if(checkbox.checked){#}
-{#        heatmap.setMap(map);#}
-{#      } else {#}
-{#        heatmap.setMap(null);#}
-{#      }#}
-{#    }#}
-{#    // Display Traffic Layer#}
-{#    function displayTraffic(checkbox){#}
-{#      if (checkbox.checked){#}
-{#        trafficLayer.setMap(map);#}
-{#      } else {#}
-{#        trafficLayer.setMap(null);#}
-{#      }#}
-{#    }#}
-{#    function geolocationError(positionError) {#}
-{#      document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";#}
-{#    }#}
-{#    function geolocateUser() {#}
-{#      // If the browser supports the Geolocation API#}
-{#      if (navigator.geolocation)#}
-{#      {#}
-{#        var positionOptions = {#}
-{#          enableHighAccuracy: true,#}
-{#          timeout: 10 * 1000 // 10 seconds#}
-{#        };#}
-{#        navigator.geolocation.getCurrentPosition(initMap, geolocationError, positionOptions);#}
-{#      }#}
-{#      else#}
-{#        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";#}
-{#    }#}
-{#    window.onload = geolocateUser;#}
+
+  function writeAddressName(latLng) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      "location": latLng
+    },
+    function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK)
+        document.getElementById("pac-input1").innerHTML = results[0].formatted_address;
+      else
+        document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+    });
+  }
+  // Initialize and add the map;
+  var map;
+  var heatmap;
+
+  function initMap(position) {
+
+    //Direction Variables
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+
+    userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    // Write the formatted address
+    //writeAddressName(userLatLng);
+
+    // The location of Dubin
+    var dublin = {lat: 53.3498, lng: -6.2603};
+    // The map, centered in Dublin
+    map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 14, center: dublin, mapTypeId: google.maps.MapTypeId.HYBRID});
+
+    //Direction Display
+    directionsDisplay.setMap(map);
+
+    var onChangeHandler = function() {
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    };
+
+    // The marker, positioned at Dubin
+    //var marker = new google.maps.Marker({position: dublin, map: map});
+
+    // create traffic layer variable
+    trafficLayer = new google.maps.TrafficLayer();
+
+    // create heatmap layter variable
+    heatmap = new google.maps.visualization.HeatmapLayer({
+    data: getPoints(),
+    });
+
+    // will search once destination is inserted
+    document.getElementById('pac-input2').addEventListener('change', onChangeHandler);
+
+    // Create the search box and link it to the UI element. 1
+    var input1 = document.getElementById('pac-input1');
+    var searchBox1 = new google.maps.places.SearchBox(input1);
+
+
+    // Create the search box and link it to the UI element. 2
+    var input2 = document.getElementById('pac-input2');
+    var searchBox2 = new google.maps.places.SearchBox(input2);
+
+    // Draw a circle around the user position to have an idea of the current localization accuracy
+    var circle = new google.maps.Circle({
+      center: userLatLng,
+      radius: position.coords.accuracy,
+      map: map,
+      fillColor: '#0000FF',
+      fillOpacity: 0.5,
+      //strokeColor: '#0000FF',
+      strokeOpacity: 0,
+    });
+    map.fitBounds(circle.getBounds());
+}
+    function getPoints() {
+        return [
+          new google.maps.LatLng(53.3505, -6.2610),
+          new google.maps.LatLng(53.3504, -6.2609),
+          new google.maps.LatLng(53.3503, -6.2608),
+          new google.maps.LatLng(53.3502, -6.2607),
+          new google.maps.LatLng(53.3501, -6.2606),
+          new google.maps.LatLng(53.3500, -6.2605),
+          new google.maps.LatLng(53.3499, -6.2604),
+          new google.maps.LatLng(53.3498, -6.2603),
+          new google.maps.LatLng(53.3497, -6.2602),
+          new google.maps.LatLng(53.3496, -6.2601),
+          new google.maps.LatLng(53.3495, -6.2600),
+          new google.maps.LatLng(53.3494, -6.2599),
+          new google.maps.LatLng(53.3493, -6.2598),
+          new google.maps.LatLng(53.3492, -6.2597),
+          new google.maps.LatLng(53.3491, -6.2596)
+        ];
+    }
+
+    //Display Heat Map Layer
+    function displayHeatmap(checkbox){
+      if(checkbox.checked){
+        heatmap.setMap(map);
+      } else {
+        heatmap.setMap(null);
+      }
+    }
+
+    // Display Traffic Layer
+    function displayTraffic(checkbox){
+
+      if (checkbox.checked){
+        trafficLayer.setMap(map);
+      } else {
+        trafficLayer.setMap(null);
+      }
+    }
+
+
+          function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+            directionsService.route({
+              origin: document.getElementById('pac-input1').value,
+              destination: document.getElementById('pac-input2').value,
+              travelMode: 'TRANSIT'
+            }, function(response, status) {
+              if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+              } else {
+                window.alert('Directions request failed due to ' + status);
+              }
+            });
+          }
+
+    function geolocationError(positionError) {
+      document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+    }
+
+    function geolocateUser() {
+      // If the browser supports the Geolocation API
+      if (navigator.geolocation)
+      {
+        var positionOptions = {
+          enableHighAccuracy: true,
+          timeout: 10 * 1000 // 10 seconds
+        };
+        navigator.geolocation.getCurrentPosition(initMap, geolocationError, positionOptions);
+      }
+      else
+        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+    }
+
+    window.onload = geolocateUser;
     </script>
 
 
@@ -450,6 +485,17 @@ window.onload = function(){
 
     <!--This section includes the onclick navBar with Overlay-->
     <script>
+
+      // function on(){
+      //   switch (var) {
+      //     case 1:
+      //
+      //
+      //       break;
+      //     default:
+      //
+      //   }
+      // }
       //journey planner overlay
       function on1() {
         document.getElementById("overlay1").style.display = "block";
@@ -511,6 +557,73 @@ window.onload = function(){
         document.getElementById("overlay8").style.display = "none";
         }
       </script>
+
+
+
+
+      <script>
+
+
+          var data =  {
+              "latitude": 53.3498,
+              "longitude": -6.2603,
+              "timezone": "Europe/Dublin",
+              "currently": {
+              "time": 1562327287,
+              "summary": "Mostly Cloudy",
+              "icon": "partly-cloudy-day",
+              "nearestStormDistance": 138,
+              "nearestStormBearing": 359,
+              "precipIntensity": 0,
+              "precipProbability": 0,
+              "temperature": 66.8,
+              "apparentTemperature": 66.8,
+              "dewPoint": 53.85,
+              "humidity": 0.63,
+              "pressure": 1020.39,
+              "windSpeed": 11.11,
+              "windGust": 12.37,
+              "windBearing": 272,
+              "cloudCover": 0.75,
+              "uvIndex": 5,
+              "visibility": 6.216,
+              "ozone": 312.6
+              }
+            }
+
+            var weatherInfo = data.currently;
+            console.log(weatherInfo);
+
+            var weatherDescription = weatherInfo.summary;
+            console.log(weatherDescription);
+
+            //converting fahrenheit to celsius
+            var temp = Math.round((weatherInfo.temperature - 32) * 5/9);
+            console.log(temp);
+
+            //converting miles to kilometers
+            var wind_speed = Math.round(weatherInfo.windSpeed * 1.609);
+            console.log(wind_speed);
+
+            var humidity = Math.round(weatherInfo.humidity * 100);
+            console.log(humidity);
+
+            // Displaying Temperature
+            var displayTemp = ("Current Temperature: " + temp + " ºC");
+
+            // Displaying Wind Speed
+            var displayWind = ("Wind Speed: " + wind_speed + " kph!");
+
+            // Displaying humidity
+            var displayHumidity = ("Humidity: " + humidity + "%");
+            document.getElementById("weather_stats").innerHTML = displayTemp + "<p>" + displayWind + "<p>" + displayHumidity;
+
+
+
+
+
+
+          </script>
 
   </body>
 </html>

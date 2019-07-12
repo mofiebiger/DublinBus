@@ -45,5 +45,5 @@ class UserStop(models.Model):
         verbose_name = 'favorite_stop'
         verbose_name_plural = verbose_name    
     
-    
+   
     
