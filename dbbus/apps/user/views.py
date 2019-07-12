@@ -391,10 +391,21 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
 #         return JsonResponse(data)
         return render(request,'index.html')
 
-    class FavouritesView(TemplateView):
+
+class FavouritesView(TemplateView):
         def get(self, request):
             '''favourites page'''
             return render(request, 'favourites.html')
+
+class TestView(TemplateView):
+        def get(self, request):
+            '''favourites page'''
+            return render(request, 'test_map.html')
+
+        def query(request):
+            r = request.GET.get("toolsname")
+            name_dict = "123"
+            return JsonResponse(name_dict)
      
        
     
