@@ -186,14 +186,14 @@ LOGOUT_REDIRECT_URL = '/user/index'
 
 
 
-SESSION_ENGINE = 'redis_sessions.session'
+#SESSION_ENGINE = 'redis_sessions.session'
 # redis服务的ip地址
-SESSION_REDIS = {
-    'host': 'localhost',
+#SESSION_REDIS = {
+#    'host': 'localhost',
 #     'host': '137.43.49.60',    
-    'port': 6379,
-    'db': 2,
-    'password': '',
-    'prefix': 'session5',
-    'socket_timeout': 3
-}
+#    'port': 6379,
+#    'db': 2,
+#    'password': '',
+#    'prefix': 'session5',
+#    'socket_timeout': 3
+#}

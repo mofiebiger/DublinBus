@@ -1,9 +1,11 @@
+body {
+  overflow: auto;
+}
+
 #map {
-  height: 700px;  /* The height is 400 pixels */
+  height: 800px;  /* The height is 400 pixels */
   width: 100%;  /* The width is the width of the web page */
  }
-
-
 /* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
  ul {
   list-style-type: none;
@@ -35,143 +37,17 @@ li a:hover {
 }
 
 header {
-  background-color: yellow;
+  background-color: #333;
   height: 20%;
-  text-align: center;
+  font-family: 'Allerta Stencil', sans-serif;
 
 }
 
-header h1 {
-  margin: auto;
-}
-
-.center {
-  width: 50%;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-}
-
-.flash {
-  background-color: black;
-  min-height: 100vh;
+header #title {
   color: white;
-  text-align: center;
-  display: block;
-}
+  font-family: 'Allerta Stencil', sans-serif;
+  padding: 15px;
 
-#overlay1 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay2 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay3 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay4 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay5 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay6 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay7 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-}
-
-#overlay8 {
-  position: fixed;
-  display: none;
-  height: 50%;
-  width: 50%;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
 }
 
 #journeyInfo{
@@ -225,3 +101,55 @@ header h1 {
 input{
   font-size: 1em;
 }
+#directionsSource{
+  /* align-items: center; */
+  margin: 15px;
+  padding: 8px;
+}
+
+#directionsDestination{
+  /* align-items: center; */
+  margin: 15px;
+  padding: 8px;
+}
+
+#date{
+  /* align-items: center; */
+  margin: 15px;
+  padding: 8px;
+}
+#time-button{
+  /* align-items: center; */
+  margin: 15px;
+  padding: 8px;
+ }
+
+ #today{
+   padding: 8px;
+ }
+
+ #navigateButton {
+   align-items: center;
+   margin:15px;
+   padding: 8px;
+   background-color: yellow;
+   border-color: yellow;
+   border-radius: 5px;
+ }
+
+ #directionsSteps {
+  margin: 9%;
+  background-color: white;
+  padding: 2%;
+  border-radius: 10px;
+ }
+
+ #weather_stats {
+   float:left;
+   margin: 5%;
+ }
+
+ .weatherDescription {
+   float: right;
+   margin: 5%;
+ }
