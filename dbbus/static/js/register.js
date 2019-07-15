@@ -103,7 +103,8 @@ $(function(){
 		}
 		else
 		{
-			return false;
+			// return false;
+			$('p.error').hide();
 		}
 
 	});

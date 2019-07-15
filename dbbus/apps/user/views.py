@@ -19,60 +19,8 @@ from django.http import QueryDict
 
 REGISTER_ENCRYPT_KEY = 'djhadhakjhfaliuehjdlaufajdhfalkfdkjiidd354/2p812p39weqklrjq/'
 FORGET_PASSWORD_ENCRYPT_KEY = 'SDLFJAIAOINCAJDHFAIUifdack123/.df/2p812p39weqklrjq/'
-#  
-# # Create your views here.
-# # request就是HttpRequest类型的对象
-# # request包含浏览器请求的信息
-# def index(request,email):
-#     '''index page'''
-#     print(email)
-#     user = UserInfo.objects.get(user_Email = email)
-#     user_staion = user.userstation_set.all()
-#     user_stop = user.userstop_set.all()
-#     user_route = user.userroute_set.all()
-#     response = render(request, 'login/index.html',{'user':user,'user_station':user_staion,'user_stop':user_stop,'user_route':user_route})
-#     return response
-# 
-
 
   
-  
-#  
-# # /login_ajax_check
-# def login_check(request):
-#     '''ajax登录校验'''
-#     # 1.获取用户名和密码
-#     username = request.POST.get('username')
-#     password = request.POST.get('password')
-#  
-#     # 2.进行校验,返回json数据
-#     if UserInfo.objects.filter(user_Email = username).exists() and UserInfo.objects.filter(user_Email = username)[0].user_password == password:
-#         # 用户名密码正确
-#         return JsonResponse({'res':1})
-#         # return redirect('/index') ajax请求在后台，不要返回页面或者重定向
-#     else:
-#         # 用户名或密码错误
-#         return JsonResponse({'res':0})
-#  
-#  
-# def sign_up(request):
-#     '''sign up'''
-#     return render(request, 'login/signup_ajax.html' )
-#  
-# def create_acount(request):
-#     user_email = request.POST.get('email')
-#     if UserInfo.objects.filter(user_Email = user_email).exists():
-#             # 用户名密码正确
-#             return JsonResponse({'res':0})
-#             # return redirect('/index') ajax请求在后台，不要返回页面或者重定向
-#     else:
-#             user = UserInfo()
-#             user.user_name = request.POST.get('username')
-#             user.user_Email = request.POST.get('email')
-#             user.user_password = request.POST.get('password')
-#             user.save()
-#             return JsonResponse({'res':1})
-#  
 class IndexView(TemplateView):  
     '''首页'''
     def get(self, request):
@@ -314,9 +262,9 @@ class PasswordForgetView(TemplateView):
                 sender = settings.EMAIL_FROM
                 receiver = [email]
                 host_name = request.get_host()
-                html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>' 
+                # html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
              
-                send_mail(subject, message, sender, receiver, html_message=html_message)
+                # send_mail(subject, message, sender, receiver, html_message=html_message)
                 return render(request,'send_success.html')
 
             return render(request,'pwd_forget.html',{'errormg':'email has not been found'})
@@ -392,6 +340,11 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
                   
 #         return JsonResponse(data)
         return render(request,'index.html')
+
+    class FavouritesView(TemplateView):
+        def get(self, request):
+            '''favourites page'''
+            return render(request, 'favourites.html')
      
        
     
