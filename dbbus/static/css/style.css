@@ -145,11 +145,52 @@ input{
  }
 
  #weather_stats {
-   float:left;
+   /* float:left; */
    margin: 5%;
+   /* margin-top: 10%; */
  }
 
  .weatherDescription {
-   float: right;
+   /* float: right; */
    margin: 5%;
+ }
+
+ .gmap-control-container {
+     margin: 5px;
+ }
+
+ .gmap-control {
+     -moz-border-bottom-colors: none;
+     -moz-border-left-colors: none;
+     -moz-border-right-colors: none;
+     -moz-border-top-colors: none;
+     -moz-user-select: none;
+     background: white;
+     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+     color: #333333 !important;
+     cursor: pointer;
+     direction: ltr;
+     font-family: Arial, sans-serif !important;
+     font-size: 20px !important;
+     font-weight: normal;
+     min-width: 54px;
+     overflow: hidden;
+     padding: 8px 7px 7px;
+     position: relative;
+     right: -14px;
+     top: 5px;
+     text-align: center;
+ }
+
+ .gmap-control-active {
+     -moz-border-bottom-colors: none;
+     -moz-border-left-colors: none;
+     -moz-border-right-colors: none;
+     -moz-border-top-colors: none;
+     background-color: #6D8ACC;
+     border-color: #717B87 -moz-use-text-color #717B87 #717B87;
+     border-style: solid none solid solid;
+     border-width: 1px 0 1px 1px;
+     color: #FFFFFF !important;
+     font-weight: bold;
  }

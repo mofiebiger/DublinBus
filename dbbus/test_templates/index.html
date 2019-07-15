@@ -28,13 +28,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
         <!--Google Maps API-->
-        <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization&callback=initMap" async defer>
-        </script>
 
         <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback=initMap" async defer>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" async defer>
         </script>
+
 
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
@@ -75,7 +73,7 @@
               </div>
 
               <div id="time">
-                <input id="time-button" type="time" value="now" name="fname">
+                <input id="time-button" type="time" name="fname">
               </div>
 
               <button id="navigateButton">Navigate</button>
@@ -180,7 +178,11 @@
         <div id="weather_heading"></div>
         </div>
 
+        <hr>
+
         <div id="weather_stats"></div>
+
+        <hr>
 
         <!--checkbox-->
         <div id="checkbox_inline">
@@ -204,12 +206,12 @@
       // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
       // this is used for a default of the exact time
       $(function(){
-      var d = new Date(),
-          h = d.getHours(),
-          m = d.getMinutes();
+      var d = new Date();
+      var h = d.getHours();
+      var m = d.getMinutes();
       if(h < 10) h = '0' + h;
       if(m < 10) m = '0' + m;
-      $('input[type="time"][value="now"]').each(function(){
+      $('input[type="time"]').each(function(){
         $(this).attr({'value': h + ':' + m});
       });
       });
@@ -355,7 +357,6 @@
                 if(status == google.maps.GeocoderStatus.OK){
                   var _r = results[0];
                   document.getElementById("directionsSource").val(_r.formatted_address)
-                  //$Selectors.dirSrc.val(_r.formatted_address);
                 }
             });
           } //fetchAddress Ends
@@ -625,8 +626,9 @@
               'url': "{% url "prediction:weather" %}",
               'type': 'get',
               'dataType':'json',
-            }).done(function(data){
-
+            }).done(function(data_total){
+            var data = data_total.currently;
+            var data_hourly = data_total.hourly;
             var weatherDescription = data.summary;
             displayDescription = ("It Feels Like " + weatherDescription);
 

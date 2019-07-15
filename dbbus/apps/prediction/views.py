@@ -18,8 +18,11 @@ class WeatherInfoView(TemplateView):
         object = requests.get(url)
         #transfer the content into json
         text = object.json()
+        text_needed = {}
+        text_needed['currently'] = text['currently']
+        text_needed['hourly'] = text['hourly']
         #return the current weather information
-        return JsonResponse(text['currently'])
+        return JsonResponse(text_needed)
     
     
     
