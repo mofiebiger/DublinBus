@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
+{% load pwa %}
 {% load staticfiles %}
   <head>
+        {% progressive_web_app_meta %}
+
         <!--external stylesheet-->
         <meta charset="utf-8">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -13,9 +16,20 @@
 
         <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 
+        <script src="{% static 'js/serviceworker.js' %}"></script>
+
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
-        <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script>
+
+        <!-- will probs not need the link below! save for now! -->
+        <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
+
+        <!-- Path to manifest.json -->
+        <link rel="manifest" href="{% static 'manifest.json' %}">
+
+        <!-- Icons for Apple Devices -->
+
+        <link rel="apple-touch-icon" href="/" sizes="160x160">
 
 
         <!--navBar Icons-->
@@ -587,7 +601,10 @@
             elem = "overlay7";
             break;
         }
+
         document.getElementById(elem).style.display="block"
+
+
       }
 
       function off(element_num){

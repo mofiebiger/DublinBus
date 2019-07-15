@@ -16,6 +16,7 @@ from distutils.log import debug
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'user',
     'captcha',
     'prediction',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +85,7 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-  
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -193,7 +195,7 @@ LOGOUT_REDIRECT_URL = '/user/index'
 # redis服务的ip地址
 #SESSION_REDIS = {
 #    'host': 'localhost',
-#     'host': '137.43.49.60',    
+#     'host': '137.43.49.60',
 #    'port': 6379,
 #    'db': 2,
 #    'password': '',

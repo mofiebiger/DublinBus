@@ -167,3 +167,8 @@
   color: white;
   text-decoration: none;
 }
+
+.blocktoggle
+  {
+    display:block;
+  }
