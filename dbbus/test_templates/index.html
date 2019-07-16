@@ -1,39 +1,43 @@
 <!DOCTYPE html>
+
 <html>
+
 {% load pwa %}
 {% load staticfiles %}
+
   <head>
+
         {% progressive_web_app_meta %}
 
         <!--external stylesheet-->
         <meta charset="utf-8">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
         <link rel="stylesheet" href="{% static 'css/favourites_style' %}">
+
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!--Overlay-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
 
+        <!--Google Fonts-->
         <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
 
         <!--the use of jquery in javascript - may not need later-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-      <!--MarkerClusterer -->
-      <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
-      <script type="text/javascript" src="{% static 'js/marker_on_map.js' %}">
-      </script>
+        <!--MarkerCluster -->
+        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/marker_on_map.js' %}"></script>
+
         <!--Google Maps API-->
-      <script
-              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization"
-              async defer>
-        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization" async defer></script>
 
-      {#        <script type="text/javascript" src="{% static 'js/favourites' %}"></script>#}
+        <!-- <script type="text/javascript" src="{% static 'js/favourites' %}"></script>-->
 
-      <script src="{% static 'js/serviceworker.js' %}"></script>
+        <!--Service Workers-->
+        <script src="{% static 'js/serviceworker.js' %}"></script>
 
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
@@ -45,16 +49,19 @@
         <link rel="manifest" href="{% static 'manifest.json' %}">
 
         <!-- Icons for Apple Devices -->
-
         <link rel="apple-touch-icon" href="/" sizes="160x160">
 
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
+
   </head>
 
   <body>
+
     <header>
+
       <h1 id="title">Dublin Bus | Journey Planner</h1>
+
     </header>
 
     <!--NavBar - displays overlays (above map)-->
@@ -93,11 +100,6 @@
               <button id="navigateButton">Navigate</button>
             </div>
             <div id="directionsSteps"></div>
-
-            <!-- <div id="textDirections" onchange="showButton()">
-              <input type="button" id="directionsButton" onClick="textButton" value="Text Directions">
-            </div> -->
-            <!-- <button id="toggleBtn">togs</button> -->
               <p id="error"></p>
       </div>
     </div>
@@ -128,33 +130,36 @@
             </ul>
         </div>
         <!--主要内容-->
-        <div id="tab-content">
-            <div class="dom" style="display: block;">
-                <ul>
-                    <li><a href="#">46a</a></li>
-                    <li><a href="#">145</a></li>
-                    <li><a href="#">155</a></li>
-                    <li><a href="#">11</a></li>
-                </ul>
-            </div>
-            <div class="dom">
-                <ul>
-                    <li>
-                        <a href="#">860</a>
-                    </li>
-                    <li>
-                        <a href="#">2007</a>
-                    </li>
-                    <li>
-                        <a href="#">768</a>
-                    </li>
-                    <li>
-                        <a href="#">404</a>
-                    </li>
-                </ul>
+          <div id="tab-content">
+
+              <div class="dom" style="display: block;">
+                  <ul>
+                      <li><a href="#">46a</a></li>
+                      <li><a href="#">145</a></li>
+                      <li><a href="#">155</a></li>
+                      <li><a href="#">11</a></li>
+                  </ul>
+              </div>
+
+                  <div class="dom">
+                      <ul>
+                          <li>
+                              <a href="#">860</a>
+                          </li>
+                          <li>
+                              <a href="#">2007</a>
+                          </li>
+                          <li>
+                              <a href="#">768</a>
+                          </li>
+                          <li>
+                              <a href="#">404</a>
+                          </li>
+                      </ul>
+                  </div>
+
             </div>
         </div>
-    </div>
       </div>
     </div>
 
@@ -229,11 +234,11 @@
         <div id="weather_heading"></div>
         </div>
 
-        <hr>
+            <hr>
 
-        <div id="weather_stats"></div>
+            <div id="weather_stats"></div>
 
-        <hr>
+            <hr>
 
         <!--checkbox-->
         <div id="checkbox_inline">
@@ -244,11 +249,13 @@
       </div>
     </div>
     <div id="right-panel"></div>
+
     <!--The div element for the map -->
     <div id="map"></div>
 
-
+    <!-- This section defines the date and time for overlay8 (navigation page) -->
     <script>
+
       // used code from 'https://css-tricks.com/prefilling-date-input/'
       // this is used for a default of todays date
       let today = new Date().toISOString().substr(0, 10);
@@ -268,6 +275,7 @@
       });
   </script>
 
+  <!-- This is the map section -->
   <script>
 
       function initMap(){
@@ -298,6 +306,7 @@
           useGPSBtn: jQuery('#useGPS'),
           paneResetBtn: jQuery('#paneReset')
       };
+
       // https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
       function autoCompleteSetup(){
           input1 = document.getElementById('directionsSource');
@@ -305,7 +314,6 @@
           searchBox1.setComponentRestrictions(
                 {'country': ['irl']});
 
-              // Create the search box and link it to the UI element. 2
           input2 = document.getElementById('directionsDestination');
           searchBox2 = new google.maps.places.Autocomplete(input2);
           searchBox2.setComponentRestrictions(
@@ -728,6 +736,7 @@
                   break;
               }
               icons.play();
+              
             //converting fahrenheit to celsius
             var temp = Math.round((data.temperature - 32) * 5/9);
 
