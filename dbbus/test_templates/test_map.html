@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
+{% load staticfiles %}
+{#{% load url %}#}
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+      <!--the use of jquery in javascript - may not need later-->
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
     <title>Info Windows</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
@@ -45,49 +50,122 @@ function loadXMLDoc()
   </head>
   <body>
     <div id="content">
+        <script>
+            {#$('content').load('login.html');#}
+        </script>
         <h2 class=""firstHeading>Stillorgan Road</h2>
         <h3 class=""firstHeading>Stop 768</h3>
-        <a href=""  onclick="loadXMLDoc()"><img src="../static/images/star_icon.png"></a>
-        <button>Add to favourite</button>
+        <input type="text" id="stop_id" value="768" hidden>
+        <a href="" ><img src="../static/images/star_icon.png"></a>
+        <form method="post">
+            {% csrf_token %}
+        <button type="button" id="addFav">Add Favourite</button>
+        <button type="button" id="removeFav" hidden>Remove Favourite</button>
+        </form>
     <div id="bodyContent">
         <ul>
-            <li>39A</li>
-            <li>46A</li>
-            <li>155</li>
-            <li>145</li>
-            <li>47</li>
+            <li><a id="39A">39A</a> </li>
+{#            <li><a href="{% url 'user:post_bus_info' %}" id="46A">46A</a></li>#}
+            <li><a href="" id="46A">46A</a></li>
+            <li><a href="" id="155">155</a></li>
+            <li><a href="" id="145">145</a></li>
+            <li><a href="" id="47">47</a></li>
         </ul>
     </div>
+        <div id="test_error">&nbsp;</div>
     </div>
-  <form>
-<input type="text" id="tn">
-<button type="button" id="formquery">提交</button>
-</form>
-<span id='result'></span>
-    <p>姓名：<input type="text" id="name" value=""></p>
-    <p>年龄：<span id="result"></span></p>
-    <button id="AJAX_get" type="button">点击</button>
-<script>
-    // 请求服务器，返回JSON
-    $(document).ready(function(){
-        $("#AJAX_get").click(function(){
-            var name =  $("#name").val(); // 获取输入框的值
-            var data = {"name": name};  // 打包成get请求发送的数据
 
-            $.get(
-                // 请求的url
-                '{% url 'ajax_get' %}',
-                // 发送的数据
-                data,
-                // 回调函数，其中ret是返回的JSON，可以以字典的方式调用
-                function(ret){
-                    var name = ret['name'];
-                    var age = ret['age'];
-                    // 把查询结果输出到网页上
-                    $("#result").text(age);
-                })
-        })
-    })
-</script>
+  <script>
+      $(function(){
+          $.ajaxSetup({
+                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+
+          $('#addFav').on('click',function(){
+		        var stop_id = $('#stop_id').val()
+              var fav_type = 'stop'
+
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:"/user/Add_fav_post",
+			        data:{'stopid':stop_id, 'type': fav_type,},
+			        async:true,
+			        success:function(result, status, xml){
+				// if(result.status == 'success'){
+                //         alert("提交成功");
+                //          window.location.reload();//刷新当前页面.
+                //     }else if(result.status == 'fail'){
+                //         $('#test_error').html("<b>" + result + "</b>");
+				// 		alert(result);
+				// 	}
+				        $('#addFav').hide();
+				        $('#removeFav').show();
+				        alert(result);
+			        },
+			        error: function(){
+				        alert("false");
+			        },
+		        });
+	        });
+
+          $('#addFav').on('click',function(){
+		        var stop_id = $('#stop_id').val()
+              var fav_type = 'stop'
+
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:"/user/Remove_fav_post",
+			        data:{'stopid':stop_id, 'type': fav_type,},
+			        async:true,
+			        success:function(result, status, xml){
+				// if(result.status == 'success'){
+                //         alert("提交成功");
+                //          window.location.reload();//刷新当前页面.
+                //     }else if(result.status == 'fail'){
+                //         $('#test_error').html("<b>" + result + "</b>");
+				// 		alert(result);
+				// 	}
+				        $('#addFav').show();
+				        $('#removeFav').hide();
+				        alert(result);
+			        },
+			        error: function(){
+				        alert("false");
+			        },
+		        });
+	        });
+      })
+
+      $(document).ready(function(){
+          {#$("ul>li a").click(function(){#}
+          {#    alert($(this).id)#}
+          {# })#}
+          $("a").each(function(){
+              $(this).click(function(){
+                  {#$(this).href = "/user/bus_info"#}
+                  {#console.log("yes")#}
+                  {#$(this).href = "{% url 'user:bus_info' %}"#}
+                  $.ajax({
+                      ache:false,
+                      type: "POST",
+			          url:"/user/post_bus_info",
+			          data:{'busid':$(this).text(),},
+			          async:true,
+			          success:function(result, status, xml){
+                            location.href = "/user/bus_info"
+                          console.log("true")
+                       }
+                   })
+                  {#alert($(this).text())#}
+                  {#window.open("/user/bus_info")#}
+                  {#var bus_id = $(this).text()#}
+                  {#location.href = "/user/bus_info"#}
+              })
+          })
+      })
+  </script>
+
   </body>
 </html>

@@ -14,6 +14,16 @@ urlpatterns = [
     # '''updates'''
     path('favourites', views.FavouritesView.as_view(),name = 'favourites'),# favourites page
     path('test', views.TestView.as_view(),name = 'test'),# test page
+    path('bus_info', views.BusInfoView.as_view(),name = 'bus_info'),# test page
+    path('post_bus_info', views.post_bus_info,name = 'post_bus_info'),# test page
+    # path('add', views.TestAdd.as_view(),name = 'add'),# test page
+    path('Reg_form_post', views.Reg_form_post,name = 'postform'),# test page
+    # path('Login_form_post', views.LoginTestView.post,name = 'post_login_form'),# test page
+    path('Login_form_post', views.Login_form_post,name = 'post_login_form'),# test page
+    path('Add_fav_post', views.Add_fav_post,name = 'post_add_fav'),# test page
+    path('Remove_fav_post', views.Add_fav_post,name = 'post_add_fav'),# test page
+    path('logintest', views.LoginTestView.as_view(),name = 'logintest'),# login page
+    # url(r'^comments_upload/$', comments_upload, name='comments_upload'),
     # re_path('change_avatar', views.AvatarUpdateView.as_view(), name='change_avatar'),  # change avarta page
 
 ]
