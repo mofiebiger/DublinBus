@@ -4,15 +4,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>register</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{#	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">#}
+{#	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">#}
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
 	<style type = "text/css">
 	.r_con{width:400px;}
 	.reg_title{width:360px;height:50px;float:left;margin-left:30px;border-bottom:1px solid #e0e0e0}
 	.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
-	.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}
+	{#.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}#}
 	
 	.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
 	.reg_form li{height:70px;}
@@ -28,29 +28,31 @@
 <body>
 		<div class="r_con fr">
 			<div class="reg_title clearfix">
-				<h1>register</h1>
+				<h1>Login</h1>
 				<a href="/user/register">register</a>
 			</div>
 			<div class="reg_form clearfix">
 							<form method="post" >
                         {% csrf_token %}
-						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">
-						<div class="user_error">input wrong</div>
-						<input type="password" name="pwd" class="pass_input" placeholder="please input password">
-						<div class="pwd_error">input wrong</div>
+						<input type="text" name="username" id='username' class="name_input" value="{{ username }}" placeholder="please input email address">
+						<div class="user_error" id="user_error">&nbsp;</div>
+						<input type="password" name="pwd" id="pwd" class="pass_input" placeholder="please input password">
+						<div class="pwd_error" id="pwd_error">&nbsp;</div>
 						<div class="more_input clearfix">
 							<input type="checkbox" name="remember" {{ checked }}>
 							<label>Remember Name</label>
 							<a href="forget_password">Forget Password</a>
 						</div>
-						<input type="submit" name="" value="Login in" class="input_submit">
+{#						<input type="submit" name="" value="Login in" class="input_submit">#}
+                        <p class="error" id="test_error">&nbsp; </p>
+                        <button type="button" id='loginBtn'value="Login" name="">Login</button>
 					</form>
 					
                 {{ errmsg }}
 			</div>
-            <div class = "to_reg">
-                 <input type="button" name="signUp" value="Sign Up" class="input_submit">
-            </div>
+{#            <div class = "to_reg">#}
+{#                 <input type="button" name="signUp" value="Sign Up" class="input_submit">#}
+{#            </div>#}
 
 		</div>
 
