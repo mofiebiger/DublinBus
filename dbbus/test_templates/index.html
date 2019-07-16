@@ -73,47 +73,15 @@
 
     <!--favourites overlay -->
     <div id="overlay3" onclick="off3()">
+        <script>
+             $(document).ready(function(){
+                $('#favouritesInfo').load('/user/favourites');
+            })
+          </script>
       <a href="javascript:void(0)" class="closebtn3" onclick="off3()">&times;</a>
       <div id="favouritesInfo">
         <h1> Your Favourites </h1>
-                  <!--选项卡-->
-    <div id="tab">
-        <!--选项的头部-->
-        <div id="tab-header">
-            <ul>
-                <li class="selected">Routes</li>
-                <li>Stops</li>
-                <!--<li>xxxx</li>-->
-            </ul>
-        </div>
-        <!--主要内容-->
-        <div id="tab-content">
-            <div class="dom" style="display: block;">
-                <ul>
-                    <li><a href="#">46a</a></li>
-                    <li><a href="#">145</a></li>
-                    <li><a href="#">155</a></li>
-                    <li><a href="#">11</a></li>
-                </ul>
-            </div>
-            <div class="dom">
-                <ul>
-                    <li>
-                        <a href="#">860</a>
-                    </li>
-                    <li>
-                        <a href="#">2007</a>
-                    </li>
-                    <li>
-                        <a href="#">768</a>
-                    </li>
-                    <li>
-                        <a href="#">404</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
       </div>
     </div>
 
@@ -142,23 +110,28 @@
     <!--logIn overlay -->
     <div id="overlay6">
       <a href="javascript:void(0)" class="closebtn6" onclick="off6()">&times;</a>
-      <div id="logIn">
-        <h1> Log-In </h1>
-            	<form method="post"  action= {% url "user:login" %}>
-                        {% csrf_token %}
-						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">
-						<div class="user_error">input wrong</div>
-						<input type="password" name="pwd" class="pass_input" placeholder="please input password">
-						<div class="pwd_error">input wrong</div>
-						<div class="more_input clearfix">
-							<input type="checkbox" name="remember" {{ checked }}>
-							<label>Remember Name</label>
-							<a href="forget_password">Forget Password</a>
-						</div>
-						<input type="submit" name="" value="Login in" class="input_submit">
-					</form>
-
-                {{ errmsg }}
+      <script>
+             $(document).ready(function(){
+                $('#logIn').load('/user/login');
+            })
+          </script>
+        <div id="logIn">
+{#        <h1> Log-In </h1>#}
+{#            	<form method="post"  action= {% url "user:login" %}>#}
+{#                        {% csrf_token %}#}
+{#						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">#}
+{#						<div class="user_error">input wrong</div>#}
+{#						<input type="password" name="pwd" class="pass_input" placeholder="please input password">#}
+{#						<div class="pwd_error">input wrong</div>#}
+{#						<div class="more_input clearfix">#}
+{#							<input type="checkbox" name="remember" {{ checked }}>#}
+{#							<label>Remember Name</label>#}
+{#							<a href="forget_password">Forget Password</a>#}
+{#						</div>#}
+{#						<input type="submit" name="" value="Login in" class="input_submit">#}
+{#					</form>#}
+{##}
+{#                {{ errmsg }}#}
       </div>
     </div>
 
@@ -191,6 +164,15 @@
 
       </div>
     </div>
+
+{#    <script>#}
+{#             $(document).ready(function(){#}
+{#                $('#side_div').load('/user/test');#}
+{#            })#}
+{#          </script>#}
+{#    <div id="side_div">#}
+{##}
+{#    </div>#}
 
     <!--The div element for the map -->
     <div id="map"></div>
@@ -257,11 +239,13 @@
         }
       //x
       function on6() {
-        document.getElementById("overlay6").style.display = "block";
-        {% if user.is_authenticated %}
+        {#$('logIn').load('/user/login');#}
+          document.getElementById("overlay6").style.display = "block";
 
-
-        {% endif%}
+{#        {% if user.is_authenticated %}#}
+{##}
+{##}
+{#        {% endif%}#}
         }
       function off6() {
         document.getElementById("overlay6").style.display = "none";

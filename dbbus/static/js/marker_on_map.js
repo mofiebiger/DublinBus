@@ -69,7 +69,7 @@ function writeAddressName(latLng) {
                   return new google.maps.Marker({
                       position: location,
                       map: map,
-                      icon: markerImage,
+                      // icon: markerImage,
                       // label: labels[i % labels.length]
                   });
               });

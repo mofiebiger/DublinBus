@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>bus info</title>
+    <!--the use of jquery in javascript - may not need later-->
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+</head>
+<body>
+<div>
+    <form method="post">
+        {% csrf_token %}
+      <h3>145</h3>
+        <div>{{ data }}</div>
+      <input type="text" id="bus_id" value="145" hidden>
+      <button type="button" id="addFav">Add Favourite</button>
+      <button type="button" id="removeFav" hidden>Remove Favourite</button>
+</form>
+</div>
+<script>
+      $(function(){
+          $.ajaxSetup({
+                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+
+          $('#addFav').on('click',function(){
+		        var bus_id = $('#bus_id').val()
+                var fav_type = 'bus'
+
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:"/user/Add_fav_post",
+			        data:{'busid':bus_id, 'type': fav_type,},
+			        async:true,
+			        success:function(result, status, xml){
+				// if(result.status == 'success'){
+                //         alert("提交成功");
+                //          window.location.reload();//刷新当前页面.
+                //     }else if(result.status == 'fail'){
+                //         $('#test_error').html("<b>" + result + "</b>");
+				// 		alert(result);
+				// 	}
+				        $('#addFav').hide();
+				        $('#removeFav').show();
+				        alert(result);
+			        },
+			        error: function(){
+				        alert("false");
+			        },
+		        });
+	        });
+
+          $('#removeFav').on('click',function(){
+		        var bus_id = $('#bus_id').val()
+              var fav_type = 'bus'
+
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:"/user/Remove_fav_post",
+			        data:{'bus_id':bus_id, 'type': fav_type,},
+			        async:true,
+			        success:function(result, status, xml){
+				// if(result.status == 'success'){
+                //         alert("提交成功");
+                //          window.location.reload();//刷新当前页面.
+                //     }else if(result.status == 'fail'){
+                //         $('#test_error').html("<b>" + result + "</b>");
+				// 		alert(result);
+				// 	}
+				        $('#addFav').show();
+				        $('#removeFav').hide();
+				        alert(result);
+			        },
+			        error: function(){
+				        alert("false");
+			        },
+		        });
+	        });
+      })
+  </script>
+</body>
+</html>
