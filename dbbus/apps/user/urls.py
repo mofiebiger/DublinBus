@@ -12,7 +12,9 @@ urlpatterns = [
     path('forget_password', views.PasswordForgetView.as_view(),name = 'forget_password'),# forget password page
     path('reset_password/<token>', views.ResetPasswordView.as_view(),name = 'reset_password'),# reset password page
     path('change_avatar', views.AvatarUpdateView.as_view(),name = 'change_avatar'),# change avarta page
-    # path('favourites', views.FavouritesView.as_view(),name = 'favourites'),# favourites page
+    # '''updates'''
+    path('favourites', views.FavouritesView.as_view(),name = 'favourites'),# favourites page
+    path('test', views.TestView.as_view(),name = 'test'),# test page
     # re_path('change_avatar', views.AvatarUpdateView.as_view(), name='change_avatar'),  # change avarta page
 
 ]

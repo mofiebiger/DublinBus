@@ -8,26 +8,32 @@
         <!--external stylesheet-->
         <meta charset="utf-8">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/favourites_style' %}">
+        <!--navBar Icons-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
-
-
-
-
-
-
-
-
-
+        <!--Overlay-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
 
         <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
 
+        <!--the use of jquery in javascript - may not need later-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+      <!--MarkerClusterer -->
+      <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/marker_on_map.js' %}">
+      </script>
+        <!--Google Maps API-->
+      <script
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization"
+              async defer>
+        </script>
 
-        <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+      {#        <script type="text/javascript" src="{% static 'js/favourites' %}"></script>#}
 
-        <script src="{% static 'js/serviceworker.js' %}"></script>
+      <script src="{% static 'js/serviceworker.js' %}"></script>
 
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
@@ -42,134 +48,6 @@
 
         <link rel="apple-touch-icon" href="/" sizes="160x160">
 
-
-
-{#  <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">#}
-<style type="text/css">
-    a, address, b, big, blockquote, body, center, cite, code, dd, del, div, dl, dt, em, fieldset, font, form, h1, h2, h3, h4, h5, h6, html, i, iframe, img, ins, label, legend, li, ol, p, pre, small, span, strong, u, ul, var{
-    padding: 0;
-    margin: 0;
-}
-
-
-a{
-    color: black;
-    text-decoration: none;
-}
-ul{
-    list-style: none;
-}
-
-#tab{
-    width: 498px;
-    height: 130px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 2px #ddd;
-    margin: 100px 0 0 100px;
-    /*处理超出的内容*/
-    overflow: hidden;
-}
-
-/*选项卡的头部*/
-#tab-header{
-    background-color: #F7F7F7;
-    height: 33px;
-    text-align: center;
-    position: relative;
-}
-#tab-header ul{
-    width: 500px;
-    position: absolute;
-    left: -1px;
-}
-#tab-header ul li{
-    float: left;
-    width: 98px;
-    height: 33px;
-    line-height: 33px;
-    padding: 0 1px;
-    border-bottom: 1px solid #dddddd;
-}
-#tab-header ul li.selected{
-    background-color: white;
-    font-weight: bolder;
-    border-bottom: 0;
-    border-left: 1px solid #dddddd;
-    border-right: 1px solid #dddddd;
-    padding: 0;
-
-}
-
-#tab-header ul li:hover{
-    color: orangered;
-}
-
-/*主要内容*/
-#tab-content .dom{
-    display: none;
-}
-
-#tab-content .dom ul li{
-    float: left;
-    /*background-color: red;*/
-    margin: 15px 10px;
-    width: 225px;
-}
-
-#tab-content .dom ul li a:hover {
-    color: orange;
-}
-</style>
-        <!--navBar Icons-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-        <!--Overlay-->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!--the use of jquery in javascript - may not need later-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-        <!--Google Maps API-->
-
-        <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" async defer>
-        </script>
-        <!--MarkerClusterer -->
-        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/marker_on_map.js' %}"></script>
-{#        <script type="text/javascript" src="{% static 'js/favourites.js' %}"></script>#}
-<script>
-        // == 值比较  === 类型比较 $(id) ---->  document.getElementById(id)
-function $(id){
-    return typeof id === 'string' ? document.getElementById(id):id;
-}
-
-// 当页面加载完毕
-window.onload = function(){
-    // 拿到所有的标题(li标签) 和 标题对应的内容(div)
-    var titles = $('tab-header').getElementsByTagName('li');
-    var divs = $('tab-content').getElementsByClassName('dom');
-    // 判断
-    if(titles.length != divs.length) return;
-    // 遍历
-    for(var i=0; i<titles.length; i++){
-        // 取出li标签
-        var li = titles[i];
-        li.id = i;
-//        console.log(li);
-        // 监听鼠标的移动
-        li.onmousemove = function(){
-            for(var j=0; j<titles.length; j++){
-                titles[j].className = '';
-                divs[j].style.display = 'none';
-            }
-            this.className = 'selected';
-            divs[this.id].style.display = 'block';
-        }
-    }
-            }
-            {#console.log("222");#}
-</script>
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
   </head>
@@ -222,7 +100,6 @@ window.onload = function(){
             <!-- <button id="toggleBtn">togs</button> -->
               <p id="error"></p>
       </div>
-
     </div>
 
     <!--tourism overlay -->
@@ -875,5 +752,6 @@ window.onload = function(){
           })
         } // On8 and WeatherDisplay Ends
       </script>
+
   </body>
 </html>
