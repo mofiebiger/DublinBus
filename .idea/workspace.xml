@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dbbus/test_templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="60">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
             </state>
           </provider>
         </entry>
@@ -25,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dbbus/apps/user/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="453" selection-start-line="453" selection-end-line="453" />
+            <state relative-caret-position="228">
+              <caret line="413" selection-start-line="413" selection-end-line="413" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -79,13 +79,17 @@
       <find>data</find>
       <find>login</find>
       <find>fac</find>
+      <find>$</find>
+      <find>init</find>
+      <find>info</find>
+      <find>bus</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="mapFixes" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
   </component>
@@ -97,19 +101,21 @@
         <option value="$PROJECT_DIR$/dbbus/dbbus/settings.py" />
         <option value="$PROJECT_DIR$/dbbus/test_templates/login.html" />
         <option value="$PROJECT_DIR$/dbbus/test_templates/register.html" />
-        <option value="$PROJECT_DIR$/dbbus/apps/user/views.py" />
         <option value="$PROJECT_DIR$/dbbus/static/js/facourites" />
         <option value="$PROJECT_DIR$/dbbus/static/css/favourites_style" />
-        <option value="$PROJECT_DIR$/dbbus/apps/user/urls.py" />
         <option value="$PROJECT_DIR$/dbbus/test_templates/favourites.html" />
         <option value="$PROJECT_DIR$/dbbus/static/js/register.js" />
         <option value="$PROJECT_DIR$/dbbus/static/js/favourites" />
-        <option value="$PROJECT_DIR$/dbbus/static/js/marker_on_map.js" />
+        <option value="$PROJECT_DIR$/dbbus/apps/user/urls.py" />
+        <option value="$PROJECT_DIR$/dbbus/apps/user/views.py" />
+        <option value="$PROJECT_DIR$/dbbus/test_templates/test_map.html" />
         <option value="$PROJECT_DIR$/dbbus/test_templates/index.html" />
+        <option value="$PROJECT_DIR$/dbbus/static/js/marker_on_map.js" />
+        <option value="$PROJECT_DIR$/dbbus/test_templates/home.html" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1440" />
     <option name="height" value="811" />
@@ -135,6 +141,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\research\DublinBus1\dbbus\test_templates" />
       <recent name="D:\research\DublinBus\dbbus\static\json" />
     </key>
   </component>
@@ -211,30 +218,35 @@
       <updated>1562233145389</updated>
       <workItem from="1562233153048" duration="32642000" />
       <workItem from="1562549910681" duration="19446000" />
+      <workItem from="1562600542391" duration="763000" />
+      <workItem from="1562661873873" duration="741000" />
+      <workItem from="1562663064106" duration="3380000" />
+      <workItem from="1562676595195" duration="20740000" />
+      <workItem from="1562954380151" duration="2709000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52088000" />
+    <option name="totallyTimeSpent" value="80422000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="811" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20718816" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.41512606" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.3250444" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.08648649" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2054054" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.1027027" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4742451" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.30728242" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="10" side_tool="true" visible="true" weight="0.32962447" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32962447" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" weight="0.3285968" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -244,18 +256,18 @@
       <window_info anchor="right" id="Database" order="5" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17310925" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.57310927" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.15315315" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2054054" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.3250444" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.084684685" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4742451" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3285968" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" />
@@ -271,21 +283,52 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../stops_info.csv" />
     <entry file="file://$PROJECT_DIR$/dbbus/test_templates/points_on_map.html" />
     <entry file="file://$PROJECT_DIR$/dbbus/static/json/__init__.py" />
     <entry file="file://$PROJECT_DIR$/dbbus/dbbus/urls.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/static/js/jquery-1.12.4.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dbbus/test_templates/login2.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -297,13 +340,6 @@
     <entry file="file://$PROJECT_DIR$/dbbus/test_templates/register2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-561" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dbbus/test_templates/register.html">
@@ -344,53 +380,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/static/css/favourites_style">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="74" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/static/css/favourites_style" />
     <entry file="file://$PROJECT_DIR$/dbbus/static/js/facourites" />
-    <entry file="file://$PROJECT_DIR$/dbbus/static/js/marker_on_map.js">
+    <entry file="file://$PROJECT_DIR$/dbbus/static/js/markerclusterer.js" />
+    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1965">
-          <caret line="131" column="34" selection-start-line="131" selection-start-column="34" selection-end-line="131" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/static/js/markerclusterer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19815">
-          <caret line="1321" selection-start-line="1321" selection-end-line="1321" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/static/js/favourites">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/favourites.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/apps/user/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
+        <state relative-caret-position="1020">
+          <caret line="60" column="7" lean-forward="true" selection-start-line="60" selection-start-column="7" selection-end-line="60" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -401,13 +397,82 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/static/js/favourites">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/static/js/jquery-1.12.4.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/favourites.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2482" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/static/js/marker_on_map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="17" column="33" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+          <folding>
+            <element signature="n#!!block;n#writeAddressName#0" />
+            <element signature="n#!!block;n#initMap#0" />
+            <element signature="e#911#1117#0" />
+            <element signature="n#!!block;n#myFunction#0;n#!!block;n#initMap#0" />
+            <element signature="e#2804#3066#0" />
+            <element signature="e#3169#3216#0" />
+            <element signature="n#!!block;n#getPoints#0" />
+            <element signature="n#!!block;n#displayHeatmap#0" />
+            <element signature="n#!!block;n#displayTraffic#0" />
+            <element signature="n#!!block;n#geolocationError#0" />
+            <element signature="n#!!block;n#geolocateUser#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/test_map.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="79" column="24" lean-forward="true" selection-start-line="79" selection-start-column="24" selection-end-line="79" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dbbus/apps/user/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="453" selection-start-line="453" selection-end-line="453" />
+        <state relative-caret-position="228">
+          <caret line="413" selection-start-line="413" selection-end-line="413" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/apps/user/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="12" selection-start-column="12" selection-end-column="12" />
         </state>
       </provider>
     </entry>
