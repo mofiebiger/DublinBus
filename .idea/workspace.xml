@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9b86aa1c-dcde-4ca6-b165-314443bd8688" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/DublinBus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/DublinBus.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="9b86aa1c-dcde-4ca6-b165-314443bd8688" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,46 +14,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dbbus/static/js/marker_on_map.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1965">
-              <caret line="131" column="34" selection-start-line="131" selection-start-column="34" selection-end-line="131" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dbbus/static/js/markerclusterer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19815">
-              <caret line="1321" selection-start-line="1321" selection-end-line="1321" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dbbus/static/js/favourites">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dbbus/test_templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="150">
               <caret line="10" selection-start-line="10" selection-end-line="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dbbus/test_templates/favourites.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -65,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dbbus/apps/user/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="642">
-              <caret line="406" selection-start-line="406" selection-end-line="406" />
+            <state relative-caret-position="427">
+              <caret line="453" selection-start-line="453" selection-end-line="453" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -77,8 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dbbus/apps/user/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
+            <state>
+              <caret column="12" selection-start-column="12" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -123,6 +83,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="mapFixes" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -155,74 +120,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="user" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DublinBus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DublinBus" type="462c0819:PsiDirectoryNode" />
-              <item name="dbbus" type="462c0819:PsiDirectoryNode" />
-              <item name="test_templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -320,8 +218,7 @@
     <option name="totallyTimeSpent" value="52088000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="811" extended-state="1" />
-    <editor active="true" />
+    <frame x="0" y="22" width="1440" height="811" extended-state="0" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20718816" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -336,7 +233,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="10" side_tool="true" visible="true" weight="0.32962447" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32962447" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -476,13 +373,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dbbus/test_templates/favourites.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -490,10 +380,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dbbus/test_templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dbbus/apps/user/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
+        <state>
+          <caret column="12" selection-start-column="12" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -506,8 +403,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dbbus/apps/user/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="642">
-          <caret line="406" selection-start-line="406" selection-end-line="406" />
+        <state relative-caret-position="427">
+          <caret line="453" selection-start-line="453" selection-end-line="453" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
