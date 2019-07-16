@@ -26,7 +26,7 @@
       <sourceFolder url="file://$MODULE_DIR$/dbbus/static/json" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/dbbus/static/images" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7 (dbbus)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (DublinBus) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

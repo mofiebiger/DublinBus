@@ -12,66 +12,15 @@ from django.views.generic import TemplateView
 from itsdangerous import SignatureExpired, BadSignature
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from user.form import ForgetPwdForm,ResetPwdForm,ChangePwdForm
+# from user.models import User, UserBusNumber, UserStop, UserRoute
 from user.models import User, UserBusNumber, UserStop, UserRoute
-
+import json
+from django.http import QueryDict
 
 REGISTER_ENCRYPT_KEY = 'djhadhakjhfaliuehjdlaufajdhfalkfdkjiidd354/2p812p39weqklrjq/'
 FORGET_PASSWORD_ENCRYPT_KEY = 'SDLFJAIAOINCAJDHFAIUifdack123/.df/2p812p39weqklrjq/'
-#  
-# # Create your views here.
-# # request就是HttpRequest类型的对象
-# # request包含浏览器请求的信息
-# def index(request,email):
-#     '''index page'''
-#     print(email)
-#     user = UserInfo.objects.get(user_Email = email)
-#     user_staion = user.userstation_set.all()
-#     user_stop = user.userstop_set.all()
-#     user_route = user.userroute_set.all()
-#     response = render(request, 'login/index.html',{'user':user,'user_station':user_staion,'user_stop':user_stop,'user_route':user_route})
-#     return response
-#  
-# def login(request):
-#     '''login page'''
-#     return render(request, 'login/login_ajax.html', )
-#  
-#  
-#  
-# # /login_ajax_check
-# def login_check(request):
-#     '''ajax登录校验'''
-#     # 1.获取用户名和密码
-#     username = request.POST.get('username')
-#     password = request.POST.get('password')
-#  
-#     # 2.进行校验,返回json数据
-#     if UserInfo.objects.filter(user_Email = username).exists() and UserInfo.objects.filter(user_Email = username)[0].user_password == password:
-#         # 用户名密码正确
-#         return JsonResponse({'res':1})
-#         # return redirect('/index') ajax请求在后台，不要返回页面或者重定向
-#     else:
-#         # 用户名或密码错误
-#         return JsonResponse({'res':0})
-#  
-#  
-# def sign_up(request):
-#     '''sign up'''
-#     return render(request, 'login/signup_ajax.html' )
-#  
-# def create_acount(request):
-#     user_email = request.POST.get('email')
-#     if UserInfo.objects.filter(user_Email = user_email).exists():
-#             # 用户名密码正确
-#             return JsonResponse({'res':0})
-#             # return redirect('/index') ajax请求在后台，不要返回页面或者重定向
-#     else:
-#             user = UserInfo()
-#             user.user_name = request.POST.get('username')
-#             user.user_Email = request.POST.get('email')
-#             user.user_password = request.POST.get('password')
-#             user.save()
-#             return JsonResponse({'res':1})
-#  
+
+  
 class IndexView(TemplateView):  
     '''首页'''
     def get(self, request):
@@ -150,9 +99,9 @@ class RegisterView(TemplateView):
 
   
 class ActiveView(TemplateView):
-    '''用户激活'''
+    '''user activation'''
     def get(self, request, token):
-        '''进行用户激活'''
+        '''get user activation page'''
         # 进行解密，获取要激活的用户信息
         serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
         try:
@@ -172,17 +121,18 @@ class ActiveView(TemplateView):
             return render(request,'404.html')
         
     def post(self, request, token):
+        '''get the user information to activate it'''
             # 根据id获取用户信息
-            serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
-            try:
-                user_id = serializer.loads(token)
-                user = User.objects.get(id=user_id)
-                user.is_active = 1
-                user.save()        
-                return redirect(reverse('user:login'))
-            except BadSignature as e:
-                # 激活链接已过期
-                return render(request,'404.html')
+        serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
+        try:
+            user_id = serializer.loads(token)
+            user = User.objects.get(id=user_id)
+            user.is_active = 1
+            user.save()        
+            return redirect(reverse('user:login'))
+        except BadSignature as e:
+            # 激活链接已过期
+            return render(request,'404.html')
   
 # /user/login
 class LoginView(TemplateView):
@@ -587,10 +537,353 @@ def post_bus_info(request):
        
     
 
+class FavoriteStopView(LoginRequiredMixin, TemplateView):
+    '''store the favorite stops of user'''
+    def get(self,request):
+        
+        stops = UserStop.objects.filter(station_user= request.user)
+        stops = list(stops)
+        stop_list = [stop.stop for stop in stops]
+        json_file = {"user_stop_list": stop_list}
+        return JsonResponse(json_file)
+            
+    
+    def post(self,request):
+        
+        stop_id = request.POST.get('stop_id')
+        if UserStop.objects.filter(stop=stop_id,station_user= request.user).exists():
+            return HttpResponse('stop exists already')
+        user_stop = UserStop(stop=stop_id,station_user= request.user)
+        user_stop.save()
+        return HttpResponse('stop is stored successfully')
+
+    
+    def delete(self, request):
+        
+        DELETE = QueryDict(request.body)
+        stop_id = DELETE.get('stop_id')
+
+        if not UserStop.objects.filter(stop=stop_id,station_user= request.user).exists():
+            return HttpResponse('stop number does not exist')
+        
+        UserStop.objects.get(stop=stop_id,station_user= request.user).delete()
+        return HttpResponse('stop number has been deleted successfully')
+
+        
+
+class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
+    '''store the favorite bus numbers of user'''
+    
+    def get(self,request):
+        
+        buses = UserBusNumber.objects.filter(bus_number_user= request.user)
+        buses = list(buses)
+        buses_list = [{'bus_number':bus.bus_number,'start_point':bus.start_point,'end_point':bus.end_point} for bus in buses]
+        json_file = {"user_bus_list": buses_list}
+        return JsonResponse(json_file)
+    
+    def post(self,request):
+        
+        bus_number = request.POST.get('bus_number')
+        start_point = request.POST.get('start_point')
+        end_point = request.POST.get('end_point')
+        if UserBusNumber.objects.filter(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).exists():
+            return HttpResponse('bus number exists already')        
+        user_bus_number = UserBusNumber(bus_number=bus_number,start_point= start_point,end_point=end_point,bus_number_user=request.user)
+        user_bus_number.save()
+        return HttpResponse('Bus number is stored successfully')
+
+    def delete(self, request):
+        
+        DELETE = QueryDict(request.body)
+        bus_number = DELETE.get('bus_number')
+        start_point = DELETE.get('start_point')
+        end_point = request.DELETE.get('end_point')
+        if not UserBusNumber.objects.filter(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).exists():
+            return HttpResponse('bus number does not exist')
+        
+        UserBusNumber.objects.get(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).delete()
+        return HttpResponse('bus number has been deleted successfully')
+
+
+class FavoriteRouteView(LoginRequiredMixin, TemplateView):
+    '''store the favorite routes of user'''
+    
+    def get(self,request):
+        
+        routes = UserRoute.objects.filter(route_user= request.user)
+        routes = list(routes)
+        routes_list = [{'route_start':route.route_start,'route_end':route.route_end} for route in routes]
+        json_file = {"user_routes_list": routes_list}
+        return JsonResponse(json_file)
+    
+    
+    def post(self,request):
+        
+        route_start = request.POST.get('route_start')
+        route_end = request.POST.get('route_end')
+        if UserRoute.objects.filter(route_start=route_start,route_end=route_end,route_user= request.user).exists():
+            return HttpResponse('route exists already!')
+        user_route = UserRoute(route_start=route_start,route_end= route_end,route_user=request.user)
+        user_route.save()
+        return HttpResponse('route is stored successfully')
+    
+    def delete(self, request):
+        
+        DELETE = QueryDict(request.body)
+        route_start = DELETE.get('route_start')
+        route_end = DELETE.get('route_end')
+        if not UserRoute.objects.filter(route_start=route_start,route_end=route_end,route_user= request.user).exists():
+            return HttpResponse('route does not exist')
+        
+        UserRoute.objects.get(route_start=route_start,route_end=route_end,route_user= request.user).delete()
+        return HttpResponse('route has been deleted successfully')
+
+class ContactUsView(LoginRequiredMixin, TemplateView):
+    
+    def post(self,request): 
+        user = request.user
+        contact = request.POST.get('contact')
+        if not contact:
+           return HttpResponse('No information!') 
+        try:
+            subject = 'Contact information-from '+user.username+"-email:"+ user.email
+            message = contact
+            sender = settings.EMAIL_FROM
+            receiver = [settings.EMAIL_FROM]         
+            send_mail(subject, message, sender, receiver)
+        except:
+            return HttpResponse('error!')
+                  
+#         return JsonResponse(data)
+        return HttpResponse('Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!')
 
 
 
 
 
+# 
+# def set_session(request):
+#     request.session['username'] = 'reanjie'
+#     request.session['age'] = '18'
+#     return HttpResponse('set sessions')
+#     
+# def get_session(request):
+#     username = request.session['username'] 
+#     age = request.session['age'] 
+#     return HttpResponse(username+':'+age)
+    
+    
+    
 
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
