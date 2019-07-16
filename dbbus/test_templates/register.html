@@ -4,15 +4,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>register</title>
-	// <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-	// <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{#	// <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">#}
+{#	// <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">#}
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/register.js' %}"></script>
 	<style type = "text/css">
 	.r_con{width:400px;}
 	.reg_title{width:360px;height:50px;float:left;margin-left:30px;border-bottom:1px solid #e0e0e0}
 	.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
-	.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}
+	{#.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}#}
 	
 	.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
 	.reg_form li{height:70px;}
@@ -32,23 +32,24 @@
 				<a href="/user/login">login</a>
 			</div>
 			<div class="reg_form clearfix">
-				<form method="post" action="/user/register">
+{#				<form method="post" action="/user/register">#}
+				<form id="new_user_form" method="post">
                     {% csrf_token %}
 				<ul>
 					<li>
 						<label>Username:</label>
 						<input type="text" name="user_name" id="user_name">
-						<span class="error_tip">massage</span>
+						<span class="error_tip">&nbsp;</span>
 					</li>					
 					<li>
 						<label>Password:</label>
 						<input type="password" name="pwd" id="pwd">
-						<span class="error_tip">message</span>
+						<span class="error_tip">&nbsp;</span>
 					</li>
 					<li>
 						<label>Comfirmss:</label>
 						<input type="password" name="cpwd" id="cpwd">
-						<span class="error_tip">message</span>
+						<span class="error_tip">&nbsp;</span>
 					</li>
 					<li>
 						<label>Email:</label>
@@ -56,11 +57,15 @@
 						<span class="error_tip">message</span>
 					</li>
 					<li class="reg_sub">
-						<input type="submit" value="Register" name="">
+                        <p class="error" id="test_error">&nbsp; </p>
+{#						<button type="button" id='regBtn'value="Register" name="" disabled="disabled">Register</button>#}
+						<button type="button" id='regBtn'value="Register" name="">Register</button>
+                        <span class="error_tip">message</span>
+
 					</li>
 				</ul>				
 				</form>
-                <p class="error" id="test_error">dddd</p>
+{#                <p class="error" id="test_error">dddd</p>#}
                 {{ errmsg }}
 			</div>
 

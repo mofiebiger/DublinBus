@@ -1,3 +1,274 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+  <head>
+        <!--external stylesheet-->
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/favourites_style' %}">
+        <!--navBar Icons-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!--Overlay-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--the use of jquery in javascript - may not need later-->
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+      <!--MarkerClusterer -->
+      <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/marker_on_map.js' %}">
+      </script>
+        <!--Google Maps API-->
+      <script
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization"
+              async defer>
+        </script>
+
+      {#        <script type="text/javascript" src="{% static 'js/favourites' %}"></script>#}
+
+        <!--title - dublin bus-->
+        <title>Dublin Bus</title>
+  </head>
+
+  <body>
+    <header><h1>Dublin Bus</h1></header>
+    <!--NavBar - displays overlays (above map)-->
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a onclick="on1()">Journey Planner</a></li>
+      <li><a onclick="on2()">Tourism</a></li>
+      <li><a onclick="on3()">Favourites</a></li>
+      <li><a onclick="on4()">FAQ</a></li>
+      <li><a onclick="on5()">Contact</a></li>
+      <li style="float:right"><a onclick="on7()"><i class="fa fa-warning"></i></a></li>
+      <li style="float:right"><a onclick="on8()"><i class="fa fa-cloud"></i></a></li>
+      <li style="float:right"><a onclick="on6()"><i class="fa fa-user"></i></a></li>
+    </ul>
+
+    <!--Journey Planner overlay -->
+    <div id="overlay1" onclick="off1()">
+      <a href="javascript:void(0)" class="closebtn1" onclick="off1()">&times;</a>
+      <div id="journeyInfo">
+        <h1> Journey Planner </h1>
+            <!--The following code is one single form, that will send results back to the Flask app for use in M-L model-->
+            <!--The divs are empty but populated by JS functions-->
+            <form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
+              <input type="text" name="fname" placeholder="Current Location" id="address">
+              <input type="text" name="fname" placeholder="Final Destination">
+              <input id="today" type="date" name="fname">
+              <input type="time" value="now" name="fname">
+              <input type="submit" value="Navigate">
+              </form>
+      </div>
+    </div>
+
+    <!--tourism overlay -->
+    <div id="overlay2" onclick="off2()">
+      <a href="javascript:void(0)" class="closebtn2" onclick="off2()">&times;</a>
+      <div id="touristInfo">
+        <h1> Tourism Via Dublin Bus </h1>
+      </div>
+    </div>
+
+    <!--favourites overlay -->
+    <div id="overlay3" onclick="off3()">
+        <script>
+             $(document).ready(function(){
+                $('#favouritesInfo').load('/user/favourites');
+            })
+          </script>
+      <a href="javascript:void(0)" class="closebtn3" onclick="off3()">&times;</a>
+      <div id="favouritesInfo">
+        <h1> Your Favourites </h1>
+
+      </div>
+    </div>
+
+    <!--FAQ overlay -->
+    <div id="overlay4" onclick="off4()">
+      <a href="javascript:void(0)" class="closebtn4" onclick="off4()">&times;</a>
+      <div id="FAQInfo">
+        <h1> FAQ </h1>
+      </div>
+    </div>
+
+    <!--contact info overlay -->
+    <div id="overlay5" onclick="off5()">
+      <a href="javascript:void(0)" class="closebtn5" onclick="off5()">&times;</a>
+      <div id="ContactInfo">
+        <h1> Contact Information </h1>
+        <h1> Send Us A Message </h1>
+        <textarea rows="10" cols="50">
+          Give us feedback about how we can make your
+          experience on the Dublin Bus App better!!!
+        </textarea>
+        <input type="submit" value="Send">
+      </div>
+    </div>
+
+    <!--logIn overlay -->
+    <div id="overlay6">
+      <a href="javascript:void(0)" class="closebtn6" onclick="off6()">&times;</a>
+      <script>
+             $(document).ready(function(){
+                $('#logIn').load('/user/login');
+            })
+          </script>
+        <div id="logIn">
+{#        <h1> Log-In </h1>#}
+{#            	<form method="post"  action= {% url "user:login" %}>#}
+{#                        {% csrf_token %}#}
+{#						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">#}
+{#						<div class="user_error">input wrong</div>#}
+{#						<input type="password" name="pwd" class="pass_input" placeholder="please input password">#}
+{#						<div class="pwd_error">input wrong</div>#}
+{#						<div class="more_input clearfix">#}
+{#							<input type="checkbox" name="remember" {{ checked }}>#}
+{#							<label>Remember Name</label>#}
+{#							<a href="forget_password">Forget Password</a>#}
+{#						</div>#}
+{#						<input type="submit" name="" value="Login in" class="input_submit">#}
+{#					</form>#}
+{##}
+{#                {{ errmsg }}#}
+      </div>
+    </div>
+
+    <!--traffic overlay -->
+    <div id="overlay7" >
+      <a href="javascript:void(0)" class="closebtn7" onclick="off7()">&times;</a>
+      <div id="trafficInfo">
+        <h1> Current Traffic </h1>
+
+        <!--checkbox-->
+        <div id="checkbox_inline">
+          <input type="checkbox" onchange="displayTraffic(this)"/>
+          <label for="traffic">Traffic</label>
+        </div>
+
+      </div>
+    </div>
+
+    <!--weather overlay -->
+    <div id="overlay8" onclick="off8()">
+      <a href="javascript:void(0)" class="closebtn8" onclick="off8()">&times;</a>
+      <div id="weatherInfo">
+        <h1> Current Weather </h1>
+
+        <!--checkbox-->
+        <div id="checkbox_inline">
+          <input type="checkbox" onclick="displayHeatmap(this)"/>
+          <label for="heatmap">Heat Map</label>
+        </div>
+
+      </div>
+    </div>
+
+{#    <script>#}
+{#             $(document).ready(function(){#}
+{#                $('#side_div').load('/user/test');#}
+{#            })#}
+{#          </script>#}
+{#    <div id="side_div">#}
+{##}
+{#    </div>#}
+
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+
+    <script>
+
+        // used code from 'https://css-tricks.com/prefilling-date-input/'
+  // this is used for a default of todays date
+  let today = new Date().toISOString().substr(0, 10);
+  document.querySelector("#today").value = today;
+  // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
+  // this is used for a default of the exact time
+  $(function(){
+  var d = new Date(),
+      h = d.getHours(),
+      m = d.getMinutes();
+  if(h < 10) h = '0' + h;
+  if(m < 10) m = '0' + m;
+  $('input[type="time"][value="now"]').each(function(){
+    $(this).attr({'value': h + ':' + m});
+  });
+  });
+  </script>
+
+
+
+    <!--This section includes the onclick navBar with Overlay-->
+    <script>
+      //journey planner overlay
+      function on1() {
+        document.getElementById("overlay1").style.display = "block";
+        }
+      function off1() {
+        document.getElementById("overlay1").style.display = "none";
+        }
+      //tourism overlay
+      function on2() {
+        document.getElementById("overlay2").style.display = "block";
+        }
+      function off2() {
+        document.getElementById("overlay2").style.display = "none";
+        }
+      //favourites overlay
+      function on3() {
+        document.getElementById("overlay3").style.display = "block";
+        }
+      function off3() {
+        document.getElementById("overlay3").style.display = "none";
+        }
+      //FAQInfo
+      function on4() {
+        document.getElementById("overlay4").style.display = "block";
+        }
+      function off4() {
+        document.getElementById("overlay4").style.display = "none";
+        }
+      // x
+      function on5() {
+        document.getElementById("overlay5").style.display = "block";
+        }
+      function off5() {
+        document.getElementById("overlay5").style.display = "none";
+        }
+      //x
+      function on6() {
+        {#$('logIn').load('/user/login');#}
+          document.getElementById("overlay6").style.display = "block";
+
+{#        {% if user.is_authenticated %}#}
+{##}
+{##}
+{#        {% endif%}#}
+        }
+      function off6() {
+        document.getElementById("overlay6").style.display = "none";
+        }
+      //Traffic
+      function on7() {
+        document.getElementById("overlay7").style.display = "block";
+        }
+      function off7() {
+        document.getElementById("overlay7").style.display = "none";
+        }
+      //x
+      function on8() {
+        document.getElementById("overlay8").style.display = "block";
+        }
+      function off8() {
+        document.getElementById("overlay8").style.display = "none";
+        }
+      </script>
+
+  </body>
+=======
 <!DOCTYPE html>
 <html>
 {% load pwa %}
@@ -754,4 +1025,5 @@
       </script>
 
   </body>
+>>>>>>> dev
 </html>
