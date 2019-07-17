@@ -15,19 +15,18 @@ def query(Query, tunnel=False):
     Output:
     result (str, json)      The result of your query. 
     """
-
-    print(tunnel)
                
-    if tunnel:
-        # Tunneled connection
-        host_=config.TunnelHost,
-        port_=config.TunnelPort
-
-    else:    
+    if not tunnel:
         # On Eduroam
         host_=config.host,
         port_=config.port
-
+        
+    else:
+        # Tunneled connection
+        host_=config.TunnelHost, # Weirdly this is being imported as a tuple. not sure why.
+        host_=host_[0]
+        port_=config.TunnelPort 
+        
     try:
 
         conn = psycopg2.connect(
