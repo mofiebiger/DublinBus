@@ -44,7 +44,7 @@ li a:hover {
 }
 
 header {
-    <<<<<<< HEAD background-color: yellow;
+    background-color: yellow;
     height: 20%;
     text-align: center;
 }
@@ -70,124 +70,12 @@ header h1 {
     display: block;
 }
 
-#overlay1 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay2 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay3 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay4 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay5 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay6 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay7 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
-#overlay8 {
-    position: fixed;
-    display: none;
-    height: 50%;
-    width: 50%;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 3;
-    cursor: pointer;
-}
-
 #journeyInfo {
     text-align: center;
     top;
     40%;
     color: white;
-    =======background-color: #333;
+    background-color: #333;
     height: 20%;
     font-family: 'Allerta Stencil', sans-serif;
 }
@@ -196,14 +84,6 @@ header #title {
     color: white;
     font-family: 'Allerta Stencil', sans-serif;
     padding: 15px;
-}
-
-#journeyInfo {
-    text-align: center;
-    top;
-    40%;
-    color: white;
-    >>>>>>>562dcfc13fb30c8efdb0c31b96c35f1cefd80292
 }
 
 #touristInfo {
@@ -260,25 +140,25 @@ font-size: 1em;
 }
 #directionsSource {
     /* align-items: center; */
-    
+
     margin: 15px;
     padding: 8px;
 }
 #directionsDestination {
     /* align-items: center; */
-    
+
     margin: 15px;
     padding: 8px;
 }
 #date {
     /* align-items: center; */
-    
+
     margin: 15px;
     padding: 8px;
 }
 #time-button {
     /* align-items: center; */
-    
+
     margin: 15px;
     padding: 8px;
 }
@@ -301,13 +181,13 @@ font-size: 1em;
 }
 #weather_stats {
     /* float:left; */
-    
+
     margin: 5%;
     /* margin-top: 10%; */
 }
 .weatherDescription {
     /* float: right; */
-    
+
     margin: 5%;
 }
 .gmap-control-container {
