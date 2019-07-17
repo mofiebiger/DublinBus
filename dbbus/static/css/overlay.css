@@ -1,19 +1,13 @@
-/* overlay{
+.overlay{
 	display: none;
 
 }
-
-
- .blocktoggle{
-	display: block;
-} */
 
 
 
 #overlay1 {
   position: fixed;
   float: left;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -25,7 +19,6 @@
 #overlay2 {
   position: fixed;
   float: left;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -37,7 +30,6 @@
 #overlay3 {
   position: fixed;
   float: left;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -49,7 +41,6 @@
 #overlay4 {
   position: fixed;
   float: left;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -61,7 +52,6 @@
 #overlay5 {
   position: fixed;
   float: left;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -73,7 +63,6 @@
 #overlay6 {
   position: fixed;
   float: right;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -85,7 +74,6 @@
 #overlay7 {
   position: fixed;
   float: right;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
@@ -97,7 +85,6 @@
 #overlay8 {
   position: fixed;
   float: right;
-  display: none;
   height: 100%;
   width: 30%;
   background-color: rgba(0,0,0,0.5);
