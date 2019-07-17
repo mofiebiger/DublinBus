@@ -16,12 +16,16 @@ from distutils.log import debug
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '64rsl+yeq71uj+!!3k#ejeu9p34034f18$r18)5zf9x%y&1x2b'
+
+# STOP CREATING PYC FILES
+sys.dont_write_bytecode = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,13 +48,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'captcha',
+    'prediction',
+    'pwa',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -79,7 +85,7 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-  
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -87,10 +93,23 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'boldToads',
         'HOST': 'localhost',
-#         'HOST': '192.168.1.105',
-        'PORT': 5000,
+#         'HOST': 'localhost',
+        'PORT':5000,
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'dublinbus',
+#         'USER': 'postgres',
+#         'PASSWORD': 'boldToads',
+# #         'HOST': '137.43.49.60',
+#         'HOST': 'localhost',
+#         'PORT': 5000,
+#     }
+# }
 # DATABASES = {
 #      'default': {
 #          'ENGINE': 'django.db.backends.mysql',
@@ -167,4 +186,19 @@ EMAIL_USE_TLS = True
 
 
 
-LOGOUT_REDIRECT_URL = '/user/login'
+LOGIN_URL = '/user/login'
+LOGOUT_REDIRECT_URL = '/user/index'
+
+
+
+#SESSION_ENGINE = 'redis_sessions.session'
+# redis服务的ip地址
+#SESSION_REDIS = {
+#    'host': 'localhost',
+#     'host': '137.43.49.60',
+#    'port': 6379,
+#    'db': 2,
+#    'password': '',
+#    'prefix': 'session5',
+#    'socket_timeout': 3
+#}
