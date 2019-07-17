@@ -13,15 +13,20 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 from distutils.log import debug
+import config
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '64rsl+yeq71uj+!!3k#ejeu9p34034f18$r18)5zf9x%y&1x2b'
+SECRET_KEY = config.secret_key
+
+# STOP CREATING PYC FILES
+sys.dont_write_bytecode = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,13 +49,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'captcha',
+    'prediction',
+    'pwa',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -79,18 +86,31 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-  
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test',
-        'USER': 'postgres',
-        'PASSWORD': 'boldToads',
-        'HOST': '137.43.49.60',
-#         'HOST': '192.168.1.105',
-        'PORT': 3306,
+        'NAME': config.name,
+        'USER': config.user,
+        'PASSWORD': config.password,
+        'HOST': 'localhost',
+#         'HOST': 'localhost',
+        'PORT':5000,
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'dublinbus',
+#         'USER': 'postgres',
+#         'PASSWORD': 'boldToads',
+# #         'HOST': '137.43.49.60',
+#         'HOST': 'localhost',
+#         'PORT': 5000,
+#     }
+# }
 # DATABASES = {
 #      'default': {
 #          'ENGINE': 'django.db.backends.mysql',
@@ -154,17 +174,32 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # 鍙戦�侀偖浠堕厤缃�
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # smpt鏈嶅姟鍦板潃
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = config.email_from
 EMAIL_PORT = 25
 # 鍙戦�侀偖浠剁殑閭
-EMAIL_HOST_USER = 'jensen8023jay@gmail.com'
+EMAIL_HOST_USER = config.email_host_user
 # 鍦ㄩ偖绠变腑璁剧疆鐨勫鎴风鎺堟潈瀵嗙爜
-EMAIL_HOST_PASSWORD = 'Jensen.jay8023'
+EMAIL_HOST_PASSWORD = config.email_host_password
 # 鏀朵欢浜虹湅鍒扮殑鍙戜欢浜�
-EMAIL_FROM = 'dbbus<jensen8023jay@gmail.com>'
+EMAIL_FROM = config.email_from
 
 EMAIL_USE_TLS = True
 
 
 
-LOGOUT_REDIRECT_URL = '/user/login'
+LOGIN_URL = '/user/login'
+LOGOUT_REDIRECT_URL = '/user/index'
+
+
+
+#SESSION_ENGINE = 'redis_sessions.session'
+# redis服务的ip地址
+#SESSION_REDIS = {
+#    'host': 'localhost',
+#     'host': '137.43.49.60',
+#    'port': 6379,
+#    'db': 2,
+#    'password': '',
+#    'prefix': 'session5',
+#    'socket_timeout': 3
+#}

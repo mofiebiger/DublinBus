@@ -20,7 +20,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls',namespace='user')),
+    path('prediction/', include('prediction.urls',namespace='prediction')),
     path('captcha/', include('captcha.urls')),
+    path('', include('pwa.urls')),
 ]
 
 if settings.DEBUG:
