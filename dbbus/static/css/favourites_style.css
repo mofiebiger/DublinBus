@@ -1,0 +1,74 @@
+
+    a, address, b, big, blockquote, body, center, cite, code, dd, del, div, dl, dt, em, fieldset, font, form, h1, h2, h3, h4, h5, h6, html, i, iframe, img, ins, label, legend, li, ol, p, pre, small, span, strong, u, ul, var{
+    padding: 0;
+    margin: 0;
+}
+
+
+a{
+    color: black;
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+
+#tab{
+    width: 498px;
+    height: 130px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 2px #ddd;
+    margin: 100px 0 0 100px;
+    /*处理超出的内容*/
+    overflow: hidden;
+}
+
+/*选项卡的头部*/
+#tab-header{
+    background-color: #F7F7F7;
+    height: 33px;
+    text-align: center;
+    position: relative;
+}
+#tab-header ul{
+    width: 500px;
+    position: absolute;
+    left: -1px;
+}
+#tab-header ul li{
+    float: left;
+    width: 98px;
+    height: 33px;
+    line-height: 33px;
+    padding: 0 1px;
+    border-bottom: 1px solid #dddddd;
+}
+#tab-header ul li.selected{
+    background-color: white;
+    font-weight: bolder;
+    border-bottom: 0;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    padding: 0;
+
+}
+
+#tab-header ul li:hover{
+    color: orangered;
+}
+
+/*主要内容*/
+#tab-content .dom{
+    display: none;
+}
+
+#tab-content .dom ul li{
+    float: left;
+    /*background-color: red;*/
+    margin: 15px 10px;
+    width: 225px;
+}
+
+#tab-content .dom ul li a:hover {
+    color: orange;
+}

@@ -1,5 +1,9 @@
+body {
+    overflow: auto;
+}
+
 #map {
-    height: 700px;
+    height: 800px;
     /* The height is 400 pixels */
     width: 100%;
     /* The width is the width of the web page */
@@ -40,7 +44,7 @@ li a:hover {
 }
 
 header {
-    background-color: yellow;
+    <<<<<<< HEAD background-color: yellow;
     height: 20%;
     text-align: center;
 }
@@ -183,6 +187,23 @@ header h1 {
     top;
     40%;
     color: white;
+    =======background-color: #333;
+    height: 20%;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+header #title {
+    color: white;
+    font-family: 'Allerta Stencil', sans-serif;
+    padding: 15px;
+}
+
+#journeyInfo {
+    text-align: center;
+    top;
+    40%;
+    color: white;
+    >>>>>>>562dcfc13fb30c8efdb0c31b96c35f1cefd80292
 }
 
 #touristInfo {
@@ -234,6 +255,95 @@ header h1 {
     color: white;
 }
 
-input {
-    font-size: 1em;
+font-size: 1em;
+
+}
+#directionsSource {
+    /* align-items: center; */
+    
+    margin: 15px;
+    padding: 8px;
+}
+#directionsDestination {
+    /* align-items: center; */
+    
+    margin: 15px;
+    padding: 8px;
+}
+#date {
+    /* align-items: center; */
+    
+    margin: 15px;
+    padding: 8px;
+}
+#time-button {
+    /* align-items: center; */
+    
+    margin: 15px;
+    padding: 8px;
+}
+#today {
+    padding: 8px;
+}
+#navigateButton {
+    align-items: center;
+    margin: 15px;
+    padding: 8px;
+    background-color: yellow;
+    border-color: yellow;
+    border-radius: 5px;
+}
+#directionsSteps {
+    margin: 9%;
+    background-color: white;
+    padding: 2%;
+    border-radius: 10px;
+}
+#weather_stats {
+    /* float:left; */
+    
+    margin: 5%;
+    /* margin-top: 10%; */
+}
+.weatherDescription {
+    /* float: right; */
+    
+    margin: 5%;
+}
+.gmap-control-container {
+    margin: 5px;
+}
+.gmap-control {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-user-select: none;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    color: #333333 !important;
+    cursor: pointer;
+    direction: ltr;
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: normal;
+    min-width: 54px;
+    overflow: hidden;
+    padding: 8px 7px 7px;
+    position: relative;
+    right: -14px;
+    top: 5px;
+    text-align: center;
+}
+.gmap-control-active {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #6D8ACC;
+    border-color: #717B87 -moz-use-text-color #717B87 #717B87;
+    border-style: solid none solid solid;
+    border-width: 1px 0 1px 1px;
+    color: #FFFFFF !important;
+    font-weight: bold;
 }
