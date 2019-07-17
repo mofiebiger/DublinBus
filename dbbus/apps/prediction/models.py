@@ -3,11 +3,12 @@ from django.db import models
 # Create your models here.
 
 class StopInformation(models.Model): 
-    actual_stop_id = models.IntegerField(verbose_name='actual_stop_id',null = False)
-    stop_id = models.CharField(max_length = 255,verbose_name='stop_id',null = False)
+    stop_id = models.IntegerField(verbose_name='stop_id',null = False,unique=True)
     stop_name = models.CharField(max_length = 255,verbose_name='stop_name',null = False)
-    stop_lat = models.DecimalField(verbose_name='stop_lat',null = False,max_digits=19,decimal_places=15)
-    stop_lon = models.DecimalField(verbose_name='stop_lon',null = False,max_digits=19,decimal_places=15)
+    stop_name_localized = models.CharField(max_length = 255,verbose_name='stop_name_localized',null = True)
+    stop_lat = models.DecimalField(verbose_name='stop_lat',null = False,max_digits=13,decimal_places=10)
+    stop_lon = models.DecimalField(verbose_name='stop_lon',null = False,max_digits=13,decimal_places=10)
+    stop_routes = models.CharField(max_length = 255,verbose_name='stop_routes',null = True)
      
      
     class Meta:
