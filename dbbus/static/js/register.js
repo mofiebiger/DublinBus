@@ -39,8 +39,8 @@ $(function(){
 
 		$.ajax({
 			cache:false,
-			type: "POST",
-			url:"/user/Reg_form_post",
+			type: " ",
+			url: 'http://127.0.0.1:8000/user/register',
 			data:{'user_name':name, 'pwd': pwd, 'cpwd': cpwd, 'email': email},
 			// data:{'user_name':name},
 			// dataType:'json',
@@ -48,7 +48,7 @@ $(function(){
 			// beforeSend:function(xhr,settings){
 			// 	xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
 			// },
-			success:function(result, status, xml){
+			success:function(result){
 				// if(result.status == 'success'){
                 //         alert("提交成功");
                 //          window.location.reload();//刷新当前页面.
@@ -56,11 +56,16 @@ $(function(){
                 //         $('#test_error').html("<b>" + result + "</b>");
 				// 		alert(result);
 				// 	}
-				$('#test_error').html("<b>" + result + "</b>");
-				alert(result);
+				if (result.res==1){
+					window.location.href = 'http://127.0.0.1:8000/user/index'
+				}
+				else{
+					$('#test_error').html("<b>" + result.error_msg + "</b>");
+				}
+
 			},
 			error: function(){
-				alert("false");
+				$('#test_error').html("<b>ajax failed1</b>");
 			},
 		});
 	});

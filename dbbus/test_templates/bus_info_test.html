@@ -10,73 +10,81 @@
 </head>
 <body>
 <div>
-    <form method="post">
+{#    <form method="post">#}
         {% csrf_token %}
-      <h3>145</h3>
+      <h3>39A</h3>
+        <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
         <div>{{ data }}</div>
-      <input type="text" id="bus_id" value="145" hidden>
-      <button type="button" id="addFav">Add Favourite</button>
+      <input type="text" id="bus_id" value="39A" hidden>
+      <button type="button" id="addFav" hidden>Add Favourite</button>
       <button type="button" id="removeFav" hidden>Remove Favourite</button>
-</form>
+{#</form>#}
 </div>
 <script>
       $(function(){
           $.ajaxSetup({
-                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
             });
+          window.onload=function(){
+              $.ajax({
+                type:"GET",
+                url: 'http://127.0.0.1:8000/user/favorite_bus_number',
+                async: true,
+                success:function(result){
+                    var msg = "#addFav"
+                    // console.log(result['user_bus_list'][0]['bus_number'])
+                    for(var i =0; i < result['user_bus_list'].length; i++){
+                        // console.log(result['user_stop_list'][i])
+                        if (result['user_bus_list'][i]['bus_number'] == $('#bus_id').val()){
+                            msg = "#removeFav"
+                        }
+                        {#msg += "<li><a href='#'>"+result['user_bus_list'][i]['bus_number']+"</a></li>"#}
+                    }
+                    $(msg).show()
+                },
+                error:function(){
+                    console.log('show button fail')
+                },
+            })
+
+          }
+
+          var bus_id = $('#bus_id').val()
+          var start = $('#start_point').text()
+          var end = $('#end_point').text()
 
           $('#addFav').on('click',function(){
-		        var bus_id = $('#bus_id').val()
-                var fav_type = 'bus'
-
 		        $.ajax({
 			        cache:false,
 			        type: "POST",
-			        url:"/user/Add_fav_post",
-			        data:{'busid':bus_id, 'type': fav_type,},
+			        url:"http://127.0.0.1:8000/user/favorite_bus_number",
+			        data:{'bus_number':bus_id, 'start_point': start, 'end_point': end,},
 			        async:true,
-			        success:function(result, status, xml){
-				// if(result.status == 'success'){
-                //         alert("提交成功");
-                //          window.location.reload();//刷新当前页面.
-                //     }else if(result.status == 'fail'){
-                //         $('#test_error').html("<b>" + result + "</b>");
-				// 		alert(result);
-				// 	}
+			        success:function(result){
 				        $('#addFav').hide();
 				        $('#removeFav').show();
 				        alert(result);
 			        },
 			        error: function(){
-				        alert("false");
+				        alert("add failed");
 			        },
 		        });
 	        });
 
           $('#removeFav').on('click',function(){
-		        var bus_id = $('#bus_id').val()
-              var fav_type = 'bus'
-
 		        $.ajax({
 			        cache:false,
-			        type: "POST",
-			        url:"/user/Remove_fav_post",
-			        data:{'bus_id':bus_id, 'type': fav_type,},
+			        type: "DELETE",
+			        url:"http://127.0.0.1:8000/user/favorite_bus_number",
+			        data:{'bus_number':bus_id, 'start_point': start, 'end_point': end,},
 			        async:true,
 			        success:function(result, status, xml){
-				// if(result.status == 'success'){
-                //         alert("提交成功");
-                //          window.location.reload();//刷新当前页面.
-                //     }else if(result.status == 'fail'){
-                //         $('#test_error').html("<b>" + result + "</b>");
-				// 		alert(result);
-				// 	}
 				        $('#addFav').show();
 				        $('#removeFav').hide();
 				        alert(result);
 			        },
 			        error: function(){
-				        alert("false");
+				        alert("delete failed");
 			        },
 		        });
 	        });

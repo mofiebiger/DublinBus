@@ -16,3 +16,4 @@ urlpatterns = [
     path('favorite_route', views.FavoriteRouteView.as_view(),name = 'favorite_route'),# change avarta page
     path('contact', views.ContactUsView.as_view(),name = 'ContactUsView'),# contact information
 ]
+

@@ -11,7 +11,8 @@ $(function(){
 		$.ajax({
 			cache:false,
 			type: "POST",
-			url:"/user/Login_form_post",
+			// url:"/user/Login_form_post",
+			url:"http://127.0.0.1:8000/user/login",
 			data:{'username':username, 'pwd': pwd},
 			// data:{'user_name':name},
 			// dataType:'json',
@@ -19,7 +20,7 @@ $(function(){
 			// beforeSend:function(xhr,settings){
 			// 	xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
 			// },
-			success:function(result, status, xml){
+			success:function(result){
 				// if(data.status == 'success'){
                 //         alert("提交成功");
                 //          window.location.reload();//刷新当前页面.
