@@ -1,3 +1,15 @@
+/* overlay{
+	display: none;
+
+}
+
+
+ .blocktoggle{
+	display: block;
+} */
+
+
+
 #overlay1 {
   position: fixed;
   float: left;
