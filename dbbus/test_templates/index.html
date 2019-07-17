@@ -6,6 +6,8 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/favourites_style' %}">
+        <script type="text/javascript" src="{% static 'js/favourites' %}"></script>
+
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -25,7 +27,6 @@
               async defer>
         </script>
 
-      {#        <script type="text/javascript" src="{% static 'js/favourites' %}"></script>#}
 
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
@@ -81,7 +82,6 @@
       <a href="javascript:void(0)" class="closebtn3" onclick="off3()">&times;</a>
       <div id="favouritesInfo">
         <h1> Your Favourites </h1>
-
       </div>
     </div>
 
@@ -110,28 +110,28 @@
     <!--logIn overlay -->
     <div id="overlay6">
       <a href="javascript:void(0)" class="closebtn6" onclick="off6()">&times;</a>
-      <script>
-             $(document).ready(function(){
-                $('#logIn').load('/user/login');
-            })
-          </script>
+{#      <script>#}
+{#             $(document).ready(function(){#}
+{#                $('#logIn').load('/user/login');#}
+{#            })#}
+{#          </script>#}
         <div id="logIn">
-{#        <h1> Log-In </h1>#}
-{#            	<form method="post"  action= {% url "user:login" %}>#}
-{#                        {% csrf_token %}#}
-{#						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">#}
-{#						<div class="user_error">input wrong</div>#}
-{#						<input type="password" name="pwd" class="pass_input" placeholder="please input password">#}
-{#						<div class="pwd_error">input wrong</div>#}
-{#						<div class="more_input clearfix">#}
-{#							<input type="checkbox" name="remember" {{ checked }}>#}
-{#							<label>Remember Name</label>#}
-{#							<a href="forget_password">Forget Password</a>#}
-{#						</div>#}
-{#						<input type="submit" name="" value="Login in" class="input_submit">#}
-{#					</form>#}
-{##}
-{#                {{ errmsg }}#}
+        <h1> Log-In </h1>
+            	<form method="post"  action= {% url "user:login" %}>
+                        {% csrf_token %}
+						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">
+						<div class="user_error">input wrong</div>
+						<input type="password" name="pwd" class="pass_input" placeholder="please input password">
+						<div class="pwd_error">input wrong</div>
+						<div class="more_input clearfix">
+							<input type="checkbox" name="remember" {{ checked }}>
+							<label>Remember Name</label>
+							<a href="forget_password">Forget Password</a>
+						</div>
+						<input type="submit" name="" value="Login in" class="input_submit">
+					</form>
+
+                {{ errmsg }}
       </div>
     </div>
 

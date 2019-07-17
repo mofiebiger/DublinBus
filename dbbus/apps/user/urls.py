@@ -11,6 +11,10 @@ urlpatterns = [
     path('forget_password', views.PasswordForgetView.as_view(),name = 'forget_password'),# forget password page
     path('reset_password/<token>', views.ResetPasswordView.as_view(),name = 'reset_password'),# reset password page
     path('change_avatar', views.AvatarUpdateView.as_view(),name = 'change_avatar'),# change avarta page
+    path('favorite_stop', views.FavoriteStopView.as_view(),name = 'favorite_stop'),# change avarta page
+    path('favorite_bus_number', views.FavoriteBusNumberView.as_view(),name = 'favorite_bus_number'),# change avarta page
+    path('favorite_route', views.FavoriteRouteView.as_view(),name = 'favorite_route'),# change avarta page
+    path('contact', views.ContactUsView.as_view(),name = 'ContactUsView'),# contact information
     # '''updates'''
     path('favourites', views.FavouritesView.as_view(),name = 'favourites'),# favourites page
     path('test', views.TestView.as_view(),name = 'test'),# test page
