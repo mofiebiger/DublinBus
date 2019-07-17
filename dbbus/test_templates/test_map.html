@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+{#{% load url %}#}
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+      <!--the use of jquery in javascript - may not need later-->
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <title>Info Windows</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+      <script>
+function loadXMLDoc()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+		}
+	}
+	xmlhttp.open("GET","/try/ajax/ajax_info.txt",true);
+	xmlhttp.send();
+}
+</script>
+  </head>
+  <body>
+    <div id="content">
+        <script>
+            {#$('content').load('login.html');#}
+        </script>
+        <h2 class=""firstHeading>Stillorgan Road</h2>
+        <h3 class=""firstHeading>Stop 768</h3>
+        <input type="text" id="stop_id" value="768" hidden>
+        <a href="" ><img src="../static/images/star_icon.png"></a>
+        <form method="post">
+            {% csrf_token %}
+        <button type="button" id="addFav">Add Favourite</button>
+        <button type="button" id="removeFav" hidden>Remove Favourite</button>
+        </form>
+    <div id="bodyContent">
+        <ul>
+            <li><a id="39A">39A</a> </li>
+{#            <li><a href="{% url 'user:post_bus_info' %}" id="46A">46A</a></li>#}
+            <li><a href="" id="46A">46A</a></li>
+            <li><a href="" id="155">155</a></li>
+            <li><a href="" id="145">145</a></li>
+            <li><a href="" id="47">47</a></li>
+        </ul>
+    </div>
+        <div id="test_error">&nbsp;</div>
+    </div>
+
+  <script>
+      $(function(){
+          $.ajaxSetup({
+                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+
+          $('#addFav').on('click',function(){
+		        var stop_id = $('#stop_id').val()
+              var fav_type = 'stop'
+
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:"/user/Add_fav_post",
+			        data:{'stopid':stop_id, 'type': fav_type,},
+			        async:true,
+			        success:function(result, status, xml){
+				// if(result.status == 'success'){
+                //         alert("提交成功");
+                //          window.location.reload();//刷新当前页面.
+                //     }else if(result.status == 'fail'){
+                //         $('#test_error').html("<b>" + result + "</b>");
+				// 		alert(result);
+				// 	}
+				        $('#addFav').hide();
+				        $('#removeFav').show();
+				        alert(result);
+			        },
+			        error: function(){
+				        alert("false");
+			        },
+		        });
+	        });
+
+          $('#addFav').on('click',function(){
+		        var stop_id = $('#stop_id').val()
+              var fav_type = 'stop'
+
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:"/user/Remove_fav_post",
+			        data:{'stopid':stop_id, 'type': fav_type,},
+			        async:true,
+			        success:function(result, status, xml){
+				// if(result.status == 'success'){
+                //         alert("提交成功");
+                //          window.location.reload();//刷新当前页面.
+                //     }else if(result.status == 'fail'){
+                //         $('#test_error').html("<b>" + result + "</b>");
+				// 		alert(result);
+				// 	}
+				        $('#addFav').show();
+				        $('#removeFav').hide();
+				        alert(result);
+			        },
+			        error: function(){
+				        alert("false");
+			        },
+		        });
+	        });
+      })
+
+      $(document).ready(function(){
+          {#$("ul>li a").click(function(){#}
+          {#    alert($(this).id)#}
+          {# })#}
+          $("a").each(function(){
+              $(this).click(function(){
+                  {#$(this).href = "/user/bus_info"#}
+                  {#console.log("yes")#}
+                  {#$(this).href = "{% url 'user:bus_info' %}"#}
+                  $.ajax({
+                      ache:false,
+                      type: "POST",
+			          url:"/user/post_bus_info",
+			          data:{'busid':$(this).text(),},
+			          async:true,
+			          success:function(result, status, xml){
+                            location.href = "/user/bus_info"
+                          console.log("true")
+                       }
+                   })
+                  {#alert($(this).text())#}
+                  {#window.open("/user/bus_info")#}
+                  {#var bus_id = $(this).text()#}
+                  {#location.href = "/user/bus_info"#}
+              })
+          })
+      })
+  </script>
+
+  </body>
+</html>

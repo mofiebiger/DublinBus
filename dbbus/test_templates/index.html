@@ -1,180 +1,111 @@
 <!DOCTYPE html>
+
 <html>
+
+<!-- {% load pwa %} -->
 {% load staticfiles %}
+
   <head>
+
+        <!-- {% progressive_web_app_meta %} -->
+
         <!--external stylesheet-->
         <meta charset="utf-8">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-{#        <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">#}
-<style type="text/css">
-    a, address, b, big, blockquote, body, center, cite, code, dd, del, div, dl, dt, em, fieldset, font, form, h1, h2, h3, h4, h5, h6, html, i, iframe, img, ins, label, legend, li, ol, p, pre, small, span, strong, u, ul, var{
-    padding: 0;
-    margin: 0;
-}
+        <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
+        <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">
 
-
-a{
-    color: black;
-    text-decoration: none;
-}
-ul{
-    list-style: none;
-}
-
-#tab{
-    width: 498px;
-    height: 130px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 2px #ddd;
-    margin: 100px 0 0 100px;
-    /*处理超出的内容*/
-    overflow: hidden;
-}
-
-/*选项卡的头部*/
-#tab-header{
-    background-color: #F7F7F7;
-    height: 33px;
-    text-align: center;
-    position: relative;
-}
-#tab-header ul{
-    width: 500px;
-    position: absolute;
-    left: -1px;
-}
-#tab-header ul li{
-    float: left;
-    width: 98px;
-    height: 33px;
-    line-height: 33px;
-    padding: 0 1px;
-    border-bottom: 1px solid #dddddd;
-}
-#tab-header ul li.selected{
-    background-color: white;
-    font-weight: bolder;
-    border-bottom: 0;
-    border-left: 1px solid #dddddd;
-    border-right: 1px solid #dddddd;
-    padding: 0;
-
-}
-
-#tab-header ul li:hover{
-    color: orangered;
-}
-
-/*主要内容*/
-#tab-content .dom{
-    display: none;
-}
-
-#tab-content .dom ul li{
-    float: left;
-    /*background-color: red;*/
-    margin: 15px 10px;
-    width: 225px;
-}
-
-#tab-content .dom ul li a:hover {
-    color: orange;
-}
-</style>
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!--Overlay-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!--the use of jquery in javascript - may not need later-->
-        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <!--Google Fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
+
+        <!--the use of jquery in javascript-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <!--MarkerCluster -->
+        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
 
         <!--Google Maps API-->
-        <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=visualization&callback=initMap" async defer>
-        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" async defer></script>
+        <!-- <script type="text/javascript" src="{% static 'js/favourites' %}"></script>-->
 
-        <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback=initMap" async defer>
-        </script>
-        <!--MarkerClusterer -->
-        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/marker_on_map.js' %}"></script>
-{#        <script type="text/javascript" src="{% static 'js/favourites.js' %}"></script>#}
-<script>
-        // == 值比较  === 类型比较 $(id) ---->  document.getElementById(id)
-function $(id){
-    return typeof id === 'string' ? document.getElementById(id):id;
-}
+        <!--Service Workers-->
+        <!-- <script src="{% static 'js/serviceworker.js' %}"></script> -->
 
-// 当页面加载完毕
-window.onload = function(){
-    // 拿到所有的标题(li标签) 和 标题对应的内容(div)
-    var titles = $('tab-header').getElementsByTagName('li');
-    var divs = $('tab-content').getElementsByClassName('dom');
-    // 判断
-    if(titles.length != divs.length) return;
-    // 遍历
-    for(var i=0; i<titles.length; i++){
-        // 取出li标签
-        var li = titles[i];
-        li.id = i;
-//        console.log(li);
-        // 监听鼠标的移动
-        li.onmousemove = function(){
-            for(var j=0; j<titles.length; j++){
-                titles[j].className = '';
-                divs[j].style.display = 'none';
-            }
-            this.className = 'selected';
-            divs[this.id].style.display = 'block';
-        }
-    }
-            }
-            {#console.log("222");#}
-</script>
+        <!-- importing the skycons for weather dipslay -->
+        <script src="{% static 'js/skycons.js' %}"></script>
+
+        <!-- will probs not need the link below! save for now! -->
+        <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
+
+        <!-- Path to manifest.json -->
+        <!-- <link rel="manifest" href="{% static 'manifest.json' %}"> -->
+
+        <!-- Icons for Apple Devices -->
+        <!-- <link rel="apple-touch-icon" href="/" sizes="160x160"> -->
+
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
+
   </head>
 
   <body>
-    <header><h1>Dublin Bus</h1></header>
+
+    <header>
+
+      <h1 id="title">Dublin Bus | Journey Planner</h1>
+
+    </header>
+
     <!--NavBar - displays overlays (above map)-->
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a onclick="on1()">Journey Planner</a></li>
-      <li><a onclick="on2()">Tourism</a></li>
-      <li><a onclick="on3()">Favourites</a></li>
-      <li><a onclick="on4()">FAQ</a></li>
-      <li><a onclick="on5()">Contact</a></li>
-      <li style="float:right"><a onclick="on7()"><i class="fa fa-warning"></i></a></li>
+      <li><a onclick="on(1)">Journey Planner</a></li>
+      <li><a onclick="on(2)">Tourism</a></li>
+      <li><a onclick="on(3)">Favourites</a></li>
+      <li><a onclick="on(4)">FAQ</a></li>
+      <li><a onclick="on(5)">Contact</a></li>
+      <li style="float:right"><a onclick="on(7)"><i class="fa fa-warning"></i></a></li>
       <li style="float:right"><a onclick="on8()"><i class="fa fa-cloud"></i></a></li>
-      <li style="float:right"><a onclick="on6()"><i class="fa fa-user"></i></a></li>
+      <li style="float:right"><a onclick="on(6)"><i class="fa fa-user"></i></a></li>
     </ul>
 
     <!--Journey Planner overlay -->
     <div id="overlay1">
-      <a href="javascript:void(0)" class="closebtn1" onclick="off1()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn1" onclick="off(1)">&times;</a>
+
       <div id="journeyInfo">
         <h1> Journey Planner </h1>
-            <!--The following code is one single form, that will send results back to the Flask app for use in M-L model-->
-            <!--The divs are empty but populated by JS functions-->
-            <div id="floating-panel">
-              <input id="pac-input1" class="controls" type="text" placeholder="Start">
-              <input id="pac-input2" class="controls" type="text" placeholder="End">
 
+            <div id="directionsPanel">
+              <input id="directionsSource" class="controls" type="text" placeholder="Start">
+              <input id="directionsDestination" class="controls" type="text" placeholder="End">
             </div>
-            <input id="today" type="date" name="fname">
-            <input type="time" value="now" name="fname">
-            <input type="submit" value="Navigate">
+
+            <div id="dateTime-panel">
+              <div id="date">
+                <input id="today" type="date" name="fname">
+              </div>
+
+              <div id="time">
+                <input id="time-button" type="time" name="fname">
+              </div>
+
+              <button id="navigateButton">Navigate</button>
+            </div>
+            <div id="directionsSteps"></div>
               <p id="error"></p>
       </div>
     </div>
 
     <!--tourism overlay -->
     <div id="overlay2">
-      <a href="javascript:void(0)" class="closebtn2" onclick="off2()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn2" onclick="off(2)">&times;</a>
+
       <div id="touristInfo">
         <h1> Tourism Via Dublin Bus </h1>
       </div>
@@ -182,7 +113,8 @@ window.onload = function(){
 
     <!--favourites overlay -->
     <div id="overlay3">
-      <a href="javascript:void(0)" class="closebtn3" onclick="off3()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn3" onclick="off(3)">&times;</a>
+
       <div id="favouritesInfo">
         <h1> Your Favourites </h1>
                   <!--选项卡-->
@@ -196,39 +128,42 @@ window.onload = function(){
             </ul>
         </div>
         <!--主要内容-->
-        <div id="tab-content">
-            <div class="dom" style="display: block;">
-                <ul>
-                    <li><a href="#">46a</a></li>
-                    <li><a href="#">145</a></li>
-                    <li><a href="#">155</a></li>
-                    <li><a href="#">11</a></li>
-                </ul>
-            </div>
-            <div class="dom">
-                <ul>
-                    <li>
-                        <a href="#">860</a>
-                    </li>
-                    <li>
-                        <a href="#">2007</a>
-                    </li>
-                    <li>
-                        <a href="#">768</a>
-                    </li>
-                    <li>
-                        <a href="#">404</a>
-                    </li>
-                </ul>
+          <div id="tab-content">
+
+              <div class="dom" style="display: block;">
+                  <ul>
+                      <li><a href="#">46a</a></li>
+                      <li><a href="#">145</a></li>
+                      <li><a href="#">155</a></li>
+                      <li><a href="#">11</a></li>
+                  </ul>
+              </div>
+
+                  <div class="dom">
+                      <ul>
+                          <li>
+                              <a href="#">860</a>
+                          </li>
+                          <li>
+                              <a href="#">2007</a>
+                          </li>
+                          <li>
+                              <a href="#">768</a>
+                          </li>
+                          <li>
+                              <a href="#">404</a>
+                          </li>
+                      </ul>
+                  </div>
+
             </div>
         </div>
-    </div>
       </div>
     </div>
 
     <!--FAQ overlay -->
     <div id="overlay4">
-      <a href="javascript:void(0)" class="closebtn4" onclick="off4()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn4" onclick="off(4)">&times;</a>
       <div id="FAQInfo">
         <h1> FAQ </h1>
       </div>
@@ -236,7 +171,7 @@ window.onload = function(){
 
     <!--contact info overlay -->
     <div id="overlay5">
-      <a href="javascript:void(0)" class="closebtn5" onclick="off5()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn5" onclick="off(5)">&times;</a>
       <div id="ContactInfo">
         <h1> Contact Information </h1>
         <h1> Send Us A Message </h1>
@@ -250,7 +185,12 @@ window.onload = function(){
 
     <!--logIn overlay -->
     <div id="overlay6">
-      <a href="javascript:void(0)" class="closebtn6" onclick="off6()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn6" onclick="off(6)">&times;</a>
+      <script>
+        $(document).ready(function(){
+          $('#logIn').load('/user/login');
+        })
+        </script>
       <div id="logIn">
         <h1> Log-In </h1>
             	<form method="post"  action= {% url "user:login" %}>
@@ -273,13 +213,13 @@ window.onload = function(){
 
     <!--traffic overlay -->
     <div id="overlay7">
-      <a href="javascript:void(0)" class="closebtn7" onclick="off7()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn7" onclick="off(7)">&times;</a>
       <div id="trafficInfo">
         <h1> Current Traffic </h1>
 
         <!--checkbox-->
         <div id="checkbox_inline">
-          <input type="checkbox" onchange="displayTraffic(this)"/>
+          <input type="checkbox" onchange="displayTraffic()" class="trafficInfo"/>
           <label for="traffic">Traffic</label>
         </div>
 
@@ -288,13 +228,20 @@ window.onload = function(){
 
     <!--weather overlay -->
     <div id="overlay8">
-      <a href="javascript:void(0)" class="closebtn8" onclick="off8()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn8" onclick="off(8)">&times;</a>
       <div id="weatherInfo">
         <h1> Current Weather </h1>
 
-        <div class="weather_heading"></div>
+        <div class="weatherDescription">
+        <canvas id="weatherIcon" width="128" height="128"></canvas>
+        <div id="weather_heading"></div>
+        </div>
 
-        <div id="weather_stats"></div>
+            <hr>
+
+            <div id="weather_stats"></div>
+
+            <hr>
 
         <!--checkbox-->
         <div id="checkbox_inline">
@@ -304,12 +251,14 @@ window.onload = function(){
 
       </div>
     </div>
+    <div id="right-panel"></div>
 
     <!--The div element for the map -->
-    <div id="map" onload="geolocateUser()"></div>
+    <div id="map"></div>
 
-
+    <!-- This section defines the date and time for overlay8 (navigation page) -->
     <script>
+
       // used code from 'https://css-tricks.com/prefilling-date-input/'
       // this is used for a default of todays date
       let today = new Date().toISOString().substr(0, 10);
@@ -318,166 +267,457 @@ window.onload = function(){
       // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
       // this is used for a default of the exact time
       $(function(){
-      var d = new Date(),
-          h = d.getHours(),
-          m = d.getMinutes();
+      var d = new Date();
+      var h = d.getHours();
+      var m = d.getMinutes();
       if(h < 10) h = '0' + h;
       if(m < 10) m = '0' + m;
-      $('input[type="time"][value="now"]').each(function(){
+      $('input[type="time"]').each(function(){
         $(this).attr({'value': h + ':' + m});
       });
       });
+
+      // Meihan is will potentially use this function for favourites page
+      // $(document).ready(function(){#}
+      //     $('#side_div').load('/user/test');#}
+      // })
   </script>
 
+  <!-- This is the map section -->
   <script>
 
-  function writeAddressName(latLng) {
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({
-      "location": latLng
-    },
-    function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK)
-        document.getElementById("pac-input1").innerHTML = results[0].formatted_address;
-      else
-        document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
-    });
-  }
-  // Initialize and add the map;
-  var map;
-  var heatmap;
+      function initMap(){
 
-  function initMap(position) {
+      var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB;
 
-    //Direction Variables
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+      markerA = new google.maps.MarkerImage('marker.png')
+                    new google.maps.Size(24, 27),
+                    new google.maps.Point(0, 0),
+                    new google.maps.Point(12, 27),
 
-    userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    // Write the formatted address
-    //writeAddressName(userLatLng);
-
-    // The location of Dubin
-    var dublin = {lat: 53.3498, lng: -6.2603};
-    // The map, centered in Dublin
-    map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 14, center: dublin, mapTypeId: google.maps.MapTypeId.HYBRID});
-
-    //Direction Display
-    directionsDisplay.setMap(map);
-
-    var onChangeHandler = function() {
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
-    };
-
-    // The marker, positioned at Dubin
-    //var marker = new google.maps.Marker({position: dublin, map: map});
-
-    // create traffic layer variable
-    trafficLayer = new google.maps.TrafficLayer();
-
-    // create heatmap layter variable
-    heatmap = new google.maps.visualization.HeatmapLayer({
-    data: getPoints(),
-    });
-
-    // will search once destination is inserted
-    document.getElementById('pac-input2').addEventListener('change', onChangeHandler);
-
-    // Create the search box and link it to the UI element. 1
-    var input1 = document.getElementById('pac-input1');
-    var searchBox1 = new google.maps.places.SearchBox(input1);
+      markerB = new google.maps.MarkerImage('marker.png'),
+                    new google.maps.Size(24, 28),
+                    new google.maps.Point(0, 0),
+                    new google.maps.Point(12, 28);
 
 
-    // Create the search box and link it to the UI element. 2
-    var input2 = document.getElementById('pac-input2');
-    var searchBox2 = new google.maps.places.SearchBox(input2);
+      // Caching the Selectors
+      $Selectors = {
+          map: jQuery('#map')[0], //good
+          directionsPanel: jQuery('#directionsPanel'), //good
+          dirInputs: jQuery('.directionInputs'),
+          dirSrc: jQuery('#directionsSource'), //good
+          dirDst: jQuery('#directionsDestination'), //good
+          navBtn: jQuery('#navigateButton'), //good
+          directionsSteps: jQuery('#directionsSteps'), //good
+          paneToggle: jQuery('#paneToggle'),
+          useGPSBtn: jQuery('#useGPS'),
+          paneResetBtn: jQuery('#paneReset')
+      };
 
-    // Draw a circle around the user position to have an idea of the current localization accuracy
-    var circle = new google.maps.Circle({
-      center: userLatLng,
-      radius: position.coords.accuracy,
-      map: map,
-      fillColor: '#0000FF',
-      fillOpacity: 0.5,
-      //strokeColor: '#0000FF',
-      strokeOpacity: 0,
-    });
-    map.fitBounds(circle.getBounds());
-}
-    function getPoints() {
-        return [
-          new google.maps.LatLng(53.3505, -6.2610),
-          new google.maps.LatLng(53.3504, -6.2609),
-          new google.maps.LatLng(53.3503, -6.2608),
-          new google.maps.LatLng(53.3502, -6.2607),
-          new google.maps.LatLng(53.3501, -6.2606),
-          new google.maps.LatLng(53.3500, -6.2605),
-          new google.maps.LatLng(53.3499, -6.2604),
-          new google.maps.LatLng(53.3498, -6.2603),
-          new google.maps.LatLng(53.3497, -6.2602),
-          new google.maps.LatLng(53.3496, -6.2601),
-          new google.maps.LatLng(53.3495, -6.2600),
-          new google.maps.LatLng(53.3494, -6.2599),
-          new google.maps.LatLng(53.3493, -6.2598),
-          new google.maps.LatLng(53.3492, -6.2597),
-          new google.maps.LatLng(53.3491, -6.2596)
-        ];
-    }
+      // https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
+      function autoCompleteSetup(){
+          input1 = document.getElementById('directionsSource');
+          searchBox1 = new google.maps.places.Autocomplete(input1);
+          searchBox1.setComponentRestrictions(
+                {'country': ['irl']});
 
-    //Display Heat Map Layer
-    function displayHeatmap(checkbox){
-      if(checkbox.checked){
-        heatmap.setMap(map);
-      } else {
-        heatmap.setMap(null);
-      }
-    }
+          input2 = document.getElementById('directionsDestination');
+          searchBox2 = new google.maps.places.Autocomplete(input2);
+          searchBox2.setComponentRestrictions(
+                {'country': ['irl']});
+      } //autoCompleteSetup Ends
 
-    // Display Traffic Layer
-    function displayTraffic(checkbox){
+      directionsSetUp = function(){
+          directionsService = new google.maps.DirectionsService();
+          directionsDisplay = new google.maps.DirectionsRenderer({
+          suppressMarkers: false
+          });
+        } //directionsSetUp Ends
 
-      if (checkbox.checked){
-        trafficLayer.setMap(map);
-      } else {
-        trafficLayer.setMap(null);
-      }
-    }
+        function trafficSetup() {
+        // Creating a Custom Control and appending it to the map
+        var controlDiv = document.createElement('div'),
+            controlUI = document.createElement('div'),
+            trafficLayer = new google.maps.TrafficLayer();
+
+        jQuery(controlDiv).addClass('gmap-control-container').addClass('gmnoprint');
+        jQuery(controlUI).text('Traffic').addClass('gmap-control');
+        jQuery(controlDiv).append(controlUI);
+
+        // Traffic Btn Click Event
+        google.maps.event.addDomListener(controlUI, 'click', function() {
+            if (typeof trafficLayer.getMap() == 'undefined' || trafficLayer.getMap() === null) {
+                jQuery(controlUI).addClass('gmap-control-active');
+                trafficLayer.setMap(map);
+            } else {
+                trafficLayer.setMap(null);
+                jQuery(controlUI).removeClass('gmap-control-active');
+            }
+        });
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+    } // trafficSetup Ends
 
 
-          function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-            directionsService.route({
-              origin: document.getElementById('pac-input1').value,
-              destination: document.getElementById('pac-input2').value,
-              travelMode: 'TRANSIT'
-            }, function(response, status) {
-              if (status === 'OK') {
+        function mapSetUp(){
+          map = new google.maps.Map(document.getElementById('map'),{
+          //map = new google.maps.Map($Selectors.map, {
+                zoom: 13,
+                //latitude and longitude of Dublin (Spire)
+                center: new google.maps.LatLng(53.3498, -6.2603),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+
+                mapTypeControl: true,
+                mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DEFAULT,
+                position: google.maps.ControlPosition.TOP_RIGHT
+                },
+
+                panControl: true,
+                panControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP
+                }
+          });
+
+          autoCompleteSetup();
+          directionsSetUp();
+        } //mapSetUp Ends
+
+
+        DirectionsRenderer = function(source, destination){
+            directionsDisplay.setPanel(document.getElementById('directionSteps'));
+            directionsDisplay.setMap(map);
+
+            var request = {
+              origin: source,
+              destination: destination,
+              provideRouteAlternatives: true,
+              travelMode: google.maps.DirectionsTravelMode.TRANSIT
+            };
+
+            directionsService.route(request, function(response, status){
+              if (status == google.maps.DirectionsStatus.OK){
+
                 directionsDisplay.setDirections(response);
-              } else {
-                window.alert('Directions request failed due to ' + status);
+                directionsDisplay.setPanel(document.getElementById('directionsSteps'));
+
+                var _route = response.routes[0].leg[0];
+
+                pinA = new google.maps.Marker({
+                  position: _route.start_location,
+                  map: map,
+                  icon: markerA
+                }),
+
+                pinB = new google.maps.Marker({
+                  position: _route.end_location,
+                  map: map,
+                  icon: markerB
+                });
               }
             });
-          }
+          } //DirectionsRenderer Ends
+
+          //   var userLatLng;
+          // function fetchAddress(userLatLng){
+          //   userLatLng = new google.maps.LatLng(position.coords.latitude, position.coord.longitude);
+          //   var Locater = new google.maps.Geocoder();
+          //
+          //   Locater.geocode({ 'LatLng' : Position }, function(results, status){
+          //       if(status == google.maps.GeocoderStatus.OK){
+          //         var _r = results[0];
+          //         document.getElementById("directionsSource").val(_r.formatted_address)
+          //       }
+          //   });
+          // } //fetchAddress Ends
+          //
+          // function writeAddressName(latLng) {
+          //     var geocoder = new google.maps.Geocoder();
+          //     geocoder.geocode({
+          //               "location": latLng
+          //             },
+          //             function (results, status) {
+          //               if (status == google.maps.GeocoderStatus.OK)
+          //                 document.getElementById("address").innerHTML = results[0].formatted_address;
+          //               else
+          //                 document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+          //             });
+          //   }
+          //
+          //   //Lat and Long of users exaxt location
+          //   userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            function invokeEvents(){
+              $('#navigateButton').on('click',function(event){
+              //$Selectors.navBtn.on('click', function(event){
+                event.preventDefault();
+                //var src = document.getElementById('directionsSource').val();
+                //var dst = document.getElementById('directionsDestination').val();
+                var src = $Selectors.dirSrc.val();
+                var dst = $Selectors.dirDst.val();
+
+                DirectionsRenderer(src, dst);
+              });
+            } //invokeEvents Ends
+            mapSetUp();
+            invokeEvents();
+            trafficSetup();
+
+
+        // //Draw a circle around the user position to have an idea of the current localization accuracy
+        // var circle = new google.maps.Circle({
+        //     center: userLatLng,
+        //     radius: position.coords.accuracy,
+        //     map: map,
+        //     fillColor: '#0000FF',
+        //     fillOpacity: 0.5,
+        //     strokeOpacity: 0,
+        // });
+        // map.fitBounds(circle.getBounds());
+
+
+
+              $.ajax({
+                'async' : 'true',
+                'url': "{% static 'json/stops_info.json' %}",
+                'type': 'get',
+                'dataType':'json',
+              }).done(function(obj){
+                console.log(obj);
+              for (var i = 0; i < obj.length; i++) {
+                  var stops = obj;
+                  stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
+              }
+
+              // The location of Dubin
+              var dublin = {lat: 53.3498, lng: -6.2603};
+
+
+              var markers = stops.map(function (location, i) {
+                  return new google.maps.Marker({
+                      position: location,
+                      map: map,
+                      // icon: markerImage,
+                      // label: labels[i % labels.length]
+                  });
+              });
+              var contentString = 'pppp';
+              var infowindow = new google.maps.InfoWindow({
+                  content: ''
+              });
+
+              for (var i = 0; i < markers.length; i++) {
+                  var marker = markers[i];
+                  // bindInfoWindow(marker, map, infowindow, content_html);
+                  // marker.addListener('click', function () {
+                  //     infowindow.open(map, marker);
+                  // });
+                  //     // console.log("var markers");
+                  var markerCluster = new MarkerClusterer(map, markers,
+                      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+              }
+        });
+
+    }; //InitMap Ends
 
     function geolocationError(positionError) {
-      document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
-    }
+        document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+    } //geolocationError Ends
 
     function geolocateUser() {
-      // If the browser supports the Geolocation API
-      if (navigator.geolocation)
-      {
-        var positionOptions = {
-          enableHighAccuracy: true,
-          timeout: 10 * 1000 // 10 seconds
-        };
-        navigator.geolocation.getCurrentPosition(initMap, geolocationError, positionOptions);
-      }
-      else
-        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
-    }
+        // If the browser supports the Geolocation API
+        if (navigator.geolocation) {
+            console.log("geolocater executed");
+            var positionOptions = {
+                enableHighAccuracy: true,
+                timeout: 10 * 1000,
+            };
 
-    window.onload = geolocateUser;
+            navigator.geolocation.getCurrentPosition(initMap, geolocationError, positionOptions);
+        } else
+            document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+    } //geolocateUser Ends
+
+    window.onload = geolocateUser
+
+
+  //Display Traffic Layer
+//   function displayTraffic(){
+//       $("#trafficInfo").click(function () {
+//         if ($('input:radio[name=traffic]').attr('checked',true)){
+//
+//           trafficLayer.setMap('#map');
+//         }else {
+//           //$('input:radio[name=traffic]').attr('checked',false);
+//       }    trafficLayer.setMap(null);
+//   });
+// }
+
+//           function displayTraffic(checkbox){
+//             $('#trafficInfo').on('click', function()){
+//               if (checkbox.checked){
+//                   trafficLayer.setMap(map);
+//               } else {
+//                   trafficLayer.setMap(null);
+//               }
+//           };
+// });
+
+  // function writeAddressName(latLng) {
+  //   var geocoder = new google.maps.Geocoder();
+  //   geocoder.geocode({
+  //     "location": latLng
+  //   },
+  //   function(results, status) {
+  //     if (status == google.maps.GeocoderStatus.OK)
+  //       document.getElementById("pac-input1").innerHTML = results[0].formatted_address;
+  //     else
+  //       document.getElementById("error").innerHTML += "Unable to retrieve your address" + "<br />";
+  //   });
+  // }
+  // // Initialize and add the map;
+  // var map;
+  // var heatmap;
+  // var userLatLng;
+
+
+  // function initMap(position) {
+
+    /// Direction Variables
+    // directionsService = new google.maps.DirectionsService;
+    // directionsDisplay = new google.maps.DirectionsRenderer;
+
+    /// Direction Display
+    // directionsDisplay.setMap(map);
+
+//     // Lat and Long of users exaxt location
+//     userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+//
+//     // Write the formatted address
+//     console.log(writeAddressName(userLatLng));
+//
+//     // The location of Dubin
+//     var dublin = {lat: 53.3498, lng: -6.2603};
+//     // The map, centered in Dublin
+//     map = new google.maps.Map(
+//         document.getElementById('map'), {zoom: 14, center: dublin, mapTypeId: google.maps.MapTypeId.HYBRID});
+//
+//
+//     // handler for displaying map and text direction results
+//     var onChangeHandler = function() {
+//     calculateAndDisplayRoute(directionsService, directionsDisplay);
+//     };
+//
+//     // create traffic layer variable
+//     trafficLayer = new google.maps.TrafficLayer();
+//
+//     // create heatmap layter variable
+//     heatmap = new google.maps.visualization.HeatmapLayer({
+//     data: getPoints(),
+//     });
+//
+//     // will search once destination is inserted
+//     document.getElementById('pac-input2').addEventListener('change', onChangeHandler);
+//
+//     // Create the search box and link it to the UI element. 1
+//     var input1 = document.getElementById('pac-input1');
+//     var searchBox1 = new google.maps.places.Autocomplete(input1);
+//     searchBox1.setComponentRestrictions(
+//       {'country': ['irl']});
+//
+//     // Create the search box and link it to the UI element. 2
+//     var input2 = document.getElementById('pac-input2');
+//     var searchBox2 = new google.maps.places.Autocomplete(input2);
+//     searchBox2.setComponentRestrictions(
+//       {'country': ['irl']});
+//
+//     // Draw a circle around the user position to have an idea of the current localization accuracy
+//     var circle = new google.maps.Circle({
+//       center: userLatLng,
+//       radius: position.coords.accuracy,
+//       map: map,
+//       fillColor: '#0000FF',
+//       fillOpacity: 0.5,
+//       strokeOpacity: 0,
+//     });
+//     map.fitBounds(circle.getBounds());
+// }
+//     function getPoints() {
+//         return [
+//           new google.maps.LatLng(53.3505, -6.2610),
+//           new google.maps.LatLng(53.3504, -6.2609),
+//           new google.maps.LatLng(53.3503, -6.2608),
+//           new google.maps.LatLng(53.3502, -6.2607),
+//           new google.maps.LatLng(53.3501, -6.2606),
+//           new google.maps.LatLng(53.3500, -6.2605),
+//           new google.maps.LatLng(53.3499, -6.2604),
+//           new google.maps.LatLng(53.3498, -6.2603),
+//           new google.maps.LatLng(53.3497, -6.2602),
+//           new google.maps.LatLng(53.3496, -6.2601),
+//           new google.maps.LatLng(53.3495, -6.2600),
+//           new google.maps.LatLng(53.3494, -6.2599),
+//           new google.maps.LatLng(53.3493, -6.2598),
+//           new google.maps.LatLng(53.3492, -6.2597),
+//           new google.maps.LatLng(53.3491, -6.2596)
+//         ];
+//     }
+//
+//         //Display Heat Map Layer
+//         function displayHeatmap(checkbox){
+//           if(checkbox.checked){
+//             heatmap.setMap(map);
+//           } else {
+//             heatmap.setMap(null);
+//           }
+//         }
+//
+//         // Display Traffic Layer
+//         function displayTraffic(checkbox){
+//
+//           if (checkbox.checked){
+//             trafficLayer.setMap(map);
+//           } else {
+//             trafficLayer.setMap(null);
+//           }
+//         }
+//
+//
+//           function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+//             directionsService.route({
+//               origin: document.getElementById('pac-input1').value,
+//               destination: document.getElementById('pac-input2').value,
+//               travelMode: 'TRANSIT'
+//             }, function(response, status) {
+//               if (status === 'OK') {
+//                 directionsDisplay.setDirections(response);
+//                 directionsDisplay.setPanel(document.getElementById('directionSteps'));
+//               } else {
+//                 window.alert('Directions request failed due to ' + status);
+//               }
+//             });
+//           }
+//
+//     // Display if there is an error with the geolocation
+//     function geolocationError(positionError) {
+//       document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br />";
+//     }
+//
+//     function geolocateUser() {
+//       // If the browser supports the Geolocation API
+//       if (navigator.geolocation)
+//       {
+//         var positionOptions = {
+//           enableHighAccuracy: true,
+//           timeout: 10 * 1000 // 10 seconds
+//         };
+//         navigator.geolocation.getCurrentPosition(initMap, geolocationError, positionOptions);
+//       }
+//       else
+//         document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+//     }
+//
+//     window.onload = geolocateUser;
     </script>
 
 
@@ -486,144 +726,146 @@ window.onload = function(){
     <!--This section includes the onclick navBar with Overlay-->
     <script>
 
-      // function on(){
-      //   switch (var) {
-      //     case 1:
-      //
-      //
-      //       break;
-      //     default:
-      //
-      //   }
-      // }
-      //journey planner overlay
-      function on1() {
-        document.getElementById("overlay1").style.display = "block";
+      function on(element_num){
+        var elem;
+        switch (element_num) {
+          case 1:
+            elem = "overlay1";
+            break;
+          case 2:
+            elem = "overlay2";
+            break;
+          case 3:
+            elem = "overlay3";
+            break;
+          case 4:
+            elem = "overlay4";
+            break;
+          case 5:
+            elem = "overlay5";
+            break;
+          case 6:
+            elem = "overlay6";
+            break;
+          case 7:
+            elem = "overlay7";
+            break;
         }
-      function off1() {
-        document.getElementById("overlay1").style.display = "none";
-        }
-      //tourism overlay
-      function on2() {
-        document.getElementById("overlay2").style.display = "block";
-        }
-      function off2() {
-        document.getElementById("overlay2").style.display = "none";
-        }
-      //favourites overlay
-      function on3() {
-        document.getElementById("overlay3").style.display = "block";
-        }
-      function off3() {
-        document.getElementById("overlay3").style.display = "none";
-        }
-      //FAQInfo
-      function on4() {
-        document.getElementById("overlay4").style.display = "block";
-        }
-      function off4() {
-        document.getElementById("overlay4").style.display = "none";
-        }
-      // x
-      function on5() {
-        document.getElementById("overlay5").style.display = "block";
-        }
-      function off5() {
-        document.getElementById("overlay5").style.display = "none";
-        }
-      //x
-      function on6() {
-        document.getElementById("overlay6").style.display = "block";
-        {% if user.is_authenticated %}
+
+        document.getElementById(elem).style.display="block"
 
 
-        {% endif%}
-        }
-      function off6() {
-        document.getElementById("overlay6").style.display = "none";
-        }
-      //Traffic
-      function on7() {
-        document.getElementById("overlay7").style.display = "block";
-        }
-      function off7() {
-        document.getElementById("overlay7").style.display = "none";
-        }
-      //x
-      function on8() {
-        document.getElementById("overlay8").style.display = "block";
-        }
-      function off8() {
-        document.getElementById("overlay8").style.display = "none";
-        }
-      </script>
+      }
 
+      function off(element_num){
+        var elem;
+        switch (element_num) {
+          case 1:
+            elem = "overlay1";
+            break;
+          case 2:
+            elem = "overlay2";
+            break;
+          case 3:
+            elem = "overlay3";
+            break;
+          case 4:
+            elem = "overlay4";
+            break;
+          case 5:
+            elem = "overlay5";
+            break;
+          case 6:
+            elem = "overlay6";
+            {% if user.is_authenticated %}
 
+            {% endif%}
+            break;
+          case 7:
+            elem = "overlay7";
+            break;
+          case 8:
+            elem = "overlay8";
+            break;
+        }
+        document.getElementById(elem).style.display="none"
+      }
 
+        function on8() {
+            $.ajax({
+              'url': "{% url "prediction:weather" %}",
+              'type': 'get',
+              'dataType':'json',
+            }).done(function(data_total){
+            var data = data_total.currently;
+            var data_hourly = data_total.hourly;
+            var weatherDescription = data.summary;
+            displayDescription = ("It Feels Like " + weatherDescription);
 
-      <script>
+            $('#weather_heading').show().html(displayDescription);
 
+            var weatherIcon = data.icon;
+            //var weatherIcon = "snow";
+            var icons = new Skycons({"color": "white"});
 
-          var data =  {
-              "latitude": 53.3498,
-              "longitude": -6.2603,
-              "timezone": "Europe/Dublin",
-              "currently": {
-              "time": 1562327287,
-              "summary": "Mostly Cloudy",
-              "icon": "partly-cloudy-day",
-              "nearestStormDistance": 138,
-              "nearestStormBearing": 359,
-              "precipIntensity": 0,
-              "precipProbability": 0,
-              "temperature": 66.8,
-              "apparentTemperature": 66.8,
-              "dewPoint": 53.85,
-              "humidity": 0.63,
-              "pressure": 1020.39,
-              "windSpeed": 11.11,
-              "windGust": 12.37,
-              "windBearing": 272,
-              "cloudCover": 0.75,
-              "uvIndex": 5,
-              "visibility": 6.216,
-              "ozone": 312.6
+              switch(weatherIcon){
+                case "clear-day":
+                  icons.set("weatherIcon", Skycons.CLEAR_DAY);
+                  break;
+                case "clear-night":
+                  icons.set("weatherIcon-night", Skycons.CLEAR_NIGHT);
+                  break;
+                case "partly-cloudy-day":
+                  icons.set("weatherIcon", Skycons.PARTLY_CLOUDY_DAY);
+                  break;
+                case "partly-cloudy-night":
+                  icons.set("weatherIcon", Skycons.PARTLY_CLOUDY_NIGHT);
+                  break;
+                case "cloudy":
+                  icons.set("weatherIcon", Skycons.CLOUDY);
+                  break;
+                case "rain":
+                  icons.set("weatherIcon", Skycons.RAIN);
+                  break;
+                case "sleet":
+                  icons.set("weatherIcon", Skycons.SLEET);
+                  break;
+                case "snow":
+                  icons.set("weatherIcon", Skycons.SNOW);
+                  break;
+                case "wind":
+                  icons.set("weatherIcon", Skycons.WIND);
+                  break;
+                case "fog":
+                  icons.set("weatherIcon", Skycons.FOG);
+                  break;
               }
-            }
-
-            var weatherInfo = data.currently;
-            console.log(weatherInfo);
-
-            var weatherDescription = weatherInfo.summary;
-            console.log(weatherDescription);
+              icons.play();
 
             //converting fahrenheit to celsius
-            var temp = Math.round((weatherInfo.temperature - 32) * 5/9);
-            console.log(temp);
+            var temp = Math.round((data.temperature - 32) * 5/9);
 
             //converting miles to kilometers
-            var wind_speed = Math.round(weatherInfo.windSpeed * 1.609);
-            console.log(wind_speed);
+            var wind_speed = Math.round(data.windSpeed * 1.609);
 
-            var humidity = Math.round(weatherInfo.humidity * 100);
-            console.log(humidity);
+            // conversity humidity to a percentage
+            var humidity = Math.round(data.humidity * 100);
 
             // Displaying Temperature
-            var displayTemp = ("Current Temperature: " + temp + " ºC");
+            var displayTemp = ("Current Temperature: " + temp + " oC");
 
             // Displaying Wind Speed
             var displayWind = ("Wind Speed: " + wind_speed + " kph!");
 
             // Displaying humidity
             var displayHumidity = ("Humidity: " + humidity + "%");
-            document.getElementById("weather_stats").innerHTML = displayTemp + "<p>" + displayWind + "<p>" + displayHumidity;
 
-
-
-
-
-
-          </script>
+            //Display Weather Stats on overlay8
+            $('#weather_stats').show().html(displayTemp + "<br/>" + displayWind + "<br/>" + displayHumidity);
+            $("#overlay8").css("display","block");
+          })
+        } // On8: AKA WeatherDisplay Ends
+      </script>
 
   </body>
 </html>
