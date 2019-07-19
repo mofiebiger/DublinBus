@@ -53,3 +53,5 @@ def query(Query, tunnel=False):
     except Exception as e:
         print("Connection failed with error:")
         print(repr(e))
+
+query("select * from combined limit 1;")
