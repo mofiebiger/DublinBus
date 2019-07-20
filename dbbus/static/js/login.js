@@ -1,32 +1,25 @@
 $(function(){
-
-	$.ajaxSetup({
-                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
+	// var token = $("meta[name='_csrf']").attr("content");
+	// var header = $("meta[name='_csrf_header']").attr("content");
+	// $(document).ajaxSend(function(e, xhr, options) {
+	// 	xhr.setRequestHeader(header, token);
+	//
+	// });
+	// $.ajaxSetup({
+    //              data: {csrfmiddlewaretoken: '{% csrf_token %}' },
+    //         });
 
 	$('#loginBtn').on('click',function(){
 		var username = $('#username').val()
 		var pwd = $('#pwd').val()
-
+		var token = $('input[name="csrfmiddlewaretoken"]').val()
 		$.ajax({
 			cache:false,
 			type: "POST",
-			// url:"/user/Login_form_post",
 			url:"http://127.0.0.1:8000/user/login",
-			data:{'username':username, 'pwd': pwd},
-			// data:{'user_name':name},
-			// dataType:'json',
+			data:{'username':username, 'pwd': pwd,'csrfmiddlewaretoken':token},
 			async:true,
-			// beforeSend:function(xhr,settings){
-			// 	xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-			// },
 			success:function(result){
-				// if(data.status == 'success'){
-                //         alert("提交成功");
-                //          window.location.reload();//刷新当前页面.
-                //     }else if(data.status == 'fail'){
-                //         alert("评论错误，请重新评论");
-				// 	}
 				$('#test_error').html("<b>" + result + "</b>");
 				alert(result);
 			},

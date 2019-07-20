@@ -16,6 +16,7 @@ from user.form import ForgetPwdForm,ResetPwdForm,ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
 import json
 from django.http import QueryDict
+from django.views.decorators.csrf import csrf_exempt
 
 REGISTER_ENCRYPT_KEY = 'djhadhakjhfaliuehjdlaufajdhfalkfdkjiidd354/2p812p39weqklrjq/'
 FORGET_PASSWORD_ENCRYPT_KEY = 'SDLFJAIAOINCAJDHFAIUifdack123/.df/2p812p39weqklrjq/'

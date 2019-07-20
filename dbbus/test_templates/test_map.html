@@ -41,20 +41,19 @@
   <script>
       var test
       $(function(){
-          $.ajaxSetup({
-                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
-
+          //determine which butten will be shown when load the page
           window.onload=function(){
+
+              var token = $('input[name="csrfmiddlewaretoken"]').val()
               $.ajax({
                 type:"GET",
                 url: 'http://127.0.0.1:8000/user/favorite_stop',
                 async: true,
                 success:function(result){
+                    //msg stors the id of the button
                     var msg = "#addFav"
-                    // console.log(result['user_bus_list'][0]['bus_number'])
                     for(var i =0; i < result['user_stop_list'].length; i++){
-                        // console.log(result['user_stop_list'][i])
+                        //if the stop id is in the users' favourites list
                         if (result['user_stop_list'][i] == $('#stop_id').val()){
                             msg = "#removeFav"
                         }
@@ -69,17 +68,21 @@
           }
 
           var stop_id = $('#stop_id').val()
+          var token = $('input[name="csrfmiddlewaretoken"]').val()
 
+          //add stop number to favourites
           $('#addFav').on('click',function(){
 		        $.ajax({
 			        cache:false,
 			        type: "POST",
 			        url:"http://127.0.0.1:8000/user/favorite_stop",
-			        data:{'stop_id':stop_id,},
+			        data:{'stop_id':stop_id,'csrfmiddlewaretoken':token},
 			        async:true,
 			        success:function(result){
+			            //change the button displayed
 				        $('#addFav').hide();
 				        $('#removeFav').show();
+				        console.log(token)
 				        alert(result);
 			        },
 			        error: function(){
@@ -93,7 +96,7 @@
 			        cache:false,
 			        type: "DELETE",
 			        url:"http://127.0.0.1:8000/user/favorite_stop",
-			        data:{'stop_id':stop_id,},
+			        data:{'stop_id':stop_id, 'csrfmiddlewaretoken':token},
 			        async:true,
 			        success:function(result){
 				        $('#addFav').show();
@@ -101,21 +104,22 @@
 				        alert(result);
 			        },
 			        error: function(){
-				        alert("remove failed");
+				        alert("remove failed" + token);
 			        },
 		        });
 	        });
       })
 
-      $(document).ready(function(){
+      {#$(document).ready(function(){#}
           $("a").each(function(){
               $(this).click(function(){
+                  var token = $('input[name="csrfmiddlewaretoken"]').val()
                   console.log("a.click")
                   $.ajax({
                       ache:false,
                       type: "POST",
 			          url:"http://127.0.0.1:8000/user/bus_info",
-			          data:{'bus_id':$(this).text(),},
+			          data:{'bus_id':$(this).text(),'csrfmiddlewaretoken':token},
 			          async:true,
 			          success:function(result){
                           $('#busid').html(result)
@@ -158,20 +162,20 @@
                   })
               })
           })
-      })
+      {# })#}
   </script>
     <script>
 
         $(function(){
-
-                          var start = $('#start_point').text()
-                          var end = $('#end_point').text()
+             var token = $('input[name="csrfmiddlewaretoken"]').val()
+             var start = $('#start_point').text()
+             var end = $('#end_point').text()
             $('#addFav_bus').on('click',function(){
                 $.ajax({
                     cache:false,
                     type: "POST",
                     url:"http://127.0.0.1:8000/user/favorite_bus_number",
-                    data:{'bus_number':test, 'start_point': start, 'end_point': end,},
+                    data:{'bus_number':test, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
                     async:true,
                     success:function(result){
                         $('#addFav_bus').hide();
@@ -190,7 +194,7 @@
                     cache:false,
                     type: "DELETE",
                     url:"http://127.0.0.1:8000/user/favorite_bus_number",
-                    data:{'bus_number':test, 'start_point': start, 'end_point': end,},
+                    data:{'bus_number':test, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
                     async:true,
                     success:function(result, status, xml){
                         $('#addFav_bus').show();

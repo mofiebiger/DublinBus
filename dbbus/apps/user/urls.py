@@ -15,5 +15,10 @@ urlpatterns = [
     path('favorite_bus_number', views.FavoriteBusNumberView.as_view(),name = 'favorite_bus_number'),# change avarta page
     path('favorite_route', views.FavoriteRouteView.as_view(),name = 'favorite_route'),# change avarta page
     path('contact', views.ContactUsView.as_view(),name = 'ContactUsView'),# contact information
+    # '''meihan added'''
+    path('test', views.TestView.as_view(), name = 'test'),
+    path('favourites', views.FavouritesView.as_view(), name = 'favourites'),
+    path('bus_info', views.BusInfoView.as_view(), name = 'bus_info'),
+    # '''end of meihan part'''
 ]
 
