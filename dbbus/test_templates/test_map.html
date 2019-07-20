@@ -92,6 +92,9 @@
 	        });
 
           $('#removeFav').on('click',function(){
+              $.ajaxSetup({
+                  headers:{'X-CSRFToken': token}
+              })
 		        $.ajax({
 			        cache:false,
 			        type: "DELETE",
@@ -190,6 +193,9 @@
 
 
             $('#removeFav_bus').on('click',function(){
+                $.ajaxSetup({
+                  headers:{'X-CSRFToken': token}
+              })
                 $.ajax({
                     cache:false,
                     type: "DELETE",

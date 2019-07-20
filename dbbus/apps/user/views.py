@@ -739,7 +739,7 @@ class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
         DELETE = QueryDict(request.body)
         bus_number = DELETE.get('bus_number')
         start_point = DELETE.get('start_point')
-        end_point = request.DELETE.get('end_point')
+        end_point = DELETE.get('end_point')
         if not UserBusNumber.objects.filter(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).exists():
             return HttpResponse('bus number does not exist')
         
