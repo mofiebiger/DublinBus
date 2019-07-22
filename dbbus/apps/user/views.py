@@ -159,7 +159,8 @@ class LoginView(TemplateView):
         password = request.POST.get('pwd')
         # 校验数据
         if not all([username, password]):
-            return render(request, 'index.html', {'errmsg':'Data is not complete'}) 
+            return JsonResponse({"res": 1, 'errmsg':'Data is not complete'})
+            # return render(request, 'login.html', {'errmsg':'Data is not complete'})
         # 业务处理:登录校验
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -171,7 +172,7 @@ class LoginView(TemplateView):
                 # 获取登录后所要跳转到的地址
                 # 默认跳转到首页
                 # 跳转到next_url
-                next_url = request.GET.get('next', reverse('user:index'))
+                next_url = request.GET.get('next', reverse('user:user_info'))
                 # 跳转到next_url
                 response = redirect(next_url) # HttpResponseRedirect
                 # 判断是否需要记住用户名
@@ -184,14 +185,16 @@ class LoginView(TemplateView):
                     response.delete_cookie('username')
   
                 # 返回response
-                return response
+                return JsonResponse({"res": 0})
+                # return response
             else:
                 # 用户未激活
-                return render(request, 'index.html', {'errmsg':'Account has not been activated'})
+                return JsonResponse({"res": 1, 'errmsg': 'Account has not been activsted'})
+                # return render(request, 'login.html', {'errmsg':'Account has not been activated'})
         else:
             # 用户名或密码错误
             print('3')
-            return render(request, 'index.html', {'errmsg':'username or password wrong'})
+            return render(request, 'login.html', {'errmsg':'username or password wrong'})
   
   
 # /user/logout
@@ -343,8 +346,9 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
         except:
             return HttpResponse('error!')
                   
-#         return JsonResponse(data)
-        return render(request,'index.html')
+        # return JsonResponse(data)
+        return render(request,'chango_avatar.html')
+        # return render(request,'index.html')
 
 
 class FavouritesView(LoginRequiredMixin, TemplateView):
@@ -355,6 +359,7 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
 class TestView(TemplateView):
         def get(self, request):
             '''favourites page'''
+            # return render(request, 'user_info.html')
             return render(request, 'test_map.html')
 
         def query(request):
@@ -363,169 +368,7 @@ class TestView(TemplateView):
             return JsonResponse(name_dict)
 
 
-class TestAdd(TemplateView):
-        def get(self, request):
-            a = request.GET.get('a');
-            b = request.GET.get('b');
-
-            data = {};
-            data['sum'] = a+b;
-            '''favourites page'''
-            # return render(request, 'add.html'
-
-
-def Reg_form_post(request):
-    '''进行注册处理'''
-    # 接收数据
-    if request.method == 'POST':
-        username = request.POST.get('user_name')
-        password = request.POST.get('pwd')
-        r_password = request.POST.get('cpwd')
-        email = request.POST.get('email')
-
-        if not all([username, password, email]):
-            # 数据不完整
-            return JsonResponse({"res":0,"error_msg":"Data not complete."});
-            # 校验邮箱
-        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-            return JsonResponse({"res":0,"error_msg":"The format of Email is not correct."});
-        # check the password
-        if password != r_password:
-            return JsonResponse({"res":0,"error_msg":"the passwords are not match."});
-        # 校验用户名是否重复
-        try:
-            user = User.objects.get(username=username)
-            print('user')
-        except User.DoesNotExist:
-            # 用户名不存在
-            user = None
-
-        if user:
-           # 用户名已存在
-            return JsonResponse({"res":0,"error_msg":username + ' has been registered.'});
-            # return HttpResponse("the email has benn registered..");
-        # 进行业务处理: 进行用户注册
-
-        user = User.objects.create_user(username, email, password)
-        user.is_active = 0
-        user.save()
-        #
-        # # 激活链接中需要包含用户的身份信息, 并且要把身份信息进行加密
-        #
-        # # encript the information about user，生成激活token
-        serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
-        token = serializer.dumps(user.id).decode()  # bytes
-        #
-        # # send email
-        subject = 'Welcome to register dublin bus API'
-        message = ''
-        sender = settings.EMAIL_FROM
-        receiver = [email]
-        host_name = request.get_host()
-        html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
-
-        send_mail(subject, message, sender, receiver, html_message=html_message)
-        #
-        # # 返回应答, 跳转到首页
-        # return HttpResponse('{"status":"success"}', content_type='application/json');
-        # # return redirect(reverse('user:login'))
-        return JsonResponse({"res":1});
-    else:
-        return JsonResponse({"res":0,"error_msg":"ajax failed"});
-
-
-class LoginTestView(TemplateView):
-    '''注册'''
-    def get(self, request):
-        '''显示注册页面'''
-        return render(request, 'login.html')
-
-    def post(self, request):
-        '''显示注册页面'''
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('pwd')
-
-            if not all([username, password]):
-                # 数据不完整
-                return HttpResponse("Data not complete.");
-        return render(request, 'login.html')
-
-
-def Login_form_post(request):
-        '''get data'''
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('pwd')
-
-            if not all([username, password]):
-                # 数据不完整
-                return HttpResponse("Data not complete.");
-
-            # 业务处理:登录校验
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                        # 用户名密码正确
-                if user.is_active:
-                            # 用户已激活
-                            # 记录用户的登录状态
-                    login(request, user)
-                            # 获取登录后所要跳转到的地址
-                            # 默认跳转到首页
-                            # 跳转到next_url
-                    next_url = request.GET.get('next', reverse('user:index'))
-                            # 跳转到next_url
-                    response = redirect(next_url) # HttpResponseRedirect
-                            # 判断是否需要记住用户名
-                    remember = request.POST.get('remember')
-
-                    if remember == 'on':
-                                # 记住用户名
-                        response.set_cookie('username', username, max_age=7*24*3600)
-                    else:
-                        response.delete_cookie('username')
-
-                            # 返回response
-                        return response
-                else:
-                            # 用户未激活
-                    return HttpResponse('Account has not been activated')
-            else:
-                        # 用户名或密码错误
-                 # print('3')
-                return HttpResponse('username or password wrong')
-
-        return HttpResponse("Valid submission")
-
-
-def Add_fav_post(request):
-    # 接收数据
-    if request.method == 'POST':
-        stopid = request.POST.get('stopid')
-        # userid = request.POST.get('userid')
-        # 如果没登陆
-        # if not request.user.is_authenticated():
-        #     return HttpResponse('not log in')
-            # return HttpResponse('{"status":"fail", "mag": "not loged in"}', content_type='application/json')
-
-        # 判断记录是否存在
-        # exist_records = UserStop.objects.filter(user=request.user, station_user_id=int(stopid))
-        # if exist_records:
-        #     # 数据存在
-        #     return HttpResponse("You already have this station in favourite list.");
-        #
-        return HttpResponse("added")
-
-def Remove_fav_post(request):
-    # 接收数据
-    if request.method == 'POST':
-        stopid = request.POST.get('stopid')
-#     从数据库删除记录
-    return HttpResponse("deleted")
-
 class BusInfoView(LoginRequiredMixin, TemplateView):
-    # def get(self, request):
-    #     return render(request, 'bus_info_test.html')
     def get(self, request):
 
         stops = UserStop.objects.filter(station_user=request.user)
@@ -538,15 +381,6 @@ class BusInfoView(LoginRequiredMixin, TemplateView):
 
         bus_id = request.POST.get('bus_id')
         return HttpResponse(bus_id)
-
-def post_bus_info(request,busid):
-    # 接收数据
-    # if request.method == 'POST':
-    #     busid = request.POST.get('busid')
-    # bus_id = str(busid)
-    # return render(request,'bus_info_test.html', {'data': busid})
-    # return HttpResponse(busid)
-    return render(request, 'bus_info_test.html', {'data': busid})
 
 
 class FavoriteStopView(LoginRequiredMixin, TemplateView):
@@ -675,135 +509,29 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
             'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!')
 
 
-       
-    
+class UserInfoView(LoginRequiredMixin, TemplateView):
+    '''display user information after logged in'''
 
-class FavoriteStopView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        # change_password_form = ChangePwdForm()
+        return render(request, 'user_info.html',)
+
+
+class LogUserInfoView(LoginRequiredMixin, TemplateView):
     '''store the favorite stops of user'''
-    def get(self,request):
-        
-        stops = UserStop.objects.filter(station_user= request.user)
-        stops = list(stops)
-        stop_list = [stop.stop for stop in stops]
-        json_file = {"user_stop_list": stop_list}
+
+    def get(self, request):
+
+        # stops = UserStop.objects.filter(station_user=request.user)
+        # stops = list(stops)
+        user_name = 'testname'
+        email = 'test@dublinbus.com'
+        avatar = 'http://127.0.0.1:8000/static/images/avatar_default.png'
+        json_file = {"user_name": user_name, 'email': email, 'avatar': avatar}
         return JsonResponse(json_file)
-            
-    
-    def post(self,request):
-        
-        stop_id = request.POST.get('stop_id')
-        if UserStop.objects.filter(stop=stop_id,station_user= request.user).exists():
-            return HttpResponse('stop exists already')
-        user_stop = UserStop(stop=stop_id,station_user= request.user)
-        user_stop.save()
-        return HttpResponse('stop is stored successfully')
-
-    
-    def delete(self, request):
-        
-        DELETE = QueryDict(request.body)
-        stop_id = DELETE.get('stop_id')
-
-        if not UserStop.objects.filter(stop=stop_id,station_user= request.user).exists():
-            return HttpResponse('stop number does not exist')
-        
-        UserStop.objects.get(stop=stop_id,station_user= request.user).delete()
-        return HttpResponse('stop number has been deleted successfully')
-
-        
-
-class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
-    '''store the favorite bus numbers of user'''
-    
-    def get(self,request):
-        
-        buses = UserBusNumber.objects.filter(bus_number_user= request.user)
-        buses = list(buses)
-        buses_list = [{'bus_number':bus.bus_number,'start_point':bus.start_point,'end_point':bus.end_point} for bus in buses]
-        json_file = {"user_bus_list": buses_list}
-        return JsonResponse(json_file)
-    
-    def post(self,request):
-        
-        bus_number = request.POST.get('bus_number')
-        start_point = request.POST.get('start_point')
-        end_point = request.POST.get('end_point')
-        if UserBusNumber.objects.filter(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).exists():
-            return HttpResponse('bus number exists already')        
-        user_bus_number = UserBusNumber(bus_number=bus_number,start_point= start_point,end_point=end_point,bus_number_user=request.user)
-        user_bus_number.save()
-        return HttpResponse('Bus number is stored successfully')
-
-    def delete(self, request):
-        
-        DELETE = QueryDict(request.body)
-        bus_number = DELETE.get('bus_number')
-        start_point = DELETE.get('start_point')
-        end_point = DELETE.get('end_point')
-        if not UserBusNumber.objects.filter(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).exists():
-            return HttpResponse('bus number does not exist')
-        
-        UserBusNumber.objects.get(bus_number=bus_number,start_point=start_point,end_point=end_point,bus_number_user= request.user).delete()
-        return HttpResponse('bus number has been deleted successfully')
 
 
-class FavoriteRouteView(LoginRequiredMixin, TemplateView):
-    '''store the favorite routes of user'''
-    
-    def get(self,request):
-        
-        routes = UserRoute.objects.filter(route_user= request.user)
-        routes = list(routes)
-        routes_list = [{'route_start':route.route_start,'route_end':route.route_end} for route in routes]
-        json_file = {"user_routes_list": routes_list}
-        return JsonResponse(json_file)
-    
-    
-    def post(self,request):
-        
-        route_start = request.POST.get('route_start')
-        route_end = request.POST.get('route_end')
-        if UserRoute.objects.filter(route_start=route_start,route_end=route_end,route_user= request.user).exists():
-            return HttpResponse('route exists already!')
-        user_route = UserRoute(route_start=route_start,route_end= route_end,route_user=request.user)
-        user_route.save()
-        return HttpResponse('route is stored successfully')
-    
-    def delete(self, request):
-        
-        DELETE = QueryDict(request.body)
-        route_start = DELETE.get('route_start')
-        route_end = DELETE.get('route_end')
-        if not UserRoute.objects.filter(route_start=route_start,route_end=route_end,route_user= request.user).exists():
-            return HttpResponse('route does not exist')
-        
-        UserRoute.objects.get(route_start=route_start,route_end=route_end,route_user= request.user).delete()
-        return HttpResponse('route has been deleted successfully')
-
-class ContactUsView(LoginRequiredMixin, TemplateView):
-    
-    def post(self,request): 
-        user = request.user
-        contact = request.POST.get('contact')
-        if not contact:
-           return HttpResponse('No information!') 
-        try:
-            subject = 'Contact information-from '+user.username+"-email:"+ user.email
-            message = contact
-            sender = settings.EMAIL_FROM
-            receiver = [settings.EMAIL_FROM]         
-            send_mail(subject, message, sender, receiver)
-        except:
-            return HttpResponse('error!')
-                  
-#         return JsonResponse(data)
-        return HttpResponse('Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!')
-
-
-
-
-
-# 
+#
 # def set_session(request):
 #     request.session['username'] = 'reanjie'
 #     request.session['age'] = '18'
