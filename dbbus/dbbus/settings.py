@@ -111,18 +111,6 @@ DATABASES = {
 #         'PORT': 5000,
 #     }
 # }
-# DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.mysql',
-#          'NAME': 'dbbus1',
-#          'USER': 'root',
-#          'PASSWORD': 'jensen.jay8023',
-#          'HOST': 'localhost',
-#          'PORT': 3306,
-#      }
-# }
-
-# django璁よ瘉绯荤粺浣跨敤鐨勬ā鍨嬬被
 
 AUTH_USER_MODEL ='user.User'
 
@@ -167,21 +155,22 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
-MEDIA_URL = '/media/' # 跟STATIC_URL类似，指定用户可以通过这个路径找到文件
+MEDIA_URL = '/media/' # this url is used to store the avatar image
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-# 鍙戦�侀偖浠堕厤缃�
+# the email deployment 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# smpt鏈嶅姟鍦板潃
-EMAIL_HOST = config.email_from
-EMAIL_PORT = 25
-# 鍙戦�侀偖浠剁殑閭
+# email host and port
+EMAIL_HOST = config.email_host
+EMAIL_PORT = 587
+# email address
 EMAIL_HOST_USER = config.email_host_user
-# 鍦ㄩ偖绠变腑璁剧疆鐨勫鎴风鎺堟潈瀵嗙爜
+# password
 EMAIL_HOST_PASSWORD = config.email_host_password
-# 鏀朵欢浜虹湅鍒扮殑鍙戜欢浜�
+# email address
 EMAIL_FROM = config.email_from
+
 
 EMAIL_USE_TLS = True
 
@@ -193,7 +182,7 @@ LOGOUT_REDIRECT_URL = '/user/index'
 
 
 #SESSION_ENGINE = 'redis_sessions.session'
-# redis服务的ip地址
+# redis ip address
 #SESSION_REDIS = {
 #    'host': 'localhost',
 #     'host': '137.43.49.60',
