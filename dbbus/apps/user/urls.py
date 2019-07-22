@@ -2,6 +2,7 @@ from django.urls import path,re_path
 from user import views
 app_name = 'user'
 urlpatterns = [
+    path('', views.IndexView.as_view(),name = 'index_original'),# index page
     path('register', views.RegisterView.as_view(),name = 'register'), # register page
     path('index', views.IndexView.as_view(),name = 'index'),# index page
     path('login', views.LoginView.as_view(),name = 'login'),# login page
