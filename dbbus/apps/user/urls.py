@@ -23,4 +23,3 @@ urlpatterns = [
     # '''end of meihan part'''
     path('tourism', views.TourismView.as_view(),name = 'tourism'),# tourism page
 ]
-
