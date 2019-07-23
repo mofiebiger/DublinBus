@@ -86,7 +86,6 @@ ul{
 </head>
 <body>
 {% csrf_token %}
-{% if user.is_authentacated %}
         <!--选项卡-->
     <div id="tab">
         <!--选项的头部-->
@@ -113,8 +112,5 @@ ul{
             </div>
         </div>
     </div>
-{% else %}
-    <p>Please login first</p>
-{% endif %}
 </body>
 </html>
