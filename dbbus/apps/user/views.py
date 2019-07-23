@@ -506,29 +506,6 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
         return HttpResponse(
             'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!')
 
-
-class UserInfoView(LoginRequiredMixin, TemplateView):
-    '''display user information after logged in'''
-
-    def get(self, request):
-        # change_password_form = ChangePwdForm()
-        return render(request, 'user_info.html',)
-
-
-class LogUserInfoView(LoginRequiredMixin, TemplateView):
-    '''store the favorite stops of user'''
-
-    def get(self, request):
-
-        # stops = UserStop.objects.filter(station_user=request.user)
-        # stops = list(stops)
-        user_name = 'testname'
-        email = 'test@dublinbus.com'
-        avatar = 'http://127.0.0.1:8000/static/images/avatar_default.png'
-        json_file = {"user_name": user_name, 'email': email, 'avatar': avatar}
-        return JsonResponse(json_file)
-
-
 #
 # def set_session(request):
 #     request.session['username'] = 'reanjie'
