@@ -159,7 +159,7 @@ MEDIA_URL = '/media/' # this url is used to store the avatar image
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-# the email deployment 
+# the email deployment
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # email host and port
 EMAIL_HOST = config.email_host
