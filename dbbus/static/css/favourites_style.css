@@ -14,11 +14,11 @@ ul{
 }
 
 #tab{
-    width: 498px;
-    height: 130px;
+    width: 300px;
+    height: 600px;
     border: 1px solid #ddd;
     box-shadow: 0 0 2px #ddd;
-    margin: 100px 0 0 100px;
+    margin: 0 0 0 0;
     /*处理超出的内容*/
     overflow: hidden;
 }

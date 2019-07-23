@@ -27,35 +27,21 @@ $(function(){
 		check_email();
 	});
 
-	$.ajaxSetup({
-                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
 
 	$('#regBtn').on('click',function(){
 		var name = $('#user_name').val()
 		var pwd = $('#pwd').val()
 		var cpwd = $('#cpwd').val()
 		var email = $('#email').val()
+		var token = $('input[name="csrfmiddlewaretoken"]').val()
 
 		$.ajax({
 			cache:false,
-			type: " ",
+			type: "POST",
 			url: 'http://127.0.0.1:8000/user/register',
-			data:{'user_name':name, 'pwd': pwd, 'cpwd': cpwd, 'email': email},
-			// data:{'user_name':name},
-			// dataType:'json',
+			data:{'user_name':name, 'pwd': pwd, 'cpwd': cpwd, 'email': email,'csrfmiddlewaretoken':token},
 			async:true,
-			// beforeSend:function(xhr,settings){
-			// 	xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-			// },
 			success:function(result){
-				// if(result.status == 'success'){
-                //         alert("提交成功");
-                //          window.location.reload();//刷新当前页面.
-                //     }else if(result.status == 'fail'){
-                //         $('#test_error').html("<b>" + result + "</b>");
-				// 		alert(result);
-				// 	}
 				if (result.res==1){
 					window.location.href = 'http://127.0.0.1:8000/user/index'
 				}

@@ -18,11 +18,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import config
 from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
-
-
 # from user.models import User, UserBusNumber, UserStop, UserRoute
-# REGISTER_ENCRYPT_KEY = 'djhadhakjhfaliuehjdlaufajdhfalkfdkjiidd354/2p812p39weqklrjq/'
-# FORGET_PASSWORD_ENCRYPT_KEY = 'SDLFJAIAOINCAJDHFAIUifdack123/.df/2p812p39weqklrjq/'
+
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
 FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
 
@@ -204,16 +201,18 @@ class LoginView(TemplateView):
                     response.delete_cookie('username')
 
                 # 返回response
-                return response
+                return JsonResponse({"res": 0})
+                # return response
             else:
                 # 用户未激活
-                return render(request, 'index.html', {'errmsg':'Account has not been activated'})
+                return JsonResponse({"res": 1, 'errmsg': 'Account has not been activsted'})
+                # return render(request, 'login.html', {'errmsg':'Account has not been activated'})
         else:
             # 用户名或密码错误
             print('3')
-            return render(request, 'index.html', {'errmsg':'username or password wrong'})
-
-
+            return render(request, 'login.html', {'errmsg':'username or password wrong'})
+  
+  
 # /user/logout
 class LogoutView(TemplateView):
     '''login out'''
@@ -236,7 +235,7 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         change_password_form=ChangePwdForm()
         return render(request,'pwd_change.html',{'change_password_form':change_password_form})
 
-
+    
     def post(self, request):
         '''process the password modification'''
         # get the user data        
@@ -301,7 +300,6 @@ class PasswordForgetView(TemplateView):
             return render(request,'pwd_forget.html',{'errormg':'email has not been found'})
         else:
             return render(request,'pwd_forget.html',{'forget_form':forget_form})
-
 
 
 #/user/reset_password/<token>
@@ -382,6 +380,7 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
             '''favourites page'''
             return render(request, 'favourites.html')
 
+
 class TestView(TemplateView):
         def get(self, request):
             '''favourites page'''
@@ -393,169 +392,7 @@ class TestView(TemplateView):
             return JsonResponse(name_dict)
 
 
-class TestAdd(TemplateView):
-        def get(self, request):
-            a = request.GET.get('a');
-            b = request.GET.get('b');
-
-            data = {};
-            data['sum'] = a+b;
-            '''favourites page'''
-            # return render(request, 'add.html'
-
-
-def Reg_form_post(request):
-    '''进行注册处理'''
-    # 接收数据
-    if request.method == 'POST':
-        username = request.POST.get('user_name')
-        password = request.POST.get('pwd')
-        r_password = request.POST.get('cpwd')
-        email = request.POST.get('email')
-
-        if not all([username, password, email]):
-            # 数据不完整
-            return JsonResponse({"res":0,"error_msg":"Data not complete."});
-            # 校验邮箱
-        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-            return JsonResponse({"res":0,"error_msg":"The format of Email is not correct."});
-        # check the password
-        if password != r_password:
-            return JsonResponse({"res":0,"error_msg":"the passwords are not match."});
-        # 校验用户名是否重复
-        try:
-            user = User.objects.get(username=username)
-            print('user')
-        except User.DoesNotExist:
-            # 用户名不存在
-            user = None
-
-        if user:
-           # 用户名已存在
-            return JsonResponse({"res":0,"error_msg":username + ' has been registered.'});
-            # return HttpResponse("the email has benn registered..");
-        # 进行业务处理: 进行用户注册
-
-        user = User.objects.create_user(username, email, password)
-        user.is_active = 0
-        user.save()
-        #
-        # # 激活链接中需要包含用户的身份信息, 并且要把身份信息进行加密
-        #
-        # # encript the information about user，生成激活token
-        serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
-        token = serializer.dumps(user.id).decode()  # bytes
-        #
-        # # send email
-        subject = 'Welcome to register dublin bus API'
-        message = ''
-        sender = settings.EMAIL_FROM
-        receiver = [email]
-        host_name = request.get_host()
-        html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
-
-        send_mail(subject, message, sender, receiver, html_message=html_message)
-        #
-        # # 返回应答, 跳转到首页
-        # return HttpResponse('{"status":"success"}', content_type='application/json');
-        # # return redirect(reverse('user:login'))
-        return JsonResponse({"res":1});
-    else:
-        return JsonResponse({"res":0,"error_msg":"ajax failed"});
-
-
-class LoginTestView(TemplateView):
-    '''注册'''
-    def get(self, request):
-        '''显示注册页面'''
-        return render(request, 'login.html')
-
-    def post(self, request):
-        '''显示注册页面'''
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('pwd')
-
-            if not all([username, password]):
-                # 数据不完整
-                return HttpResponse("Data not complete.");
-        return render(request, 'login.html')
-
-
-def Login_form_post(request):
-        '''get data'''
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('pwd')
-
-            if not all([username, password]):
-                # 数据不完整
-                return HttpResponse("Data not complete.");
-
-            # 业务处理:登录校验
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                        # 用户名密码正确
-                if user.is_active:
-                            # 用户已激活
-                            # 记录用户的登录状态
-                    login(request, user)
-                            # 获取登录后所要跳转到的地址
-                            # 默认跳转到首页
-                            # 跳转到next_url
-                    next_url = request.GET.get('next', reverse('user:index'))
-                            # 跳转到next_url
-                    response = redirect(next_url) # HttpResponseRedirect
-                            # 判断是否需要记住用户名
-                    remember = request.POST.get('remember')
-
-                    if remember == 'on':
-                                # 记住用户名
-                        response.set_cookie('username', username, max_age=7*24*3600)
-                    else:
-                        response.delete_cookie('username')
-
-                            # 返回response
-                        return response
-                else:
-                            # 用户未激活
-                    return HttpResponse('Account has not been activated')
-            else:
-                        # 用户名或密码错误
-                 # print('3')
-                return HttpResponse('username or password wrong')
-
-        return HttpResponse("Valid submission")
-
-
-def Add_fav_post(request):
-    # 接收数据
-    if request.method == 'POST':
-        stopid = request.POST.get('stopid')
-        # userid = request.POST.get('userid')
-        # 如果没登陆
-        # if not request.user.is_authenticated():
-        #     return HttpResponse('not log in')
-            # return HttpResponse('{"status":"fail", "mag": "not loged in"}', content_type='application/json')
-
-        # 判断记录是否存在
-        # exist_records = UserStop.objects.filter(user=request.user, station_user_id=int(stopid))
-        # if exist_records:
-        #     # 数据存在
-        #     return HttpResponse("You already have this station in favourite list.");
-        #
-        return HttpResponse("added")
-
-def Remove_fav_post(request):
-    # 接收数据
-    if request.method == 'POST':
-        stopid = request.POST.get('stopid')
-#     从数据库删除记录
-    return HttpResponse("deleted")
-
 class BusInfoView(LoginRequiredMixin, TemplateView):
-    # def get(self, request):
-    #     return render(request, 'bus_info_test.html')
     def get(self, request):
 
         stops = UserStop.objects.filter(station_user=request.user)
@@ -569,14 +406,6 @@ class BusInfoView(LoginRequiredMixin, TemplateView):
         bus_id = request.POST.get('bus_id')
         return HttpResponse(bus_id)
 
-def post_bus_info(request,busid):
-    # 接收数据
-    # if request.method == 'POST':
-    #     busid = request.POST.get('busid')
-    # bus_id = str(busid)
-    # return render(request,'bus_info_test.html', {'data': busid})
-    # return HttpResponse(busid)
-    return render(request, 'bus_info_test.html', {'data': busid})
 
 #/user/favorite_stop
 class FavoriteStopView(LoginRequiredMixin, TemplateView):
@@ -741,10 +570,6 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
 
         #         return JsonResponse(data)
         return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
-
-
-
-
 
 
 #
