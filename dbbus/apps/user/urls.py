@@ -19,8 +19,6 @@ urlpatterns = [
     path('test', views.TestView.as_view(), name = 'test'),
     path('favourites', views.FavouritesView.as_view(), name = 'favourites'),
     path('bus_info', views.BusInfoView.as_view(), name = 'bus_info'),
-    path('user_info', views.UserInfoView.as_view(), name = 'user_info'),
-    path('log_user_info', views.LogUserInfoView.as_view(), name = 'log_user_info'),
     # '''end of meihan part'''
 ]
 

@@ -16,10 +16,10 @@ from user.form import ForgetPwdForm,ResetPwdForm,ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
 import json
 from django.http import QueryDict
-from django.views.decorators.csrf import csrf_exempt
+import config
 
-REGISTER_ENCRYPT_KEY = 'djhadhakjhfaliuehjdlaufajdhfalkfdkjiidd354/2p812p39weqklrjq/'
-FORGET_PASSWORD_ENCRYPT_KEY = 'SDLFJAIAOINCAJDHFAIUifdack123/.df/2p812p39weqklrjq/'
+REGISTER_ENCRYPT_KEY = config.register_encrypt_key
+FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
 
   
 class IndexView(TemplateView):  
@@ -28,7 +28,6 @@ class IndexView(TemplateView):
         '''index page'''
         return render(request, 'index.html')
             
-        
         
 # /user/register
 class RegisterView(TemplateView):
@@ -134,7 +133,8 @@ class ActiveView(TemplateView):
         except BadSignature as e:
             # 激活链接已过期
             return render(request,'404.html')
-  
+
+
 # /user/login
 class LoginView(TemplateView):
     '''登录'''
@@ -172,7 +172,7 @@ class LoginView(TemplateView):
                 # 获取登录后所要跳转到的地址
                 # 默认跳转到首页
                 # 跳转到next_url
-                next_url = request.GET.get('next', reverse('user:user_info'))
+                next_url = request.GET.get('next', reverse('user:index'))
                 # 跳转到next_url
                 response = redirect(next_url) # HttpResponseRedirect
                 # 判断是否需要记住用户名
@@ -207,6 +207,7 @@ class LogoutView(TemplateView):
   
         # 跳转到首页
         return redirect(reverse('user:index'))
+
 
 # /user/change_password
 class PasswordChangeView(LoginRequiredMixin, TemplateView):
@@ -277,7 +278,6 @@ class PasswordForgetView(TemplateView):
         else:
             return render(request,'pwd_forget.html',{'forget_form':forget_form})
             
-
 
 class ResetPasswordView(TemplateView):
     '''重置密码'''
@@ -354,10 +354,10 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
             '''favourites page'''
             return render(request, 'favourites.html')
 
+
 class TestView(TemplateView):
         def get(self, request):
             '''favourites page'''
-            # return render(request, 'user_info.html')
             return render(request, 'test_map.html')
 
         def query(request):
