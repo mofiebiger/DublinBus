@@ -23,6 +23,8 @@ urlpatterns = [
     path('prediction/', include('prediction.urls',namespace='prediction')),
     path('captcha/', include('captcha.urls')),
     path('', include('user.urls')),
+    #path('', include('pwa.urls')),
+    path('foundation/', include('foundation.urls',namespace='foundation'))
 ]
 
 if settings.DEBUG:

@@ -20,75 +20,72 @@
       <button type="button" id="removeFav" hidden>Remove Favourite</button>
 {#</form>#}
 </div>
-<script>
-      $(function(){
-          $.ajaxSetup({
-              data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
-          window.onload=function(){
-              $.ajax({
-                type:"GET",
-                url: 'http://127.0.0.1:8000/user/favorite_bus_number',
-                async: true,
-                success:function(result){
-                    var msg = "#addFav"
-                    // console.log(result['user_bus_list'][0]['bus_number'])
-                    for(var i =0; i < result['user_bus_list'].length; i++){
-                        // console.log(result['user_stop_list'][i])
-                        if (result['user_bus_list'][i]['bus_number'] == $('#bus_id').val()){
-                            msg = "#removeFav"
-                        }
+{#<script>#}
+{#      $(function(){#}
+{#          window.onload=function(){#}
+{#              $.ajax({#}
+{#                type:"GET",#}
+{#                url: 'http://127.0.0.1:8000/user/favorite_bus_number',#}
+{#                async: true,#}
+{#                success:function(result){#}
+{#                    var msg = "#addFav"#}
+{#                    // console.log(result['user_bus_list'][0]['bus_number'])#}
+{#                    for(var i =0; i < result['user_bus_list'].length; i++){#}
+{#                        // console.log(result['user_stop_list'][i])#}
+{#                        if (result['user_bus_list'][i]['bus_number'] == $('#bus_id').val()){#}
+{#                            msg = "#removeFav"#}
+{#                        }#}
                         {#msg += "<li><a href='#'>"+result['user_bus_list'][i]['bus_number']+"</a></li>"#}
-                    }
-                    $(msg).show()
-                },
-                error:function(){
-                    console.log('show button fail')
-                },
-            })
-
-          }
-
-          var bus_id = $('#bus_id').val()
-          var start = $('#start_point').text()
-          var end = $('#end_point').text()
-
-          $('#addFav').on('click',function(){
-		        $.ajax({
-			        cache:false,
-			        type: "POST",
-			        url:"http://127.0.0.1:8000/user/favorite_bus_number",
-			        data:{'bus_number':bus_id, 'start_point': start, 'end_point': end,},
-			        async:true,
-			        success:function(result){
-				        $('#addFav').hide();
-				        $('#removeFav').show();
-				        alert(result);
-			        },
-			        error: function(){
-				        alert("add failed");
-			        },
-		        });
-	        });
-
-          $('#removeFav').on('click',function(){
-		        $.ajax({
-			        cache:false,
-			        type: "DELETE",
-			        url:"http://127.0.0.1:8000/user/favorite_bus_number",
-			        data:{'bus_number':bus_id, 'start_point': start, 'end_point': end,},
-			        async:true,
-			        success:function(result, status, xml){
-				        $('#addFav').show();
-				        $('#removeFav').hide();
-				        alert(result);
-			        },
-			        error: function(){
-				        alert("delete failed");
-			        },
-		        });
-	        });
-      })
-  </script>
+{#                    }#}
+{#                    $(msg).show()#}
+{#                },#}
+{#                error:function(){#}
+{#                    console.log('show button fail')#}
+{#                },#}
+{#            })#}
+{##}
+{#          }#}
+{##}
+{#          var bus_id = $('#bus_id').val()#}
+{#          var start = $('#start_point').text()#}
+{#          var end = $('#end_point').text()#}
+{##}
+{#          $('#addFav').on('click',function(){#}
+{#		        $.ajax({#}
+{#			        cache:false,#}
+{#			        type: "POST",#}
+{#			        url:"http://127.0.0.1:8000/user/favorite_bus_number",#}
+{#			        data:{'bus_number':bus_id, 'start_point': start, 'end_point': end,},#}
+{#			        async:true,#}
+{#			        success:function(result){#}
+{#				        $('#addFav').hide();#}
+{#				        $('#removeFav').show();#}
+{#				        alert(result);#}
+{#			        },#}
+{#			        error: function(){#}
+{#				        alert("add failed");#}
+{#			        },#}
+{#		        });#}
+{#	        });#}
+{##}
+{#          $('#removeFav').on('click',function(){#}
+{#		        $.ajax({#}
+{#			        cache:false,#}
+{#			        type: "DELETE",#}
+{#			        url:"http://127.0.0.1:8000/user/favorite_bus_number",#}
+{#			        data:{'bus_number':bus_id, 'start_point': start, 'end_point': end,},#}
+{#			        async:true,#}
+{#			        success:function(result, status, xml){#}
+{#				        $('#addFav').show();#}
+{#				        $('#removeFav').hide();#}
+{#				        alert(result);#}
+{#			        },#}
+{#			        error: function(){#}
+{#				        alert("delete failed");#}
+{#			        },#}
+{#		        });#}
+{#	        });#}
+{#      })#}
+{#  </script>#}
 </body>
 </html>

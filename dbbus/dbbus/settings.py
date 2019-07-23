@@ -89,12 +89,11 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': config.engine,
         'NAME': config.name,
         'USER': config.user,
         'PASSWORD': config.password,
         'HOST': 'localhost',
-#         'HOST': 'localhost',
         'PORT':5000,
     }
 }
