@@ -163,8 +163,8 @@ class LoginView(TemplateView):
             checked = ''
 
         # return the information
-#         return render(request, 'login.html')
-        return JsonResponse({'username':username, 'checked':checked})
+        return render(request, 'login.html')
+        # return JsonResponse({'username':username, 'checked':checked})
 
     def post(self, request):
         '''process the login'''
