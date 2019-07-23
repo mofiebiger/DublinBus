@@ -1,4 +1,4 @@
-{
+[{
   "name": "DublinBus",
   "short_name": "DublinBus",
   "start_url": "https://dublin-bus.tk/user/index",
@@ -9,7 +9,7 @@
     "icons": [
         {
             "src": "https://rawgithub.com/darkskyapp/skycons/master/skycons.js",
-            "color": "https://rawgithub.com/darkskyapp/skycons/master/skycons.js";
+            "color": "https://rawgithub.com/darkskyapp/skycons/master/skycons.js",
         }
     ]
-}
+}]

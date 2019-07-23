@@ -149,7 +149,6 @@ directionsSetUp = function(){
           strokeOpacity: 0,
       });
       map.fitBounds(circle.getBounds());
-
     } //fetchAddress Ends
 
     // Display if there is an error with the geolocation
@@ -189,7 +188,6 @@ directionsSetUp = function(){
         $.ajax({
           'async' : 'true',
           'url' : '/static/json/stops_info.json',
-          // 'url': "{% static 'json/stops_info.json' %}",
           'type': 'get',
           'dataType':'json',
           'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -232,6 +230,11 @@ directionsSetUp = function(){
 
 }; //InitMap Ends
 
+    //load favouties page
+    $(document).ready(function(){
+      $('#logIn').load('/user/login');
+      $('#favouritesInfo').load('/user/favourites');
+    })
 
       // used code from 'https://css-tricks.com/prefilling-date-input/'
       // this is used for a default of todays date
