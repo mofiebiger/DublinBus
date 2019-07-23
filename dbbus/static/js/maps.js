@@ -285,7 +285,7 @@ directionsSetUp = function(){
         function on8() {
             $.ajax({
               // 'url': "{% url "prediction:weather" %}",
-              'url': "http://localhost:8000/prediction/weather",
+              'url': window.location.protocol+"//"+window.location.host+"/prediction/weather",
               'type': 'get',
               'dataType':'json',
             }).done(function(data_total){
