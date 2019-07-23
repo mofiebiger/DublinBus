@@ -25,6 +25,20 @@
   overflow: auto;
 }
 
+#overlay2 img {
+	height: 110px;
+	border-radius: 5px;
+	float: right;
+	padding: 3%;
+}
+
+/* #overlay2 h4 {
+	margin: 2% !important;
+} */
+
+
+
+
 #overlay3 {
   position: fixed;
   float: left;

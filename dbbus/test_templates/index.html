@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en" dir="ltr">
 
 {% load pwa %}
 {% load staticfiles %}
@@ -126,6 +126,8 @@
       <div id="journeyInfo">
         <h1> Journey Planner </h1>
 
+        <button id="geoButton">Use Your Current Location</button>
+
             <div id="directionsPanel">
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
               <input id="directionsDestination" class="controls" type="text" placeholder="End">
@@ -133,7 +135,7 @@
 
             <div id="dateTime-panel">
               <div id="date">
-                <input id="today" type="date" name="fname">
+                <input id="rightNow" type="date">
               </div>
 
               <div id="time">
