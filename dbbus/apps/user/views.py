@@ -549,6 +549,9 @@ class FavoriteRouteView(LoginRequiredMixin, TemplateView):
 
 class ContactUsView(LoginRequiredMixin, TemplateView):
     '''contact information'''
+    def get(self,request):
+        return render(request, 'contactPage.html')
+
     def post(self, request):
         
         user = request.user

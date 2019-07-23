@@ -235,6 +235,7 @@ directionsSetUp = function(){
       $('#logIn').load('/user/login');
       $('#favouritesInfo').load('/user/favourites');
       $('#touristInfo').load('/user/tourism');
+      $('#contactInfo').load('/user/contact');
     })
 
       // used code from 'https://css-tricks.com/prefilling-date-input/'
