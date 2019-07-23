@@ -1,301 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% load pwa %}
+{% load staticfiles %}
+  <head>
+
+    {% progressive_web_app_meta %}
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- <link rel="stylesheet" href="{% static 'css/tourism.css' %}"> -->
+    <title>Tourism</title>
+  </head>
+
+
+  <body>
 <h2>Guinness Storehouse</h2>
 <p>Immersive brand experience & rooftop bar</p>
+<div id="tourism-image">
+<img src="{% static 'images/guinessSH.jpg' %}"></img>
 <h4>Brewery experience telling the tale of Ireland's famous beer, with tastings and a
   rooftop bar. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Temple Bar</h2>
 <p>Live music & the Project Arts Centre</p>
+<div id="tourism-image">
+<img src="{% static 'images/temple-bar.jpg' %}"></img>
 <h4>Temple Bar is a busy riverside neighbourhood, spread over cobbled pedestrian lanes. Crowded pubs host live folk
   music and DJ sets, and diners pack restaurants serving Asian, American and Irish cuisine. Quirky boutiques stock
   clothes and crafts by local designers. The National Photographic Archive highlights Ireland’s past, while the Project
-  Arts Centre and Temple Bar Gallery + Studios shows contemporary art. <a href="https://en.wikipedia.org/wiki/Temple_Bar,_Dublin">here</a></h4>
+  Arts Centre and Temple Bar Gallery + Studios shows contemporary art. For more information click
+  <a href="https://en.wikipedia.org/wiki/Temple_Bar,_Dublin">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Dublin Castle</h2>
 <p>Museums, state rooms & a Gothic chapel</p>
+<div id="tourism-image">
+<img src="{% static 'images/dublin-castle.jpg' %}"></img>
 <h4>Historic site, dating from 1204, with 2 museums, cafes and gardens, plus state rooms and a library.
   For more information click <a href="http://www.dublincastle.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Phoenix Park</h2>
 <p>Enormous green space housing Dublin Zoo</p>
+<div id="tourism-image">
+<img src="{% static 'images/phoenix_park.jpg' %}"></img>
 <h4>Deer roam forested areas filled with mature trees within this area known as
   'Dublin's playground'. For more information click <a href="http://www.phoenixpark.ie/">here</a></h4>
+</div>
 
 <hr>
 
-<h2>St Stephen's Green</h2>
+<h2>Saint Stephen's Green</h2>
 <p>Park with original Victorian layout</p>
+<div id="tourism-image">
+<img src="{% static 'images/stephansGreen.png' %}"></img>
 <h4>City centre park with ornamental lake, waterfall, sculptures and a children's playground.
   For more information click <a href="http://www.heritageireland.ie/en/dublin/ststephensgreen/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Kilmainham Gaol</h2>
 <p>Prison telling stories of Ireland's past</p>
-<h4>Prison museum where many of Ireland's political prisoners were incarcerated, tortured and executed. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/k_gaol.jpg' %}"></img>
+<h4>Prison museum where many of Ireland's political prisoners were incarcerated, tortured and executed.
+  For more information click <a href="http://kilmainhamgaolmuseum.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Christ Church Cathedral</h2>
 <p>Medieval edifice with a crypt & cafe</p>
-<h4>Medieval place of CofI worship with a mummified rat & cat plus a cafe & gift shop in the crypt. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/christ_church.jpg' %}"></img>
+<h4>Medieval place of CofI worship with a mummified rat & cat plus a cafe & gift shop in the crypt.
+  For more information click <a href="https://christchurchcathedral.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>St Patrick's Cathedral</h2>
 <p>Medieval building with musical recitals</p>
-<h4>The Church of Ireland's national cathedral, dating from 1220, with lunchtime musical recitals. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/St_Paddys.jpg' %}"></img>
+<h4>The Church of Ireland's national cathedral, dating from 1220, with lunchtime musical recitals.
+  For more information click <a href="https://www.stpatrickscathedral.ie/">here</a></h4>
+</div>
 
+<hr>
 
 <h2>Dublin Zoo</h2>
 <p>Popular naturally landscaped zoo</p>
-<h4>The largest zoo in Ireland has African Plain, Fringes of the Arctic and Asian Forests exhibits. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Dublin-Zoo.png' %}"></img>
+<h4>The largest zoo in Ireland has African Plain, Fringes of the Arctic and Asian Forests exhibits.
+  For more information click <a href="https://www.dublinzoo.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Jameson Distillery Bow St.</h2>
 <p>Tours of the famous whiskey distillery</p>
-<h4>Expert guides tell the story of Jameson in a recreated distillery scene with tastings and dining. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/jameson.jpg' %}"></img>
+<h4>Expert guides tell the story of Jameson in a recreated distillery scene with tastings and dining.
+  For more information click <a href="https://www.jamesonwhiskey.com/en-IE/visit-us/jameson-distillery-bow-st">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Malahide Castle & Gardens</h2>
 <p>Well-kept, 12th-century bastion</p>
-<h4>Towered stone bulwark holding antique furnishings and portraits, plus a huge garden and restaurant. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-
-<h2>Ha'penny Bridge</h2>
-<p>Landmark 1800s pedestrian bridge</p>
-<h4>Refurbished 19th-century cast-iron span & city symbol, crossed by thousands of pedestrians daily. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Malahide-Castle.jpg' %}"></img>
+<h4>Towered stone bulwark holding antique furnishings and portraits, plus a huge garden and restaurant.
+  For more information click <a href="https://www.malahidecastleandgardens.ie/">here</a></h4>
+</div>
 
 <hr>
 
-<h2>Powerscourt House & Gardens</h2>
+<h2>Ha'penny Bridge</h2>
+<p>Landmark 1800s pedestrian bridge</p>
+<div id="tourism-image">
+<img src="{% static 'images/hapenny.jpg' %}"></img>
+<h4>Refurbished 19th-century cast-iron span & city symbol, crossed by thousands of pedestrians daily.
+  For more information click <a href="http://www.bridgesofdublin.ie/bridges/hapenny-bridge/history">here</a></h4>
+</div>
+
+<hr>
+
+<h2>Powerscourt</h2>
 <p>Historic country estate & grand gardens</p>
-<h4>18th-century stately home and famous landscaped grounds, with themed gardens and a waterfall. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/powerscourt.jpeg' %}"></img>
+<h4>18th-century stately home and famous landscaped grounds, with themed gardens and a 398-ft. waterfall in
+  mountain foothill area with ancient trees, sika deer & rich birdlife.
+  For more information click <a href="https://powerscourt.com">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Trinity College Library</h2>
 <p>The Library of Trinity College Dublin serves Trinity College and the University of Dublin. </p>
-<h4>It is a legal deposit or "copyright library", which means that publishers in Ireland must deposit a copy of all their publications there, free of charge. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/trinity_libe.jpg' %}"></img>
+<h4>It is a legal deposit or "copyright library", which means that publishers in Ireland must deposit
+  a copy of all their publications there, free of charge. For more information click
+  <a href="https://www.tcd.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>National Botanic Gardens</h2>
 <p>Formal & natural landscapes & palm house</p>
-<h4>Large area with naturalistic sections, formal gardens, an arboretum and a Victorian palm house. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/botanic-gardens.jpeg' %}"></img>
+<h4>Large area with naturalistic sections, formal gardens, an arboretum and
+  a Victorian palm house. For more information click <a href="http://botanicgardens.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>The Spire</h2>
 <p>Towering stainless steel monument</p>
-<h4>This towering cone-shaped monument is known for its minimalist elegance & reflective steel surface. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/spire.jpg' %}"></img>
+<h4>This towering cone-shaped monument is known for its minimalist elegance & reflective
+  steel surface. For more information click <a href="https://en.wikipedia.org/wiki/Spire_of_Dublin">here</a></h4>
+</div>
 
 <hr>
 
 <h2>National Gallery of Ireland</h2>
 <p>Ireland's national art collection</p>
-<h4>Grand collection of European art spanning the 14th to the 20th-century covering all major schools. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/national-gallery.jpg' %}"></img>
+<h4>Grand collection of European art spanning the 14th to the 20th-century covering all
+  major schools. For more information click <a href="https://www.nationalgallery.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Chester Beatty</h2>
 <p>Rare religious & artistic manuscripts</p>
-<h4>Mining magnate's exceptional collections of religious and artistic work on grounds of Dublin Castle. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-<hr>
-
-<h2>National Museum of Ireland - Archaeology</h2>
-<p>Museum reflecting 4000 years of heritage</p>
-<h4>Local archaeological finds from the Bronze Age, Vikings and Medieval times with some Egyptian items. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/ChesterBeatty.jpg' %}"></img>
+<h4>Mining magnate's exceptional collections of religious and artistic work on grounds of
+  Dublin Castle. For more information click <a href="https://www.chesterbeatty.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Merrion Square South</h2>
 <p>Art museum, monument, park, and history</p>
-<h4>Merrion Square is a Georgian garden square on the southside of Dublin city centre. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/marrion_square.jpg' %}"></img>
+<h4>Merrion Square is a Georgian garden square on the southside of Dublin city centre.
+  For more information click <a href="https://en.wikipedia.org/wiki/Merrion_Square">here</a></h4>
+</div>
 
 <hr>
 
 <h2>The Little Museum of Dublin</h2>
 <p>People's museum of 20th-century Dublin</p>
-<h4>Museum chronicling remarkable changes to the lifestyles of Dubliners over the the last century. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/little_museum.jpeg' %}"></img>
+<h4>Museum chronicling remarkable changes to the lifestyles of Dubliners over the the
+  last century. For more information click <a href="https://www.littlemuseum.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>National Museum of Ireland</h2>
 <p>Museum, natural history, and history</p>
-<h4>The National Museum of Ireland is Ireland's leading museum institution, with a strong emphasis on national and some international archaeology, Irish history, Irish art, culture, and natural history For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-<hr>
-
-<h2>National Museum of Ireland - Natural History Museum</h2>
-<p>Restored Victorian natural displays</p>
-<h4>Stuffed and mounted animals are displayed in their 19th-century grandeur in this throwback museum. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/national-museum.jpg' %}"></img>
+<h4>The National Museum of Ireland is Ireland's leading museum institution, with a strong emphasis on
+  national and some international archaeology, Irish history, Irish art, culture, and
+  natural history. For more information click <a href="https://www.museum.ie/Home">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Irish Museum of Modern Art</h2>
 <p>Modern art in a 17th-century hospital</p>
-<h4>Imposing building from 1684 housing permanent collection and temporary exhibitions of varied art. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/IMMA.jpg' %}"></img>
+<h4>Imposing building from 1684 housing permanent collection and temporary exhibitions
+  of varied art. For more information click <a href="https://imma.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Glasnevin Cemetery</h2>
 <p>Open-air museum with guided tours</p>
-<h4>Victorian burial grounds & museum with guided tours, interactive exhibits, a gift shop & cafe. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/glasnevin.jpg' %}"></img>
+<h4>Victorian burial grounds & museum with guided tours, interactive exhibits,
+  a gift shop & cafe. For more information click <a href="https://www.glasnevintrust.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>An Post, General Post Office</h2>
 <p>Compact museum of the post office</p>
-<h4>Historical accounts and effects outlining the role of the Irish post service in the country's past. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/GPO.jpeg' %}"></img>
+<h4>Historical accounts and effects outlining the role of the Irish post service in the country's past.
+  For more information click <a href="https://www.anpost.com/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Dublin Writers Museum</h2>
 <p>Literary history in 18th-century mansion</p>
-<h4>Letters, books and artifacts covering 300 years of Dublin's acclaimed literary heritage. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/dublin-writers-museum.jpg' %}"></img>
+<h4>Letters, books and artifacts covering 300 years of Dublin's acclaimed literary heritage.
+  For more information click <a href="https://www.visitdublin.com/see-do/details/dublin-writers-museum">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Viking Splash Tours</h2>
-<h4>For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/VikingSplashTours.jpg' %}"></img>
+<h4>Discover all Dublin has to offer! See Dublin's tallest Cathedral, unearth stories about our old
+  medieval city and Viking heritage, spot Dublin's iconic skyline feature, the Spire, all before splashing
+  into the Grand Canal Basin to uncover U2's recording studios.
+  For more information click <a href="https://citysplashtours.com/dublin/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Molly Malone Statue</h2>
 <p>Statue based on a popular Irish song</p>
-<h4>Bronze statue of a fictional fishmonger named Molly Malone, the star of a well-known Irish song. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/molly-malone.jpg' %}"></img>
+<h4>Bronze statue of a fictional fishmonger named Molly Malone, the star of a well-known Irish song.
+  For more information click <a href="https://mollymalonestatue.com/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Aviva Stadium</h2>
 <p>Stadium for international rugby & soccer</p>
-<h4>Large stadium with an unusual glass end used for international sports and occasional concerts. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Aviva.jpg' %}"></img>
+<h4>Large stadium with an unusual glass end used for international sports and occasional concerts.
+  For more information click <a href="https://www.avivastadium.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>National Leprechaun Museum of Ireland</h2>
 <p>Hands-on displays about Irish folklore</p>
-<h4>Family-friendly museum with interactive exhibits telling stories about Ireland's mythical creatures. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/leprechaunMus.jpg' %}"></img>
+<h4>Family-friendly museum with interactive exhibits telling stories about Ireland's
+  mythical creatures. For more information click <a href="http://www.leprechaunmuseum.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>The Custom House</h2>
 <p>Cupola-topped waterfront building</p>
-<h4>Neoclassical building used as a government office, designed by James Gandon and completed in 1791. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/custom-house.jpeg' %}"></img>
+<h4>Neoclassical building used as a government office, designed by James Gandon
+  and completed in 1791. For more information click
+  <a href="https://www.housing.gov.ie/corporate/organisation/history-department/custom-house">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Dublin Bay</h2>
 <p>Lighthouse and sailing</p>
-<h4>Dublin Bay is a C-shaped inlet of the Irish Sea on the east coast of Ireland. The bay is about 10 kilometres wide along its north-south base, and 7 km in length to its apex at the centre of the city of Dublin; stretching from Howth Head in the north to Dalkey Point in the south. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/dublin-bay.jpg' %}"></img>
+<h4>Dublin Bay is a C-shaped inlet of the Irish Sea on the east coast of Ireland. The bay is
+  about 10 kilometres wide along its north-south base, and 7 km in length to its apex at the centre of
+  the city of Dublin; stretching from Howth Head in the north to Dalkey Point in the south.
+  For more information click <a href="https://en.wikipedia.org/wiki/Dublin_Bay">here</a></h4>
+</div>
 
 <hr>
 
 <h2>The National Wax Museum Plus</h2>
 <p>Celebrity waxwork attraction</p>
-<h4>Family museum containing hundreds of wax versions of famous Irish and international personalities. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/wax-museum.jpg' %}"></img>
+<h4>Family museum containing hundreds of wax versions of famous Irish and
+  international personalities. For more information click <a href="https://www.waxmuseumplus.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Dublinia</h2>
 <p>Interactive Viking & medieval history</p>
-<h4>Sights and smells bring hundreds of year's worth of history to life at this child friendly museum. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/dublinia.jpg' %}"></img>
+<h4>Sights and smells bring hundreds of year's worth of history to life at
+  this child friendly museum. For more information click <a href="https://www.dublinia.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>EPIC The Irish Emigration Museum</h2>
 <p>Museum</p>
-<h4>EPIC The Irish Emigration Museum is a museum located in Dublin's Docklands which covers the history of the Irish diaspora and emigration to other countries. It was voted as "Europe's Leading Tourist Attraction" at the World Travel Awards in 2019. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/epic.jpg' %}"></img>
+<h4>EPIC The Irish Emigration Museum is a museum located in Dublin's Docklands which covers
+  the history of the Irish diaspora and emigration to other countries. It was voted as
+  "Europe's Leading Tourist Attraction" at the World Travel Awards in 2019.
+  For more information click <a href="https://epicchq.com/?utm_source=mybusiness&utm_medium=organic">here</a></h4>
+</div>
 
 <hr>
 
 <h2>The Book of Kells</h2>
 <p>Famous illuminated religious manuscript</p>
-<h4>Grand library location for illuminated illustrations of the Christian Gospels dating from 800AD. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-<hr>
-
-<h2>Saint Stephen's Green</h2>
-<p>Park and shopping</p>
-<h4>For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-<hr>
-
-<h2>National Museum of Ireland - Decorative Arts & History</h2>
-<p>Military & decorative art archives</p>
-<h4>Irish haute couture and silver collections alongside exhibitions exploring Irish military history. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/book-of-kells.jpg' %}"></img>
+<h4>Grand library location for illuminated illustrations of the Christian Gospels dating from 800AD.
+  For more information click <a href="https://www.tcd.ie/visitors/book-of-kells/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Dublin City Gallery The Hugh Lane</h2>
 <p>Small gallery for impressionist works</p>
-<h4>Gallery containing the reconstructed studio of Francis Bacon and a strong collection of French work. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-<hr>
-
-<h2>Powerscourt Waterfall</h2>
-<p>398-ft. waterfall in picturesque park</p>
-<h4>398-ft. waterfall in mountain foothill area with ancient trees, sika deer & rich birdlife. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Hugh-Lane.jpg' %}"></img>
+<h4>Gallery containing the reconstructed studio of Francis Bacon and a strong collection of
+  French work. For more information click <a href="http://www.hughlane.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Farmleigh House</h2>
 <p>18th-century estate with gardens & tours</p>
-<h4>Restored, 18th-century state guest house on 78 acres, with gardens, guided tours & a boathouse cafe. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Farmleigh-House.jpeg' %}"></img>
+<h4>Restored, 18th-century state guest house on 78 acres, with gardens, guided tours & a boathouse
+  cafe. For more information click <a href="http://farmleigh.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Irish Whiskey Museum</h2>
 <p>Interactive displays & whiskey tasting</p>
-<h4>Guided tours tracing the history of whiskey through interactive exhibits, plus a tasting at the end. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/irish-whiskey.jpg' %}"></img>
+<h4>Guided tours tracing the history of whiskey through interactive exhibits, plus a tasting at the end.
+  For more information click <a href="https://www.irishwhiskeymuseum.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Jeanie Johnston Tall Ship</h2>
 <p>Tours of replica 1850s emigrants' vessel</p>
-<h4>Tours below and above deck of a replica, 19th-century ship that took Irish emigrants to America. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/JJship.jpg' %}"></img>
+<h4>Tours below and above deck of a replica, 19th-century ship that took Irish emigrants to America.
+  For more information click <a href="https://jeaniejohnston.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>O'Connell Bridge</h2>
 <p>River</p>
-<h4>O'Connell Bridge is a road bridge spanning the River Liffey in Dublin, and joining O'Connell Street to D'Olier Street, Westmoreland Street and the south quays. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
-
-<hr>
-
-<h2>Glasnevin Cemetery Museum</h2>
-<p>Cemetery museum with history exhibits</p>
-<h4>Victorian burial ground of many prominent Irish figures, plus a museum with interactive displays. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/o-connell-bridge.jpg' %}"></img>
+<h4>O'Connell Bridge is a road bridge spanning the River Liffey in Dublin, and joining O'Connell Street to
+  D'Olier Street, Westmoreland Street and the south quays.
+  For more information click <a href="https://en.wikipedia.org/wiki/O'Connell_Bridge">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Killiney Hill</h2>
 <p>Hiking spot with sea & mountain views</p>
-<h4>Popular walking & hiking locale with panoramic ocean & mountain views, plus a park with monuments. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Killiney-Hill.jpg' %}"></img>
+<h4>Popular walking & hiking locale with panoramic ocean & mountain views, plus a park with monuments.
+  For more information click <a href="https://en.wikipedia.org/wiki/Killiney_Hill">here</a></h4>
+</div>
 
 <hr>
 
 <h2>National Library of Ireland</h2>
 <p>Imposing Victorian reference library</p>
-<h4>Non-lending library housing the personal notes of Roddy Doyle, Seamus Heaney and James Joyce. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/national-libe.jpg' %}"></img>
+<h4>Non-lending library housing the personal notes of Roddy Doyle, Seamus Heaney and
+  James Joyce. For more information click <a href="http://www.nli.ie/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Howth Castle</h2>
 <p>Medieval-era site with tours & a cafe</p>
-<h4>Centuries-old property hosting public tours, cooking classes & afternoon tea in a garden cafe. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/howth-castle.jpg' %}"></img>
+<h4>Centuries-old property hosting public tours, cooking classes & afternoon tea in a garden
+  cafe. For more information click <a href="http://howthcastle.com/">here</a></h4>
+</div>
 
 <hr>
 
 <h2>Iveagh Gardens</h2>
 <p>Restored city-centre Victorian gardens</p>
-<h4>Unique collection of garden landscapes designed in 1865 and mostly restored since 1995. For more information click <a href="https://www.guinness-storehouse.com/en">here</a></h4>
+<div id="tourism-image">
+<img src="{% static 'images/Iveagh.jpg' %}"></img>
+<h4>Unique collection of garden landscapes designed in 1865 and mostly restored since 1995.
+  For more information click <a href="http://howthcastle.com/">here</a></h4>
+</div>
+
+
+</body>
+</html>
