@@ -3,7 +3,7 @@
 {% load staticfiles %}
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>register</title>
+	<title>Login</title>
 {#	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">#}
 {#	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">#}
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
@@ -13,7 +13,7 @@
 	.reg_title{width:360px;height:50px;float:left;margin-left:30px;border-bottom:1px solid #e0e0e0}
 	.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
 	{#.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}#}
-	
+
 	.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
 	.reg_form li{height:70px;}
 	.reg_form li label{width:70px;height:40px;line-height:40px;float:left;font-size:14px;color:#a8a8a8}
@@ -28,7 +28,7 @@
 
 </head>
 <body>
-		<div class="r_con fr" id="login_div">
+		<div class="r_con fr" id="login_div" style="display: none;">
 			<div class="reg_title clearfix">
 				<h1>Login</h1>
 				<a href="/user/register">register</a>
@@ -45,12 +45,9 @@
 							<label>Remember Name</label>
 							<a href="forget_password">Forget Password</a>
 						</div>
-{#						<input type="submit" name="" value="Login in" class="input_submit">#}
                         <p class="error" id="test_error">&nbsp; </p>
                         <button type="button" id='loginBtn'value="Login" name="">Login</button>
 					</form>
-{#					#}
-{#                {{ errmsg }}#}
 			</div>
 
 
@@ -58,75 +55,62 @@
 
 		<div id="user_info" style="display: none;">
             <!--profile start here-->
-<div class="profile">
-	<div class="wrap">
-		<div class="profile-main">
-			<div class="profile-pic wthree">
-{#                {% csrf_token %}#}
-				<img id="id_avatar" src="http://127.0.0.1:8000/static/images/avatar_default.png" alt="">
-{#                <button id="change_avatar">+</button>#}
-{#                <input type="file" id="upload_avatar">#}
-{#                <label for="upteainput">change avatar</label>#}
-{#                <input id="upload_avatar" type="file" class="form-control-file">#}
-{#                <form id="upform" enctype='multipart/form-data' style="display:none;">#}
-{#    <div class="form-group">#}
-{#        <label for="upteainput">+</label>#}
-{#        <input id="upteainput" name="upfile" type="file" class="form-control-file">#}
-{#    </div>#}
-</form>
-<button id="uptea" type="button" class="btn btn-primary">+</button>
-				<h2 id="id_username">USERNAME</h2>
-				<p id="id_email">email address</p>
-			</div>
-			<div class="w3-message">
-				<div class="wthree_tab_grid_sub">
-					<div class="wthree_tab_grid_sub_left">
-						<h5>HOME</h5>
-					</div>
-					<div class="wthree_tab_grid_sub_left">
-						<h5>WORK</h5>
-					</div>
-					<div class="wthree_tab_grid_sub_left">
-						<h5>FAVs</h5>
-					</div>
-					<div class="clear"> </div>
-				</div>
-			</div>
-		</div>
-		<div class="wthree_footer_copy">
-			<p></p>
-		</div>
-	</div>
-</div>
-<!--profile end here-->
+            <div class="profile">
+            <div class="wrap">
+                <div class="profile-main">
+                    <div class="profile-pic wthree">
+                        {% csrf_token %}
+{#                        {% if user.is_authenticated %}#}
+{#                        <img id="id_avatar"  height="60px" width="60px" src="{{ user.user_profile.url }}" alt="">#}
+                        <img id="id_avatar"  height="60px" width="60px" src="" alt="">
+                        <input id="upload_avatar" type="file">
+                        <h2 id="id_username"></h2>
+{#                        <h2 id="id_username">{{ user.username }}</h2>#}
+                        <p id="id_email">p</p>
+{#                        <p id="id_email">{{ user.email }}</p>#}
+{#                        {% endif %}#}
+                    </div>
+                    <div class="w3-message">
+                        <div class="wthree_tab_grid_sub">
+                            <div class="wthree_tab_grid_sub_left">
+                                <a id="reset_pw" href="http://127.0.0.1:8000/user/change_password"><h5>Reset password</h5></a>
+                            </div>
+                            <div class="wthree_tab_grid_sub_left">
+                                <a id="logout" href="http://127.0.0.1:8000/user/logout"><h5>Logout</h5></a>
+
+                            </div>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="wthree_footer_copy">
+                    <p></p>
+                </div>
+            </div>
+            </div>
+
         </div>
 	
 </body>
 <script>
-    {#$(document).ready(function(){#}
-    {#      $('#user_info').load('/user/user_info');#}
-    {#    })#}
+    {% if user.is_authenticated %}
+        $('#id_avatar').attr("src", "{{ user.user_profile.url }}")
+        $('#id_username').html("{{ user.username }}")
+        $('#id_email').html("{{ user.email }}")
+        $('#user_info').attr("style","display:block;")
+        $('#login_div').attr("style","display:none;")
+    {% else %}
+        $('#user_info').attr("style","display:none;")
+        $('#login_div').attr("style","display:block;")
+    {% endif %}
     $(function(){
-    // 当页面加载完毕
+        var token = $('input[name="csrfmiddlewaretoken"]').val()
     window.onload = function(){
-        $.ajax({
-        type:"GET",
-        url: 'http://127.0.0.1:8000/user/log_user_info',
-        async: true,
-        success:function(result){
-            var msg = ""
-            $('#id_username').html(result.user_name)
-            $('#id_email').html(result.email)
-            $('#id_avatar').attr("src",result.avatar);
-        },
-        error:function(){
-            console.log('display username fail')
-        },
-        })
         $.ajax({
             type: "POST",
             url: 'http://127.0.0.1:8000/user/change_avatar',
             async: true,
+            data: {'csrfmiddlewaretoken': token,},
             success:function(result){
             var msg = ""
                 $('#id_username').html(result.user_name)
@@ -137,6 +121,20 @@
                 console.log('change avatar fail')
             },
         })
+
+        {#$('#reset_pw').on('click', function(){#}
+        {#    $.ajax({#}
+        {#    type: "GET",#}
+        {#    url: 'http://127.0.0.1:8000/user/change_password',#}
+        {#    async: true,#}
+        {#    success:function(result){#}
+        {#        location.href = "http://127.0.0.1:8000/user/change_password"#}
+        {#    },#}
+        {#    error:function(){#}
+        {#        console.log('call ajax fail')#}
+        {#    },#}
+        {#  })#}
+        {# })#}
     }
 })
 </script>

@@ -135,11 +135,6 @@
     <!--favourites overlay -->
     <div class="overlay" id="overlay3">
       <a href="javascript:void(0)" class="closebtn3">&times;</a>
-{#        <script>#}
-{#        $(document).ready(function(){#}
-{#          $('#logIn').load('/user/favourites');#}
-{#        })#}
-{#        </script>#}
       <div id="favouritesInfo">
         <h1> Your Favourites </h1>
 
@@ -213,28 +208,7 @@
     <!--logIn overlay -->
     <div class="overlay" id="overlay6">
       <a href="javascript:void(0)" class="closebtn6">&times;</a>
-{#      <script>#}
-{#        $(document).ready(function(){#}
-{#          $('#logIn').load('/user/login');#}
-{#        })#}
-{#        </script>#}
       <div id="logIn">
-{#        <h1> Log-In </h1>#}
-{#            	<form method="post"  action= {% url "user:login" %}>#}
-{#                        {% csrf_token %}#}
-{#						<input type="text" name="username" class="name_input" value="{{ username }}" placeholder="please input email address">#}
-{#						<div class="user_error">input wrong</div>#}
-{#						<input type="password" name="pwd" class="pass_input" placeholder="please input password">#}
-{#						<div class="pwd_error">input wrong</div>#}
-{#						<div class="more_input clearfix">#}
-{#							<input type="checkbox" name="remember" {{ checked }}>#}
-{#							<label>Remember Name</label>#}
-{#							<a href="forget_password">Forget Password</a>#}
-{#						</div>#}
-{#						<input type="submit" name="" value="Login in" class="input_submit">#}
-{#					</form>#}
-{##}
-{#                {{ errmsg }}#}
       </div>
     </div>
 
@@ -243,13 +217,13 @@
     <!--The div element for the map -->
     <div id="map"></div>
 
-    <!-- This section defines the date and time for overlay8 (navigation page) -->
     <script>
+        //load login and favourites pages
         $(document).ready(function(){
           $('#logIn').load('/user/login');
           $('#favouritesInfo').load('/user/favourites');
         })
-
+        //<!-- This section defines the date and time for overlay8 (navigation page) -->
       // used code from 'https://css-tricks.com/prefilling-date-input/'
       // this is used for a default of todays date
       let today = new Date().toISOString().substr(0, 10);

@@ -11,10 +11,11 @@ $(function(){
 			async:true,
 			success:function(result){
 				if (result.res == 0){
-					$('#user_info').attr("style","display:block;")
-					$('#login_div').attr("style","display:none;")
-					// location.href = "http://127.0.0.1:8000/user/user_info"
+					location.href="http://127.0.0.1:8000/user/index"
 				}
+				// 	$('#user_info').attr("style","display:block;")
+				// 	$('#login_div').attr("style","display:none;")
+				// }
 				console.log(result.res)
 			},
 			error: function(){

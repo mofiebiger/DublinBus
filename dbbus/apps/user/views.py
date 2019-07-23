@@ -208,16 +208,14 @@ class LogoutView(TemplateView):
         # 跳转到首页
         return redirect(reverse('user:index'))
 
-# /user
-
-
+# /user/change_password
 class PasswordChangeView(LoginRequiredMixin, TemplateView):
     '''change password'''
     
     def get(self,request):
         change_password_form=ChangePwdForm()
         return render(request,'pwd_change.html',{'change_password_form':change_password_form})
-    
+
     
     def post(self, request):
     
