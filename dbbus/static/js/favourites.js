@@ -1,24 +1,20 @@
 $(function(){
-    $.ajaxSetup({
-                 data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
-                  // == 值比较  === 类型比较 $(id) ---->  document.getElementById(id)
+    // == 值比较  === 类型比较 $(id) ---->  document.getElementById(id)
     function myFunction(id){
         return typeof id === 'string' ? document.getElementById(id):id;
     }
-    // 当页面加载完毕
-    window.onload = function(){
-        // 拿到所有的标题(li标签) 和 标题对应的内容(div)
+    $(document).ready(function(){
+        //get all titles (li) and contents for each title (div)
         var titles = myFunction('tab-header').getElementsByTagName('li');
         var divs = myFunction('tab-content').getElementsByClassName('dom');
-        // 判断
+        // make sure number of titles equals to number of contents
         if(titles.length != divs.length) return;
-        // 遍历
+        // go through every titles
         for(var i=0; i<titles.length; i++){
-            // 取出li标签
+            // take li tag under the title
             var li = titles[i];
             li.id = i;
-            // 监听鼠标的移动
+            // add listener to mouse move
             li.onmousemove = function(){
                 for(var j=0; j<titles.length; j++){
                     titles[j].className = '';
@@ -87,5 +83,5 @@ $(function(){
             console.log('favorite route fail')
         },
         })
-    }
+    })
 })
