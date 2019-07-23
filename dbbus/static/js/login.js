@@ -7,7 +7,7 @@ $(function(){
 		$.ajax({
 			cache:false,
 			type: "POST",
-			url:"http://127.0.0.1:8000/user/login",
+			url:window.location.protocol+"//"+window.location.host+"/user/login",
 			data:{'username':username, 'pwd': pwd,'csrfmiddlewaretoken':token},
 			async:true,
 			success:function(result){

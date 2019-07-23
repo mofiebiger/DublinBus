@@ -52,7 +52,7 @@ class RegisterView(TemplateView):
 
     def post(self, request):
         '''process the registration request'''
-        
+
         # recieve the data and get the data
         username = request.POST.get('user_name')
         password = request.POST.get('pwd')
@@ -80,18 +80,18 @@ class RegisterView(TemplateView):
             # if user already exists, return the error message
             return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
             # return HttpResponse("the email has benn registered..");
-            
+
         # if user does not exist, do the next step,do the registration
         user = User.objects.create_user(username, email, password)
         user.is_active = 0
         user.save()
-        
+
          # send the active email,and encrypt user content information
         try:
              # encript the information about user
             serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
             token = serializer.dumps(user.id).decode()  # bytes
-            
+
             # send email
             subject = 'Welcome to register dublin bus API'
             message = ''
@@ -99,10 +99,10 @@ class RegisterView(TemplateView):
             receiver = [email]
             host_name = request.get_host()
             html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
-            
+
             send_mail(subject, message, sender, receiver, html_message=html_message)
-            
-            
+
+
             return JsonResponse({"res": 1})
         except:
             return JsonResponse({"res": 0, "error_msg":"send email failed"})
@@ -113,17 +113,17 @@ class ActiveView(TemplateView):
     '''user activation'''
     def get(self, request, token):
         '''get user activation page'''
-        # decrypt the user information 
+        # decrypt the user information
         serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
         try:
             # get the user's id
             user_id = serializer.loads(token)
             user = User.objects.get(id=user_id)
-            
-            #if the user is already activated,return the error message 
+
+            #if the user is already activated,return the error message
             if user.is_active == 1:
                 return JsonResponse({"res": 0, "error_msg":"your email has been verified"})
-            
+
             # if the user is activated successfully, return the successful information.
             return JsonResponse({"res": 1,"user":user})
         except SignatureExpired as e:
@@ -138,7 +138,7 @@ class ActiveView(TemplateView):
             # get the user information from the id
         serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
         try:
-            # decrypt the user information 
+            # decrypt the user information
             user_id = serializer.loads(token)
             user = User.objects.get(id=user_id)
             user.is_active = 1
@@ -168,15 +168,14 @@ class LoginView(TemplateView):
 
     def post(self, request):
         '''process the login'''
-        
+
         # get the user data
         username = request.POST.get('username')
         password = request.POST.get('pwd')
-        
+
         # verify the data,check if they are complete
         if not all([username, password]):
             return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
-        
         # login verification
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -211,12 +210,12 @@ class LoginView(TemplateView):
             # 用户名或密码错误
             print('3')
             return render(request, 'login.html', {'errmsg':'username or password wrong'})
-  
-  
+
+
 # /user/logout
 class LogoutView(TemplateView):
     '''login out'''
-    
+
     def get(self, request):
         '''login out'''
         # clear user's session information
@@ -235,10 +234,10 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         change_password_form=ChangePwdForm()
         return render(request,'pwd_change.html',{'change_password_form':change_password_form})
 
-    
+
     def post(self, request):
         '''process the password modification'''
-        # get the user data        
+        # get the user data
         username = request.user.username
         original_password = request.POST.get('original_pwd')
         new_password = request.POST.get('new_pwd')
@@ -251,7 +250,7 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         # check the password whether they are the same
         if new_password != rnew_password:
             return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
-        
+
         #if everything is good,then process the password modification
         user = request.user
         if user.check_password(original_password):
@@ -273,7 +272,7 @@ class PasswordForgetView(TemplateView):
     def post(self, request):
         '''process resetting the password of user '''
         forget_form = ForgetPwdForm(request.POST)
-        
+
         #check if the value is correct
         if forget_form.is_valid():
             email=request.POST.get('email')
@@ -305,9 +304,9 @@ class PasswordForgetView(TemplateView):
 #/user/reset_password/<token>
 class ResetPasswordView(TemplateView):
     '''reset password page'''
-    
+
     def get(self,request,token):
-        
+
         serializer = Serializer(FORGET_PASSWORD_ENCRYPT_KEY, 3600)
         try:
             # decrypt the user information,get the user id
@@ -324,9 +323,9 @@ class ResetPasswordView(TemplateView):
 
 
     def post(self,request,token):
-        
+
         reset_form=ResetPwdForm(request.POST)
-        
+
         #check if the user information is complete
         if reset_form.is_valid():
             new_password = request.POST.get('new_pwd')
@@ -355,14 +354,14 @@ class ResetPasswordView(TemplateView):
 
 class AvatarUpdateView(LoginRequiredMixin, TemplateView):
     '''avatar change page'''
-    
+
     def post(self,request):
         '''update the avatar'''
-        
+
         #get the avatar file
         user = request.user
         avatar = request.FILES.get('avatar')
-        
+
         #check if the user information is complete
         if not all([avatar]):
            return JsonResponse({"res": 0, "error_msg":'No image has been uploaded!'})
@@ -373,7 +372,7 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
             return JsonResponse({"res": 1})
         except:
             return JsonResponse({"res": 0, "error_msg":'avatar updates fail !'})
-        
+
 
 class FavouritesView(LoginRequiredMixin, TemplateView):
         def get(self, request):
@@ -413,7 +412,7 @@ class FavoriteStopView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         '''return the user's favortie stop list'''
-        
+
         #get the stop information from the database
         stops = UserStop.objects.filter(station_user=request.user)
         stops = list(stops)
@@ -423,12 +422,12 @@ class FavoriteStopView(LoginRequiredMixin, TemplateView):
 
     def post(self, request):
         '''add new stop information'''
-        
+
         stop_id = request.POST.get('stop_id')
         #check if the stop is already in the list
         if UserStop.objects.filter(stop=stop_id, station_user=request.user).exists():
             return JsonResponse({"res":0,"error_msg":'stop exists already'})
-        
+
         #everything goes well, store the stop info into database
         user_stop = UserStop(stop=stop_id, station_user=request.user)
         user_stop.save()
@@ -436,7 +435,7 @@ class FavoriteStopView(LoginRequiredMixin, TemplateView):
 
     def delete(self, request):
         '''remove the stop from the favorite list'''
-        
+
         #get the stop info
         DELETE = QueryDict(request.body)
         stop_id = DELETE.get('stop_id')
@@ -444,7 +443,7 @@ class FavoriteStopView(LoginRequiredMixin, TemplateView):
         #check if the stop is  in the list
         if not UserStop.objects.filter(stop=stop_id, station_user=request.user).exists():
             return JsonResponse({"res":0,"error_msg":'stop does not exist'})
-        
+
         #everything goes well, delete the stop info from database
         UserStop.objects.get(stop=stop_id, station_user=request.user).delete()
         return JsonResponse({"res":1})
@@ -455,7 +454,7 @@ class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         '''return the user's favortie bus list'''
-        
+
          #get the stop information from the database
         buses = UserBusNumber.objects.filter(bus_number_user=request.user)
         buses = list(buses)
@@ -470,12 +469,12 @@ class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
         bus_number = request.POST.get('bus_number')
         start_point = request.POST.get('start_point')
         end_point = request.POST.get('end_point')
-        
+
         #check if the bus is already in the list
         if UserBusNumber.objects.filter(bus_number=bus_number, start_point=start_point, end_point=end_point,
                                         bus_number_user=request.user).exists():
             return JsonResponse({"res":0,"error_msg":'bus exists already'})
-        
+
         #everything goes well, store the stop info into database
         user_bus_number = UserBusNumber(bus_number=bus_number, start_point=start_point, end_point=end_point,
                                         bus_number_user=request.user)
@@ -484,18 +483,18 @@ class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
 
     def delete(self, request):
         '''remove the bus number from the favorite list'''
-        
+
         #get the bus info
         DELETE = QueryDict(request.body)
         bus_number = DELETE.get('bus_number')
         start_point = DELETE.get('start_point')
         end_point = DELETE.get('end_point')
-        
+
         #check if the bus is  in the list
         if not UserBusNumber.objects.filter(bus_number=bus_number, start_point=start_point, end_point=end_point,
                                             bus_number_user=request.user).exists():
             return JsonResponse({"res":0,"error_msg":'bus number does not exist'})
-        
+
         #everything goes well, delete the stop info from database
         UserBusNumber.objects.get(bus_number=bus_number, start_point=start_point, end_point=end_point,
                                   bus_number_user=request.user).delete()
@@ -508,7 +507,7 @@ class FavoriteRouteView(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         '''return the user's favortie route list'''
-        
+
          #get the stop information from the database
         routes = UserRoute.objects.filter(route_user=request.user)
         routes = list(routes)
@@ -521,8 +520,8 @@ class FavoriteRouteView(LoginRequiredMixin, TemplateView):
         #get the bus info
         route_start = request.POST.get('route_start')
         route_end = request.POST.get('route_end')
-        
-        #check if the stop is already in the list        
+
+        #check if the stop is already in the list
         if UserRoute.objects.filter(route_start=route_start, route_end=route_end, route_user=request.user).exists():
             return JsonResponse({"res":0,"error_msg":'route exists already'})
 
@@ -533,7 +532,7 @@ class FavoriteRouteView(LoginRequiredMixin, TemplateView):
 
     def delete(self, request):
         '''remove the route from the favorite list'''
-        
+
         #get the bus info
         DELETE = QueryDict(request.body)
         route_start = DELETE.get('route_start')
@@ -553,7 +552,7 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
         return render(request, 'contactPage.html')
 
     def post(self, request):
-        
+
         user = request.user
         contact = request.POST.get('contact')
         print(contact)
