@@ -10,7 +10,7 @@
         <h1> Send Us A Message </h1>
           <form id="contact_info">
               {% csrf_token %}
-            <textarea rows="10" cols="50" placeholder="Give us feedback about how we can make your experience on the Dublin Bus App better!!!"></textarea>
+            <textarea name="contact" rows="10" cols="50" placeholder="Give us feedback about how we can make your experience on the Dublin Bus App better!!!"></textarea>
             <input type="submit" value="Send">
           </form>
 </body>
