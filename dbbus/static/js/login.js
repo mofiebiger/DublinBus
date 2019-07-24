@@ -9,15 +9,20 @@ $(function(){
 			type: "POST",
 			url:window.location.protocol+"//"+window.location.host+"/user/login",
 			data:{'username':username, 'pwd': pwd,'csrfmiddlewaretoken':token},
-			async:true,
+			async:false,
 			success:function(result){
-				if (result.res == 0){
-					location.href="http://127.0.0.1:8000/user/index"
+				if (result.res == 1){
+
+					location.href=window.location.protocol+"//"+window.location.host+"/user/index"
+				}else {
+					console.log(result.res)
+					console.log(result.res ==1)
 				}
+
 				// 	$('#user_info').attr("style","display:block;")
 				// 	$('#login_div').attr("style","display:none;")
 				// }
-				console.log(result.res)
+
 			},
 			error: function(){
 				alert("false");

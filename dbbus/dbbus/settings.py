@@ -29,12 +29,14 @@ SECRET_KEY = config.secret_key
 sys.dont_write_bytecode = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# DEBUG = True
+#
+# ALLOWED_HOSTS = []
 
 # # quit the debug model
-# # DEBUG=False
+
+DEBUG=False
+
 ALLOWED_HOST=['*']
 
 
@@ -95,7 +97,7 @@ DATABASES = {
         'PASSWORD': config.password,
         'HOST': 'localhost',
 #         'HOST': 'localhost',
-        'PORT':5000,
+        'PORT':3306,
     }
 }
 

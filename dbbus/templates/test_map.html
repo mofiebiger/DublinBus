@@ -48,6 +48,7 @@
               $.ajax({
                 type:"GET",
                 url: 'http://127.0.0.1:8000/user/favorite_stop',
+                url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
                 async: true,
                 success:function(result){
                     //msg stors the id of the button
@@ -76,6 +77,7 @@
 			        cache:false,
 			        type: "POST",
 			        url:"http://127.0.0.1:8000/user/favorite_stop",
+			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
 			        data:{'stop_id':stop_id,'csrfmiddlewaretoken':token},
 			        async:true,
 			        success:function(result){
@@ -97,7 +99,7 @@
 		        $.ajax({
 			        cache:false,
 			        type: "DELETE",
-			        url:"http://127.0.0.1:8000/user/favorite_stop",
+			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
 			        data:{'stop_id':stop_id, 'csrfmiddlewaretoken':token},
 			        async:true,
 			        success:function(result){
@@ -120,7 +122,7 @@
                   $.ajax({
                       ache:false,
                       type: "POST",
-			          url:"http://127.0.0.1:8000/user/bus_info",
+			          url:window.location.protocol+"//"+window.location.host+'/user/bus_info',
 			          data:{'bus_id':$(this).text(),'csrfmiddlewaretoken':token},
 			          async:true,
 			          success:function(result){
@@ -134,7 +136,7 @@
                           console.log($('#bus_id').val())
                           $.ajax({
                             type:"GET",
-                            url: 'http://127.0.0.1:8000/user/favorite_bus_number',
+                            url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
                             async: true,
                             success:function(result){
                                 var msg = "#addFav_bus"
@@ -176,7 +178,7 @@
                 $.ajax({
                     cache:false,
                     type: "POST",
-                    url:"http://127.0.0.1:8000/user/favorite_bus_number",
+                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
                     data:{'bus_number':test, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
                     async:true,
                     success:function(result){
@@ -198,7 +200,7 @@
                 $.ajax({
                     cache:false,
                     type: "DELETE",
-                    url:"http://127.0.0.1:8000/user/favorite_bus_number",
+                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
                     data:{'bus_number':test, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
                     async:true,
                     success:function(result, status, xml){
