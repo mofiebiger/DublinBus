@@ -199,17 +199,16 @@ class LoginView(TemplateView):
                 else:
                     response.delete_cookie('username')
 
-                # 返回response
-                return JsonResponse({"res": 0})
                 # return response
+                return JsonResponse({"res": 1})
+                
             else:
                 # 用户未激活
-                return JsonResponse({"res": 1, 'errmsg': 'Account has not been activsted'})
+                return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
                 # return render(request, 'login.html', {'errmsg':'Account has not been activated'})
         else:
             # 用户名或密码错误
-            print('3')
-            return render(request, 'login.html', {'errmsg':'username or password wrong'})
+            return JsonResponse({"res": 0, 'errmsg': 'username or password wrong'})
 
 
 # /user/logout
