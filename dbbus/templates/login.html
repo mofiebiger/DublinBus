@@ -116,7 +116,7 @@
 
         $.ajax({
             type: "POST",
-            url: 'http://127.0.0.1:8000/user/change_avatar',
+            url: window.location.protocol+"//"+window.location.host+'/user/change_avatar',
             async: true,
             data: form,
             processData:false,
@@ -124,7 +124,7 @@
             success:function(result){
                 if (result.res == 1) {
                     alert("Profile updated successfully")
-                    location.href= "http://127.0.0.1:8000"
+                    location.href= window.location.protocol+"//"+window.location.host
 
                 } else if (result.res == 0 ){
                     alert(result.error_msg)

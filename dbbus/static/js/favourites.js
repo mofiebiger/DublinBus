@@ -27,7 +27,7 @@ $(function(){
 
         $.ajax({
         type:"GET",
-        url: 'http://127.0.0.1:8000/user/favorite_bus_number',
+        url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
         // data:{'user': user},
         async: true,
         success:function(result){
@@ -47,7 +47,7 @@ $(function(){
         })
         $.ajax({
         type:"GET",
-        url: 'http://127.0.0.1:8000/user/favorite_stop',
+        url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
         // data:{'user': user},
         async: true,
         success:function(result){
@@ -66,7 +66,7 @@ $(function(){
 
         $.ajax({
         type:"GET",
-        url: 'http://127.0.0.1:8000/user/favorite_route',
+        url: window.location.protocol+"//"+window.location.host+'/user/favorite_route',
         // data:{'user': user},
         async: true,
         success:function(result){
