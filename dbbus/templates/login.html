@@ -62,11 +62,15 @@
                         {% csrf_token %}
 {#                        {% if user.is_authenticated %}#}
 {#                        <img id="id_avatar"  height="60px" width="60px" src="{{ user.user_profile.url }}" alt="">#}
-                        <img id="id_avatar"  height="60px" width="60px" src="" alt="">
-                        <input id="upload_avatar" type="file">
+
+                        <img id="id_avatar"  height="60px" width="60px" src="" alt="avatar">
+                        <form id="change_avatar" enctype="multipart/form-data">
+                            <input  type="file" name="file" id="file_upload">
+                            <button type="button" id="upload_avatar">Confirm Change</button>
+                        </form>
                         <h2 id="id_username"></h2>
 {#                        <h2 id="id_username">{{ user.username }}</h2>#}
-                        <p id="id_email">p</p>
+                        <p id="id_email"></p>
 {#                        <p id="id_email">{{ user.email }}</p>#}
 {#                        {% endif %}#}
                     </div>
@@ -103,39 +107,37 @@
         $('#user_info').attr("style","display:none;")
         $('#login_div').attr("style","display:block;")
     {% endif %}
-    $(function(){
-        var token = $('input[name="csrfmiddlewaretoken"]').val()
-    window.onload = function(){
+    $(document).ready(function(){
+        $('#upload_avatar').on('click', function(){
+            var token = $('input[name="csrfmiddlewaretoken"]').val()
+            var form = new FormData();
+            form.append('avatar', $('#file_upload')[0].files[0])
+            form.append('csrfmiddlewaretoken', token)
+
         $.ajax({
             type: "POST",
             url: 'http://127.0.0.1:8000/user/change_avatar',
             async: true,
-            data: {'csrfmiddlewaretoken': token,},
+            data: form,
+            processData:false,
+            contentType:false,
             success:function(result){
-            var msg = ""
-                $('#id_username').html(result.user_name)
-            $('#id_email').html(result.email)
-            {#$('#id_avatar').attr("src",result.avatar);#}
+                if (result.res == 1) {
+                    alert("Profile updated successfully")
+                    location.href= "http://127.0.0.1:8000"
+
+                } else if (result.res == 0 ){
+                    alert(result.error_msg)
+                } else{
+                    alert("either 0 nor 1")
+                }
             },
             error:function(){
-                console.log('change avatar fail')
+                alert('change avatar fail')
             },
         })
+    })
+    })
 
-        {#$('#reset_pw').on('click', function(){#}
-        {#    $.ajax({#}
-        {#    type: "GET",#}
-        {#    url: 'http://127.0.0.1:8000/user/change_password',#}
-        {#    async: true,#}
-        {#    success:function(result){#}
-        {#        location.href = "http://127.0.0.1:8000/user/change_password"#}
-        {#    },#}
-        {#    error:function(){#}
-        {#        console.log('call ajax fail')#}
-        {#    },#}
-        {#  })#}
-        {# })#}
-    }
-})
 </script>
 </html>
