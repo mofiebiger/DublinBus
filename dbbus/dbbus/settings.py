@@ -34,7 +34,6 @@ sys.dont_write_bytecode = True
 # ALLOWED_HOSTS = []
 
 # # quit the debug model
-
 DEBUG=False
 
 ALLOWED_HOST=['*']
