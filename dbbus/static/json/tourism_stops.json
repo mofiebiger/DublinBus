@@ -1,0 +1,351 @@
+[
+  {
+    "name": "Guinness Storehouse",
+    "latitude": 53.3419,
+    "longitude": -6.2867,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Temple Bar",
+    "latitude": 53.3449,
+    "longitude": -6.2675,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublin Castle",
+    "latitude": 53.3429,
+    "longitude": -6.2674,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Phoenix Park",
+    "latitude": 53.3559,
+    "longitude": -6.3298,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Saint Stephen's Green",
+    "latitude": 53.3382,
+    "longitude": -6.2591,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Kilmainham Gaol",
+    "latitude": 53.3419,
+    "longitude": -6.3098,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Christ Church Cathedral",
+    "latitude": 53.3435,
+    "longitude": -6.2711,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "St Patrick's Cathedral",
+    "latitude": 53.3395,
+    "longitude": -6.2715,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublin Zoo",
+    "latitude": 53.3562,
+    "longitude": -6.3053,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Jameson Distillery Bow St";
+    "latitude": 53.3484,
+    "longitude": -6.2774,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Malahide Castle & Gardens",
+    "latitude": 53.4449,
+    "longitude": -6.1646,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Ha'penny Bridge",
+    "latitude": 53.3463,
+    "longitude": -6.2631,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Powerscourt",
+    "latitude": 53.1843,
+    "longitude": -6.1866,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Trinity College Library",
+    "latitude": 53.3446,
+    "longitude": -6.2595,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "National Botanic Gardens",
+    "latitude": 53.3725,
+    "longitude": -6.2719,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "The Spire"
+    "latitude": 53.3498,
+    "longitude": -6.2603,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "National Gallery of Ireland",
+    "latitude": 53.3330,
+    "longitude": -6.2488,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Chester Beatty",
+    "latitude": 53.3423,
+    "longitude": -6.2675,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Merrion Square South",
+    "latitude": 53.3396,
+    "longitude": -6.2491,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "The Little Museum of Dublin",
+    "latitude": 53.3396,
+    "longitude": -6.2583,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "National Museum of Ireland",
+    "latitude": 53.3399,
+    "longitude": -6.2533,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Irish Museum of Modern Art",
+    "latitude": 53.3429,
+    "longitude": -6.3000,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Glasnevin Cemetery",
+    "latitude": 53.3726,
+    "longitude": -6.2768
+  },
+  {
+    "name": "An Post, General Post Office",
+    "latitude": 53.3493,
+    "longitude": -6.2607,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublin Writers Museum",
+    "latitude": 53.3544,
+    "longitude": -6.2640,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublin Writers Museum",
+    "latitude": 53.3392,
+    "longitude": -6.2584,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Molly Malone Statue",
+    "latitude": 53.3438,
+    "longitude": -6.2609,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Aviva Stadium",
+    "latitude": 53.3352,
+    "longitude": -6.2285,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "National Leprechaun Museum of Ireland",
+    "latitude": 53.3482,
+    "longitude": -6.2656,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "The Custom House",
+    "latitude": 53.3487,
+    "longitude": -6.2531,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublin Bay",
+    "latitude": 53.3369,
+    "longitude": -6.1337,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "The National Wax Museum Plus",
+    "latitude": 53.3524,
+    "longitude": -6.2596,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublinia",
+    "latitude": 53.3431,
+    "longitude": -6.2820,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "EPIC The Irish Emigration Museum",
+    "latitude": 53.3483,
+    "longitude": -6.2480,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "The Book of Kells",
+    "latitude": 53.3439,
+    "longitude": -6.2567,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Dublin City Gallery - The Hugh Lane",
+    "latitude": 53.3524,
+    "longitude": -6.2588,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Farmleigh House",
+    "latitude": 53.3137,
+    "longitude": -6.2227,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Irish Whiskey Museum",
+    "latitude": 53.3442,
+    "longitude": -6.2595,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Jeanie Johnston Tall Ship",
+    "latitude": 53.2051,
+    "longitude": -6.1444,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "O'Connell Bridge",
+    "latitude": 53.3473,
+    "longitude": -6.2589,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Killiney Hill",
+    "latitude": 53.2650,
+    "longitude": -6.1106,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "National Library of Ireland",
+    "latitude": 53.3411,
+    "longitude": -6.2545,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Howth Castle",
+    "latitude": 53.3864,
+    "longitude": -6.0793,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+  {
+    "name": "Iveagh Gardens",
+    "latitude": 53.3351,
+    "longitude": -6.2610,
+    "description": "",
+    "link": "",
+    "category": "Drinks"
+  },
+]
