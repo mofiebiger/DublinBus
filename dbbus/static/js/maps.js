@@ -182,9 +182,7 @@ directionsSetUp = function(){
       mapSetUp();
       invokeEvents();
 
-
-
-
+        // display stops
         $.ajax({
           'async' : 'true',
           'url' : '/static/json/stops_info.json',
@@ -240,9 +238,12 @@ directionsSetUp = function(){
 
       // used code from 'https://css-tricks.com/prefilling-date-input/'
       // this is used for a default of todays date
-      var today = new Date().toISOString().substr(0, 10);
-      // alert(typeof(today));
-      //alert($("input[id='rightNow']").length);
+      $(function(){
+        var today = new Date().toISOString().substr(0, 10);
+        $("input[id='rightNow']").attr('value',today);    
+      })
+            // alert(typeof(today));
+
 
       // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
       // this is used for a default of the exact time
