@@ -2,6 +2,7 @@ from django.urls import path,re_path
 from user import views
 app_name = 'user'
 urlpatterns = [
+    path('', views.IndexView.as_view(),name = 'index_original'),# index page
     path('register', views.RegisterView.as_view(),name = 'register'), # register page
     path('index', views.IndexView.as_view(),name = 'index'),# index page
     path('login', views.LoginView.as_view(),name = 'login'),# login page
@@ -15,5 +16,10 @@ urlpatterns = [
     path('favorite_bus_number', views.FavoriteBusNumberView.as_view(),name = 'favorite_bus_number'),# change avarta page
     path('favorite_route', views.FavoriteRouteView.as_view(),name = 'favorite_route'),# change avarta page
     path('contact', views.ContactUsView.as_view(),name = 'ContactUsView'),# contact information
+    # '''meihan added'''
+    path('test', views.TestView.as_view(), name = 'test'),
+    path('favourites', views.FavouritesView.as_view(), name = 'favourites'),
+    path('bus_info', views.BusInfoView.as_view(), name = 'bus_info'),
+    # '''end of meihan part'''
+    path('tourism', views.TourismView.as_view(),name = 'tourism'),# tourism page
 ]
-

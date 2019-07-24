@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <title>Contacts</title>
+</head>
+<body>
+<h1> Contact Information </h1>
+        <h1> Send Us A Message </h1>
+          <form id="contact_info">
+              {% csrf_token %}
+            <textarea name="contact" rows="10" cols="50" placeholder="Give us feedback about how we can make your experience on the Dublin Bus App better!!!"></textarea>
+            <input type="submit" value="Send">
+          </form>
+</body>
+<script>
+    $('#contact_info').submit(function(){
+		var contact = $('textarea[name="contact"]').val()
+		var token = $('input[name="csrfmiddlewaretoken"]').val()
+		$.ajax({
+			cache:false,
+			type: "POST",
+			url: window.location.protocol+"//"+window.location.host+"/user/contact",
+			data:{'contact': contact,'csrfmiddlewaretoken':token},
+			dataType:'json',
+
+			async:false,
+
+			}).done(function(result){
+				 if(result.res == 1){
+					 window.confirm(result.success_msg);
+                    }else {
+                    	window.confirm(result.error_msg);
+				 	}
+			}).fail(function(){
+				alert("false1");
+			});
+		return false;
+	});
+</script>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "DublinBus",
+  "short_name": "DublinBus",
+  "start_url": "https://dublin-bus.tk/user/index",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "A predictive bus application",
+  "orientation": "any",
+    "icons": [
+        {
+            "src": "https://rawgithub.com/darkskyapp/skycons/master/skycons.js",
+            "color": "https://rawgithub.com/darkskyapp/skycons/master/skycons.js";
+        }
+    ]
+}

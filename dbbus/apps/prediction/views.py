@@ -7,6 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 from django.core import serializers
 from django.http import QueryDict
+import config
 # Create your views here.
 
 
@@ -14,7 +15,7 @@ class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
     def get(self,request):   
         #url is the darksky website
-        url='https://api.darksky.net/forecast/6d1a9498f039837cce2657a75bd43748/53.3498,-6.2603'
+        url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603'
         object = requests.get(url)
         #transfer the content into json
         text = object.json()

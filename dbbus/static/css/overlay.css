@@ -3,8 +3,6 @@
 
 }
 
-
-
 #overlay1 {
   position: fixed;
   float: left;
@@ -26,6 +24,20 @@
   cursor: pointer;
   overflow: auto;
 }
+
+#overlay2 img {
+	height: 110px;
+	border-radius: 5px;
+	float: right;
+	padding: 3%;
+}
+
+/* #overlay2 h4 {
+	margin: 2% !important;
+} */
+
+
+
 
 #overlay3 {
   position: fixed;
@@ -171,3 +183,20 @@
   {
     display:block;
   }
+
+	#splash_overlay{
+	  display: none;
+		position: fixed;
+		top: 0%;
+		left: 0%;
+		width: 100%;
+		height: 100%;
+		background-color: black;
+		z-index:1001;
+	}
+
+	#splash-content{
+		position: absolute;
+		display: none;
+		z-index:1002;
+	}
