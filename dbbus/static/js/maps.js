@@ -142,13 +142,14 @@ directionsSetUp = function(){
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
-          radius: position.coords.accuracy,
+          radius: 1000,//position.coords.accuracy,
           map: map,
           fillColor: '#0000FF',
           fillOpacity: 0.5,
           strokeOpacity: 0,
       });
-      map.fitBounds(circle.getBounds());
+      google.map.circle.getBounds();
+      //map.fitBounds(circle.getBounds());
     } //fetchAddress Ends
 
     // Display if there is an error with the geolocation
@@ -182,6 +183,56 @@ directionsSetUp = function(){
       mapSetUp();
       invokeEvents();
 
+      // display tourism locations
+      function diplayTouristPage(){
+          $.ajax({
+            'async' : 'true',
+            'url' : '/static/json/tourism_stops.json',
+            'type': 'get',
+            'dataType':'json',
+          }).done(function(obj){
+            //console.log(obj);
+          var container = document.getElementById('container');
+          var html="";
+
+          for (var i = 0; i < obj.length; i++) {
+
+              var category = obj[i].category;
+              var locationName = obj[i].name;
+              var short_description = obj[i].short_description;
+              var long_description = obj[i].description;
+              var image = obj[i].image;
+              var website = obj[i].link;
+              var latitude = obj[i].latitude;
+              var longitude = obj[i].longitude;
+
+
+              var tourismData = locationName + short_description + long_description + image + website;
+
+              html  += '<div class="touristInfo">';
+              html  += '<h1>' + locationName + '</h1>';
+              html  += '</div>';
+
+
+              console.log(tourismData);
+
+                //   if(category == "Nature"){
+                //
+                //     $("#tourismNatureBtn").click(function(){
+                //       $("#touristInfo").toggle();
+                //       html += tourismData;
+                //       console.log(tourismData);
+                //     });
+                // }
+
+
+          }
+          $("#container").show().html(html);
+        });
+      }
+      diplayTouristPage();
+
+
         // display stops
         $.ajax({
           'async' : 'true',
@@ -190,7 +241,7 @@ directionsSetUp = function(){
           'dataType':'json',
           'csrfmiddlewaretoken': '{{ csrf_token }}',
         }).done(function(obj){
-          console.log(obj);
+          //console.log(obj);
         for (var i = 0; i < obj.length; i++) {
             var stops = obj;
             stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
@@ -222,17 +273,15 @@ directionsSetUp = function(){
             //     // console.log("var markers");
             var markerCluster = new MarkerClusterer(map, markers,
                 {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
         }
   });
-
 }; //InitMap Ends
 
     //load favouties page
     $(document).ready(function(){
       $('#logIn').load('/user/login');
       $('#favouritesInfo').load('/user/favourites');
-      $('#touristInfo').load('/user/tourism');
+      // $('#touristInfo').load('/user/tourism');
       $('#contactInfo').load('/user/contact');
     })
 
@@ -240,10 +289,8 @@ directionsSetUp = function(){
       // this is used for a default of todays date
       $(function(){
         var today = new Date().toISOString().substr(0, 10);
-        $("input[id='rightNow']").attr('value',today);    
+        $("input[id='rightNow']").attr('value',today);
       })
-            // alert(typeof(today));
-
 
       // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
       // this is used for a default of the exact time

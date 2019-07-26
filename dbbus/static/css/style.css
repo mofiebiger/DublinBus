@@ -71,7 +71,7 @@ header h1 {
     text-align: center;
     /* top: 40%; */
     color: white;
-    //background-color: #333;
+    /* background-color: #333; */
     height: 20%;
     font-family: 'Allerta Stencil', sans-serif;
 }
@@ -85,6 +85,7 @@ header #title {
 #touristInfo {
     text-align: center;
     color: white;
+    /* display: none; */
 }
 
 #favouritesInfo {
@@ -136,31 +137,37 @@ font-size: {
 
 #directionsSource {
     /* align-items: center; */
+    width: 60%;
 
     margin: 15px;
     padding: 8px;
 }
 #directionsDestination {
     /* align-items: center; */
-
+    width: 60%;
     margin: 15px;
     padding: 8px;
 }
-#date {
+#rightNow {
     /* align-items: center; */
-
+    width: 60%;
     margin: 15px;
     padding: 8px;
 }
 #time-button {
     /* align-items: center; */
-
+    width: 60%;
     margin: 15px;
     padding: 8px;
 }
 
 #today {
+    width: 60%;
     padding: 8px;
+}
+
+#geoButton{
+    width: 50%;
 }
 
 #navigateButton {
@@ -225,4 +232,14 @@ font-size: {
 
 #tourism-image {
     padding: 5% !important;
+}
+
+.tourismbutton {
+  align-self: center;
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  width: 50%;
 }

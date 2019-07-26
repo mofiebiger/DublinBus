@@ -3,349 +3,441 @@
     "name": "Guinness Storehouse",
     "latitude": 53.3419,
     "longitude": -6.2867,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Brewery experience telling the tale of Ireland's famous beer, with tastings and a rooftop bar.",
+    "link": "https://www.guinness-storehouse.com/en",
+    "category": "Drinks",
+    "image": "guinessSH.jpg",
+    "short_description": "Immersive brand experience & rooftop bar"
   },
   {
     "name": "Temple Bar",
     "latitude": 53.3449,
     "longitude": -6.2675,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Temple Bar is a busy riverside neighbourhood, spread over cobbled pedestrian lanes. Crowded pubs host live folk music and DJ sets, and diners pack restaurants serving Asian, American and Irish cuisine. Quirky boutiques stock clothes and crafts by local designers. The National Photographic Archive highlights Ireland’s past, while the Project Arts Centre and Temple Bar Gallery + Studios shows contemporary art.",
+    "link": "https://en.wikipedia.org/wiki/Temple_Bar,_Dublin",
+    "category": "Drinks",
+    "image": "temple-bar.jpg",
+    "short_description": "Live music & the Project Arts Centre"
   },
   {
     "name": "Dublin Castle",
     "latitude": 53.3429,
     "longitude": -6.2674,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Historic site, dating from 1204, with 2 museums, cafes and gardens, plus state rooms and a library.",
+    "link": "http://www.dublincastle.ie/",
+    "category": "Drinks",
+    "image": "dublin-castle.jpg",
+    "short_description": "Museums, state rooms & a Gothic chapel"
   },
   {
     "name": "Phoenix Park",
     "latitude": 53.3559,
     "longitude": -6.3298,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Deer roam forested areas filled with mature trees within this area known as 'Dublin's playground'.",
+    "link": "http://www.phoenixpark.ie/",
+    "category": "Drinks",
+    "image": "phoenix_park.jpg",
+    "short_description": "Enormous green space housing Dublin Zoo"
   },
   {
     "name": "Saint Stephen's Green",
     "latitude": 53.3382,
     "longitude": -6.2591,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "City centre park with ornamental lake, waterfall, sculptures and a children's playground.",
+    "link": "http://www.heritageireland.ie/en/dublin/ststephensgreen/",
+    "category": "Drinks",
+    "image": "stephansGreen.png",
+    "short_description": "Park with original Victorian layout"
+
   },
   {
     "name": "Kilmainham Gaol",
     "latitude": 53.3419,
     "longitude": -6.3098,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Prison museum where many of Ireland's political prisoners were incarcerated, tortured and executed.",
+    "link": "http://kilmainhamgaolmuseum.ie/",
+    "category": "Nature",
+    "image": "k_gaol.jpg",
+    "short_description": "Prison telling stories of Ireland's past"
   },
   {
     "name": "Christ Church Cathedral",
     "latitude": 53.3435,
     "longitude": -6.2711,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Medieval place of CofI worship with a mummified rat & cat plus a cafe & gift shop in the crypt.",
+    "link": "https://christchurchcathedral.ie/",
+    "category": "Churches",
+    "image": "christ_church.jpg",
+    "short_description": "Medieval edifice with a crypt & cafe"
   },
   {
     "name": "St Patrick's Cathedral",
     "latitude": 53.3395,
     "longitude": -6.2715,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "The Church of Ireland's national cathedral, dating from 1220, with lunchtime musical recitals.",
+    "link": "https://www.stpatrickscathedral.ie/",
+    "category": "Churches",
+    "image": "St_Paddys.jpg",
+    "short_description": "Medieval building with musical recitals"
   },
   {
     "name": "Dublin Zoo",
     "latitude": 53.3562,
     "longitude": -6.3053,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "The largest zoo in Ireland has African Plain, Fringes of the Arctic and Asian Forests exhibits.",
+    "link": "https://www.dublinzoo.ie/",
+    "category": "Nature",
+    "image": "Dublin-Zoo.png",
+    "short_description": "Popular naturally landscaped zoo"
   },
   {
-    "name": "Jameson Distillery Bow St";
+    "name": "Jameson Distillery Bow St",
     "latitude": 53.3484,
     "longitude": -6.2774,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Expert guides tell the story of Jameson in a recreated distillery scene with tastings and dining.",
+    "link": "https://www.jamesonwhiskey.com/en-IE/visit-us/jameson-distillery-bow-st",
+    "category": "Drinks",
+    "image": "jameson.jpg",
+    "short_description": "Tours of the famous whiskey distillery"
   },
   {
     "name": "Malahide Castle & Gardens",
     "latitude": 53.4449,
     "longitude": -6.1646,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Towered stone bulwark holding antique furnishings and portraits, plus a huge garden and restaurant.",
+    "link": "https://www.malahidecastleandgardens.ie/",
+    "category": "Drinks",
+    "image": "Malahide-Castle.jpg",
+    "short_description": "Well-kept, 12th-century bastion"
   },
   {
     "name": "Ha'penny Bridge",
     "latitude": 53.3463,
     "longitude": -6.2631,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Refurbished 19th-century cast-iron span & city symbol, crossed by thousands of pedestrians daily.",
+    "link": "http://www.bridgesofdublin.ie/bridges/hapenny-bridge/history",
+    "category": "Landmarks",
+    "image": "hapenny.jpg",
+    "short_description": "Landmark 1800s pedestrian bridge"
   },
   {
     "name": "Powerscourt",
     "latitude": 53.1843,
     "longitude": -6.1866,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "18th-century stately home and famous landscaped grounds, with themed gardens and a 398-ft. waterfall in mountain foothill area with ancient trees, sika deer & rich birdlife.",
+    "link": "https://powerscourt.com",
+    "category": "Drinks",
+    "image": "powerscourt.jpeg",
+    "short_description": "Historic country estate & grand gardens"
   },
   {
     "name": "Trinity College Library",
     "latitude": 53.3446,
     "longitude": -6.2595,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "It is a legal deposit or 'copyright library', which means that publishers in Ireland must deposit a copy of all their publications there, free of charge.",
+    "link": "https://www.tcd.ie/",
+    "category": "Drinks",
+    "image": "trinity_libe.jpg",
+    "short_description": "The Library of Trinity College Dublin serves Trinity College and the University of Dublin."
   },
   {
     "name": "National Botanic Gardens",
     "latitude": 53.3725,
     "longitude": -6.2719,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Large area with naturalistic sections, formal gardens, an arboretum and a Victorian palm house.",
+    "link": "http://botanicgardens.ie/",
+    "category": "Drinks",
+    "image": "botanic-gardens.jpeg",
+    "short_description": "Formal & natural landscapes & palm house"
   },
   {
-    "name": "The Spire"
+    "name": "The Spire",
     "latitude": 53.3498,
     "longitude": -6.2603,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "This towering cone-shaped monument is known for its minimalist elegance & reflective steel surface.",
+    "link": "https://en.wikipedia.org/wiki/Spire_of_Dublin",
+    "category": "Drinks",
+    "image": "spire.jpg",
+    "short_description": "Towering stainless steel monument"
   },
   {
     "name": "National Gallery of Ireland",
     "latitude": 53.3330,
     "longitude": -6.2488,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Grand collection of European art spanning the 14th to the 20th-century covering all major schools.",
+    "link": "https://www.nationalgallery.ie/",
+    "category": "Drinks",
+    "image": "national-gallery.jpg",
+    "short_description": "Ireland's national art collection"
   },
   {
     "name": "Chester Beatty",
     "latitude": 53.3423,
     "longitude": -6.2675,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Mining magnate's exceptional collections of religious and artistic work on grounds of Dublin Castle.",
+    "link": "https://www.chesterbeatty.ie/",
+    "category": "Drinks",
+    "image": "ChesterBeatty.jpg",
+    "short_description": "Rare religious & artistic manuscripts"
   },
   {
     "name": "Merrion Square South",
     "latitude": 53.3396,
     "longitude": -6.2491,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Merrion Square is a Georgian garden square on the southside of Dublin city centre.",
+    "link": "https://en.wikipedia.org/wiki/Merrion_Square",
+    "category": "Drinks",
+    "image": "marrion_square.jpg",
+    "short_description": "Art museum, monument, park, and history"
   },
   {
     "name": "The Little Museum of Dublin",
     "latitude": 53.3396,
     "longitude": -6.2583,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Museum chronicling remarkable changes to the lifestyles of Dubliners over the the last century.",
+    "link": "https://www.littlemuseum.ie/",
+    "category": "Drinks",
+    "image": "little_museum.jpeg",
+    "short_description": "People's museum of 20th-century Dublin"
   },
   {
     "name": "National Museum of Ireland",
     "latitude": 53.3399,
     "longitude": -6.2533,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "The National Museum of Ireland is Ireland's leading museum institution, with a strong emphasis on national and some international archaeology, Irish history, Irish art, culture, and natural history.",
+    "link": "https://www.museum.ie/Home",
+    "category": "Drinks",
+    "image": "national-museum.jpg",
+    "short_description": "Museum, natural history, and history"
   },
   {
     "name": "Irish Museum of Modern Art",
     "latitude": 53.3429,
     "longitude": -6.3000,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Imposing building from 1684 housing permanent collection and temporary exhibitions of varied art.",
+    "link": "https://imma.ie/",
+    "category": "Drinks",
+    "image": "IMMA.jpg",
+    "short_description": "Modern art in a 17th-century hospital"
   },
   {
     "name": "Glasnevin Cemetery",
     "latitude": 53.3726,
-    "longitude": -6.2768
+    "longitude": -6.2768,
+    "description": "Victorian burial grounds & museum with guided tours, interactive exhibits, a gift shop & cafe.",
+    "link": "https://www.glasnevintrust.ie/",
+    "category": "Drinks",
+    "image": "glasnevin.jpg",
+    "short_description": "Open-air museum with guided tours"
   },
   {
     "name": "An Post, General Post Office",
     "latitude": 53.3493,
     "longitude": -6.2607,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Historical accounts and effects outlining the role of the Irish post service in the country's past.",
+    "link": "https://www.anpost.com/",
+    "category": "Drinks",
+    "image": "GPO.jpeg",
+    "short_description": "Compact museum of the post office"
   },
   {
     "name": "Dublin Writers Museum",
     "latitude": 53.3544,
     "longitude": -6.2640,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Letters, books and artifacts covering 300 years of Dublin's acclaimed literary heritage.",
+    "link": "https://www.visitdublin.com/see-do/details/dublin-writers-museum",
+    "category": "Drinks",
+    "image": "dublin-writers-museum.jpg",
+    "short_description": "Literary history in 18th-century mansion"
   },
   {
-    "name": "Dublin Writers Museum",
+    "name": "Viking Splash Tours",
     "latitude": 53.3392,
     "longitude": -6.2584,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Discover all Dublin has to offer! See Dublin's tallest Cathedral, unearth stories about our old medieval city and Viking heritage, spot Dublin's iconic skyline feature, the Spire, all before splashing into the Grand Canal Basin to uncover U2's recording studios.",
+    "link": "https://citysplashtours.com/dublin/",
+    "category": "Drinks",
+    "image": "VikingSplashTours.jpg",
+    "short_description": "Bus and Boat Tour"
   },
   {
     "name": "Molly Malone Statue",
     "latitude": 53.3438,
     "longitude": -6.2609,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Bronze statue of a fictional fishmonger named Molly Malone, the star of a well-known Irish song.",
+    "link": "https://mollymalonestatue.com/",
+    "category": "Landmarks",
+    "image": "molly-malone.jpg",
+    "short_description": "Statue based on a popular Irish song"
   },
   {
     "name": "Aviva Stadium",
     "latitude": 53.3352,
     "longitude": -6.2285,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Large stadium with an unusual glass end used for international sports and occasional concerts.",
+    "link": "https://www.avivastadium.ie/",
+    "category": "Drinks",
+    "image": "Aviva.jpg",
+    "short_description": "Stadium for international rugby & soccer"
   },
   {
     "name": "National Leprechaun Museum of Ireland",
     "latitude": 53.3482,
     "longitude": -6.2656,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Family-friendly museum with interactive exhibits telling stories about Ireland's mythical creatures.",
+    "link": "http://www.leprechaunmuseum.ie/",
+    "category": "Drinks",
+    "image": "leprechaunMus.jpg",
+    "short_description": "Hands-on displays about Irish folklore"
   },
   {
     "name": "The Custom House",
     "latitude": 53.3487,
     "longitude": -6.2531,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Neoclassical building used as a government office, designed by James Gandon and completed in 1791.",
+    "link": "https://www.housing.gov.ie/corporate/organisation/history-department/custom-house",
+    "category": "Drinks",
+    "image": "custom-house.jpeg",
+    "short_description": "Cupola-topped waterfront building"
   },
   {
     "name": "Dublin Bay",
     "latitude": 53.3369,
     "longitude": -6.1337,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Dublin Bay is a C-shaped inlet of the Irish Sea on the east coast of Ireland. The bay is about 10 kilometres wide along its north-south base, and 7 km in length to its apex at the centre of the city of Dublin; stretching from Howth Head in the north to Dalkey Point in the south.",
+    "link": "https://en.wikipedia.org/wiki/Dublin_Bay",
+    "category": "Nature",
+    "image": "dublin-bay.jpg",
+    "short_description": "Lighthouse and sailing"
   },
   {
     "name": "The National Wax Museum Plus",
     "latitude": 53.3524,
     "longitude": -6.2596,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Family museum containing hundreds of wax versions of famous Irish and international personalities.",
+    "link": "https://www.waxmuseumplus.ie/",
+    "category": "Drinks",
+    "image": "wax-museum.jpg",
+    "short_description": "Celebrity waxwork attraction"
   },
   {
     "name": "Dublinia",
     "latitude": 53.3431,
     "longitude": -6.2820,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Sights and smells bring hundreds of year's worth of history to life at this child friendly museum.",
+    "link": "https://www.dublinia.ie/",
+    "category": "Drinks",
+    "image": "dublinia.jpg",
+    "short_description": "Interactive Viking & medieval history"
   },
   {
     "name": "EPIC The Irish Emigration Museum",
     "latitude": 53.3483,
     "longitude": -6.2480,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "EPIC The Irish Emigration Museum is a museum located in Dublin's Docklands which covers the history of the Irish diaspora and emigration to other countries. It was voted as 'Europe's Leading Tourist Attraction' at the World Travel Awards in 2019.",
+    "link": "https://epicchq.com/?utm_source=mybusiness&utm_medium=organic",
+    "category": "Drinks",
+    "image": "epic.jpg",
+    "short_description": "Museum"
   },
   {
     "name": "The Book of Kells",
     "latitude": 53.3439,
     "longitude": -6.2567,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Grand library location for illuminated illustrations of the Christian Gospels dating from 800AD.",
+    "link": "https://www.tcd.ie/visitors/book-of-kells/",
+    "category": "Drinks",
+    "image": "book-of-kells.jpg",
+    "short_description": "Famous illuminated religious manuscript"
   },
   {
     "name": "Dublin City Gallery - The Hugh Lane",
     "latitude": 53.3524,
     "longitude": -6.2588,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Gallery containing the reconstructed studio of Francis Bacon and a strong collection of French work.",
+    "link": "http://www.hughlane.ie/",
+    "category": "Drinks",
+    "image": "Hugh-Lane.jpg",
+    "short_description": "Small gallery for impressionist works"
   },
   {
     "name": "Farmleigh House",
     "latitude": 53.3137,
     "longitude": -6.2227,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Restored, 18th-century state guest house on 78 acres, with gardens, guided tours & a boathouse cafe.",
+    "link": "http://farmleigh.ie/",
+    "category": "Drinks",
+    "image": "Farmleigh-House.jpeg",
+    "short_description": "18th-century estate with gardens & tours"
   },
   {
     "name": "Irish Whiskey Museum",
     "latitude": 53.3442,
     "longitude": -6.2595,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Guided tours tracing the history of whiskey through interactive exhibits, plus a tasting at the end.",
+    "link": "https://www.irishwhiskeymuseum.ie/",
+    "category": "Drinks",
+    "image": "irish-whiskey.jpg",
+    "short_description": "Interactive displays & whiskey tasting"
   },
   {
     "name": "Jeanie Johnston Tall Ship",
     "latitude": 53.2051,
     "longitude": -6.1444,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Tours below and above deck of a replica, 19th-century ship that took Irish emigrants to America.",
+    "link": "https://jeaniejohnston.ie/",
+    "category": "Drinks",
+    "image": "JJship.jpg",
+    "short_description": "Tours of replica 1850s emigrants' vessel"
   },
   {
     "name": "O'Connell Bridge",
     "latitude": 53.3473,
     "longitude": -6.2589,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
-  },
-  {
-    "name": "Killiney Hill",
-    "latitude": 53.2650,
-    "longitude": -6.1106,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "O'Connell Bridge is a road bridge spanning the River Liffey in Dublin, and joining O'Connell Street to D'Olier Street, Westmoreland Street and the south quays.",
+    "link": "https://en.wikipedia.org/wiki/O'Connell_Bridge",
+    "category": "Drinks",
+    "image": "o-connell-bridge.jpg",
+    "short_description": "River"
   },
   {
     "name": "National Library of Ireland",
+    "latitude": 53.2650,
+    "longitude": -6.1106,
+    "description": "Non-lending library housing the personal notes of Roddy Doyle, Seamus Heaney and James Joyce.",
+    "link": "http://www.nli.ie/",
+    "category": "Drinks",
+    "image": "national-libe.jpg",
+    "short_description": "Imposing Victorian reference library"
+  },
+  {
+    "name": "Killiney Hill",
     "latitude": 53.3411,
     "longitude": -6.2545,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Popular walking & hiking locale with panoramic ocean & mountain views, plus a park with monuments.",
+    "link": "https://en.wikipedia.org/wiki/Killiney_Hill",
+    "category": "Drinks",
+    "image": "Killiney-Hill.jpg",
+    "short_description": "Hiking spot with sea & mountain views"
   },
   {
     "name": "Howth Castle",
     "latitude": 53.3864,
     "longitude": -6.0793,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
+    "description": "Centuries-old property hosting public tours, cooking classes & afternoon tea in a garden cafe.",
+    "link": "http://howthcastle.com/",
+    "category": "Drinks",
+    "image": "howth-castle.jpg",
+    "short_description": "Medieval-era site with tours & a cafe"
   },
   {
     "name": "Iveagh Gardens",
     "latitude": 53.3351,
     "longitude": -6.2610,
-    "description": "",
-    "link": "",
-    "category": "Drinks"
-  },
+    "description": "Unique collection of garden landscapes designed in 1865 and mostly restored since 1995.",
+    "link": "http://howthcastle.com/",
+    "category": "Drinks",
+    "image": "Iveagh.jpg",
+    "short_description": "Restored city-centre Victorian gardens"
+  }
 ]

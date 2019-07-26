@@ -31,11 +31,11 @@ sys.dont_write_bytecode = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
 
 # # quit the debug model
 # # DEBUG=False
-# ALLOWED_HOST=['*']
+ALLOWED_HOST=['*']
 
 
 # Application definition

@@ -52,7 +52,7 @@
         <!-- <link rel="apple-touch-icon" href="/" sizes="160x160"> -->
 
         <!--Service Workers-->
-        <script>
+        <!-- <script>
           if ('serviceWorker' in navigator) {
           // Register a service worker hosted at the root of the
           // site using the default scope.
@@ -64,7 +64,7 @@
           } else {
             console.log('Service workers are not supported.');
           }
-        </script>
+        </script> -->
 
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
@@ -116,7 +116,7 @@
 
     <!--Journey Planner overlay -->
     <div class="overlay" id="overlay1">
-      <a href="javascript:void(0)" class="closebtn1" >&times;</a>
+      <a href="javascript:void(0)" class="closebtn" >&times;</a>
 
       <div id="journeyInfo">
         <h1> Journey Planner </h1>
@@ -145,20 +145,29 @@
 
     <!--tourism overlay -->
     <div class="overlay" id="overlay2">
-      <a href="javascript:void(0)" class="closebtn2" >&times;</a>
-        <div id="touristInfo"></div>
+      <a href="javascript:void(0)" class="closebtn" >&times;</a>
+      <h1> What to do in Dublin </h1>
+
+        <button id="tourismNatureBtn" class="tourismbutton">Nature</button>
+        <button id="tourismDrinkBtn" class="tourismbutton">Drinks</button>
+        <button id="tourismLandmarksBtn" class="tourismbutton">Landmarks</button>
+        <button id="tourismMuseumsBtn" class="tourismbutton">Museums/Gallerys</button>
+        <button id="tourismChurchesBtn" class="tourismbutton">Churches</button>
+        <div id="container"></div>
+        <div class="touristInfo"></div>
+
     </div>
 
     <!--favourites overlay -->
     <div class="overlay" id="overlay3">
-      <a href="javascript:void(0)" class="closebtn3">&times;</a>
+      <a href="javascript:void(0)" class="closebtn">&times;</a>
       <div id="favouritesInfo"></div>
     </div>
 
 
     <!--FAQ overlay -->
     <div class="overlay" id="overlay4">
-      <a href="javascript:void(0)" class="closebtn4" >&times;</a>
+      <a href="javascript:void(0)" class="closebtn" >&times;</a>
       <div id="FAQInfo">
         <h1> FAQ </h1>
       </div>
@@ -166,7 +175,7 @@
 
     <!--contact info overlay -->
     <div class="overlay" id="overlay5">
-      <a href="javascript:void(0)" class="closebtn5" >&times;</a>
+      <a href="javascript:void(0)" class="closebtn" >&times;</a>
       <div id="contactInfo"></div>
     </div>
 
@@ -174,8 +183,9 @@
 
     <!--weather overlay -->
     <div class="overlay" id="overlay8">
-      <a href="javascript:void(0)" class="closebtn8">&times;</a>
+      <a href="javascript:void(0)" class="closebtn">&times;</a>
       <div id="weatherInfo">
+
         <h1> Current Weather </h1>
 
         <div class="weatherDescription">
@@ -200,7 +210,7 @@
 
     <!--logIn overlay -->
     <div class="overlay" id="overlay6">
-      <a href="javascript:void(0)" class="closebtn6">&times;</a>
+      <a href="javascript:void(0)" class="closebtn">&times;</a>
       <div id="logIn"></div>
     </div>
 
