@@ -20,16 +20,20 @@
  
   <div class="out">
     <h1>You such a big foolish，how dare you forget your password？OK, I forgive you !, Please input your email to change your password!</h1>
-    <form method="post" ">
+    <form method="post">
           {% csrf_token %}
-      <P><span>emial：</span><input type="text" name="email"></P>
+      <P><span>email：</span><input type="text" name="email"></P>
       <P><span>verify code：</span>{{ forget_form.captcha }}</P>
 
-      <p><input type="submit" value="确认发送验证邮件"></p>
+        <p><button type="button" value="Send verification email." ></button></p>
     </form>
     <h1>{{ forget_form.errors }}{{ errormg }}</h1>
   </div>
- 
+ <script>
+     $(document).ready(function(){
+
+     })
+ </script>
  
 </body>
 </html>
