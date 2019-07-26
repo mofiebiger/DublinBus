@@ -4,15 +4,12 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>Login</title>
-{#	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">#}
-{#	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">#}
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
 	<style type = "text/css">
 	.r_con{width:400px;}
 	.reg_title{width:360px;height:50px;float:left;margin-left:30px;border-bottom:1px solid #e0e0e0}
 	.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
-	{#.reg_title a{float:right;height:20px;line-height:20px;font-size:16px;color:#5fb42a;padding-right:20px;background:url(../images/icons02.png) 35px 3px no-repeat;margin-top:15px}#}
 
 	.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
 	.reg_form li{height:70px;}
@@ -24,7 +21,6 @@
 	.reg_form li .error_tip{float:left;height:30px;line-height:30px;margin-left:70px;color:#e62e2e;display:none;}
 	.reg_form li .error_tip2{float:left;height:20px;line-height:20px;color:#e62e2e;display:none;}
 	</style>
-{#    <link href="{% static 'css/user_info_style.css' %}" rel="stylesheet" type="text/css" media="all"/>#}
 
 </head>
 <body>
@@ -43,7 +39,8 @@
 						<div class="more_input clearfix">
 							<input type="checkbox" name="remember" {{ checked }}>
 							<label>Remember Name</label>
-							<a href="forget_password">Forget Password</a>
+{#							<button id="forget_password">Forget Password</button>#}
+							<a href="#" id="forget_password">Forget Password</a>
 						</div>
                         <p class="error" id="test_error">&nbsp; </p>
                         <button type="button" id='loginBtn'value="Login" name="">Login</button>
@@ -53,6 +50,8 @@
 
             </div>
 
+        <div id="forget_pw_div" style="display: none;"></div>
+
 		<div id="user_info" style="display: none;">
             <!--profile start here-->
             <div class="profile">
@@ -60,19 +59,13 @@
                 <div class="profile-main">
                     <div class="profile-pic wthree">
                         {% csrf_token %}
-{#                        {% if user.is_authenticated %}#}
-{#                        <img id="id_avatar"  height="60px" width="60px" src="{{ user.user_profile.url }}" alt="">#}
-
                         <img id="id_avatar"  height="60px" width="60px" src="" alt="avatar">
                         <form id="change_avatar" enctype="multipart/form-data">
                             <input  type="file" name="file" id="file_upload">
                             <button type="button" id="upload_avatar">Confirm Change</button>
                         </form>
                         <h2 id="id_username"></h2>
-{#                        <h2 id="id_username">{{ user.username }}</h2>#}
                         <p id="id_email"></p>
-{#                        <p id="id_email">{{ user.email }}</p>#}
-{#                        {% endif %}#}
                     </div>
                     <div class="w3-message">
                         <div class="wthree_tab_grid_sub">
@@ -97,47 +90,18 @@
 	
 </body>
 <script>
+    //if user logged in
+    //display user_info div, hide login_div
     {% if user.is_authenticated %}
         $('#id_avatar').attr("src", "{{ user.user_profile.url }}")
         $('#id_username').html("{{ user.username }}")
-        $('#id_email').html("{{ user.email }}")
+        $('#id_email').html(" {{ user.email }}")
         $('#user_info').attr("style","display:block;")
         $('#login_div').attr("style","display:none;")
     {% else %}
         $('#user_info').attr("style","display:none;")
         $('#login_div').attr("style","display:block;")
     {% endif %}
-    $(document).ready(function(){
-        $('#upload_avatar').on('click', function(){
-            var token = $('input[name="csrfmiddlewaretoken"]').val()
-            var form = new FormData();
-            form.append('avatar', $('#file_upload')[0].files[0])
-            form.append('csrfmiddlewaretoken', token)
-
-        $.ajax({
-            type: "POST",
-            url: window.location.protocol+"//"+window.location.host+'/user/change_avatar',
-            async: true,
-            data: form,
-            processData:false,
-            contentType:false,
-            success:function(result){
-                if (result.res == 1) {
-                    alert("Profile updated successfully")
-                    location.href= window.location.protocol+"//"+window.location.host
-
-                } else if (result.res == 0 ){
-                    alert(result.error_msg)
-                } else{
-                    alert("either 0 nor 1")
-                }
-            },
-            error:function(){
-                alert('change avatar fail')
-            },
-        })
-    })
-    })
 
 </script>
 </html>
