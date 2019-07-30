@@ -28,6 +28,7 @@ SECRET_KEY = config.secret_key
 # STOP CREATING PYC FILES
 sys.dont_write_bytecode = True
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -35,6 +36,7 @@ DEBUG = True
 
 # # quit the debug model
 # # DEBUG=False
+
 ALLOWED_HOST=['*']
 
 
@@ -94,25 +96,19 @@ DATABASES = {
         'USER': config.user,
         'PASSWORD': config.password,
         'HOST': 'localhost',
+
         'PORT':5000,
+
+        
+        # Server port
+        #'PORT':3306,
+
+        # Tunnel Port
+        # 'PORT':5000
     }
 }
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'dublinbus',
-#         'USER': 'postgres',
-#         'PASSWORD': 'boldToads',
-# #         'HOST': '137.43.49.60',
-#         'HOST': 'localhost',
-#         'PORT': 5000,
-#     }
-# }
-
 AUTH_USER_MODEL ='user.User'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -137,15 +133,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -153,10 +144,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-
 MEDIA_URL = '/media/' # this url is used to store the avatar image
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 # the email deployment
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -173,12 +162,8 @@ EMAIL_FROM = config.email_from
 
 EMAIL_USE_TLS = True
 
-
-
 LOGIN_URL = '/user/login'
 LOGOUT_REDIRECT_URL = '/user/index'
-
-
 
 #SESSION_ENGINE = 'redis_sessions.session'
 # redis ip address

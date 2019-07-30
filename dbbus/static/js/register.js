@@ -38,7 +38,7 @@ $(function(){
 		$.ajax({
 			cache:false,
 			type: "POST",
-			url: 'http://127.0.0.1:8000/user/register',
+			url: window.location.protocol+"//"+window.location.host+'/user/register',
 			data:{'user_name':name, 'pwd': pwd, 'cpwd': cpwd, 'email': email,'csrfmiddlewaretoken':token},
 			async:true,
 			success:function(result){
