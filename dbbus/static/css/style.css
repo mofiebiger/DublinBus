@@ -264,7 +264,7 @@ font-size: {
   margin: 50px;
 }
 
-#websiteBtn {
+.websiteBtn {
 
   margin: 15px;
   padding: 8px;
@@ -276,7 +276,7 @@ font-size: {
 
 }
 
-#tourismNavBtn {
+.tourismNavBtn {
 
   margin: 15px;
   padding: 8px;

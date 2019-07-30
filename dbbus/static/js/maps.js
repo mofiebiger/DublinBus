@@ -225,33 +225,32 @@ directionsSetUp = function(){
 
                 // Geo Tourism Location Btn
                 //$('#tourismNavBtn').on('click', function(e) {
-                function click(){
-                    if (navigator.geolocation) {
-
-                        navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
-
-
-                            fetchTourismAddress(latitude, longitude);
-
-                            $('#nav li').eq(0).onclick();
-                        });
-                    }
-                    else {
-                        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
-                    }
-                  }
 
                 display += '<h2>' + locationName + '</h2>';
                 display += '<p>' + short_description + '</p>';
                 display += '<img src ="/static/images/' + image + '"></img>';
                 display += '<p>' + long_description + '</p>';
-                display += '<form action="' + website + '"><button id="websiteBtn" type="submit">Website</button></form>';
+                display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
                 //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
-                display += '<button onclick="click()" type="button" id="tourismNavBtn">Navigate</button>'
+                display += '<button type="button" class="tourismNavBtn">Navigate</button>'
                 display += '<hr>'
             }
           }
           $("#container").html(display);
+
+          $('.tourismNavBtn').click(function(){
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
+                        fetchTourismAddress(latitude, longitude);
+                        $('#nav li').eq(0).click();
+                    });
+                }
+                else {
+                    document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+                }
+
+
+          })
       });
     }
     $('#tourismNavBtn').on('click',function(event){
