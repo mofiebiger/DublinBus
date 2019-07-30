@@ -107,7 +107,7 @@ directionsSetUp = function(){
         if (status == google.maps.DirectionsStatus.OK){
 
           directionsDisplay.setDirections(response);
-          directionsDisplay.setPanel(document.getElementById('directionsSteps').style.display = "block");
+          directionsDisplay.setPanel(document.getElementById('directionsSteps'));
           directionsDisplay.setMap(map);
 
           var _route = response.routes[0].leg[0];
@@ -127,7 +127,7 @@ directionsSetUp = function(){
       });
     } //DirectionsRenderer Ends
 
-    function fetchAddress(position){
+    function fetchGeoAddress(position){
       userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var Locater = new google.maps.Geocoder();
 
@@ -135,26 +135,39 @@ directionsSetUp = function(){
           if(status == google.maps.GeocoderStatus.OK){
             var _r = results[0];
             $Selectors.dirSrc.val(_r.formatted_address);
-            //document.getElementById("directionsSource").val(_r.formatted_address)
           }
       });
 
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
-          radius: position.coords.accuracy,
+          radius: 1000,//position.coords.accuracy,
           map: map,
           fillColor: '#0000FF',
           fillOpacity: 0.5,
           strokeOpacity: 0,
       });
-      map.fitBounds(circle.getBounds());
-    } //fetchAddress Ends
+      google.map.circle.getBounds();
+      //map.fitBounds(circle.getBounds());
+    } //fetchGeoAddress Ends
 
     // Display if there is an error with the geolocation
     function geolocationError(positionError) {
       document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br/>";
     }
+
+
+    function fetchTourismAddress(lat, lng){
+      tourismLatLng = new google.maps.LatLng(lat, lng);
+      var Locate = new google.maps.Geocoder();
+
+      Locate.geocode({ 'location' : tourismLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirDst.val(_r.formatted_address);
+          }
+      });
+    }//fetchTourismAddress Ends
 
       function invokeEvents(){
         // Get Directions
@@ -166,11 +179,11 @@ directionsSetUp = function(){
           DirectionsRenderer(src, dst);
         });
 
-        // Use My Location / Geo Location Btn
+        // Use My Geo Location Btn
         $Selectors.geoButton.on('click', function(e) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    fetchAddress(position);
+                    fetchGeoAddress(position);
                 });
             }
             else {
@@ -182,6 +195,95 @@ directionsSetUp = function(){
       mapSetUp();
       invokeEvents();
 
+
+
+      // display tourism locations
+      function diplayTouristPage(category){
+          $.ajax({
+            'async' : 'true',
+            'url' : '/static/json/tourism_stops.json',
+            'type': 'get',
+            'dataType':'json',
+          }).done(function(obj){
+
+          var display = "";
+          for (var i = 0; i < obj.length; i++) {
+            if (obj[i].category == category){
+                var locationName = obj[i].name;
+                var short_description = obj[i].short_description;
+                var long_description = obj[i].description;
+                var image = obj[i].image;
+                var website = obj[i].link;
+                var latitude = obj[i].latitude;
+                var longitude = obj[i].longitude;
+
+                function on1() {
+                  //document.getElementById("overlay1").style.display = "block";
+                  $("overlay1").show();
+                }
+                console.log(fetchTourismAddress(latitude, longitude));
+
+                // Geo Tourism Location Btn
+                //$('#tourismNavBtn').on('click', function(e) {
+                function click(){
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
+                            fetchTourismAddress(latitude, longitude);
+                            alert("here!!!");
+                        });
+                    }
+                    else {
+                        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+                    }
+                  }
+
+                display += '<h2>' + locationName + '</h2>';
+                display += '<p>' + short_description + '</p>';
+                display += '<img src ="/static/images/' + image + '"></img>';
+                display += '<p>' + long_description + '</p>';
+                display += '<form action="' + website + '"><button id="websiteBtn" type="submit">Website</button></form>';
+                //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
+                display += '<button onclick="click()" type="button" id="tourismNavBtn">Navigate</button>'
+                display += '<hr>'
+            }
+          }
+          $("#container").html(display);
+      });
+    }
+    $('#tourismNavBtn').on('click',function(event){
+      event.preventDefault();
+      document.getElementById("overlay1").style.display = "block";
+});
+
+      function invokeTourismBtns(){
+        $('#tourismNatureBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Nature")
+        });
+
+        $('#tourismMuseumsBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Museums & Galleries")
+        });
+
+        $('#tourismDrinkBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Breweries")
+        });
+
+        $('#tourismLandmarksBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Landmarks")
+        });
+
+        $('#tourismChurchesBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Churches")
+        });
+      } //invokeTourismBtns Ends
+      invokeTourismBtns()
+
+
         // display stops
         $.ajax({
           'async' : 'true',
@@ -190,7 +292,7 @@ directionsSetUp = function(){
           'dataType':'json',
           'csrfmiddlewaretoken': '{{ csrf_token }}',
         }).done(function(obj){
-          console.log(obj);
+          //console.log(obj);
         for (var i = 0; i < obj.length; i++) {
             var stops = obj;
             stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
@@ -222,17 +324,15 @@ directionsSetUp = function(){
             //     // console.log("var markers");
             var markerCluster = new MarkerClusterer(map, markers,
                 {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
         }
   });
-
 }; //InitMap Ends
 
     //load favouties page
     $(document).ready(function(){
       $('#logIn').load('/user/login');
       $('#favouritesInfo').load('/user/favourites');
-      $('#touristInfo').load('/user/tourism');
+      // $('#touristInfo').load('/user/tourism');
       $('#contactInfo').load('/user/contact');
     })
 
@@ -240,10 +340,8 @@ directionsSetUp = function(){
       // this is used for a default of todays date
       $(function(){
         var today = new Date().toISOString().substr(0, 10);
-        $("input[id='rightNow']").attr('value',today);    
+        $("input[id='rightNow']").attr('value',today);
       })
-            // alert(typeof(today));
-
 
       // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
       // this is used for a default of the exact time
