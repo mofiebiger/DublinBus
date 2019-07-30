@@ -107,7 +107,7 @@ directionsSetUp = function(){
         if (status == google.maps.DirectionsStatus.OK){
 
           directionsDisplay.setDirections(response);
-          directionsDisplay.setPanel(document.getElementById('directionsSteps').style.display = "block");
+          directionsDisplay.setPanel(document.getElementById('directionsSteps'));
           directionsDisplay.setMap(map);
 
           var _route = response.routes[0].leg[0];
@@ -127,7 +127,7 @@ directionsSetUp = function(){
       });
     } //DirectionsRenderer Ends
 
-    function fetchAddress(position){
+    function fetchGeoAddress(position){
       userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var Locater = new google.maps.Geocoder();
 
@@ -135,7 +135,6 @@ directionsSetUp = function(){
           if(status == google.maps.GeocoderStatus.OK){
             var _r = results[0];
             $Selectors.dirSrc.val(_r.formatted_address);
-            //document.getElementById("directionsSource").val(_r.formatted_address)
           }
       });
 
@@ -150,12 +149,25 @@ directionsSetUp = function(){
       });
       google.map.circle.getBounds();
       //map.fitBounds(circle.getBounds());
-    } //fetchAddress Ends
+    } //fetchGeoAddress Ends
 
     // Display if there is an error with the geolocation
     function geolocationError(positionError) {
       document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br/>";
     }
+
+
+    function fetchTourismAddress(lat, lng){
+      tourismLatLng = new google.maps.LatLng(lat, lng);
+      var Locate = new google.maps.Geocoder();
+
+      Locate.geocode({ 'location' : tourismLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirDst.val(_r.formatted_address);
+          }
+      });
+    }//fetchTourismAddress Ends
 
       function invokeEvents(){
         // Get Directions
@@ -167,11 +179,11 @@ directionsSetUp = function(){
           DirectionsRenderer(src, dst);
         });
 
-        // Use My Location / Geo Location Btn
+        // Use My Geo Location Btn
         $Selectors.geoButton.on('click', function(e) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    fetchAddress(position);
+                    fetchGeoAddress(position);
                 });
             }
             else {
@@ -183,54 +195,93 @@ directionsSetUp = function(){
       mapSetUp();
       invokeEvents();
 
+
+
       // display tourism locations
-      function diplayTouristPage(){
+      function diplayTouristPage(category){
           $.ajax({
             'async' : 'true',
             'url' : '/static/json/tourism_stops.json',
             'type': 'get',
             'dataType':'json',
           }).done(function(obj){
-            //console.log(obj);
-          var container = document.getElementById('container');
-          var html="";
 
+          var display = "";
           for (var i = 0; i < obj.length; i++) {
+            if (obj[i].category == category){
+                var locationName = obj[i].name;
+                var short_description = obj[i].short_description;
+                var long_description = obj[i].description;
+                var image = obj[i].image;
+                var website = obj[i].link;
+                var latitude = obj[i].latitude;
+                var longitude = obj[i].longitude;
 
-              var category = obj[i].category;
-              var locationName = obj[i].name;
-              var short_description = obj[i].short_description;
-              var long_description = obj[i].description;
-              var image = obj[i].image;
-              var website = obj[i].link;
-              var latitude = obj[i].latitude;
-              var longitude = obj[i].longitude;
+                function on1() {
+                  //document.getElementById("overlay1").style.display = "block";
+                  $("overlay1").show();
+                }
+                console.log(fetchTourismAddress(latitude, longitude));
 
+                // Geo Tourism Location Btn
+                //$('#tourismNavBtn').on('click', function(e) {
+                function click(){
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
+                            fetchTourismAddress(latitude, longitude);
+                            alert("here!!!");
+                        });
+                    }
+                    else {
+                        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+                    }
+                  }
 
-              var tourismData = locationName + short_description + long_description + image + website;
-
-              html  += '<div class="touristInfo">';
-              html  += '<h1>' + locationName + '</h1>';
-              html  += '</div>';
-
-
-              console.log(tourismData);
-
-                //   if(category == "Nature"){
-                //
-                //     $("#tourismNatureBtn").click(function(){
-                //       $("#touristInfo").toggle();
-                //       html += tourismData;
-                //       console.log(tourismData);
-                //     });
-                // }
-
-
+                display += '<h2>' + locationName + '</h2>';
+                display += '<p>' + short_description + '</p>';
+                display += '<img src ="/static/images/' + image + '"></img>';
+                display += '<p>' + long_description + '</p>';
+                display += '<form action="' + website + '"><button id="websiteBtn" type="submit">Website</button></form>';
+                //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
+                display += '<button onclick="click()" type="button" id="tourismNavBtn">Navigate</button>'
+                display += '<hr>'
+            }
           }
-          $("#container").show().html(html);
+          $("#container").html(display);
+      });
+    }
+    $('#tourismNavBtn').on('click',function(event){
+      event.preventDefault();
+      document.getElementById("overlay1").style.display = "block";
+});
+
+      function invokeTourismBtns(){
+        $('#tourismNatureBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Nature")
         });
-      }
-      diplayTouristPage();
+
+        $('#tourismMuseumsBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Museums & Galleries")
+        });
+
+        $('#tourismDrinkBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Breweries")
+        });
+
+        $('#tourismLandmarksBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Landmarks")
+        });
+
+        $('#tourismChurchesBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Churches")
+        });
+      } //invokeTourismBtns Ends
+      invokeTourismBtns()
 
 
         // display stops

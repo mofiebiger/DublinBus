@@ -94,7 +94,6 @@ DATABASES = {
         'USER': config.user,
         'PASSWORD': config.password,
         'HOST': 'localhost',
-#         'HOST': 'localhost',
         'PORT':5000,
     }
 }
