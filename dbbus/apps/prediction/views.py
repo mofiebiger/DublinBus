@@ -9,6 +9,7 @@ from django.core import serializers
 from django.http import QueryDict
 import config
 # Create your views here.
+from prediction.get_prediction import set_season,prediction
 
 
 class WeatherInfoView(TemplateView):
@@ -49,3 +50,15 @@ class StopInfoView(TemplateView):
 class ServiceWorker(TemplateView):
     template_name = 'serviceworker.js'
     content_type = 'application/javascript'
+    
+    
+    
+    
+    
+    
+class PredictionRouteView(TemplateView):
+    ''''''
+    def post(self):
+        content = QueryDict(content)
+        
+        
