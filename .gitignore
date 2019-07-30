@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 config.py
 *.csv
-Ciaran_Barron_14312451_COMP47350_Homework2_Notebook.ipynb
-20190415_sample_solution_COMP47350_Homework1.ipynb
 Analytics/Assignments/
 Analytics/stored_queries/
 
-=======
->>>>>>> 12768e0772bb3fcc956181d86d166ebbc501a861
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,10 +1,6 @@
 .overlay{
 	display: none;
-
-}
-
-#overlay1 {
-  position: fixed;
+	position: fixed;
   float: left;
   height: 100%;
   width: 30%;
@@ -12,86 +8,17 @@
   z-index: 3;
   cursor: pointer;
   overflow: auto;
+
 }
 
-#overlay2 {
-  position: fixed;
-  float: left;
-  height: 100%;
-  width: 30%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-  overflow: auto;
-}
+/*
 
 #overlay2 img {
 	height: 110px;
 	border-radius: 5px;
 	float: right;
 	padding: 3%;
-}
 
-/* #overlay2 h4 {
-	margin: 2% !important;
-} */
-
-
-
-
-#overlay3 {
-  position: fixed;
-  float: left;
-  height: 100%;
-  width: 30%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-  overflow: auto;
-}
-
-#overlay4 {
-  position: fixed;
-  float: left;
-  height: 100%;
-  width: 30%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-  overflow: auto;
-}
-
-#overlay5 {
-  position: fixed;
-  float: left;
-  height: 100%;
-  width: 30%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-  overflow: auto;
-}
-
-#overlay6 {
-  position: fixed;
-  float: right;
-  height: 100%;
-  width: 30%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-  overflow: auto;
-}
-
-#overlay7 {
-  position: fixed;
-  float: right;
-  height: 100%;
-  width: 30%;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-  cursor: pointer;
-  overflow: auto;
 }
 
 #overlay8 {
@@ -105,73 +32,15 @@
   overflow: auto;
   font-family: 'DM Serif Text', serif;
   font-size: 20px;
-}
+} */
 
-#overlay8 h1{
-  font-family: 'Acme', sans-serif;
-}
+
 
 #overlay8 hr {
   width: 100%;
 }
 
-.closebtn1 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn2 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn3 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn4 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn5 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn6 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn7 {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: white;
-  text-decoration: none;
-}
-
-.closebtn8 {
+.closebtn {
   position: absolute;
   right: 10px;
   font-size: 20px;

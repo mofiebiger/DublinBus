@@ -37,9 +37,9 @@ class TourismView(TemplateView):
     def get(self, request):
         return render(request, 'tourismPage.html')
 
-class serviceWorker(TemplateView):
-    template_name = 'js/serviceworker.js'
-    content_type = 'application/javascript'
+# class serviceWorker(TemplateView):
+#     template_name = 'js/serviceworker.js'
+#     content_type = 'application/javascript'
 
 
 
@@ -201,7 +201,7 @@ class LoginView(TemplateView):
 
                 # return response
                 return JsonResponse({"res": 1})
-                
+
             else:
                 # 用户未激活
                 return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})

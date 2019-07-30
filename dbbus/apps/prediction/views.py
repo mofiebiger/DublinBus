@@ -11,9 +11,9 @@ import config
 # Create your views here.
 
 
-class WeatherInfoView(TemplateView):   
+class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
-    def get(self,request):   
+    def get(self,request):
         #url is the darksky website
         url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603'
         object = requests.get(url)
@@ -24,30 +24,28 @@ class WeatherInfoView(TemplateView):
         text_needed['hourly'] = text['hourly']
         #return the current weather information
         return JsonResponse(text_needed)
-    
-    
-    
+
+
+
 class StopInfoView(TemplateView):
-    
-    def get(self,request,stop_id):  
+
+    def get(self,request,stop_id):
         if not stop_id:
             return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
         stop_info = StopInformation.objects.filter(stop_id=stop_id)
-            
+
             #stop does not exist
         if len(stop_info) == 0:
             return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
-            
+
         json_data = serializers.serialize('json', stop_info)
- 
+
         json_data = json.loads(json_data)
-        
+
 
 #         return JsonResponse(json_data, safe=False)
         return JsonResponse(json_data[0]['fields'], safe=False)
-    
-    
-    
-    
-    
-    
+
+class ServiceWorker(TemplateView):
+    template_name = 'serviceworker.js'
+    content_type = 'application/javascript'
