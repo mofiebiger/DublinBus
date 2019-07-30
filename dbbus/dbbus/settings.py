@@ -29,8 +29,13 @@ SECRET_KEY = config.secret_key
 sys.dont_write_bytecode = True
 
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+#ALLOWED_HOSTS = []
+
 # # quit the debug model
-DEBUG=False
+# # DEBUG=False
 
 ALLOWED_HOST=['*']
 
@@ -91,9 +96,12 @@ DATABASES = {
         'USER': config.user,
         'PASSWORD': config.password,
         'HOST': 'localhost',
+
+        'PORT':5000,
+
         
         # Server port
-        'PORT':3306,
+        #'PORT':3306,
 
         # Tunnel Port
         # 'PORT':5000
