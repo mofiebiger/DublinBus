@@ -95,23 +95,69 @@ directionsSetUp = function(){
   } //mapSetUp Ends
 
 
-  DirectionsRenderer = function(source, destination){
+  DirectionsRenderer = function(source, destination, date, time){
+
       var request = {
         origin: source,
         destination: destination,
         provideRouteAlternatives: false,
-        travelMode: google.maps.DirectionsTravelMode.TRANSIT
+        travelMode: google.maps.DirectionsTravelMode.TRANSIT,
+        transitOptions: {
+            departureTime: new Date(date+" "+time),
+            modes: ['BUS'],
+            routingPreference: 'FEWER_TRANSFERS'
+          },
       };
-
+      
       directionsService.route(request, function(response, status){
         if (status == google.maps.DirectionsStatus.OK){
+            var show_div = document.getElementById('directionsSteps');
+            
+          var _route = response.routes[0].legs[0];
+          console.log(_route);
+          var aList = new Array();
+          for(var i=0; i<_route['steps'].length; i++){
+        	  if (_route['steps'][i].travel_mode == "TRANSIT"){
+        	  if (_route.steps[i].transit.line.hasOwnProperty("name")){
+        		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.line.name});	  
+        	  }else{
+        		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.headsign})
+        	  }
+        	  }
+          }
+          var routes ={'routes':aList,'date':date, 'time':time} 
+          	$.ajax({
+          		url:window.location.protocol+"//"+window.location.host+"/prediction/route",
+          		type: 'post',
+          		headers:{"X-csrftoken":$("#directionsPanel input[name='csrfmiddlewaretoken']").val()},
+          		contentType: 'application/json;charset=UTF-8',
+          		dataType:'json',
+          		data: JSON.stringify(routes),
+          	}).done(function(data){
+            	console.log(data);
+            	if (data.res == 1){
+            		for(var i=0,j=0; i<_route['steps'].length; i++){
+                     	  if (_route['steps'][i].travel_mode == "TRANSIT"){
+                     		response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
+                     		j+=1;
+                     	  }
+                     		  
+                  	 }
+	
+            	}else{
+            		alert(data.errmsg);
+            	}
+            	
 
-          directionsDisplay.setDirections(response);
-          directionsDisplay.setPanel(document.getElementById('directionsSteps'));
-          directionsDisplay.setMap(map);
+//            	console.log(response);
+            	
+                directionsDisplay.setDirections(response);
 
-          var _route = response.routes[0].leg[0];
-
+                directionsDisplay.setPanel(show_div);
+                directionsDisplay.setMap(map);
+          	}).fail(function(){
+          		alert('ajax false');
+          	});
           pinA = new google.maps.Marker({
             position: _route.start_location,
             map: map,
@@ -175,8 +221,10 @@ directionsSetUp = function(){
           event.preventDefault();
           var src = $Selectors.dirSrc.val();
           var dst = $Selectors.dirDst.val();
+          var date = $('#dateTime-panel #rightNow').val();
+          var time = $('#time #time-button').val();
 
-          DirectionsRenderer(src, dst);
+          DirectionsRenderer(src, dst, date, time);
         });
 
         // Use My Geo Location Btn

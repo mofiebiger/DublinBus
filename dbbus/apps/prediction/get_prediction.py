@@ -1,4 +1,5 @@
 import config
+import json 
 import numpy as np
 import pandas as pd
 import xgboost as xgb
@@ -23,7 +24,7 @@ def set_season(x):
         return 'Summer'
        
 
-def prediction(PDate, Routeid, PTime, Number_Stops):
+def prediction_route(PDate, Routeid, PTime, Number_Stops):
     """
     Return an estimate of travel time, in seconds, for a given journey. 
     
@@ -44,23 +45,25 @@ def prediction(PDate, Routeid, PTime, Number_Stops):
     
     model = xgb.Booster()
     model.load_model("static/ModelFiles/RouteModels/Route"+Routeid+".model")
-    
     # ====================== Dateand Time objects ====================== #
     
     ddate = date(int(PDate[:4]), int(PDate[5:7]), int(PDate[-2:]))
     dtime = time(int(PTime[:2]), int(PTime[-2:]))
-           
-    if datetime.combine(ddate, dtime) < datetime.now():
-        return "Please select a valid date/time. Only future values are valid."
+    
+    
+    
+#     if datetime.combine(ddate, dtime) < datetime.now():
+#         return "Please select a valid date/time. Only future values are valid."
+
         
-    inputs.hour = dtime.hour
-    inputs.month= ddate.month    
+  
     
     # ========================== Weather Data ========================== # 
     # will need to sync this with the automated live weather updates to no waste calls. Also add forecasting option. 
     
-    weathercall = req.get("https://api.darksky.net/forecast/{config.DarkSkyKeys}/53.3498,-6.2603").content
-    weather = json.loads(weathercall)['currently']
+    weathercall = req.get(f"https://api.darksky.net/forecast/{config.darksky_api}/53.3498,-6.2603").content
+    weather = json.loads(weathercall)
+    weather= weather['currently']
     
     # ======================== Inputs DataFrame ======================== #
     
@@ -73,6 +76,8 @@ def prediction(PDate, Routeid, PTime, Number_Stops):
     inputs = pd.DataFrame(np.zeros(len(predictors))).T
     inputs.columns = predictors
     
+    inputs.hour = dtime.hour
+    inputs.month= ddate.month  
     # ========================= Weather Columns ======================== #
     
     inputs.temperature = weather['temperature']
@@ -87,7 +92,7 @@ def prediction(PDate, Routeid, PTime, Number_Stops):
     if ddate.weekday() in [5,6]:
         inputs.weekday=False
     else:
-        inputs.weekday=True
+        inputs.weekday=True 
     
     # ===================== One Hot Encoded Columns ==================== #  
     
@@ -101,14 +106,14 @@ def prediction(PDate, Routeid, PTime, Number_Stops):
     
     # ======================= Adjust for #stops ======================== #
     
-    estimate = int(estimate.tolist()[0])
+    estimate = estimate.tolist()[0]
     
-    with open("stops_per_line.txt",'r') as f:
+    with open("static/stops_per_line.txt",'r') as f:
         stopnums = json.loads(f.readlines()[0])
     
     total_stops = stopnums[Routeid][0][0]
     
-    travel_time_estimate = (Number_Stops/total_stops) * estimate
+    travel_time_estimate = int((Number_Stops/total_stops) * estimate)
     
     # ========================= Returning Data ========================= #
     
