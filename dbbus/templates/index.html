@@ -109,6 +109,7 @@
       <div id="journeyInfo">
         <h1> Journey Planner </h1>
             <div id="directionsPanel">
+            {% csrf_token %}
               <button id="geoButton">Use Current Location</button>
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
               <input id="directionsDestination" class="controls" type="text" placeholder="End">

@@ -9,6 +9,7 @@ from django.core import serializers
 from django.http import QueryDict
 import config
 # Create your views here.
+from prediction.get_prediction import prediction_route
 
 
 class WeatherInfoView(TemplateView):
@@ -49,3 +50,39 @@ class StopInfoView(TemplateView):
 class ServiceWorker(TemplateView):
     template_name = 'serviceworker.js'
     content_type = 'application/javascript'
+    
+    
+    
+    
+    
+    
+class PredictionRouteView(TemplateView):
+    ''''''
+    def post(self,request):
+                #get the data from the front-end
+        content = json.loads(request.body)
+        routes = content['routes']
+        date = content['date']
+        time = content['time']
+
+        
+        #transform data to the standard format
+        try:
+            new_routes = []
+            for i in range(len(routes)):
+                bus_route = routes[i]['short_name'].upper()
+                number_stops = routes[i]['num_stops']
+                value = prediction_route(date,bus_route,time,number_stops)
+                text = str(round(value/60))+"min"
+                new_routes.append({'text':text,'value':value})
+        except Exception as e:
+            print(repr(e))
+            return JsonResponse({'res': 0,'errmsg':'Please try again'})
+        return JsonResponse({'res': 1,'response_leg':new_routes})
+            
+            
+
+            
+
+        
+        
