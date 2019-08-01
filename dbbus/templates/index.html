@@ -15,6 +15,29 @@
         <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
         <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">
 
+        
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <!--favicon links-->
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+        <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}">
+
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-launchimage-640-1136.png' %}" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-750-1334.png' %}" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1242-2208.png' %}" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1125x2436.png' %}" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1536x2048.png' %}" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1668x2224.png' %}" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-2048x2732.png' %}" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+
+        <meta name="msapplication-TileColor" content="#b91d47">
+        <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
+        <meta name="theme-color" content="#ffffff">
+
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -29,12 +52,14 @@
 
 
         <!--MarkerCluster-->
-        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
+        <!-- <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script> -->
 
 
         <!--Google Maps API-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" defer>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
         </script>
+        </script>
+
 
         <!--Map / Navigation / Tourism / Display Bus Stops-->
         <script type="text/javascript" src="{% static 'js/maps.js' %}"></script>
@@ -46,13 +71,8 @@
         <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
 
         <!-- Path to manifest.json -->
-        <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}">
-        <!-- "icons": [
-            {
-                "src": "",
-                "color": "";
-            }
-        ] -->
+        <!-- <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}"> -->
+
 
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
@@ -67,11 +87,11 @@
     </header>
 
     <!-- Splash Screen Overlay -->
-    <div id="splash_overlay">
+    <!-- <div id="splash_overlay">
       <div id="splash-content">
         <img src="{% static 'images/threeBusDub.png' %}"></img>
       </div>
-    </div>
+    </div> -->
 
     <!--NavBar - displays overlays (above map)-->
     <ul id="nav">

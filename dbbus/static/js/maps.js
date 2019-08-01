@@ -1,6 +1,7 @@
 function initMap(position){
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB;
 
+
 markerA = new google.maps.MarkerImage('marker.png')
               new google.maps.Size(24, 27),
               new google.maps.Point(0, 0),
@@ -88,6 +89,7 @@ directionsSetUp = function(){
           panControlOptions: {
           position: google.maps.ControlPosition.RIGHT_TOP
           }
+
     });
     autoCompleteSetup();
     directionsSetUp();
@@ -128,8 +130,8 @@ directionsSetUp = function(){
     } //DirectionsRenderer Ends
 
     function fetchGeoAddress(position){
-      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var Locater = new google.maps.Geocoder();
+      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
       Locater.geocode({ 'location' : userLatLng }, function(results, status){
           if(status == google.maps.GeocoderStatus.OK){
@@ -137,19 +139,39 @@ directionsSetUp = function(){
             $Selectors.dirSrc.val(_r.formatted_address);
           }
       });
+    } //fetchGeoAddress Ends
 
+    function displayCircle(position){
+      //var Locater = new google.maps.Geocoder();
+      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
-          radius: 1000,//position.coords.accuracy,
+          radius: 1000, //position.coords.accuracy,
           map: map,
           fillColor: '#0000FF',
           fillOpacity: 0.5,
           strokeOpacity: 0,
       });
-      google.map.circle.getBounds();
-      //map.fitBounds(circle.getBounds());
-    } //fetchGeoAddress Ends
+      map.fitBounds(circle.getBounds());
+
+    }
+
+    function geolocateUser() {
+      // If the browser supports the Geolocation API
+      if (navigator.geolocation)
+      {
+        var positionOptions = {
+          enableHighAccuracy: true,
+          timeout: 10 * 1000 // 10 seconds
+        };
+        navigator.geolocation.getCurrentPosition(displayCircle, geolocationError, positionOptions);
+      }
+      else
+        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+    }
+
+    window.onload = geolocateUser;
 
     // Display if there is an error with the geolocation
     function geolocationError(positionError) {
@@ -325,8 +347,8 @@ directionsSetUp = function(){
             //     infowindow.open(map, marker);
             // });
             //     // console.log("var markers");
-            var markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            // var markerCluster = new MarkerClusterer(map, markers,
+            //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
         }
   });
 }; //InitMap Ends

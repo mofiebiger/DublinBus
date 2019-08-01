@@ -39,6 +39,7 @@ DEBUG = True
 
 ALLOWED_HOST=['*']
 
+GOOGLE_MAPS_API_KEY = config.map_api_key
 
 # Application definition
 
@@ -99,7 +100,7 @@ DATABASES = {
 
         'PORT':5000,
 
-        
+
         # Server port
         #'PORT':3306,
 
