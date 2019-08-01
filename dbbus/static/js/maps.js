@@ -582,3 +582,18 @@ directionsSetUp = function(){
             $('#weather_stats').show().html(displayTemp + "<br/>" + displayWind + "<br/>" + displayHumidity);
           })
         } // On8: AKA WeatherDisplay Ends
+        
+        
+        
+        
+        
+        //switch the origi point and destination point
+        $(function(){
+        	 $('#switch_position').click(function(){
+        		 var start_point = $('#directionsSource');
+             	var start_point_value =start_point.val(); 
+             	var end_point = $('#directionsDestination');
+             	start_point.val(end_point.val());
+             	end_point.val(start_point_value);
+        	 });
+        });
