@@ -338,12 +338,14 @@ directionsSetUp = function(){
         // display stops
         $.ajax({
           'async' : 'true',
-          'url' : '/static/json/stops_info.json',
+          'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
+//          'url' : '/static/json/stops_info.json',
           'type': 'get',
           'dataType':'json',
-          'csrfmiddlewaretoken': '{{ csrf_token }}',
-        }).done(function(obj){
-          //console.log(obj);
+          'data':{'lat':53.32386831,'lon':-6.37929675,'radius':1},
+        }).done(function(stops){
+        	var obj = stops.stops;
+        	console.log(obj);
         for (var i = 0; i < obj.length; i++) {
             var stops = obj;
             stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};

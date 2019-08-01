@@ -10,6 +10,8 @@ from django.http import QueryDict
 import config
 # Create your views here.
 from prediction.get_prediction import prediction_route
+from geopy.distance import geodesic
+from distutils.command.clean import clean
 
 
 class WeatherInfoView(TemplateView):
@@ -53,7 +55,50 @@ class ServiceWorker(TemplateView):
     
     
     
-    
+class StopInfoNearbyView(TemplateView):
+    '''get the stops that nearby the current location'''
+
+    def get(self,request):
+        '''get the stops that nearby the current location'''
+        
+        #get data
+        lat = request.GET.get('lat')
+        lon = request.GET.get('lon')
+        radius = float(request.GET.get('radius'))
+
+        print(lat,lon,radius)
+        #open json file
+        with open('static/json/stops_info.json','r') as load_f:
+             stops_data = json.load(load_f)
+             
+        #add the stop into file where the distance is less than the radius
+        clean_data = []
+        for stop in stops_data:
+            if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
+                clean_data.append(stop)
+
+                    
+            
+        
+        
+#         print(stops_data)
+        return JsonResponse({'stops':clean_data})
+#         if not stop_id:
+#             return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
+#         stop_info = StopInformation.objects.filter(stop_id=stop_id)
+# 
+#             #stop does not exist
+#         if len(stop_info) == 0:
+#             return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
+# 
+#         json_data = serializers.serialize('json', stop_info)
+# 
+#         json_data = json.loads(json_data)
+# 
+# 
+# #         return JsonResponse(json_data, safe=False)
+#         return JsonResponse(json_data[0]['fields'], safe=False)
+#    
     
     
 class PredictionRouteView(TemplateView):
