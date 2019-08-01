@@ -110,24 +110,24 @@ directionsSetUp = function(){
             routingPreference: 'FEWER_TRANSFERS'
           },
       };
-      
+
       directionsService.route(request, function(response, status){
         if (status == google.maps.DirectionsStatus.OK){
             var show_div = document.getElementById('directionsSteps');
-            
+
           var _route = response.routes[0].legs[0];
           console.log(_route);
           var aList = new Array();
           for(var i=0; i<_route['steps'].length; i++){
         	  if (_route['steps'][i].travel_mode == "TRANSIT"){
         	  if (_route.steps[i].transit.line.hasOwnProperty("name")){
-        		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.line.name});	  
+        		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.line.name});
         	  }else{
         		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.headsign})
         	  }
         	  }
           }
-          var routes ={'routes':aList,'date':date, 'time':time} 
+          var routes ={'routes':aList,'date':date, 'time':time}
           	$.ajax({
           		url:window.location.protocol+"//"+window.location.host+"/prediction/route",
           		type: 'post',
@@ -143,16 +143,16 @@ directionsSetUp = function(){
                      		response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
                      		j+=1;
                      	  }
-                     		  
+
                   	 }
-	
+
             	}else{
             		alert(data.errmsg);
             	}
-            	
+
 
 //            	console.log(response);
-            	
+
                 directionsDisplay.setDirections(response);
 
                 directionsDisplay.setPanel(show_div);
