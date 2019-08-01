@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
         <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">
 
-        
+
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <!--favicon links-->
@@ -113,7 +113,7 @@
     			navs.click(function(event){
 
     				 event.preventDefault();
-             divs.eq($(this).index()+1).toggleClass('blocktoggle').siblings().removeClass('blocktoggle');
+             divs.eq($(this).index()).toggleClass('blocktoggle').siblings().removeClass('blocktoggle');
     			});
     				closes.bind("click",function(event){
     					event.preventDefault();

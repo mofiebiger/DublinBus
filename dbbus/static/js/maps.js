@@ -190,6 +190,9 @@ directionsSetUp = function(){
     function displayCircle(position){
       //var Locater = new google.maps.Geocoder();
       userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      console.log(userLatLng);
+      console.log(userLatLng.lat);
+      console.log(userLatLng.lng);
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
@@ -200,6 +203,51 @@ directionsSetUp = function(){
           strokeOpacity: 0,
       });
       map.fitBounds(circle.getBounds());
+
+      // display stops
+      $.ajax({
+        'async' : 'true',
+        'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
+//          'url' : '/static/json/stops_info.json',
+        'type': 'get',
+        'dataType':'json',
+        'data':{'lat': userLatLng.lat,'lon': userLatLng.lng,'radius':1},
+      }).done(function(stops){
+        var obj = stops.stops;
+        console.log(obj);
+      for (var i = 0; i < obj.length; i++) {
+          var stops = obj;
+          stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
+      }
+
+      // The location of Dubin
+      var dublin = {lat: 53.3498, lng: -6.2603};
+
+
+      var markers = stops.map(function (location, i) {
+          return new google.maps.Marker({
+              position: location,
+              map: map,
+              // icon: markerImage,
+              // label: labels[i % labels.length]
+          });
+      });
+      var contentString = 'pppp';
+      var infowindow = new google.maps.InfoWindow({
+          content: ''
+      });
+
+      for (var i = 0; i < markers.length; i++) {
+          var marker = markers[i];
+          // bindInfoWindow(marker, map, infowindow, content_html);
+          // marker.addListener('click', function () {
+          //     infowindow.open(map, marker);
+          // });
+          //     // console.log("var markers");
+          // var markerCluster = new MarkerClusterer(map, markers,
+          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+    });
 
     }
 
@@ -323,10 +371,10 @@ directionsSetUp = function(){
           })
       });
     }
-    $('#tourismNavBtn').on('click',function(event){
-      event.preventDefault();
-      document.getElementById("overlay1").style.display = "block";
-});
+//     $('#tourismNavBtn').on('click',function(event){
+//       event.preventDefault();
+//       document.getElementById("overlay1").style.display = "block";
+// });
 
       function invokeTourismBtns(){
         $('#tourismNatureBtn').on('click',function(event){
@@ -357,50 +405,7 @@ directionsSetUp = function(){
       invokeTourismBtns()
 
 
-        // display stops
-        $.ajax({
-          'async' : 'true',
-          'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
-//          'url' : '/static/json/stops_info.json',
-          'type': 'get',
-          'dataType':'json',
-          'data':{'lat':53.32386831,'lon':-6.37929675,'radius':1},
-        }).done(function(stops){
-        	var obj = stops.stops;
-        	console.log(obj);
-        for (var i = 0; i < obj.length; i++) {
-            var stops = obj;
-            stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
-        }
 
-        // The location of Dubin
-        var dublin = {lat: 53.3498, lng: -6.2603};
-
-
-        var markers = stops.map(function (location, i) {
-            return new google.maps.Marker({
-                position: location,
-                map: map,
-                // icon: markerImage,
-                // label: labels[i % labels.length]
-            });
-        });
-        var contentString = 'pppp';
-        var infowindow = new google.maps.InfoWindow({
-            content: ''
-        });
-
-        for (var i = 0; i < markers.length; i++) {
-            var marker = markers[i];
-            // bindInfoWindow(marker, map, infowindow, content_html);
-            // marker.addListener('click', function () {
-            //     infowindow.open(map, marker);
-            // });
-            //     // console.log("var markers");
-            // var markerCluster = new MarkerClusterer(map, markers,
-            //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        }
-  });
 }; //InitMap Ends
 
     //load favouties page
