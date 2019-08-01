@@ -45,6 +45,7 @@ directionsSetUp = function(){
     directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: false
     });
+    
   } //directionsSetUp Ends
 
   function trafficSetup() {
@@ -252,7 +253,7 @@ directionsSetUp = function(){
 
 
    // display stops along a bus route
-      function show_bus_route(){
+      function show_bus_route(busNum, origin, dest){
 
     		// display stops along a bus route
     		$.ajax({
@@ -261,7 +262,7 @@ directionsSetUp = function(){
     			//  'url' : '/static/json/stops_info.json',
     			'type': 'get',
     			'dataType':'json',
-    			'data':{'bus_number':'39a','origin':'UCD Belfield','destination':'Ongar'},
+    			'data':{'bus_number': busNum,'origin': origin,'destination': dest},
     		}).done(function(stop_list){
     			if(stop_list.res == 1){
     				var obj = stop_list.stops;
