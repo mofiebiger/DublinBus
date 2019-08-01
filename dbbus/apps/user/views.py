@@ -28,10 +28,10 @@ class IndexView(TemplateView):
     '''index page'''
     def get(self, request):
         '''index page'''
-        return render(request, 'index.html')
-
-
-
+        api = {
+            "maps_api" : settings.GOOGLE_MAPS_API_KEY
+        }
+        return render(request, 'index.html', api)
 
 class TourismView(TemplateView):
     def get(self, request):
