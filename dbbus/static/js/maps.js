@@ -249,6 +249,50 @@ directionsSetUp = function(){
       }
     });
 
+      
+      
+   // display stops along a bus route
+      function show_bus_route(){
+    		
+    		// display stops along a bus route
+    		$.ajax({
+    			'async' : 'true',
+    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
+    			//  'url' : '/static/json/stops_info.json',
+    			'type': 'get',
+    			'dataType':'json',
+    			'data':{'bus_number':'39a','origin':'UCD Belfield','destination':'Ongar'},
+    		}).done(function(stop_list){
+    			if(stop_list.res == 1){
+    				var obj = stop_list.stops;
+    				console.log(obj);
+    				for (var i = 0; i < obj.length; i++) {
+    					var stops = obj;
+    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
+    				}
+    				
+    				// The location of Dubin
+    				var dublin = {lat: 53.3498, lng: -6.2603};
+    				
+    				
+    				var markers = stops.map(function (location, i) {
+    					return new google.maps.Marker({
+    						position: location,
+    						map: map,
+    						// icon: markerImage,
+    						// label: labels[i % labels.length]
+    					});
+    				});    		  
+    			}else{
+    				alert(stop_list.errmsg);
+    			}
+    		});
+    	}
+
+  
+      
+      
+      
     }
 
     function geolocateUser() {
