@@ -18,6 +18,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import config
 from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
+from prediction.models import StopInformation
+from django.core import serializers
 # from user.models import User, UserBusNumber, UserStop, UserRoute
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
@@ -389,7 +391,7 @@ class TestView(TemplateView):
             name_dict = "123"
             return JsonResponse(name_dict)
 
-
+#/user/bus_info
 class BusInfoView(LoginRequiredMixin, TemplateView):
     def get(self, request):
 
@@ -572,6 +574,36 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
         #         return JsonResponse(data)
         return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
 
+
+class StopInfoView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        #get all stop_information from database
+        #send data to front end in json format
+        json_data = serializers.serialize('json', StopInformation.objects.all())
+        json_data = json.loads(json_data)
+        #only send fields to front end
+
+        return JsonResponse(json_data, safe=False)
+
+    def post(self, request):
+        stop_id = request.POST.get('stop_id')
+        # bus_id = request.POST.get('bus_id')
+        json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
+        print(type(json_data))
+        print(333333)
+        json_data = json.loads(json_data)
+        print(type(json_data))
+        print(22222)
+        # dic={}
+        # dic
+        # response_data = {'data': string_data}
+
+        return JsonResponse(json_data, safe=False)
+
+class StopsView(TemplateView):
+    def get(self, request):
+        '''stop/route page'''
+        return render(request, 'stops_routes.html')
 
 #
 # def set_session(request):
