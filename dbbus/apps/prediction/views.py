@@ -83,22 +83,7 @@ class StopInfoNearbyView(TemplateView):
         
 #         print(stops_data)
         return JsonResponse({'stops':clean_data})
-#         if not stop_id:
-#             return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
-#         stop_info = StopInformation.objects.filter(stop_id=stop_id)
-# 
-#             #stop does not exist
-#         if len(stop_info) == 0:
-#             return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
-# 
-#         json_data = serializers.serialize('json', stop_info)
-# 
-#         json_data = json.loads(json_data)
-# 
-# 
-# #         return JsonResponse(json_data, safe=False)
-#         return JsonResponse(json_data[0]['fields'], safe=False)
-#    
+  
     
     
 class PredictionRouteView(TemplateView):
