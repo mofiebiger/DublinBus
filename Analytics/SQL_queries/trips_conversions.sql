@@ -1,0 +1,47 @@
+SELECT * FROM trips LIMIT 100;
+
+--Removing the extra row at the top read in by the copy 
+-- DELETE FROM trips WHERE dayofservice='DAYOFSERVICE';
+
+--Changing the data types of each of the columns. {for some reason this introduces null values - rollback}
+-- ALTER TABLE trips 
+-- ALTER COLUMN tripid TYPE INT USING (trim(tripid)::integer), 
+-- ALTER COLUMN direction TYPE INT USING (trim(direction)::integer),
+-- ALTER COLUMN plannedtime_arr TYPE INT USING (trim(plannedtime_arr)::integer),
+-- ALTER COLUMN plannedtime_dep TYPE INT USING (trim(plannedtime_dep)::integer), 
+-- ALTER COLUMN actualtime_arr TYPE INT USING (trim(actualtime_arr)::integer), 
+-- ALTER COLUMN actualtime_dep TYPE INT USING (trim(actualtime_dep)::integer); 
+
+--Changing the date format to actual datetime object.
+-- UPDATE trips
+-- SET dayofservice = 
+-- TO_DATE(
+-- 	LEFT(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(
+-- 	REPLACE(dayofservice,
+-- 	'JAN','01'),
+-- 	'FEB','02'),
+-- 	'MAR','03'),
+-- 	'APR','04'),
+-- 	'MAY','05'),
+-- 	'JUN','06'),
+-- 	'JUL','07'),
+-- 	'AUG','08'),
+-- 	'SEP','09'),
+-- 	'OCT','10'),
+-- 	'NOV','11'),
+-- 	'DEC','12'),
+-- 	'-','/'),
+-- 	9),
+-- 'DD/MM/YY');

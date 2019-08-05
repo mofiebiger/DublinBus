@@ -1,0 +1,1 @@
+COPY leavetimes FROM '/home/student/Downloads/data/rt_leavetimes_DB_2018.txt' (FORMAT CSV, DELIMITER(';'));
