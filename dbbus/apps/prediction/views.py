@@ -17,7 +17,7 @@ from django.shortcuts import render
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
-    def getWeather(self,request):
+    def get(self,request):
         #url is the darksky website
         url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603'
         object = requests.get(url)
