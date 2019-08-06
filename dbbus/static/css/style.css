@@ -133,7 +133,7 @@ font-size: {
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
 }
-#directionsDestination {
+#directionsDestination,	#searchBusRoute, #researchContent{
     /* align-items: center; */
     width: 60%;
     /* margin: 15px; */
@@ -292,6 +292,26 @@ font-size: {
 
 form {
   display:inline-block;
+}
+
+
+#researchContent li {
+	    /* align-items: center; */
+    width: 100%;
+    height:20px;
+    line-height:20px;
+    margin:0px;
+	text-align:left;
+    padding: 0px;
+    font-family: 'Allerta Stencil', sans-serif;
+	
+	
+}
+
+#researchContent {
+	overflow:"hidden";
+	margin:0px;
+	padding: 0px;
 }
 
 #switch_position {

@@ -50,6 +50,26 @@ class StopInfoView(TemplateView):
 #         return JsonResponse(json_data, safe=False)
         return JsonResponse(json_data[0]['fields'], safe=False)
 
+
+class BusInfoView(TemplateView):
+
+    def get(self,request,bus_id):
+        if not stop_id:
+            return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
+        stop_info = StopInformation.objects.filter(stop_id=stop_id)
+
+            #stop does not exist
+        if len(stop_info) == 0:
+            return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
+
+        json_data = serializers.serialize('json', stop_info)
+
+        json_data = json.loads(json_data)
+
+
+#         return JsonResponse(json_data, safe=False)
+        return JsonResponse(json_data[0]['fields'], safe=False)
+
 class ServiceWorker(TemplateView):
     template_name = 'serviceworker.js'
     content_type = 'application/javascript'
@@ -95,6 +115,7 @@ class BusRouteView(TemplateView):
             stops_list = re.sub('\s|\'',"",(result[0].stops).strip('[]')).split(',')
             for i in range(len(stops_list)):
                 stops_list[i] = int(stops_list[i])
+            
             position_result = StopInformation.objects.filter(stop_id__in = stops_list)
             print('me1')
             json_data = serializers.serialize('json', position_result)
