@@ -32,3 +32,4 @@ urllib3==1.25.3
 vine==1.3.0
 wincertstore==0.2
 xgboost==0.90
+djangorestframework==3.10.2
