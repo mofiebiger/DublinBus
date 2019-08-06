@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 import requests
 import json
-from prediction.models import StopInformation
+from prediction.models import StopInformation, BusRouteNumber
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
@@ -10,7 +10,9 @@ from django.http import QueryDict
 import config
 # Create your views here.
 from prediction.get_prediction import prediction_route
-
+from geopy.distance import geodesic
+from django.core import serializers
+import re
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
@@ -53,8 +55,53 @@ class ServiceWorker(TemplateView):
     
     
     
+class StopInfoNearbyView(TemplateView):
+    '''get the stops that nearby the current location'''
+
+    def get(self,request):
+        '''get the stops that nearby the current location'''
+        
+        #get data
+        lat = request.GET.get('lat')
+        lon = request.GET.get('lon')
+        radius = float(request.GET.get('radius'))
+
+        #open json file
+        with open('static/json/stops_info.json','r') as load_f:
+             stops_data = json.load(load_f)
+             
+        #add the stop into file where the distance is less than the radius
+        clean_data = []
+        for stop in stops_data:
+            if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
+                clean_data.append(stop)                     
+#         print(stops_data)
+        return JsonResponse({'stops':clean_data})
+  
     
-    
+class BusRouteView(TemplateView):
+    '''display all the stops along the bus route'''
+
+    def get(self,request):
+        '''display all the stops along the bus route'''
+        bus_route = request.GET.get('bus_number').lower()
+        origin = request.GET.get('origin')
+        destination = request.GET.get('destination')
+        
+        result = BusRouteNumber.objects.filter(route=bus_route, origin=origin, destination=destination)
+
+        if result.exists():
+            stops_list = re.sub('\s|\'',"",(result[0].stops).strip('[]')).split(',')
+            for i in range(len(stops_list)):
+                stops_list[i] = int(stops_list[i])
+            position_result = StopInformation.objects.filter(stop_id__in = stops_list)
+            print('me1')
+            json_data = serializers.serialize('json', position_result)
+            json_data = json.loads(json_data)
+            
+            return JsonResponse({'res':1,'stops':json_data})    
+        else:
+            return JsonResponse({'res':0,'errmsg':'the route does not exist!'})                
     
 class PredictionRouteView(TemplateView):
     ''''''

@@ -1,6 +1,7 @@
 function initMap(position){
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB;
 
+  
 markerA = new google.maps.MarkerImage('marker.png')
               new google.maps.Size(24, 27),
               new google.maps.Point(0, 0),
@@ -44,6 +45,7 @@ directionsSetUp = function(){
     directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: false
     });
+  
   } //directionsSetUp Ends
 
   function trafficSetup() {
@@ -174,8 +176,8 @@ directionsSetUp = function(){
     } //DirectionsRenderer Ends
 
     function fetchGeoAddress(position){
-      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var Locater = new google.maps.Geocoder();
+      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
       Locater.geocode({ 'location' : userLatLng }, function(results, status){
           if(status == google.maps.GeocoderStatus.OK){
@@ -183,7 +185,14 @@ directionsSetUp = function(){
             $Selectors.dirSrc.val(_r.formatted_address);
           }
       });
-
+  } //fetchGeoAddress Ends
+  
+  function displayCircle(position){
+      //var Locater = new google.maps.Geocoder();
+      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      console.log(userLatLng);
+      console.log(userLatLng.lat);
+      console.log(userLatLng.lng);
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
@@ -193,14 +202,119 @@ directionsSetUp = function(){
           fillOpacity: 0.5,
           strokeOpacity: 0,
       });
-      google.map.circle.getBounds();
-      //map.fitBounds(circle.getBounds());
-    } //fetchGeoAddress Ends
+      map.fitBounds(circle.getBounds());
+
+    // display stops
+      $.ajax({
+        'async' : 'true',
+        'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
+//          'url' : '/static/json/stops_info.json',
+        'type': 'get',
+        'dataType':'json',
+        'data':{'lat': userLatLng.lat,'lon': userLatLng.lng,'radius':1},
+      }).done(function(stops){
+        var obj = stops.stops;
+        console.log(obj);
+      for (var i = 0; i < obj.length; i++) {
+          var stops = obj;
+          stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
+      }
+        
+        // The location of Dubin
+      var dublin = {lat: 53.3498, lng: -6.2603};
+
+
+      var markers = stops.map(function (location, i) {
+          return new google.maps.Marker({
+              position: location,
+              map: map,
+              // icon: markerImage,
+              // label: labels[i % labels.length]
+          });
+      });
+      var contentString = 'pppp';
+      var infowindow = new google.maps.InfoWindow({
+          content: ''
+      });
+        
+        for (var i = 0; i < markers.length; i++) {
+          var marker = markers[i];
+          // bindInfoWindow(marker, map, infowindow, content_html);
+          // marker.addListener('click', function () {
+          //     infowindow.open(map, marker);
+          // });
+          //     // console.log("var markers");
+          // var markerCluster = new MarkerClusterer(map, markers,
+          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+    });
+    
+    
+    
+     // display stops along a bus route
+      function show_bus_route(busNum, origin, dest){
+
+    		// display stops along a bus route
+    		$.ajax({
+    			'async' : 'true',
+    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
+    			//  'url' : '/static/json/stops_info.json',
+    			'type': 'get',
+    			'dataType':'json',
+    			'data':{'bus_number': busNum,'origin': origin,'destination': dest},
+    		}).done(function(stop_list){
+    			if(stop_list.res == 1){
+    				var obj = stop_list.stops;
+    				console.log(obj);
+    				for (var i = 0; i < obj.length; i++) {
+    					var stops = obj;
+    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
+    				}
+
+    				// The location of Dubin
+    				var dublin = {lat: 53.3498, lng: -6.2603};
+
+
+    				var markers = stops.map(function (location, i) {
+    					return new google.maps.Marker({
+    						position: location,
+    						map: map,
+    						// icon: markerImage,
+    						// label: labels[i % labels.length]
+    					});
+    				});
+    			}else{
+    				alert(stop_list.errmsg);
+    			}
+    		});
+    	}
+
+
+
+
+
+    }
+  
+  function geolocateUser() {
+      // If the browser supports the Geolocation API
+      if (navigator.geolocation)
+      {
+        var positionOptions = {
+          enableHighAccuracy: true,
+          timeout: 10 * 1000 // 10 seconds
+        };
+        navigator.geolocation.getCurrentPosition(displayCircle, geolocationError, positionOptions);
+      }
+      else
+        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+    }
+
+    window.onload = geolocateUser;
 
     // Display if there is an error with the geolocation
     function geolocationError(positionError) {
       document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br/>";
-    }
+    }   
 
 
     function fetchTourismAddress(lat, lng){
@@ -214,8 +328,6 @@ directionsSetUp = function(){
           }
       });
     }//fetchTourismAddress Ends
-
-
 
       function invokeEvents(){
         // Get Directions
@@ -291,7 +403,6 @@ directionsSetUp = function(){
           $('.tourismNavBtn').click(function(){
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
-                        console.log(latitude)
                         fetchTourismAddress(latitude, longitude);
                         $('#nav li').eq(0).click();
                     });
@@ -304,17 +415,10 @@ directionsSetUp = function(){
           })
       });
     }
+  
+  
     initStopPage();
-
-    $('#tourismNavBtn').on('click',function(event){
-      event.preventDefault();
-      document.getElementById("overlay1").style.display = "block";
-});
-      $('.stopNavButton').on('click',function(event){
-      event.preventDefault();
-      console.log("yes")
-      document.getElementById("overlay1").style.display = "block";
-});
+  
 
       function invokeTourismBtns(){
         $('#tourismNatureBtn').on('click',function(event){
@@ -345,49 +449,8 @@ directionsSetUp = function(){
       invokeTourismBtns()
 
 
-        // display stops
-        $.ajax({
-          'async' : 'true',
-          'url' : '/static/json/stops_info.json',
-          'type': 'get',
-          'dataType':'json',
-          'csrfmiddlewaretoken': '{{ csrf_token }}',
-        }).done(function(obj){
-          //console.log(obj);
-        for (var i = 0; i < obj.length; i++) {
-            var stops = obj;
-            stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
-        }
-
-        // The location of Dubin
-        var dublin = {lat: 53.3498, lng: -6.2603};
-
-
-        var markers = stops.map(function (location, i) {
-            return new google.maps.Marker({
-                position: location,
-                map: map,
-                // icon: markerImage,
-                // label: labels[i % labels.length]
-            });
-        });
-        var contentString = 'pppp';
-        var infowindow = new google.maps.InfoWindow({
-            content: ''
-        });
-
-        for (var i = 0; i < markers.length; i++) {
-            var marker = markers[i];
-            // bindInfoWindow(marker, map, infowindow, content_html);
-            // marker.addListener('click', function () {
-            //     infowindow.open(map, marker);
-            // });
-            //     // console.log("var markers");
-            var markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        }
-  });
-}; //InitMap Ends
+  
+  }; //InitMap Ends
 
 function fetchStopAddress(lat, lng){
       stopLatLng = new google.maps.LatLng(lat, lng);
@@ -649,11 +712,6 @@ function initStopPage(){
 
           //delete from favs
           invokeDeleteBusBtn();
-
-          $('#stopNavButton').on('click',function(event){
-      event.preventDefault();
-      document.getElementById("overlay1").style.display = "block";
-});
       }
 
     //load overlay page
@@ -685,10 +743,7 @@ function initStopPage(){
       });
       });
 
-      // Meihan is will potentially use this function for favourites page
-      // $(document).ready(function(){#}
-      //     $('#side_div').load('/user/test');#}
-      // })
+    
 
       //splash overlay code comes from: https://www.sitepoint.com/community/t/how-do-you-make-a-javascript-splash-page/44555/3
       $.fn.center = function () {
@@ -787,3 +842,18 @@ function initStopPage(){
             $('#weather_stats').show().html(displayTemp + "<br/>" + displayWind + "<br/>" + displayHumidity);
           })
         } // On8: AKA WeatherDisplay Ends
+
+
+
+
+
+    //switch the origi point and destination point
+        $(function(){
+        	 $('#switch_position').click(function(){
+        		 var start_point = $('#directionsSource');
+             	var start_point_value =start_point.val();
+             	var end_point = $('#directionsDestination');
+             	start_point.val(end_point.val());
+             	end_point.val(start_point_value);
+        	 });
+        });

@@ -60,3 +60,17 @@ class Vehicles(models.Model):
     class Meta:
         managed = True
         db_table = 'vehicles'
+        
+        
+        
+        
+class BusRouteNumber(models.Model):
+    route = models.CharField(max_length=10,verbose_name='route',null = False)
+    origin = models.CharField(max_length=50,verbose_name='origin',null = False)
+    destination = models.CharField(max_length=50,verbose_name='destination',null = False)
+    stops = models.CharField(max_length = 2000,verbose_name='stops',null = False)
+    stop_number = models.IntegerField(verbose_name='stop_number',null = False)
+    class Meta:
+        db_table = 'bus_route'
+        verbose_name = 'bus_route'
+        verbose_name_plural = verbose_name
