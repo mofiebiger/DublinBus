@@ -132,7 +132,7 @@ directionsSetUp = function(){
           	$.ajax({
           		url:window.location.protocol+"//"+window.location.host+"/prediction/route",
           		type: 'post',
-          		headers:{"X-csrftoken":$("#directionsPanel input[name='csrfmiddlewaretoken']").val()},
+          		headers:{"X-CSRFToken":$("#directionsPanel input[name='csrfmiddlewaretoken']").val()},
           		contentType: 'application/json;charset=UTF-8',
           		dataType:'json',
           		data: JSON.stringify(routes),
@@ -153,7 +153,9 @@ directionsSetUp = function(){
 
 
 //            	console.log(response);
-
+            	for(var i=0;i< marker_list.length;i++){
+            		marker_list[i].setMap(null);
+            	}
                 directionsDisplay.setDirections(response);
 
                 directionsDisplay.setPanel(show_div);
@@ -172,6 +174,8 @@ directionsSetUp = function(){
             map: map,
             icon: markerB
           });
+          marker_list.push(pinA);
+          marker_list.push(pinB);
         }
       });
     } //DirectionsRenderer Ends
@@ -240,6 +244,7 @@ directionsSetUp = function(){
 
       for (var i = 0; i < markers.length; i++) {
           var marker = markers[i];
+          marker_list.push(marker);
           // bindInfoWindow(marker, map, infowindow, content_html);
           // marker.addListener('click', function () {
           //     infowindow.open(map, marker);
@@ -249,48 +254,6 @@ directionsSetUp = function(){
           //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
     });
-
-
-
-   // display stops along a bus route
-      function show_bus_route(busNum, origin, dest){
-
-    		// display stops along a bus route
-    		$.ajax({
-    			'async' : 'true',
-    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
-    			//  'url' : '/static/json/stops_info.json',
-    			'type': 'get',
-    			'dataType':'json',
-    			'data':{'bus_number': busNum,'origin': origin,'destination': dest},
-    		}).done(function(stop_list){
-    			if(stop_list.res == 1){
-    				var obj = stop_list.stops;
-    				console.log(obj);
-    				for (var i = 0; i < obj.length; i++) {
-    					var stops = obj;
-    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
-    				}
-
-    				// The location of Dubin
-    				var dublin = {lat: 53.3498, lng: -6.2603};
-
-
-    				var markers = stops.map(function (location, i) {
-    					return new google.maps.Marker({
-    						position: location,
-    						map: map,
-    						// icon: markerImage,
-    						// label: labels[i % labels.length]
-    					});
-    				});
-    			}else{
-    				alert(stop_list.errmsg);
-    			}
-    		});
-    	}
-
-
 
 
 
@@ -447,11 +410,128 @@ directionsSetUp = function(){
           diplayTouristPage("Churches")
         });
       } //invokeTourismBtns Ends
-      invokeTourismBtns()
+      invokeTourismBtns();
 
-
+   function setBusRoute(){
+	   
+	   $('#busRoute #searchBusRoute').keyup(function(){
+		   $(this).removeAttr('name');
+		   $.ajax({
+			   'async' : 'false',
+//			'url' : window.location.protocol+"//"+window.location.host+"/prediction/get_bus_route_info",
+			   'url' : '/static/json/bus_route.json',
+			   'type': 'get',
+			   'dataType':'json',
+//			'data':{'bus_number': busNum,'origin': origin,'destination': dest},
+		   }).done(function(stop_list){
+			   var selectData = "";
+			   for (var i = 0; i < stop_list.length; i++) {
+				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){					   
+					   selectData += "<li id=\"" + stop_list[i]['route'] +"_" + stop_list[i]['origin'] +"_" + stop_list[i]['destination'] + "\">" + stop_list[i]['route']+ "(" + stop_list[i]['origin'] + "→" + stop_list[i]['destination'] + ")</li>";
+			   }}
+			   fieldString = "<ul id=\"busSelector\" >" + selectData + "</ul> ";
+			   $("#busRoute #researchContent").parent().css("position","relative");
+			   $("#busRoute #researchContent").html(fieldString).css({"position":"absolute","height":"100px"}).show();
+			   console.log($("#busRoute #searchBusRoute li").css("height"));
+			   $("#busRoute #busSelector li").click(function(){
+				   $('#busRoute #searchBusRoute').val($(this).html()).attr('name',$(this).attr('id'));
+				   
+				   $(this).parent().parent().hide();
+			   }).css('overflow','hidden');
+			   
+		   });
+		   
+	   })
+	   
+	   function match_left(word,stop_list){
+		   for (var i = 0; i < stop_list.length; i++){
+			   
+		   } 
+		   
+	   }
+		
+		
+      // display stops along a bus route
+      
+		$('#searchBus').bind('click',function(){
+						var bus_route = $('#busRoute #searchBusRoute').attr('name');
+						console.log(bus_route);
+						if(typeof(bus_route) == "undefined"){
+							return false;
+						}else{		
+							
+							route_list = bus_route.split('_')
+							console.log(route_list);
+					    		// display stops along a bus route
+					    		$.ajax({
+					    			'async' : 'true',
+					    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
+					    			//  'url' : '/static/json/stops_info.json',
+					    			'type': 'get',
+					    			'dataType':'json',
+					    			'data':{'bus_number': route_list[0],'origin': route_list[1],'destination': route_list[2]},
+					    		}).done(function(stop_list){
+					    			if(stop_list.res == 1){
+					    				var obj = stop_list.stops;
+					    				console.log(obj);
+					    				for (var i = 0; i < obj.length; i++) {
+					    					var stops = obj;
+					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
+					    				}
+		
+					                    directionsDisplay.setMap(null);
+					                    directionsDisplay.setMap(map);					    				
+					    				
+					    				//remove the markers created before
+					    				
+					    				for(var i=0;i< marker_list.length;i++){
+					                		marker_list[i].setMap(null);
+					                	}
+//					    				var Path = new google.maps.Polyline({
+//					    					path: stops,
+//					    					geodesic: true,
+//					    					strokeColor: '#FF0000',
+//					    					strokeOpacity: 1.0,
+//					    					strokeWeight: 2
+//					    				});
+//					    				Path.setMap(map);
+//					    				marker_list.push(Path);
+					     		
+		
+					    				var markers = stops.map(function (location, i) {
+					    					return new google.maps.Marker({
+					    						position: location,
+					    						map: map,
+					    						// icon: markerImage,
+					    						// label: labels[i % labels.length]
+					    					});
+					    				});
+					    			      for (var i = 0; i < markers.length; i++) {
+					    			          var marker = markers[i];
+					    			          marker_list.push(marker);
+					    			          // bindInfoWindow(marker, map, infowindow, content_html);
+					    			          // marker.addListener('click', function () {
+					    			          //     infowindow.open(map, marker);
+					    			          // });
+					    			          //     // console.log("var markers");
+					    			          // var markerCluster = new MarkerClusterer(map, markers,
+					    			          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+					    			      }					    				
+					    				
+					    			}else{
+					    				alert(stop_list.errmsg);
+					    			}
+					    		});
+					    	}
+		      	})
+      };
+      setBusRoute();
+		      	
 
 }; //InitMap Ends
+
+var marker_list = new Array();
+
 
     //load favouties page
     $(document).ready(function(){
@@ -517,48 +597,50 @@ directionsSetUp = function(){
               'dataType':'json',
             }).done(function(data_total){
             var data = data_total.currently;
-            var data_hourly = data_total.hourly;
+            var data_hourly = data_total.hourly.data;
             var weatherDescription = data.summary;
             displayDescription = ("It Feels Like " + weatherDescription);
 
             $('#weather_heading').show().html(displayDescription);
 
-            var weatherIcon = data.icon;
+            var weatherIcon = data.icon.toUpperCase().split('-');
+            weatherIcon = weatherIcon.join('_')
+            
             //var weatherIcon = "snow";
             var icons = new Skycons({"color": "white"});
-
-              switch(weatherIcon){
-                case "clear-day":
-                  icons.set("weatherIcon", Skycons.CLEAR_DAY);
-                  break;
-                case "clear-night":
-                  icons.set("weatherIcon-night", Skycons.CLEAR_NIGHT);
-                  break;
-                case "partly-cloudy-day":
-                  icons.set("weatherIcon", Skycons.PARTLY_CLOUDY_DAY);
-                  break;
-                case "partly-cloudy-night":
-                  icons.set("weatherIcon", Skycons.PARTLY_CLOUDY_NIGHT);
-                  break;
-                case "cloudy":
-                  icons.set("weatherIcon", Skycons.CLOUDY);
-                  break;
-                case "rain":
-                  icons.set("weatherIcon", Skycons.RAIN);
-                  break;
-                case "sleet":
-                  icons.set("weatherIcon", Skycons.SLEET);
-                  break;
-                case "snow":
-                  icons.set("weatherIcon", Skycons.SNOW);
-                  break;
-                case "wind":
-                  icons.set("weatherIcon", Skycons.WIND);
-                  break;
-                case "fog":
-                  icons.set("weatherIcon", Skycons.FOG);
-                  break;
-              }
+            icons.set("weatherIcon", Skycons[weatherIcon])
+//              switch(weatherIcon){
+//                case "clear-day":
+//                  icons.set("weatherIcon", Skycons.CLEAR_DAY);
+//                  break;
+//                case "clear-night":
+//                  icons.set("weatherIcon-night", Skycons.CLEAR_NIGHT);
+//                  break;
+//                case "partly-cloudy-day":
+//                  icons.set("weatherIcon", Skycons.PARTLY_CLOUDY_DAY);
+//                  break;
+//                case "partly-cloudy-night":
+//                  icons.set("weatherIcon", Skycons.PARTLY_CLOUDY_NIGHT);
+//                  break;
+//                case "cloudy":
+//                  icons.set("weatherIcon", Skycons.CLOUDY);
+//                  break;
+//                case "rain":
+//                  icons.set("weatherIcon", Skycons.RAIN);
+//                  break;
+//                case "sleet":
+//                  icons.set("weatherIcon", Skycons.SLEET);
+//                  break;
+//                case "snow":
+//                  icons.set("weatherIcon", Skycons.SNOW);
+//                  break;
+//                case "wind":
+//                  icons.set("weatherIcon", Skycons.WIND);
+//                  break;
+//                case "fog":
+//                  icons.set("weatherIcon", Skycons.FOG);
+//                  break;
+//              }
               icons.play();
 
             //converting fahrenheit to celsius
@@ -581,7 +663,20 @@ directionsSetUp = function(){
 
             //Display Weather Stats on overlay8
             $('#weather_stats').show().html(displayTemp + "<br/>" + displayWind + "<br/>" + displayHumidity);
-          })
+          for(var i=0;i<data_hourly.length;i++){
+              var weatherIcon = data_hourly[i].icon.toUpperCase().split('-');
+              weatherIcon = weatherIcon.join('_')
+              var icons = new Skycons({"color": "white"});
+              $('#weather_hourly').append('<div><p id="weathertime'+i+'"></p><canvas id="weatherIcon'+i+'" width="55" height="55"></canvas><p id="weatherTemp'+i+'"></p></div>')
+              icons.set("weatherIcon"+i, Skycons[weatherIcon]);
+              icons.play();
+              var date = new Date(data_hourly[i]['time'])
+              console.log(date)
+              $('#weathertime'+i).html(date.getHours())
+              $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature - 32) * 5/9))
+              $('#weather_hourly div').css({'float':'left'})
+          }
+            })
         } // On8: AKA WeatherDisplay Ends
 
 
@@ -598,3 +693,8 @@ directionsSetUp = function(){
              	end_point.val(start_point_value);
         	 });
         });
+        
+
+		      	
+      	
+        
