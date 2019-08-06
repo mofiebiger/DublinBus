@@ -921,7 +921,7 @@ function initStopPage(){
         	 });
         });
         
-}
+
 		      	
       	
         
