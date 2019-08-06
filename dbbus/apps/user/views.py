@@ -35,15 +35,9 @@ class IndexView(TemplateView):
         }
         return render(request, 'index.html', api)
 
-class TourismView(TemplateView):
-    def get(self, request):
-        return render(request, 'tourismPage.html')
-
 # class serviceWorker(TemplateView):
 #     template_name = 'js/serviceworker.js'
 #     content_type = 'application/javascript'
-
-
 
 # /user/register
 class RegisterView(TemplateView):
@@ -379,17 +373,6 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
         def get(self, request):
             '''favourites page'''
             return render(request, 'favourites.html')
-
-
-class TestView(TemplateView):
-        def get(self, request):
-            '''favourites page'''
-            return render(request, 'test_map.html')
-
-        def query(request):
-            r = request.GET.get("toolsname")
-            name_dict = "123"
-            return JsonResponse(name_dict)
 
 #/user/bus_info
 class BusInfoView(LoginRequiredMixin, TemplateView):

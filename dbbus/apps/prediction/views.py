@@ -29,8 +29,6 @@ class WeatherInfoView(TemplateView):
         #return the current weather information
         return JsonResponse(text_needed)
 
-
-
 class StopInfoView(TemplateView):
 
     def get(self,request,stop_id):
@@ -49,6 +47,11 @@ class StopInfoView(TemplateView):
 
 #         return JsonResponse(json_data, safe=False)
         return JsonResponse(json_data[0]['fields'], safe=False)
+
+
+# class ServiceWorker(TemplateView):
+#     template_name = 'serviceworker.js'
+#     content_type = 'application/javascript'
 
 
 class BusInfoView(TemplateView):
@@ -70,9 +73,7 @@ class BusInfoView(TemplateView):
 #         return JsonResponse(json_data, safe=False)
         return JsonResponse(json_data[0]['fields'], safe=False)
 
-class ServiceWorker(TemplateView):
-    template_name = 'serviceworker.js'
-    content_type = 'application/javascript'
+
 
 
 
