@@ -136,9 +136,12 @@ font-size: {
 #directionsDestination {
     /* align-items: center; */
     width: 60%;
-    margin: 15px;
+    /* margin: 15px; */
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 62px;
 }
 #rightNow {
     /* align-items: center; */
@@ -289,4 +292,11 @@ font-size: {
 
 form {
   display:inline-block;
+}
+
+#switch_position {
+  width: 50px;
+  height: 50px;
+  float: right;
+  padding: 5px;
 }

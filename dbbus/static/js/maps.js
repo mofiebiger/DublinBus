@@ -136,25 +136,21 @@ directionsSetUp = function(){
           		dataType:'json',
           		data: JSON.stringify(routes),
           	}).done(function(data){
-            	console.log(data);
+//             	console.log(data);
             	if (data.res == 1){
             		for(var i=0,j=0; i<_route['steps'].length; i++){
                      	  if (_route['steps'][i].travel_mode == "TRANSIT"){
                      		response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
                      		j+=1;
                      	  }
-
                   	 }
 
             	}else{
             		alert(data.errmsg);
             	}
-
-
-//            	console.log(response);
-
                 directionsDisplay.setDirections(response);
-
+                console.log("directions" + directionsDisplay.setDirections(response));
+              
                 directionsDisplay.setPanel(show_div);
                 directionsDisplay.setMap(map);
           	}).fail(function(){
@@ -190,16 +186,13 @@ directionsSetUp = function(){
   function displayCircle(position){
       //var Locater = new google.maps.Geocoder();
       userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      console.log(userLatLng);
-      console.log(userLatLng.lat);
-      console.log(userLatLng.lng);
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
           radius: 1000,//position.coords.accuracy,
           map: map,
-          fillColor: '#0000FF',
-          fillOpacity: 0.5,
+          fillColor: '#800040',
+          fillOpacity: 0.4,
           strokeOpacity: 0,
       });
       map.fitBounds(circle.getBounds());
@@ -214,7 +207,7 @@ directionsSetUp = function(){
         'data':{'lat': userLatLng.lat,'lon': userLatLng.lng,'radius':1},
       }).done(function(stops){
         var obj = stops.stops;
-        console.log(obj);
+        //console.log(obj);
       for (var i = 0; i < obj.length; i++) {
           var stops = obj;
           stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
@@ -244,8 +237,8 @@ directionsSetUp = function(){
           //     infowindow.open(map, marker);
           // });
           //     // console.log("var markers");
-          // var markerCluster = new MarkerClusterer(map, markers,
-          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+          var markerCluster = new MarkerClusterer(map, markers,
+               {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
     });
     
@@ -265,7 +258,7 @@ directionsSetUp = function(){
     		}).done(function(stop_list){
     			if(stop_list.res == 1){
     				var obj = stop_list.stops;
-    				console.log(obj);
+    				//console.log(obj);
     				for (var i = 0; i < obj.length; i++) {
     					var stops = obj;
     					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
@@ -383,7 +376,7 @@ directionsSetUp = function(){
                   //document.getElementById("overlay1").style.display = "block";
                   $("overlay1").show();
                 }
-                console.log(fetchTourismAddress(latitude, longitude));
+                //console.log(fetchTourismAddress(latitude, longitude));
 
                 // Geo Tourism Location Btn
                 //$('#tourismNavBtn').on('click', function(e) {
