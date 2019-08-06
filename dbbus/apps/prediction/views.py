@@ -17,7 +17,7 @@ from django.shortcuts import render
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
-    def getWeather(self,request):
+    def get(self,request):
         #url is the darksky website
         url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603'
         object = requests.get(url)
@@ -28,8 +28,6 @@ class WeatherInfoView(TemplateView):
         text_needed['hourly'] = text['hourly']
         #return the current weather information
         return JsonResponse(text_needed)
-
-
 
 class StopInfoView(TemplateView):
 
@@ -50,9 +48,9 @@ class StopInfoView(TemplateView):
 #         return JsonResponse(json_data, safe=False)
         return JsonResponse(json_data[0]['fields'], safe=False)
 
-class ServiceWorker(TemplateView):
-    template_name = 'serviceworker.js'
-    content_type = 'application/javascript'
+# class ServiceWorker(TemplateView):
+#     template_name = 'serviceworker.js'
+#     content_type = 'application/javascript'
 
 
 

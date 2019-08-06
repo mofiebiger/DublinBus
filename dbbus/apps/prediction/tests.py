@@ -1,43 +1,72 @@
-#from django.test import TestCase
-import unittest
 import json
-import django.views
-from django.urls import include, path, reverse
+from . import views
 from django.contrib.auth import get_user_model
-from rest_framework.test import APITestCase, URLPatternsTestCase
+from django.test import RequestFactory, TestCase
 
-class DublinBusUnitTests(APITestCase, URLPatternsTestCase):
+def response_to_json(response):
+    str_content = response.content.decode("utf-8")
+    return json.loads(str_content)
 
-    # def setUp(self):
-    #     self.user = get_user_model()
-    #     self.factory = APIRequestFactory()
+class PredictionTests(TestCase):
 
-    urlpatterns = [
-        path('prediction/', include('prediction.urls')),
-    ]
-    url = URLPatternsTestCase()
-    api = APITestCase()
+    def setUp(self):
+        self.user = get_user_model()
+        self.factory = RequestFactory()
 
-    def test_stations(self):
-        # Request and parse the JSON response
-        url = reverse("weather")
-        response = self.client.get(url, format="json")
-        #self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # json_content = response_to_json(response)
-        self.assertEqual(len(response.data), 2)
+    #Testing all views functions
 
-    # def
+    def test_weather_api_GET(self):
+        request = self.factory.get('/prediction/weather/')
+        request.user = self.user
+        response = views.WeatherInfoView().get(request)
+        json_content = response_to_json(response)
 
-    if __name__ == '__main__':
-        unittest.main(verbosity=2)
-        # try:
-        #     setup_test_environment()
-        #     settings.DEBUG = False
-        #     verbosity = 0
-        #     old_database_name = settings.DATABASE_NAME
-        #     connection.creation.create_test_db(verbosity)
-        #     unittest.main()
-        # finally:
-        #     connection.creation.destroy_test_db(old_database_name, verbosity)
-        #     teardown_test_environment()
-        #settings.configure()
+        #testing length of json response
+        self.assertEqual(len(json_content), 2)
+
+    def test_stop_info_GET(self):
+        pass
+    #     request = self.factory.get('/prediction/stop_info/')
+    #     request.user = self.user
+    #     stop_id = 812
+    #     response = views.StopInfoView().get(request, stop_id)
+    #     json_content = response_to_json(response)
+    #     self.assertEqual(json_content, {
+    #                     "stop_id": 812,
+    #                     "stop_name": "North Circular Road",
+    #                     "stop_name_localized": "An Cuarbhóthar Tdh",
+    #                     "stop_lat": "53.3582580600",
+    #                     "stop_lon": "-6.2842180560",
+    #                     "stop_routes": "['46A']"
+    #                     })
+
+    def test_stops_near_me_GET(self):
+        request = self.factory.get('/prediction/stops_nearby/?lat=53.3067&lon=-6.2231&radius=1.0')
+        request.user = self.user
+        response = views.StopInfoNearbyView().get(request)
+        json_content = response_to_json(response)
+
+        #testing length of json response
+        self.assertEqual(len(json_content), 1)
+
+    def test_bus_route_info_GET(self):
+        request = self.factory.get('/prediction/bus_route/?bus_number=39a&origin=UCD%20Belfield&destination=Ongar/')
+        request.user = self.user
+        response = views.BusRouteView().get(request)
+        json_content = response_to_json(response)
+
+        #testing length of json response
+        self.assertEqual(len(json_content), 2)
+
+    def test_bus_route_prediction_POST(self):
+        pass
+        # request = self.factory.get('/prediction/route/')
+        # request.user = self.user
+        # response = views.PredictionRouteView().post(request)
+        #
+        # #testing the status code of the index page
+        # self.assertEqual(response.status_code, 200)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
