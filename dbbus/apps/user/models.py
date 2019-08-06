@@ -39,11 +39,9 @@ class UserRoute(models.Model):
 class UserStop(models.Model):
     stop = models.IntegerField(verbose_name='favorite_stop',null = False,unique = True)
     station_user = models.ForeignKey('User',on_delete=models.CASCADE)
-    
+
     class Meta:
         db_table = 'favorite_stop'
         verbose_name = 'favorite_stop'
-        verbose_name_plural = verbose_name    
-    
-   
-    
+        verbose_name_plural = verbose_name
+

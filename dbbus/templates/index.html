@@ -15,9 +15,9 @@
         <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
         <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">
 
-
+    
         <meta name="apple-mobile-web-app-capable" content="yes">
-
+    
         <!--favicon links-->
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
@@ -37,7 +37,7 @@
         <meta name="msapplication-TileColor" content="#b91d47">
         <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
         <meta name="theme-color" content="#ffffff">
-
+    
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -56,10 +56,8 @@
 
 
         <!--Google Maps API-->
-        <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" defer>
         </script>
-        </script>
-
 
         <!--Map / Navigation / Tourism / Display Bus Stops-->
         <script type="text/javascript" src="{% static 'js/maps.js' %}"></script>
@@ -98,7 +96,7 @@
       <li><a>Journey Planner</a></li>
       <li><a>Tourism</a></li>
       <li><a>Favourites</a></li>
-      <li><a>FAQ</a></li>
+      <li><a>Stops</a></li>
       <li><a>Contact</a></li>
       <li style="float:right"><a onclick="on8()"><i class="fa fa-cloud"></i></a></li>
       <li style="float:right"><a ><i class="fa fa-user"></i></a></li>
@@ -111,7 +109,6 @@
     			var divs = $('div[id*="overlay"]');
     			var closes = $('a[class*="closebtn"]')
     			navs.click(function(event){
-
     				 event.preventDefault();
              divs.eq($(this).index()).toggleClass('blocktoggle').siblings().removeClass('blocktoggle');
     			});
@@ -134,7 +131,7 @@
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
               <input id="directionsDestination" class="controls" type="text" placeholder="End">
             	<input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style></button>
-            </div>
+             </div>
 
             <div id="dateTime-panel">
               <div id="date">
@@ -176,11 +173,34 @@
     </div>
 
 
-    <!--FAQ overlay -->
+    <!--STOPS overlay -->
     <div class="overlay" id="overlay4">
       <a href="javascript:void(0)" class="closebtn" >&times;</a>
-      <div id="FAQInfo">
-        <h1> FAQ </h1>
+      <div id="stopInfo">
+          {% csrf_token %}
+        <div>
+      <label>Type stop number or key word to select a stop:</label>
+      <input type="text" id="search_stop" list="stop_list" />
+      <datalist id="stop_list"></datalist>
+      <button id="select_stop">Show Detail</button>
+  </div>
+        <div id="content">
+      <div class='fav_buttons'>
+          <button type='button' id='addFav' hidden>Add Favourites</button>
+          <button type='button' id='removeFav' hidden>Remove Favourites</button>
+      </div>
+      <div></div>
+      <div id="stop_content"></div>
+      <div id="bus_info" hidden>
+          <div id="bus_content">
+            <button type="button" id="addFav_bus" hidden>Add Favourite</button>
+            <button type="button" id="removeFav_bus" hidden>Remove Favourite</button>
+          </div>
+          <h3 id="busid"></h3>
+          <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
+          <input type="text" id="bus_id" value="39A" hidden>
+      </div>
+  </div>
       </div>
     </div>
 

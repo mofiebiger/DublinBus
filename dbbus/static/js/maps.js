@@ -1,7 +1,7 @@
 function initMap(position){
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB;
 
-
+  
 markerA = new google.maps.MarkerImage('marker.png')
               new google.maps.Size(24, 27),
               new google.maps.Point(0, 0),
@@ -45,6 +45,7 @@ directionsSetUp = function(){
     directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: false
     });
+  
   } //directionsSetUp Ends
 
   function trafficSetup() {
@@ -89,7 +90,6 @@ directionsSetUp = function(){
           panControlOptions: {
           position: google.maps.ControlPosition.RIGHT_TOP
           }
-
     });
     autoCompleteSetup();
     directionsSetUp();
@@ -136,14 +136,13 @@ directionsSetUp = function(){
           		dataType:'json',
           		data: JSON.stringify(routes),
           	}).done(function(data){
-            	//console.log(data);
+//             	console.log(data);
             	if (data.res == 1){
             		for(var i=0,j=0; i<_route['steps'].length; i++){
                      	  if (_route['steps'][i].travel_mode == "TRANSIT"){
                      		response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
                      		j+=1;
                      	  }
-
                   	 }
 
             	}else{
@@ -151,7 +150,7 @@ directionsSetUp = function(){
             	}
                 directionsDisplay.setDirections(response);
                 console.log("directions" + directionsDisplay.setDirections(response));
-
+              
                 directionsDisplay.setPanel(show_div);
                 directionsDisplay.setMap(map);
           	}).fail(function(){
@@ -182,15 +181,15 @@ directionsSetUp = function(){
             $Selectors.dirSrc.val(_r.formatted_address);
           }
       });
-    } //fetchGeoAddress Ends
-
-    function displayCircle(position){
+  } //fetchGeoAddress Ends
+  
+  function displayCircle(position){
       //var Locater = new google.maps.Geocoder();
       userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
-          radius: 1000, //position.coords.accuracy,
+          radius: 1000,//position.coords.accuracy,
           map: map,
           fillColor: '#800040',
           fillOpacity: 0.4,
@@ -198,7 +197,7 @@ directionsSetUp = function(){
       });
       map.fitBounds(circle.getBounds());
 
-      // display stops
+    // display stops
       $.ajax({
         'async' : 'true',
         'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
@@ -213,8 +212,8 @@ directionsSetUp = function(){
           var stops = obj;
           stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
       }
-
-      // The location of Dubin
+        
+        // The location of Dubin
       var dublin = {lat: 53.3498, lng: -6.2603};
 
 
@@ -230,8 +229,8 @@ directionsSetUp = function(){
       var infowindow = new google.maps.InfoWindow({
           content: ''
       });
-
-      for (var i = 0; i < markers.length; i++) {
+        
+        for (var i = 0; i < markers.length; i++) {
           var marker = markers[i];
           // bindInfoWindow(marker, map, infowindow, content_html);
           // marker.addListener('click', function () {
@@ -239,13 +238,13 @@ directionsSetUp = function(){
           // });
           //     // console.log("var markers");
           var markerCluster = new MarkerClusterer(map, markers,
-              {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+               {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
     });
-
-
-
-   // display stops along a bus route
+    
+    
+    
+     // display stops along a bus route
       function show_bus_route(busNum, origin, dest){
 
     		// display stops along a bus route
@@ -288,8 +287,8 @@ directionsSetUp = function(){
 
 
     }
-
-    function geolocateUser() {
+  
+  function geolocateUser() {
       // If the browser supports the Geolocation API
       if (navigator.geolocation)
       {
@@ -308,7 +307,7 @@ directionsSetUp = function(){
     // Display if there is an error with the geolocation
     function geolocationError(positionError) {
       document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br/>";
-    }
+    }   
 
 
     function fetchTourismAddress(lat, lng){
@@ -409,10 +408,10 @@ directionsSetUp = function(){
           })
       });
     }
-//     $('#tourismNavBtn').on('click',function(event){
-//       event.preventDefault();
-//       document.getElementById("overlay1").style.display = "block";
-// });
+  
+  
+    initStopPage();
+  
 
       function invokeTourismBtns(){
         $('#tourismNatureBtn').on('click',function(event){
@@ -443,15 +442,278 @@ directionsSetUp = function(){
       invokeTourismBtns()
 
 
+  
+  }; //InitMap Ends
 
-}; //InitMap Ends
+function fetchStopAddress(lat, lng){
+      stopLatLng = new google.maps.LatLng(lat, lng);
+      var Locate = new google.maps.Geocoder();
 
-    //load favouties page
+      Locate.geocode({ 'location' : stopLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirDst.val(_r.formatted_address);
+          }
+      });
+    }//fetchStopAddress Ends
+
+function writeStopsDataset(){
+          $.ajax({
+          ache:false,
+          type: "GET",
+          url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
+          async:true,
+          success:function(result){
+              console.log('success writeStopsDataset()');
+              for (var i = 0; i < result.length; i++){
+                  var stop_data = result[i]['fields'];
+                  $('#stop_list').append("<option value='"+ stop_data.stop_id +", "+stop_data.stop_name +"' />");
+              }
+          },
+          error: function(){
+              alert("false");
+          },
+      });
+      }
+
+function writeStopDetails(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#select_stop').on('click', function(){
+          $('#addFav').hide();
+          $('#removeFav').hide();
+          //path selected stop id to bus_info
+          $.ajax({
+              ache:false,
+              type: "POST",
+              url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
+              data:{'stop_id':$('#search_stop').val().split(",",1)[0],'csrfmiddlewaretoken':token},
+              async:true,
+              success:function(result){
+                  result = result[0]['fields'];
+                  var content_html="<h2>"+result.stop_name+"</h2>"
+                      + "<h3>" + result.stop_id +"</h3>"
+                      + "<button class='stopNavBtn'>Navigate</button>"
+                      + "<input type='text' id='stop_id' value='"+ result.stop_id +"' hidden>"
+                      + "<ul class='routesList'>";
+                  //delete the qoutes in results
+                  var routes = result.stop_routes.toString().replace(/\'/g,"").replace(/\]/g,"").split(",");
+                  for (var i =1; i < routes.length; i++){
+                      content_html += "<li><a class='"+ routes[i] +"'>"+ routes[i]+"</a></li> "
+                  }
+                  content_html +="</ul>";
+                  content_html +="<div id='test_error'></div>";
+
+                  $('#stop_content').html(content_html);
+
+                  $('.stopNavBtn').click(function(){
+                      console.log("nav on click");
+                        console.log(result.stop_lat);
+                        console.log(result.stop_lon);
+                        fetchStopAddress(result.stop_lat, result.stop_lon);
+                        $('#nav li').eq(0).click();
+          })
+
+                  //get user_favourite_stop
+                  //compare with selected stop id
+                  //determine which button to show
+                  $.ajax({
+                        type:"GET",
+                        url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+                        async: true,
+                        success:function(result1){
+                            //msg stors the id of the button
+                            var msg = "#addFav"
+                            for(var i =0; i < result1['user_stop_list'].length; i++){
+                                //if the stop id is in the users' favourites list
+                                if (result1['user_stop_list'][i] == $('#stop_id').val()){
+                                    msg = "#removeFav";
+                                    break
+                                }
+                            }
+                            $(msg).show()
+                        },
+                        error:function(){
+                            console.log('show button fail')
+                        },
+                    });
+
+                  //add on click functions to each bus routes
+                  $(".routesList a").each(function(){
+                    $(this).click(function(){
+
+                        //post clicked bus id
+                        //write bus info
+                        $.ajax({
+                          ache:false,
+                          type: "POST",
+                          url:window.location.protocol+"//"+window.location.host+'/user/bus_info',
+                          data:{'bus_id':$(this).text(),'csrfmiddlewaretoken':token},
+                          async:true,
+                          success:function(result1){
+                              $('#busid').html(result1);
+                              $('#bus_id').val(result1);
+                              $('#addFav_bus').hide();
+                              $('#removeFav_bus').hide();
+                              $('#bus_info').show();
+
+                                //ajax get users' favs buses
+                                //compare with clicked bus id
+                                //determine which button to be shown
+                              $.ajax({
+                                type:"GET",
+                                url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
+                                async: true,
+                                success:function(result2){
+                                    var msg = "#addFav_bus";
+                                    for(var i =0; i < result2['user_bus_list'].length; i++){
+                                        if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g,"")){
+                                            msg = "#removeFav_bus"
+                                            break
+                                        }
+                                    }
+                                    $(msg).show()
+                                },
+                                error:function(){
+                                    console.log('result2 failed. show button fail')
+                                },
+                        })
+                      },
+                      error: function(){
+                          alert("result1 failed. post bus info ajax failed");
+                        },
+                        })
+                     })
+                  })
+              },
+              error: function(){
+                  alert("result false");
+              },
+          })
+      })
+      }
+
+function invokeAddStopBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#addFav').on('click',function(){
+              var stop_id = $('#stop_id').val();
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+			        data:{'stop_id':stop_id,'csrfmiddlewaretoken':token},
+			        async:true,
+			        success:function(result){
+			            //change the button displayed
+				        $('#addFav').hide();
+				        $('#removeFav').show();
+			        },
+			        error: function(){
+				        alert("add failed");
+			        },
+		        });
+	        });
+      }
+
+function invokeDeleteStopBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#removeFav').on('click',function(){
+              var stop_id = $('#stop_id').val();
+              $.ajaxSetup({
+                  headers:{'X-CSRFToken': token}
+              });
+		        $.ajax({
+			        cache:false,
+			        type: "DELETE",
+			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+			        data:{'stop_id':stop_id, 'csrfmiddlewaretoken':token},
+			        async:true,
+			        success:function(result){
+				        $('#addFav').show();
+				        $('#removeFav').hide();
+			        },
+			        error: function(){
+				        alert("remove failed" + token);
+			        },
+		        });
+	        });
+      }
+
+function invokeAddBusBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#addFav_bus').on('click',function(){
+                var bus_number = $('#bus_id').val().replace(/\s+/g,"");
+                var start = $('#start_point').text();
+                var end = $('#end_point').text();
+                $.ajax({
+                    cache:false,
+                    type: "POST",
+                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
+                    data:{'bus_number':bus_number, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
+                    async:true,
+                    success:function(result){
+                        $('#addFav_bus').hide();
+                        $('#removeFav_bus').show();
+                    },
+                    error: function(){
+                        alert("add failed");
+                    },
+                });
+            });
+      }
+
+function invokeDeleteBusBtn(){
+        $('#removeFav_bus').on('click',function(){
+                var bus_number = $('#bus_id').val().replace(/\s+/g,"");
+                var start = $('#start_point').text();
+                var end = $('#end_point').text();
+                $.ajaxSetup({
+                  headers:{'X-CSRFToken': token}
+              });
+                $.ajax({
+                    cache:false,
+                    type: "DELETE",
+                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
+                    data:{'bus_number':bus_number, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
+                    async:true,
+                    success:function(result, status, xml){
+                        $('#addFav_bus').show();
+                        $('#removeFav_bus').hide();
+                    },
+                    error: function(){
+                        alert("delete failed");
+                    },
+                });
+            });
+      }
+
+function initStopPage(){
+
+          //write stops dataset
+          writeStopsDataset();
+
+          //write details of selected stop
+          writeStopDetails();
+
+          //add stop number to favourites
+          invokeAddStopBtn();
+
+          //delete from favs
+          invokeDeleteStopBtn();
+
+          //add bus number to favourites
+          invokeAddBusBtn();
+
+          //delete from favs
+          invokeDeleteBusBtn();
+      }
+
+    //load overlay page
     $(document).ready(function(){
       $('#logIn').load('/user/login');
       $('#favouritesInfo').load('/user/favourites');
       // $('#touristInfo').load('/user/tourism');
       $('#contactInfo').load('/user/contact');
+      // $('#stopInfo').load('/user/stops');
     })
 
       // used code from 'https://css-tricks.com/prefilling-date-input/'
@@ -474,10 +736,7 @@ directionsSetUp = function(){
       });
       });
 
-      // Meihan is will potentially use this function for favourites page
-      // $(document).ready(function(){#}
-      //     $('#side_div').load('/user/test');#}
-      // })
+    
 
       //splash overlay code comes from: https://www.sitepoint.com/community/t/how-do-you-make-a-javascript-splash-page/44555/3
       $.fn.center = function () {
@@ -581,7 +840,7 @@ directionsSetUp = function(){
 
 
 
-        //switch the origi point and destination point
+    //switch the origi point and destination point
         $(function(){
         	 $('#switch_position').click(function(){
         		 var start_point = $('#directionsSource');
