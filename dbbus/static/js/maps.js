@@ -244,14 +244,13 @@ directionsSetUp = function(){
 
       for (var i = 0; i < markers.length; i++) {
           var marker = markers[i];
-          marker_list.push(marker);
           // bindInfoWindow(marker, map, infowindow, content_html);
           // marker.addListener('click', function () {
           //     infowindow.open(map, marker);
           // });
           //     // console.log("var markers");
-          // var markerCluster = new MarkerClusterer(map, markers,
-          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+          var markerCluster = new MarkerClusterer(map, markers,
+              {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
     });
 
