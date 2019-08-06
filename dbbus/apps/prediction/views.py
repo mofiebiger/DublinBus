@@ -13,10 +13,11 @@ from prediction.get_prediction import prediction_route
 from geopy.distance import geodesic
 from django.core import serializers
 import re
+from django.shortcuts import render
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
-    def get(self,request):
+    def getWeather(self,request):
         #url is the darksky website
         url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603'
         object = requests.get(url)
@@ -72,15 +73,15 @@ class BusInfoView(TemplateView):
 class ServiceWorker(TemplateView):
     template_name = 'serviceworker.js'
     content_type = 'application/javascript'
-    
-    
-    
+
+
+
 class StopInfoNearbyView(TemplateView):
     '''get the stops that nearby the current location'''
 
     def get(self,request):
         '''get the stops that nearby the current location'''
-        
+
         #get data
         lat = request.GET.get('lat')
         lon = request.GET.get('lon')
@@ -89,16 +90,16 @@ class StopInfoNearbyView(TemplateView):
         #open json file
         with open('static/json/stops_info.json','r') as load_f:
              stops_data = json.load(load_f)
-             
+
         #add the stop into file where the distance is less than the radius
         clean_data = []
         for stop in stops_data:
             if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
-                clean_data.append(stop)                     
+                clean_data.append(stop)
 #         print(stops_data)
         return JsonResponse({'stops':clean_data})
-  
-    
+
+
 class BusRouteView(TemplateView):
     '''display all the stops along the bus route'''
 
@@ -107,7 +108,7 @@ class BusRouteView(TemplateView):
         bus_route = request.GET.get('bus_number').lower()
         origin = request.GET.get('origin')
         destination = request.GET.get('destination')
-        
+
         result = BusRouteNumber.objects.filter(route=bus_route, origin=origin, destination=destination)
 
         if result.exists():
@@ -119,11 +120,11 @@ class BusRouteView(TemplateView):
             print('me1')
             json_data = serializers.serialize('json', position_result)
             json_data = json.loads(json_data)
-            
-            return JsonResponse({'res':1,'stops':json_data})    
+
+            return JsonResponse({'res':1,'stops':json_data})
         else:
-            return JsonResponse({'res':0,'errmsg':'the route does not exist!'})                
-    
+            return JsonResponse({'res':0,'errmsg':'the route does not exist!'})
+
 class PredictionRouteView(TemplateView):
     ''''''
     def post(self,request):
@@ -133,7 +134,7 @@ class PredictionRouteView(TemplateView):
         date = content['date']
         time = content['time']
 
-        
+
         #transform data to the standard format
         try:
             new_routes = []
@@ -147,10 +148,3 @@ class PredictionRouteView(TemplateView):
             print(repr(e))
             return JsonResponse({'res': 0,'errmsg':'Please try again'})
         return JsonResponse({'res': 1,'response_leg':new_routes})
-            
-            
-
-            
-
-        
-        

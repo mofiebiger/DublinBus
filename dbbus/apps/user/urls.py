@@ -18,8 +18,10 @@ urlpatterns = [
     path('contact', views.ContactUsView.as_view(),name = 'ContactUsView'),# contact information
     # '''meihan added'''
     path('test', views.TestView.as_view(), name = 'test'),
+    path('stops', views.StopsView.as_view(), name = 'stops'),
     path('favourites', views.FavouritesView.as_view(), name = 'favourites'),
     path('bus_info', views.BusInfoView.as_view(), name = 'bus_info'),
+    path('stop_info', views.StopInfoView.as_view(), name = 'stop_info'),
     # '''end of meihan part'''
     path('tourism', views.TourismView.as_view(),name = 'tourism'),# tourism page
 ]
