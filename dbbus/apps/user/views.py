@@ -589,14 +589,14 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
         stop_id = request.POST.get('stop_id')
         # bus_id = request.POST.get('bus_id')
         json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
-        print(type(json_data))
-        print(333333)
+        # print(type(json_data))
+        # print(333333)
         json_data = json.loads(json_data)
-        print(type(json_data))
-        print(22222)
-        # dic={}
-        # dic
-        # response_data = {'data': string_data}
+        # print(type(json_data))
+        # print(22222)
+        # # dic={}
+        # # dic
+        # # response_data = {'data': string_data}
 
         return JsonResponse(json_data, safe=False)
 

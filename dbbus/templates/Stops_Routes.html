@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 {% load staticfiles %}
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -8,96 +8,64 @@
       <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
     <title>Stops & Routes</title>
-      <script>
-
-      </script>
-  </head>
-  <body>
-  {% csrf_token %}
-  <div>
-      <label>Type stop number or key word to select a stop:</label>
-    <input type="text" id="search_stop" list="stop_list" />
-      <datalist id="stop_list">
-
-      </datalist>
-      <button id="select_stop">Show Detail</button>
-  </div>
-    <div id="content">
-        <div class='fav_buttons'>
-            <button type='button' id='addFav' hidden>Add Favourites</button>
-            <button type='button' id='removeFav' hidden>Remove Favourites</button>
-        </div>
-        <div>
-
-        </div>
-        <div id="stop_content"></div>
-        <div id="bus_info" hidden>
-        <div id="bus_content">
-            <button type="button" id="addFav_bus" hidden>Add Favourite</button>
-            <button type="button" id="removeFav_bus" hidden>Remove Favourite</button>
-        </div>
-        <h3 id="busid"></h3>
-        <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
-      <input type="text" id="bus_id" value="39A" hidden>
-
-        </div>
-    </div>
-  <script>
-      var token = $('input[name="csrfmiddlewaretoken"]').val()
-
-      //write stops dataset
-      $.ajax({
+    <script>
+      function writeStopsDataset(){
+          $.ajax({
           ache:false,
           type: "GET",
           url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
           async:true,
           success:function(result){
+              console.log('success writeStopsDataset()');
               for (var i = 0; i < result.length; i++){
-                  var stop_data = result[i]['fields']
-                  $('#stop_list').append("<option value='"+ stop_data.stop_id +", "+stop_data.stop_name +"' />")
+                  var stop_data = result[i]['fields'];
+                  $('#stop_list').append("<option value='"+ stop_data.stop_id +", "+stop_data.stop_name +"' />");
               }
+              console.log(1)
+                  $('#stop_list').html("<option value='1' />");
+                  console.log($('#stop_list').html())
           },
           error: function(){
               alert("false");
           },
       })
+          console.log($('#stop_list').html())
+      }
 
-      //write details of selected stop
-      $('#select_stop').on('click', function(){
+      function writeStopDetails(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#select_stop').on('click', function(){
           $('#addFav').hide();
           $('#removeFav').hide();
-          var select_stop = $('#search_stop').val()
-          var stopid = select_stop.split(",",1)[0]
           //path selected stop id to bus_info
           $.ajax({
               ache:false,
               type: "POST",
               url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
-              data:{'stop_id':select_stop.split(",",1)[0],'csrfmiddlewaretoken':token},
+              data:{'stop_id':$('#search_stop').val().split(",",1)[0],'csrfmiddlewaretoken':token},
               async:true,
               success:function(result){
-                  result = result[0]['fields']
+                  result = result[0]['fields'];
                   var content_html="<h2>"+result.stop_name+"</h2>"
                       + "<h3>" + result.stop_id +"</h3>"
                       + "<button>Navigate</button>"
                       + "<input type='text' id='stop_id' value='"+ result.stop_id +"' hidden>"
                       + "<ul class='routesList'>";
                   //delete the qoutes in results
-                  var routes = result.stop_routes.toString().replace(/\'/g,"").replace(/\]/g,"").split(",")
+                  var routes = result.stop_routes.toString().replace(/\'/g,"").replace(/\]/g,"").split(",");
                   for (var i =1; i < routes.length; i++){
                       content_html += "<li><a class='"+ routes[i] +"'>"+ routes[i]+"</a></li> "
                   }
                   content_html +="</ul>";
                   content_html +="<div id='test_error'></div>";
 
-                  $('#stop_content').html(content_html)
+                  $('#stop_content').html(content_html);
 
                   //get user_favourite_stop
                   //compare with selected stop id
                   //determine which button to show
                   $.ajax({
                         type:"GET",
-                        url: 'http://127.0.0.1:8000/user/favorite_stop',
                         url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
                         async: true,
                         success:function(result1){
@@ -106,7 +74,7 @@
                             for(var i =0; i < result1['user_stop_list'].length; i++){
                                 //if the stop id is in the users' favourites list
                                 if (result1['user_stop_list'][i] == $('#stop_id').val()){
-                                    msg = "#removeFav"
+                                    msg = "#removeFav";
                                     break
                                 }
                             }
@@ -115,7 +83,7 @@
                         error:function(){
                             console.log('show button fail')
                         },
-                    })
+                    });
 
                   //add on click functions to each bus routes
                   $(".routesList a").each(function(){
@@ -130,11 +98,11 @@
                           data:{'bus_id':$(this).text(),'csrfmiddlewaretoken':token},
                           async:true,
                           success:function(result1){
-                              $('#busid').html(result1)
-                              $('#bus_id').val(result1)
+                              $('#busid').html(result1);
+                              $('#bus_id').val(result1);
                               $('#addFav_bus').hide();
                               $('#removeFav_bus').hide();
-                              $('#bus_info').show()
+                              $('#bus_info').show();
 
                                 //ajax get users' favs buses
                                 //compare with clicked bus id
@@ -144,7 +112,7 @@
                                 url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
                                 async: true,
                                 success:function(result2){
-                                    var msg = "#addFav_bus"
+                                    var msg = "#addFav_bus";
                                     for(var i =0; i < result2['user_bus_list'].length; i++){
                                         if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g,"")){
                                             msg = "#removeFav_bus"
@@ -170,19 +138,15 @@
               },
           })
       })
-  </script>
+      }
 
-
-{#  /////on click functions to add or remove favs stop///////#}
-  <script>
-      $(function(){
-          //add stop number to favourites
+      function invokeAddStopBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
           $('#addFav').on('click',function(){
-              var stop_id = $('#stop_id').val()
+              var stop_id = $('#stop_id').val();
 		        $.ajax({
 			        cache:false,
 			        type: "POST",
-			        url:"http://127.0.0.1:8000/user/favorite_stop",
 			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
 			        data:{'stop_id':stop_id,'csrfmiddlewaretoken':token},
 			        async:true,
@@ -197,13 +161,15 @@
 			        },
 		        });
 	        });
+      }
 
-          //delete from favs
+      function invokeDeleteStopBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
           $('#removeFav').on('click',function(){
-              var stop_id = $('#stop_id').val()
+              var stop_id = $('#stop_id').val();
               $.ajaxSetup({
                   headers:{'X-CSRFToken': token}
-              })
+              });
 		        $.ajax({
 			        cache:false,
 			        type: "DELETE",
@@ -220,16 +186,14 @@
 			        },
 		        });
 	        });
-      })
-  </script>
+      }
 
-{#  /////on click functions to add or remove favs bus///////#}
-  <script>
-        $(function(){
-            $('#addFav_bus').on('click',function(){
-                var bus_number = $('#bus_id').val().replace(/\s+/g,"")
-                var start = $('#start_point').text()
-                var end = $('#end_point').text()
+      function invokeAddBusBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#addFav_bus').on('click',function(){
+                var bus_number = $('#bus_id').val().replace(/\s+/g,"");
+                var start = $('#start_point').text();
+                var end = $('#end_point').text();
                 $.ajax({
                     cache:false,
                     type: "POST",
@@ -245,14 +209,16 @@
                     },
                 });
             });
+      }
 
-            $('#removeFav_bus').on('click',function(){
-                var bus_number = $('#bus_id').val().replace(/\s+/g,"")
-                var start = $('#start_point').text()
-                var end = $('#end_point').text()
+      function invokeDeleteBusBtn(){
+        $('#removeFav_bus').on('click',function(){
+                var bus_number = $('#bus_id').val().replace(/\s+/g,"");
+                var start = $('#start_point').text();
+                var end = $('#end_point').text();
                 $.ajaxSetup({
                   headers:{'X-CSRFToken': token}
-              })
+              });
                 $.ajax({
                     cache:false,
                     type: "DELETE",
@@ -268,7 +234,71 @@
                     },
                 });
             });
-        })
-    </script>
+      }
+
+      function initPage(){
+
+          //write stops dataset
+          writeStopsDataset();
+
+          //write details of selected stop
+          writeStopDetails();
+
+          //add stop number to favourites
+          invokeAddStopBtn();
+
+          //delete from favs
+          invokeDeleteStopBtn();
+
+          //add bus number to favourites
+          invokeAddBusBtn();
+
+          //delete from favs
+          invokeDeleteBusBtn();
+      }
+  </script>
+  </head>
+  <body>
+  {% csrf_token %}
+  <div>
+      <label>Type stop number or key word to select a stop:</label>
+      <input type="text" id="search_stop" list="stop_list" />
+      <datalist id="stop_list"></datalist>
+      <button id="select_stop">Show Detail</button>
+  </div>
+  <div id="content">
+      <div class='fav_buttons'>
+          <button type='button' id='addFav' hidden>Add Favourites</button>
+          <button type='button' id='removeFav' hidden>Remove Favourites</button>
+      </div>
+      <div></div>
+      <div id="stop_content"></div>
+      <div id="bus_info" hidden>
+          <div id="bus_content">
+            <button type="button" id="addFav_bus" hidden>Add Favourite</button>
+            <button type="button" id="removeFav_bus" hidden>Remove Favourite</button>
+          </div>
+          <h3 id="busid"></h3>
+          <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
+          <input type="text" id="bus_id" value="39A" hidden>
+      </div>
+  </div>
+
+  <script>
+      initPage()
+  </script>
+  <script>
+      function fetchStopAddress(lat, lng){
+      stopLatLng = new google.maps.LatLng(lat, lng);
+      var Locate = new google.maps.Geocoder();
+
+      Locate.geocode({ 'location' : stopLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirDst.val(_r.formatted_address);
+          }
+      });
+    }//fetchStopAddress Ends
+  </script>
   </body>
 </html>

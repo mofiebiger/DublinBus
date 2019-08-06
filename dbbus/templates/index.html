@@ -159,6 +159,30 @@
     <div class="overlay" id="overlay4">
       <a href="javascript:void(0)" class="closebtn" >&times;</a>
       <div id="stopInfo">
+          {% csrf_token %}
+        <div>
+      <label>Type stop number or key word to select a stop:</label>
+      <input type="text" id="search_stop" list="stop_list" />
+      <datalist id="stop_list"></datalist>
+      <button id="select_stop">Show Detail</button>
+  </div>
+        <div id="content">
+      <div class='fav_buttons'>
+          <button type='button' id='addFav' hidden>Add Favourites</button>
+          <button type='button' id='removeFav' hidden>Remove Favourites</button>
+      </div>
+      <div></div>
+      <div id="stop_content"></div>
+      <div id="bus_info" hidden>
+          <div id="bus_content">
+            <button type="button" id="addFav_bus" hidden>Add Favourite</button>
+            <button type="button" id="removeFav_bus" hidden>Remove Favourite</button>
+          </div>
+          <h3 id="busid"></h3>
+          <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
+          <input type="text" id="bus_id" value="39A" hidden>
+      </div>
+  </div>
       </div>
     </div>
 
