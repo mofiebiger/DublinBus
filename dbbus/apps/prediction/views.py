@@ -19,15 +19,32 @@ class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
     def get(self,request):
         #url is the darksky website
-        url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603'
+        url='https://api.darksky.net/forecast/'+ config.darksky_api +'/53.3498,-6.2603?exclude=alerts&units=si'
         object = requests.get(url)
         #transfer the content into json
         text = object.json()
-        text_needed = {}
-        text_needed['currently'] = text['currently']
-        text_needed['hourly'] = text['hourly']
         #return the current weather information
-        return JsonResponse(text_needed)
+        return JsonResponse(text)
+
+
+
+class RealTimeStopInfoView(TemplateView):
+
+    def get(self,request,stop_id):
+        if not stop_id:
+            return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
+        url='https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation?stopid='+ str(stop_id) +'&format=json'
+        object = requests.get(url)
+        #transfer the content into json
+        text = object.json()
+        if text['errorcode'] == "0" :
+            return JsonResponse({'res':1,'content':text})
+        else:
+            return JsonResponse({'res':0,'errmsg': 'The stop does not exist or has no information.'})
+
+
+#         return JsonResponse(json_data, safe=False)s
+
 
 
 
@@ -133,8 +150,6 @@ class PredictionRouteView(TemplateView):
         routes = content['routes']
         date = content['date']
         time = content['time']
-
-
         #transform data to the standard format
         try:
             new_routes = []
