@@ -8,6 +8,12 @@ services: postgresql
 
 env:
   - DJANGO=2.2.3
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=dbbus.settings
+  - export PYTHONPATH=$HOME/builds/mofiebiger/DublinBus/dbbus
+  - export PIP_USE_MIRRORS=true
+
 install:
   - pip install -r requirements.txt
 notifications:
