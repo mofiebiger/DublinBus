@@ -847,7 +847,7 @@ function initStopPage(){
 
 
 
-        function on8() {
+        function get_weather() {
             $.ajax({
               // 'url': "{% url "prediction:weather" %}",
               'url': window.location.protocol+"//"+window.location.host+"/prediction/weather",
@@ -856,39 +856,42 @@ function initStopPage(){
             }).done(function(data_total){
             var data = data_total.currently;
             var data_hourly = data_total.hourly.data;
+            var data_daily = data_total.daily;
             var weatherDescription = data.summary;
-            displayDescription = ("It Feels Like " + weatherDescription);
+            displayDescription = ("Today: " + data_daily.data[0].summary+ " For now, it feels like " + weatherDescription.toLowerCase()+".");
 
-            $('#weather_heading').show().html(displayDescription);
-
+            $('#weather_heading').show().html(displayDescription).css({'font-size':20});
+            $('#currentTemperature').show().html(Math.round(data.temperature) + "℃").css({'font-size':55,"line-height":"100%"});
+            
             var weatherIcon = data.icon.toUpperCase().split('-');
             weatherIcon = weatherIcon.join('_')
             
             //var weatherIcon = "snow";
             var icons = new Skycons({"color": "white"});
             icons.set("weatherIcon", Skycons[weatherIcon])
-              icons.play();
+              icons.play();  
 
-            //converting fahrenheit to celsius
-            var temp = Math.round((data.temperature - 32) * 5/9);
-
-            //converting miles to kilometers
-            var wind_speed = Math.round(data.windSpeed * 1.609);
-
-            // conversity humidity to a percentage
-            var humidity = Math.round(data.humidity * 100);
-
-            // Displaying Temperature
-            var displayTemp = ("Current Temperature: " + temp + " oC");
-
+            // Displaying Sunrise
+            var sunrise_time = new Date(data_daily.data[0].sunriseTime*1000)
+            var sunrise = ("Sunrise: " + sunrise_time.getHours() + ":" + sunrise_time.getMinutes());
+            
+            // Displaying Sunset
+            var sunset_time = new Date(data_daily.data[0].sunsetTime*1000)
+            var sunset = ("Sunset: " + sunset_time.getHours() + ":" + sunset_time.getMinutes());
+            
             // Displaying Wind Speed
-            var displayWind = ("Wind Speed: " + wind_speed + " kph!");
+            var displayWind = ("Wind Speed: " + Math.round(data.windSpeed) + " m/s");
 
             // Displaying humidity
-            var displayHumidity = ("Humidity: " + humidity + "%");
+            var displayHumidity = ("Humidity: " + Math.round(data.humidity * 100) + "%");
 
+            // Displaying pressure
+            var pressure = ("Pressure: " + Math.round(data.pressure) + "hPa") ;
+            
+            // Displaying pressure
+            var visibility = ("Visibility: " + Math.round(data.visibility) + "km") ;
             //Display Weather Stats on overlay8
-            $('#weather_stats').show().html(displayTemp + "<br/>" + displayWind + "<br/>" + displayHumidity);
+            $('#weather_stats').show().html(sunrise + "<br/>" + sunset + "<br/><br/>" +  displayWind + "<br/>" + displayHumidity + "<br/><br/>" + pressure + "<br/>" + visibility).css({'font-size':20});
           for(var i=0;i<data_hourly.length;i++){
               var weatherIcon = data_hourly[i].icon.toUpperCase().split('-');
               weatherIcon = weatherIcon.join('_')
@@ -896,13 +899,58 @@ function initStopPage(){
               $('#weather_hourly').append('<div><p id="weathertime'+i+'"></p><canvas id="weatherIcon'+i+'" width="55" height="55"></canvas><p id="weatherTemp'+i+'"></p></div>')
               icons.set("weatherIcon"+i, Skycons[weatherIcon]);
               icons.play();
-              var date = new Date(data_hourly[i]['time'])
-              console.log(date)
-              $('#weathertime'+i).html(date.getHours())
-              $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature - 32) * 5/9))
-              $('#weather_hourly div').css({'float':'left'})
+              var date = new Date(data_hourly[i]['time']*1000)
+              if(i == 0){
+            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white'})            	  
+              }else{
+            	  $('#weathertime'+i).html(date.getHours()).css({'text-align':'center','color':'white'})            	  
+              }
+              $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature))+"℃").css({'text-align':'center','color':'white'})
+              $('#weather_hourly div').css({'float':'left','height':'100px','width':'60px'})
+              $('#weather_hourly').css({'height':'100px','overflow':'hidden'})
           }
+              for(var i=1;i<data_daily.data.length;i++){ 
+                  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
+                  weatherIcon = weatherIcon.join('_')
+                  var icons = new Skycons({"color": "white"});
+                  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTempMin'+i+'"></div><div id="weatherDailyTempMax'+i+'"></div></div>')
+                  icons.set("weatherDailyIcon"+i, Skycons[weatherIcon]);
+                  icons.play();
+                  var date = new Date(data_daily.data[i]['time']*1000)
+                  var iWeek = date.getDay();
+                  $('#weekday'+i).html(fnToweek(iWeek)).css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"})
+                  $('#weatherDailyTempMin'+i).html(Math.round((data_daily.data[i].temperatureMin))).css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"5%",'margin-right':'15px'})
+                  $('#weatherDailyTempMax'+i).html(Math.round((data_daily.data[i].temperatureMax))+"   ").css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"28%"})
+                  
+           	  
+              }
             })
+            function fnToweek(n){
+
+				if(n==0)
+				{
+					return 'Sunday';
+				}
+				else if(n==1){
+					return 'Monday';
+				}
+				else if(n==2){
+					return 'Tuesday';
+				}
+				else if(n==3){
+					return 'Wednesday';
+				}
+				else if(n==4){
+					return 'Thursday';
+				}
+				else if(n==5){
+					return 'Friday';
+				}
+				else{
+					return 'Saturday';
+				}
+			}
+
         } // On8: AKA WeatherDisplay Ends
 
 

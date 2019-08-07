@@ -52,7 +52,7 @@
 
 
         <!--MarkerCluster-->
-        <!-- <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script> -->
+        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
 
 
         <!--Google Maps API-->
@@ -99,7 +99,7 @@
       <li><a>Favourites</a></li>
       <li><a>Stops</a></li>
       <li><a>Contact</a></li>
-      <li style="float:right"><a onclick="on8()"><i class="fa fa-cloud"></i></a></li>
+      <li style="float:right"><a onclick="get_weather()"><i class="fa fa-cloud"></i></a></li>
       <li style="float:right"><a ><i class="fa fa-user"></i></a></li>
     </ul>
 
@@ -228,18 +228,20 @@
         <h1> Current Weather </h1>
 
         <div class="weatherDescription">
-        <canvas id="weatherIcon" width="128" height="128"></canvas>
-        <div id="weather_heading"></div>
+        <div>
+        <canvas id="weatherIcon" width="128" height="128" style="float:center;"></canvas>
+        <div id="currentTemperature" width="128" height="128" style="float:center;"></div>
+        </div>     
         </div>
-
-            <hr>
-
-            <div id="weather_stats"></div>
-
-            <hr>
-
-      </div>
+       <hr>
+        <div id="weather_heading"></div>
+       <hr>
       <div id="weather_hourly"></div>
+      <hr>
+      <div id="weather_stats"></div>
+      <hr>
+	  <div id="weather_daily"></div>
+      </div>
     </div>
 
     <!--logIn overlay -->
