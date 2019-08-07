@@ -901,26 +901,33 @@ function initStopPage(){
               icons.play();
               var date = new Date(data_hourly[i]['time']*1000)
               if(i == 0){
-            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white'})            	  
+            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white','margin-left':'5px'})            	  
               }else{
-            	  $('#weathertime'+i).html(date.getHours()).css({'text-align':'center','color':'white'})            	  
+            	  $('#weathertime'+i).html(date.getHours()+":00").css({'text-align':'center','color':'white','margin-left':'5px'})            	  
               }
               $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature))+"℃").css({'text-align':'center','color':'white'})
-              $('#weather_hourly div').css({'float':'left','height':'100px','width':'60px'})
+              $('#weather_hourly div').css({'float':'left','height':'100px','width':'60px','margin-left':'5px'})
               $('#weather_hourly').css({'height':'100px','overflow':'hidden'})
           }
-              for(var i=1;i<data_daily.data.length;i++){ 
-                  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
-                  weatherIcon = weatherIcon.join('_')
-                  var icons = new Skycons({"color": "white"});
-                  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTempMin'+i+'"></div><div id="weatherDailyTempMax'+i+'"></div></div>')
-                  icons.set("weatherDailyIcon"+i, Skycons[weatherIcon]);
-                  icons.play();
-                  var date = new Date(data_daily.data[i]['time']*1000)
-                  var iWeek = date.getDay();
-                  $('#weekday'+i).html(fnToweek(iWeek)).css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"})
-                  $('#weatherDailyTempMin'+i).html(Math.round((data_daily.data[i].temperatureMin))).css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"5%",'margin-right':'15px'})
-                  $('#weatherDailyTempMax'+i).html(Math.round((data_daily.data[i].temperatureMax))+"   ").css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"28%"})
+              for(var i=0;i<data_daily.data.length;i++){ 
+                  if(i == 0){
+                	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><div id="weatherDailyIcon'+i+'" width="55" height="55"></div><div id="weatherDailyTemp'+i+'"></div></div>')
+                	  $('#weekday'+i).html('Weekday').css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"}).append('<hr>')
+                	  $('#weatherDailyTemp'+i).html('Temp:Min/Max').css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"34%",'margin-right':'0px'}).append('<hr>')
+                	  
+                	  $('#weatherDailyIcon'+i).html('Forecast').css({'text-align':'center','color':'white','float':'left','font-size':20,'width':"33%",'margin-right':'0px'}).append('<hr>')             	  
+                  }else{                	  
+                	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTemp'+i+'"></div></div>')
+                	  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
+                	  weatherIcon = weatherIcon.join('_')
+                	  var icons = new Skycons({"color": "white"});
+                	  icons.set("weatherDailyIcon"+i, Skycons[weatherIcon]);
+                	  icons.play();
+                	  var date = new Date(data_daily.data[i]['time']*1000)
+                	  var iWeek = date.getDay();
+                	  $('#weekday'+i).html(fnToweek(iWeek)).css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"})
+                	  $('#weatherDailyTemp'+i).html(Math.round((data_daily.data[i].temperatureMin))+"℃/"+Math.round((data_daily.data[i].temperatureMax))+"℃").css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"33%",'margin-right':'12px'})
+                  }
                   
            	  
               }
