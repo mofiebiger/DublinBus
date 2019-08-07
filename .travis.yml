@@ -3,8 +3,11 @@ python:
   - '3.6'
 script:
   - python manage.py test
+
+services: postgresql
+
 env:
-  - DJANGO=2.2.3 DB=postgres
+  - DJANGO=2.2.3
 install:
   - pip install -r requirements.txt
 notifications:
