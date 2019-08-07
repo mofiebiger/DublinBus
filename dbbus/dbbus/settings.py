@@ -89,25 +89,31 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-#if 'TRAVIS' in os.environ:
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config.name,
-        'USER': config.user,
-        'PASSWORD': config.password,
-        'HOST': 'localhost',
+if os.getenv('BUILD_ON_TRAVIS', None):
+    SECRET_KEY = "SecretKeyForUseOnTravis"
+    DEBUG = False
+    TEMPLATE_DEBUG = True
 
-        'PORT':5000,
-
-
-        # Server port
-        #'PORT':3306,
-
-        # Tunnel Port
-        # 'PORT':5000
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'travis_ci_db',
+            'USER': 'travis',
+            'PASSWORD': '',
+            'HOST': '127.0.0.1',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config.name,
+            'USER': config.user,
+            'PASSWORD': config.password,
+            'HOST': 'localhost',
+            'PORT':5000,
+        }
+    }
 
 AUTH_USER_MODEL ='user.User'
 
