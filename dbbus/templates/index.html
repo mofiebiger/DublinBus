@@ -15,9 +15,9 @@
         <link rel="stylesheet" href="{% static 'css/overlay.css' %}">
         <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">
 
-    
+
         <meta name="apple-mobile-web-app-capable" content="yes">
-    
+
         <!--favicon links-->
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
@@ -37,7 +37,7 @@
         <meta name="msapplication-TileColor" content="#b91d47">
         <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
         <meta name="theme-color" content="#ffffff">
-    
+
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -52,12 +52,13 @@
 
 
         <!--MarkerCluster-->
-        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
+        <!-- <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script> -->
 
 
         <!--Google Maps API-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" defer>
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
         </script>
+
 
         <!--Map / Navigation / Tourism / Display Bus Stops-->
         <script type="text/javascript" src="{% static 'js/maps.js' %}"></script>
@@ -109,6 +110,7 @@
     			var divs = $('div[id*="overlay"]');
     			var closes = $('a[class*="closebtn"]')
     			navs.click(function(event){
+
     				 event.preventDefault();
              divs.eq($(this).index()).toggleClass('blocktoggle').siblings().removeClass('blocktoggle');
     			});
@@ -130,9 +132,15 @@
               <button id="geoButton">Use Current Location</button>
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
               <input id="directionsDestination" class="controls" type="text" placeholder="End">
-            	<input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style></button>
-             </div>
-
+              <input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style></button>
+            </div>
+			<div id="busRoute">
+              <input id="searchBusRoute" class="controls" type="text" placeholder="Bus Route">
+              <div id="researchContent"></div>
+            	<button id="searchBus">search</button>
+            </div>	
+            	
+            
             <div id="dateTime-panel">
               <div id="date">
                 <input id="rightNow" type="date" name="fname" value="2019-02-02">
@@ -231,6 +239,7 @@
             <hr>
 
       </div>
+      <div id="weather_hourly"></div>
     </div>
 
     <!--logIn overlay -->
