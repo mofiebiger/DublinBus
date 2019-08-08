@@ -11,10 +11,10 @@ env:
   global:
     secure: I8RpWHmnUBX6BqEGQAN+WI2FJqpri60pGP6UySzn7eW9ErnMCoy78T5NtfpHv/8vXPCAMY5scmS4EDy13GCq4J3gHqXo1W/kV3be+Fp7Az0f3NyTJwTuo+eEriKBNAfBHq7G1dZDmxnUZjDiGMW8fRN5f4pEd+zHcb+w0UAa+7h/WSxOX5ZnTP0kC0z8sAdrdnx5S4Q/KTaMaOfX5aANHSrIlbfO9Tm/DFuOy71AD8fEg5agyENFXQ5lBk9p2kRnCX5uLNHTIl2NZE9G9yvTMsWp3WSGzNB9Weiimxo+MeTMArBWaQwbmgcUHIxffGePy4w8ycyRQiYe7n4Ui3e9xUt9w3LO1fw3n/SSxLk3dRdy+/lYBx0goSGpe2CKPmDxcHP7Kd7FGf06dfQ2pF5zMmf5cZM3QM+BTYtj1191ySV2RY1JszQ/st/V/wO33FXKUoJEGxwH3OLVq5m/vqSFCXqUGC+LZsMf0M1EgoK8BUeMJVNlAhfsCSYCOsFFm3b5G1v15oz+7IUkjq/efisPWeVJJrJzvIBR1DqkqbjkZCCysPgVMEeJSQk32sjjKd6I2ja7BMKHMHLDtG69YFngbcwPDy9ZiIyQyfdoq7vp6yaOQUGwPtnEF8//vaMIFOqaID8uRpS9wDPskvS07Mq41Uje5F2jEMyrc4Eui7aqgi0=
 before_install:
+- echo $super_secret_password | gpg --passphrase-fd 0 config.py.gpg
 - export DJANGO_SETTINGS_MODULE=dbbus.settings
 - export PYTHONPATH=$HOME/builds/mofiebiger/DublinBus
 - export PIP_USE_MIRRORS=true
-- echo $super_secret_password | gpg --passphrase-fd 0 config.py.gpg
 
 install:
 - pip install -r requirements.txt
