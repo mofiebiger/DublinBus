@@ -586,7 +586,7 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
 class StopsView(TemplateView):
     def get(self, request):
         '''stop/route page'''
-        return render(request, 'stops_routes.html')
+        return render(request, 'Stops_Routes.html')
 
 #
 # def set_session(request):
