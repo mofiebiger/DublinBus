@@ -19,6 +19,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <!--favicon links-->
+        {% for icon in PWA_APP_ICONS %}
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
@@ -38,6 +39,8 @@
         <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
         <meta name="theme-color" content="#ffffff">
 
+        {% endfor %}
+
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -52,7 +55,7 @@
 
 
         <!--MarkerCluster-->
-        <!-- <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script> -->
+        <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
 
 
         <!--Google Maps API-->
@@ -71,6 +74,24 @@
 
         <!-- Path to manifest.json -->
         <!-- <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}"> -->
+
+        <!-- Path to manifest.json -->
+        <link rel="manifest" href="/manifest.json">
+
+        <script type="text/javascript">
+          // Initialize the service worker
+          if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('/serviceworker.js', {
+                  scope: '.' // <--- THIS BIT IS REQUIRED
+              }).then(function (registration) {
+                  // Registration was successful
+                  console.log('django-progressive-web-app: ServiceWorker registration successful with scope: ', registration.scope);
+              }, function (err) {
+                  // registration failed :(
+                  console.log('django-progressive-web-app: ServiceWorker registration failed: ', err);
+              });
+          }
+        </script>
 
 
         <!--title - dublin bus-->
@@ -138,9 +159,9 @@
               <input id="searchBusRoute" class="controls" type="text" placeholder="Bus Route">
               <div id="researchContent"></div>
             	<button id="searchBus">search</button>
-            </div>	
-            	
-            
+            </div>
+
+
             <div id="dateTime-panel">
               <div id="date">
                 <input id="rightNow" type="date" name="fname" value="2019-02-02">
