@@ -18,7 +18,7 @@
               global.msCancelAnimationFrame      ;
 
     if(raf && caf) {
-      requestInterval = function(fn) {
+      requestInterval = function(fn, delay) {
         var handle = {value: null};
 
         function loop() {
@@ -185,7 +185,7 @@
         c = cw * 0.24,
         d = cw * 0.28;
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = color.cloud || color;
     puffs(ctx, t, cx, cy, a, b, c, d);
 
     ctx.globalCompositeOperation = 'destination-out';
@@ -201,7 +201,7 @@
         c = cw * 0.50 - s * 0.5,
         i, p, cos, sin;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.sun || color;
     ctx.lineWidth = s;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -226,7 +226,7 @@
         c = Math.cos(t * TAU),
         p = c * TAU / -16;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.moon || color;
     ctx.lineWidth = s;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -248,7 +248,7 @@
         c = TAU *  7 / 12,
         i, p, x, y;
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = color.rain || color;
 
     for(i = 4; i--; ) {
       p = (t + i / 4) % 1;
@@ -265,9 +265,11 @@
     t /= 750;
 
     var a = cw * 0.1875,
+        b = TAU * 11 / 12,
+        c = TAU *  7 / 12,
         i, p, x, y;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.rain || color;
     ctx.lineWidth = s * 0.5;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -296,7 +298,7 @@
         wy = Math.sin(w) * b,
         i, p, x, y;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.snow || color;
     ctx.lineWidth = s * 0.5;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -320,7 +322,7 @@
         c = cw * 0.21,
         d = cw * 0.28;
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = color.fogbank || color;
     puffs(ctx, t, cx, cy, a, b, c, d);
 
     ctx.globalCompositeOperation = 'destination-out';
@@ -412,8 +414,8 @@
         e = Math.cos(d),
         f = Math.sin(d);
 
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
+    ctx.fillStyle = color.leaf || color;
+    ctx.strokeStyle = color.leaf || color;
     ctx.lineWidth = s;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -437,7 +439,7 @@
         e = (t + index                            ) % total,
         b, d, f, i;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.cloud || color;
     ctx.lineWidth = s;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -521,9 +523,27 @@
   }
 
   var Skycons = function(opts) {
+        opts = opts || {};
         this.list        = [];
         this.interval    = null;
-        this.color       = opts && opts.color ? opts.color : "black";
+        this.monochrome = typeof(opts.monochrome) === "undefined" ? true :  opts.monochrome;
+        opts.colors = opts.colors || {};
+        this.colors = {
+            main    : opts.colors.main    || "#111",
+            moon    : opts.colors.moon    || "#353545",
+            fog     : opts.colors.fog     || "#CCC",
+            fogbank : opts.colors.fogbank || "#AAA",
+            cloud   : opts.colors.cloud   || "#666",
+            snow    : opts.colors.snow    || "#C2EEFF",
+            leaf    : opts.colors.leaf    || "#2C5228",
+            rain    : opts.colors.rain    || "#7FDBFF",
+            sun     : opts.colors.sun     || "#FFDC00"
+        };
+        if(this.monochrome) {
+            this.color = opts.color || this.colors.main;
+        } else {
+            this.color = this.colors ;
+        }
         this.resizeClear = !!(opts && opts.resizeClear);
       };
 
@@ -623,7 +643,7 @@
         e = Math.floor(n - k * 0.5) + 0.5,
         f = Math.floor(n - k * 2.5) + 0.5;
 
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = color.fog || color;
     ctx.lineWidth = k;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -715,6 +735,8 @@
       }, 1000 / 60);
     },
     pause: function() {
+      var i;
+
       if(this.interval) {
         cancelInterval(this.interval);
         this.interval = null;

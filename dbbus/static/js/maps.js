@@ -867,7 +867,14 @@ function initStopPage(){
             weatherIcon = weatherIcon.join('_')
             
             //var weatherIcon = "snow";
-            var icons = new Skycons({"color": "white"});
+	    	  var icons = new Skycons({
+	    		  "monochrome": false,
+	    		  "colors": {
+	    		    "main": "white",
+	    		    "cloud": "#c1c1c1",
+	    		    "moon": "#494960"
+	    		  }
+	    		});
             icons.set("weatherIcon", Skycons[weatherIcon])
               icons.play();  
 
@@ -895,7 +902,14 @@ function initStopPage(){
           for(var i=0;i<data_hourly.length;i++){
               var weatherIcon = data_hourly[i].icon.toUpperCase().split('-');
               weatherIcon = weatherIcon.join('_')
-              var icons = new Skycons({"color": "white"});
+        	  var icons = new Skycons({
+        		  "monochrome": false,
+        		  "colors": {
+        		    "main": "white",
+        		    "cloud": "#c1c1c1",
+        		    "moon": "#494960"
+        		  }
+        		});
               $('#weather_hourly').append('<div><p id="weathertime'+i+'"></p><canvas id="weatherIcon'+i+'" width="55" height="55"></canvas><p id="weatherTemp'+i+'"></p></div>')
               icons.set("weatherIcon"+i, Skycons[weatherIcon]);
               icons.play();
@@ -920,7 +934,14 @@ function initStopPage(){
                 	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTemp'+i+'"></div></div>')
                 	  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
                 	  weatherIcon = weatherIcon.join('_')
-                	  var icons = new Skycons({"color": "white"});
+                	  var icons = new Skycons({
+                		  "monochrome": false,
+                		  "colors": {
+                		    "main": "white",
+                		    "cloud": "#c1c1c1",
+                		    "moon": "#494960"
+                		  }
+                		});
                 	  icons.set("weatherDailyIcon"+i, Skycons[weatherIcon]);
                 	  icons.play();
                 	  var date = new Date(data_daily.data[i]['time']*1000)
