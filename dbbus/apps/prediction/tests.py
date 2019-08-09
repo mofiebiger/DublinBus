@@ -22,7 +22,7 @@ class PredictionTests(TestCase):
         json_content = response_to_json(response)
 
         #testing length of json response
-        self.assertEqual(len(json_content), 2)
+        self.assertEqual(len(json_content), 9)
 
     def test_stop_info_GET(self):
         pass
