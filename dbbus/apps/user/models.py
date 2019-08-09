@@ -7,7 +7,6 @@ from django.db import models
 class User(AbstractUser,models.Model):
     '''this class is used to store the information about the users'''
 
-    
     user_profile = models.ImageField(verbose_name='user_image',  upload_to='avatar',default = 'default.jpg')
 
     class Meta:
@@ -39,11 +38,9 @@ class UserRoute(models.Model):
 class UserStop(models.Model):
     stop = models.IntegerField(verbose_name='favorite_stop',null = False,unique = True)
     station_user = models.ForeignKey('User',on_delete=models.CASCADE)
-    
+
     class Meta:
         db_table = 'favorite_stop'
         verbose_name = 'favorite_stop'
-        verbose_name_plural = verbose_name    
-    
-   
-    
+        verbose_name_plural = verbose_name
+

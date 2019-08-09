@@ -18,7 +18,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import config
 from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
-# from user.models import User, UserBusNumber, UserStop, UserRoute
+from prediction.models import StopInformation
+from django.core import serializers
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
 FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
@@ -28,20 +29,10 @@ class IndexView(TemplateView):
     '''index page'''
     def get(self, request):
         '''index page'''
-        return render(request, 'index.html')
-
-
-
-
-class TourismView(TemplateView):
-    def get(self, request):
-        return render(request, 'tourismPage.html')
-
-# class serviceWorker(TemplateView):
-#     template_name = 'js/serviceworker.js'
-#     content_type = 'application/javascript'
-
-
+        api = {
+            "maps_api" : settings.GOOGLE_MAPS_API_KEY
+        }
+        return render(request, 'index.html', api)
 
 # /user/register
 class RegisterView(TemplateView):
@@ -54,39 +45,52 @@ class RegisterView(TemplateView):
         '''process the registration request'''
 
         # recieve the data and get the data
+        code = int(request.POST.get('code'))
         username = request.POST.get('user_name')
-        password = request.POST.get('pwd')
-        r_password = request.POST.get('cpwd')
-        email = request.POST.get('email')
+        if code == 1 :
+            password = request.POST.get('pwd')
+            r_password = request.POST.get('cpwd')
+            email = request.POST.get('email')
+            if not all([username, password, email]):
+                # if the data is not complete,return the error information
+                return JsonResponse({"res": 0, "error_msg": "Data not complete."});
+                # verify the email format
+            if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
+                return JsonResponse({"res": 0, "error_msg": "The format of Email is not correct."});
+            # check the password whether they are the same
+            if password != r_password:
+                return JsonResponse({"res": 0, "error_msg": "the passwords are not match."});
+            # check if the user already exists.
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                # if user does not exist in the database ,set the the user as None
+                user = None
 
-        if not all([username, password, email]):
-            # if the data is not complete,return the error information
-            return JsonResponse({"res": 0, "error_msg": "Data not complete."});
-            # verify the email format
-        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-            return JsonResponse({"res": 0, "error_msg": "The format of Email is not correct."});
-        # check the password whether they are the same
-        if password != r_password:
-            return JsonResponse({"res": 0, "error_msg": "the passwords are not match."});
-        # check if the user already exists.
-        try:
+            if user:
+                # if user already exists, return the error message
+                return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
+                # return HttpResponse("the email has benn registered..");
+
+            try:
+                email_check = User.objects.get(email=email)
+            except User.DoesNotExist:
+                # if user does not exist in the database ,set the the user as None
+                email_check = None
+
+            if email_check:
+                # if user already exists, return the error message
+                return JsonResponse({"res": 0, "error_msg": email + ' has been registered.'});
+                # return HttpResponse("the email has benn registered..");
+
+            # if user does not exist, do the next step,do the registration
+            user = User.objects.create_user(username, email, password)
+            user.is_active = 0
+            user.save()
+
+             # send the active email,and encrypt user content information
+        else:
             user = User.objects.get(username=username)
-            print('user')
-        except User.DoesNotExist:
-            # if user does not exist in the database ,set the the user as None
-            user = None
-
-        if user:
-            # if user already exists, return the error message
-            return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
-            # return HttpResponse("the email has benn registered..");
-
-        # if user does not exist, do the next step,do the registration
-        user = User.objects.create_user(username, email, password)
-        user.is_active = 0
-        user.save()
-
-         # send the active email,and encrypt user content information
         try:
              # encript the information about user
             serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
@@ -101,7 +105,6 @@ class RegisterView(TemplateView):
             html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
 
             send_mail(subject, message, sender, receiver, html_message=html_message)
-
 
             return JsonResponse({"res": 1})
         except:
@@ -188,13 +191,12 @@ class LoginView(TemplateView):
                 # go to the index page as default.
                 # go to the next_url
                 next_url = request.GET.get('next', reverse('user:index'))
-                # 跳转到next_url
                 response = redirect(next_url) # HttpResponseRedirect
-                # 判断是否需要记住用户名
+                # if remember me is checked
                 remember = request.POST.get('remember')
 
                 if remember == 'on':
-                    # 记住用户名
+                    # remember username
                     response.set_cookie('username', username, max_age=7*24*3600)
                 else:
                     response.delete_cookie('username')
@@ -203,11 +205,9 @@ class LoginView(TemplateView):
                 return JsonResponse({"res": 1})
 
             else:
-                # 用户未激活
+                # user is not activated
                 return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
-                # return render(request, 'login.html', {'errmsg':'Account has not been activated'})
         else:
-            # 用户名或密码错误
             return JsonResponse({"res": 0, 'errmsg': 'username or password wrong'})
 
 
@@ -364,6 +364,18 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
         #check if the user information is complete
         if not all([avatar]):
            return JsonResponse({"res": 0, "error_msg":'No image has been uploaded!'})
+       
+        #delete the old avatar      
+        files_root = os.path.join(settings.MEDIA_ROOT, 'avatar')
+        files = [file for root,dirs,total_files in os.walk(files_root) for file in total_files]
+        for file in files:
+            print(file)
+            res = re.match(r"^%s\.[a-zA-Z]{3,4}$" % user.username, file)
+            if res.group():
+                my_file = os.path.join(files_root, file)
+                os.remove(my_file)
+                break
+
         try:
             avatar.name = user.username + '.' + avatar.name.split('.')[-1]
             user.user_profile = avatar
@@ -378,18 +390,7 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
             '''favourites page'''
             return render(request, 'favourites.html')
 
-
-class TestView(TemplateView):
-        def get(self, request):
-            '''favourites page'''
-            return render(request, 'test_map.html')
-
-        def query(request):
-            r = request.GET.get("toolsname")
-            name_dict = "123"
-            return JsonResponse(name_dict)
-
-
+#/user/bus_info
 class BusInfoView(LoginRequiredMixin, TemplateView):
     def get(self, request):
 
@@ -561,25 +562,26 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
             subject = 'Contact information-from ' + user.username + "-email:" + user.email
             message = contact
             sender = settings.EMAIL_FROM
-            print(sender)
             receiver = [settings.EMAIL_FROM]
-            print(receiver)
             send_mail(subject, message, sender, receiver)
         except Exception as e:
-            print(e)
             return JsonResponse({"res":0,"error_msg":'information sent error! please try again'})
 
-        #         return JsonResponse(data)
         return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
 
 
-#
-# def set_session(request):
-#     request.session['username'] = 'reanjie'
-#     request.session['age'] = '18'
-#     return HttpResponse('set sessions')
-#
-# def get_session(request):
-#     username = request.session['username']
-#     age = request.session['age']
-#     return HttpResponse(username+':'+age)
+class StopInfoView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        #get all stop_information from database
+        #send data to front end in json format
+        json_data = serializers.serialize('json', StopInformation.objects.all())
+        json_data = json.loads(json_data)
+        #only send fields to front end
+
+        return JsonResponse(json_data, safe=False)
+
+    def post(self, request):
+        stop_id = request.POST.get('stop_id')
+        json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
+        json_data = json.loads(json_data)
+        return JsonResponse(json_data, safe=False)

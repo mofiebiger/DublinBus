@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class StopInformation(models.Model): 
     stop_id = models.IntegerField(verbose_name='stop_id',null = False,unique=True)
@@ -15,48 +14,14 @@ class StopInformation(models.Model):
         managed = True
         db_table = 'stop_information'
 
-        
-        
-class Leavetimes(models.Model):
-    dayofservice = models.TextField(blank=True, null=True)
-    tripid = models.TextField(blank=True, null=True)
-    progrnumber = models.TextField(blank=True, null=True)
-    stoppointid = models.TextField(blank=True, null=True)
-    plannedtime_arr = models.TextField(blank=True, null=True)
-    plannedtime_dep = models.TextField(blank=True, null=True)
-    actualtime_arr = models.TextField(blank=True, null=True)
-    actualtime_dep = models.TextField(blank=True, null=True)
-    vehicleid = models.TextField(blank=True, null=True)
 
+class BusRouteNumber(models.Model):
+    route = models.CharField(max_length=10,verbose_name='route',null = False)
+    origin = models.CharField(max_length=50,verbose_name='origin',null = False)
+    destination = models.CharField(max_length=50,verbose_name='destination',null = False)
+    stops = models.CharField(max_length = 2000,verbose_name='stops',null = False)
+    stop_number = models.IntegerField(verbose_name='stop_number',null = False)
     class Meta:
-        managed = True
-        db_table = 'leavetimes'
-        
-        
-        
-class Trips(models.Model):
-    dayofservice = models.TextField(blank=True, null=True)
-    tripid = models.TextField(blank=True, null=True)
-    lineid = models.TextField(blank=True, null=True)
-    routeid = models.TextField(blank=True, null=True)
-    direction = models.TextField(blank=True, null=True)
-    plannedtime_arr = models.TextField(blank=True, null=True)
-    plannedtime_dep = models.TextField(blank=True, null=True)
-    actualtime_arr = models.TextField(blank=True, null=True)
-    actualtime_dep = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'trips'
-        
-        
-        
-class Vehicles(models.Model):
-    dayofservice = models.TextField(blank=True, null=True)
-    vehicleid = models.TextField(blank=True, null=True)
-    distance = models.TextField(blank=True, null=True)
-    minutes = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'vehicles'
+        db_table = 'bus_route'
+        verbose_name = 'bus_route'
+        verbose_name_plural = verbose_name

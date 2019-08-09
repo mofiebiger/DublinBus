@@ -1,5 +1,6 @@
 body {
     overflow: auto;
+    font-size: 1em;
 }
 
 #map {
@@ -120,11 +121,6 @@ header #title {
     color: white;
 }
 
-font-size: {
-  1em;
-
-}
-
 #directionsSource {
     /* align-items: center; */
     width: 60%;
@@ -133,12 +129,15 @@ font-size: {
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
 }
-#directionsDestination {
+#directionsDestination,	#searchBusRoute, #researchContent{
     /* align-items: center; */
     width: 60%;
-    margin: 15px;
+    /* margin: 15px; */
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 62px;
 }
 #rightNow {
     /* align-items: center; */
@@ -228,7 +227,7 @@ font-size: {
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background-color: #6D8ACC;
-    border-color: #717B87 -moz-use-text-color #717B87 #717B87;
+    /*border-color: #717B87 -moz-use-text-color #717B87 #717B87;*/
     border-style: solid none solid solid;
     border-width: 1px 0 1px 1px;
     color: #FFFFFF !important;
@@ -264,7 +263,7 @@ font-size: {
   margin: 50px;
 }
 
-#websiteBtn {
+.websiteBtn {
 
   margin: 15px;
   padding: 8px;
@@ -276,7 +275,7 @@ font-size: {
 
 }
 
-#tourismNavBtn {
+.tourismNavBtn {
 
   margin: 15px;
   padding: 8px;
@@ -289,4 +288,54 @@ font-size: {
 
 form {
   display:inline-block;
+}
+
+
+#researchContent li {
+	    /* align-items: center; */
+    width: 100%;
+    height:20px;
+    line-height:20px;
+    margin:0px;
+	text-align:left;
+    padding: 0px;
+    font-family: 'Allerta Stencil', sans-serif;
+	
+	
+}
+
+#researchContent {
+	overflow: hidden;
+	margin:0px;
+	padding: 0px;
+}
+
+#switch_position {
+  width: 50px;
+  height: 50px;
+  float: right;
+  padding: 5px;
+}
+
+#weatherIcon{
+    align-self: center;
+    width: 128px;
+    height: 128px;
+}
+#currentTemperature{
+    align-self: center;
+    width: 128px;
+    height: 128px;
+}
+.out{
+  width: 500px;
+  height: 900px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+#tourism-image {
+  height: 1px;
+  width: 2px;
+  border-radius: 5px;
 }

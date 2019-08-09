@@ -1,7 +1,21 @@
 language: python
 python:
 - '3.6'
+before_script:
+  - psql -c "CREATE DATABASE travisdb;" -U postgres
 script:
-- python tests.py
-notifications:
-  slack: dublinbussummerproj.slack.com
+- cd dbbus/
+- python manage.py test
+services: postgresql
+env:
+  matrix:
+  - DJANGO=2.2.3
+  global:
+    secure: DdX87JgrUR8y+gWLD6s2RM6Uf/aQq+68r7WCceQ17Eni+agAoKlPz8Zaz9KbJ5eX5bSdDfNo9wicHBQhJsYT2NIRJRBUrPmPSWiDG/eO9EyQ21sNiGaXMaD5nJQmfZWQKG+g044/e09VamNYQl6sPMjbwR8fKM46tvDOWomUib4lbBq9mB6AzmutNgYhgDoQeGAwE/UQ5KULP36QvpkH9hmetWC4jQEVv8UOOkOjsCkb+Z8ZNrry7igZlq1LN4FUFNkbLdTRekFeUEV2swOxA4iugCX1W6SlARXUSzRbEFmakWVx+JKMV5UMWVeGL36ZR3yYdYxDXrtX2dPfVD4Pns/Rm+QUIUfNYEuSztatTJ1vJiHqPrxyG794b/qaTEKAy4QbnZPWpKQfkMwn5Elyi6f8fYrEj+2v8GH83BxZqI+Gm5e/P2tCCtWMYwn+eVwUJO6IlmiLsjuCtcKxtjCjw0A7P4cTrUD65/vLm/cR8JYI9dG6878TVQa88hdeHB3TUM1vLI2Ujtu36BOrznuTl7WyBoHXzvxmxcvJwLnCxGRg0rG+D/B7+0OLqfKvozaXPx5315tXfhXmH42QeJeA08gGxjSH8qJS6YH8yxf+bsbHpHIv3znluV/wzsXFpzptQGIY2XJ+GsAQPLwaa5HjIFHTtNJoWLeyK7sqTtp7csQ=
+before_install:
+- export DJANGO_SETTINGS_MODULE=dbbus.settings
+- export PYTHONPATH=$HOME/builds/mofiebiger/DublinBus
+- export PIP_USE_MIRRORS=true
+- echo $super_secret_password | gpg --passphrase-fd 0 dbbus/config.py.gpg
+install:
+- pip install -r requirements.txt
