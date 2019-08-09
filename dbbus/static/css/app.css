@@ -193,8 +193,6 @@
   padding: 1rem;
   z-index: 1;
   background: #0a0a0a;
-  width: 350px;
-  height: 375px;
   position: fixed;
   transition: bottom 0.5s ease-in-out;
 }

@@ -284,7 +284,7 @@
         <span class="error_tip"></span>
 
     <p class="or-divider"><span>or</span></p>
-    <input class="button expanded" type="button" value="Sign In" id="toLogin">
+    <input class="button expanded toLogin" type="button" value="Sign In" id="toLogin">
     </form>
 {#                <p class="error" id="test_error">dddd</p>#}
                 {{ errmsg }}
@@ -298,11 +298,11 @@
     <figure class="form-login-img">
     <img src="{% static 'images/dbbus_title.jpg' %}" alt="" />
     <figcaption class="form-login-img-caption">
-{#        Log in and experience everything DublinBus Journey Planner offers.#}
+        Log in with your name
     </figcaption>
   </figure>
     <form class="callout text-center">
-        <h2>Log in with your username</h2>
+{#        <h2>Log in with your username</h2>#}
         <div class="floated-label-wrapper">
             <label for=username">Username</label>
             <input type="text" name="username input" id='username' class="name_input" value="{{ username }}" placeholder="Username">
@@ -343,7 +343,7 @@
                     <div class="w3-message">
                         <div class="wthree_tab_grid_sub">
                             <div class="wthree_tab_grid_sub_left">
-                                <a id="reset_pw" href="http://127.0.0.1:8000/user/change_password"><h5>Reset password</h5></a>
+                                <a id="reset_pw"><h5>Reset password</h5></a>
                             </div>
                             <div class="wthree_tab_grid_sub_left">
                                 <a id="logout" href="http://127.0.0.1:8000/user/logout"><h5>Logout</h5></a>
@@ -362,6 +362,20 @@
         </div>
 
     <div id="forget_pw_div" style="display: none;"></div>
+
+     <div id="reset_pw_div" style="display: none;">
+    <h1>Dear {{user.username}}:</h1>
+    <h2>Your email is :{{user.email}},you can reset your password</h2>
+    <form method="post" >
+      {% csrf_token %}
+      <P><span>Password：</span><input type="password" name="new_pwd" placeholder="至少6位"></P>
+      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder="至少6位"></P>
+      <p><input type="submit" value="submit"></p>
+        <p class="or-divider"><span>or</span></p>
+    <input class="button expanded toLogin" type="button" value="Back to Login In" id="toLogin">
+    </form>
+    <h1>{{ msg }}</h1>
+  </div>
 	
 </body>
 <script>
@@ -398,11 +412,20 @@
     $('#toRegister').on('click', function(){
         $('#login_div').attr("style","display:none;");
         $('#register_div').attr("style","display:block;");
-    })
-    $('#toLogin').on('click', function(){
+    });
+    $('.toLogin').on('click', function(){
         $('#login_div').attr("style","display:block;");
         $('#register_div').attr("style","display:none;");
-    })
+        $('#reset_pw_div').attr('style',"display:none;");
+    });
+    $('#reset_pw').on('click', function(){
+            $('#reset_pw_div').attr('style',"style","display:block;");
+			$('#user_info').attr("style","display:none;")
+        })
+    $('#reset_pw').on('click', function(){
+            $('#reset_pw_div').attr('style',"style","display:block;");
+			$('#user_info').attr("style","display:none;")
+        })
 
 
 </script>
