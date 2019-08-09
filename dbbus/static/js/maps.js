@@ -1,18 +1,18 @@
+var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
+var marker_list = [];
+
+
 function initMap(position){
-var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB;
 
-
-markerA = new google.maps.MarkerImage('marker.png')
-              new google.maps.Size(24, 27),
-              new google.maps.Point(0, 0),
-              new google.maps.Point(12, 27),
-
-markerB = new google.maps.MarkerImage('marker.png'),
-              new google.maps.Size(24, 28),
-              new google.maps.Point(0, 0),
-              new google.maps.Point(12, 28);
-
-
+	markerA = new google.maps.MarkerImage('marker.png'),
+	new google.maps.Size(24, 27),
+	new google.maps.Point(0, 0),
+	new google.maps.Point(12, 27),
+	
+	markerB = new google.maps.MarkerImage('marker.png'),
+	new google.maps.Size(24, 28),
+	new google.maps.Point(0, 0),
+	new google.maps.Point(12, 28);
 // Caching the Selectors
 $Selectors = {
     map: jQuery('#map')[0], //good
@@ -98,8 +98,12 @@ directionsSetUp = function(){
   } //mapSetUp Ends
 
 
-  DirectionsRenderer = function(source, destination, date, time){
-
+//  DirectionsRenderer = function(source, destination, date, time){
+   DirectionsRenderer = function(source, destination, date, time){
+//	  var methods = ['FEWER_TRANSFER','LESS_WALKING'];
+//	  for(var method_index=0;method_index<2;method_index++){
+//		  
+//	  }
       var request = {
         origin: source,
         destination: destination,
@@ -108,14 +112,14 @@ directionsSetUp = function(){
         transitOptions: {
             departureTime: new Date(date+" "+time),
             modes: ['BUS'],
-            routingPreference: 'FEWER_TRANSFERS'
+            routingPreference: 'FEWER_TRANSFERS'  //FEWER_TRANSFER' and LESS_WALKING
           },
       };
-
+      // show the route
       directionsService.route(request, function(response, status){
         if (status == google.maps.DirectionsStatus.OK){
-            var show_div = document.getElementById('directionsSteps');
-
+        	
+          var show_div = document.getElementById('directionsSteps');
           var _route = response.routes[0].legs[0];
           console.log(_route);
           var aList = new Array();
@@ -139,25 +143,25 @@ directionsSetUp = function(){
           	}).done(function(data){
             	console.log(data);
             	if (data.res == 1){
+            		var total_time = 0;
             		for(var i=0,j=0; i<_route['steps'].length; i++){
                      	  if (_route['steps'][i].travel_mode == "TRANSIT"){
-                     		response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
+                     		  if(data.response_leg[j].text != "" && data.response_leg[j].value != 0){                     			  
+                     			  response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
+                     		  }
                      		j+=1;
                      	  }
-
+                     	  total_time += _route['steps'][i]['duration'].value;
                   	 }
-
+            		response.routes[0].legs[0].duration.value = total_time;
+            		response.routes[0].legs[0].duration.text = Math.round(total_time/60)+'mins';            		
+            		
             	}else{
             		alert(data.errmsg);
             	}
-
-
-//            	console.log(response);
-            	for(var i=0;i< marker_list.length;i++){
-            		marker_list[i].setMap(null);
-            	}
+            	// remove the points shown in the previous step
+            	deleteMarkers()            	
                 directionsDisplay.setDirections(response);
-
                 directionsDisplay.setPanel(show_div);
                 directionsDisplay.setMap(map);
           	}).fail(function(){
@@ -174,8 +178,8 @@ directionsSetUp = function(){
             map: map,
             icon: markerB
           });
-          marker_list.push(pinA);
-          marker_list.push(pinB);
+//          marker_list.push(pinA);
+//          marker_list.push(pinB);
         }
       });
     } //DirectionsRenderer Ends
@@ -199,7 +203,7 @@ directionsSetUp = function(){
       console.log(userLatLng.lat);
       console.log(userLatLng.lng);
       //Draw a circle around the user position to have an idea of the current localization accuracy
-      var circle = new google.maps.Circle({
+      circle = new google.maps.Circle({
           center: userLatLng,
           radius: 1000, //position.coords.accuracy,
           map: map,
@@ -244,14 +248,15 @@ directionsSetUp = function(){
 
       for (var i = 0; i < markers.length; i++) {
           var marker = markers[i];
+          marker_list.push(marker);
           // bindInfoWindow(marker, map, infowindow, content_html);
           // marker.addListener('click', function () {
           //     infowindow.open(map, marker);
           // });
           //     // console.log("var markers");
-          var markerCluster = new MarkerClusterer(map, markers,
-              {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
+      markerCluster = new MarkerClusterer(map, markers,
+    		  {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     });
 
 
@@ -438,14 +443,6 @@ directionsSetUp = function(){
 		   });
 		   
 	   })
-	   
-	   function match_left(word,stop_list){
-		   for (var i = 0; i < stop_list.length; i++){
-			   
-		   } 
-		   
-	   }
-		
 		
       // display stops along a bus route
       
@@ -475,23 +472,18 @@ directionsSetUp = function(){
 					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
 					    				}
 		
-					                    directionsDisplay.setMap(null);
-					                    directionsDisplay.setMap(map);					    				
-					    				
+					                    directionsDisplay.setMap(null);					    				
 					    				//remove the markers created before
-					    				
-					    				for(var i=0;i< marker_list.length;i++){
-					                		marker_list[i].setMap(null);
-					                	}
-//					    				var Path = new google.maps.Polyline({
-//					    					path: stops,
-//					    					geodesic: true,
-//					    					strokeColor: '#FF0000',
-//					    					strokeOpacity: 1.0,
-//					    					strokeWeight: 2
-//					    				});
-//					    				Path.setMap(map);
-//					    				marker_list.push(Path);
+					                    deleteMarkers()
+					    				var Path = new google.maps.Polyline({
+					    					path: stops,
+					    					geodesic: true,
+					    					strokeColor: '#00BBFF',
+					    					strokeOpacity: 1.0,
+					    					strokeWeight: 5
+					    				});
+					    				Path.setMap(map);
+					    				marker_list.push(Path);
 					     		
 		
 					    				var markers = stops.map(function (location, i) {
@@ -512,8 +504,22 @@ directionsSetUp = function(){
 					    			          //     // console.log("var markers");
 					    			          // var markerCluster = new MarkerClusterer(map, markers,
 					    			          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-					    			      }					    				
-					    				
+					    			      }
+//					    			      console.log(stops.slice(1,stops.length-1))
+					    			      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+					    			      var start_point = new google.maps.Marker({
+					    		              position: stops[0],
+					    		              map: map,
+					    		              label:'A',
+					    		            });
+
+					    		          var end_point = new google.maps.Marker({
+					    		              position:  stops[stops.length-1],
+					    		              map: map,
+					    		              label:'B',
+					    		            });	
+					    		          marker_list.push(start_point);
+					    		          marker_list.push(end_point);
 					    			}else{
 					    				alert(stop_list.errmsg);
 					    			}
@@ -526,7 +532,8 @@ directionsSetUp = function(){
 
 }; //InitMap Ends
 
-var marker_list = new Array();
+
+
 function fetchStopAddress(lat, lng){
       stopLatLng = new google.maps.LatLng(lat, lng);
       var Locate = new google.maps.Geocoder();
@@ -985,16 +992,44 @@ function initStopPage(){
 
 
 
-        //switch the origi point and destination point
-        $(function(){
-        	 $('#switch_position').click(function(){
-        		 var start_point = $('#directionsSource');
-             	var start_point_value =start_point.val();
-             	var end_point = $('#directionsDestination');
-             	start_point.val(end_point.val());
-             	end_point.val(start_point_value);
-        	 });
-        });
+//switch the origi point and destination point
+$(function(){
+	 $('#switch_position').click(function(){
+		 var start_point = $('#directionsSource');
+     	var start_point_value =start_point.val();
+     	var end_point = $('#directionsDestination');
+     	start_point.val(end_point.val());
+     	end_point.val(start_point_value);
+	 });
+});
+
+
+  // Sets the map on all markers in the array.
+  function setMapOnAll(map) {
+    for (var i = 0; i < marker_list.length; i++) {
+    	marker_list[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  function clearAllMarkers() {
+    setMapOnAll(null);
+    markerCluster.clearMarkers();
+    circle.setMap(null);
+    
+  }
+
+  // Shows any markers currently in the array.
+  function showMarkers() {
+    setMapOnAll(map);
+  }
+
+  // Deletes all markers in the array by removing references to them.
+  function deleteMarkers() {
+	clearAllMarkers();
+    marker_list = [];
+  }
+
         
 
 		      	

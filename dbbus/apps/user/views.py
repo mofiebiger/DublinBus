@@ -372,6 +372,18 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
         #check if the user information is complete
         if not all([avatar]):
            return JsonResponse({"res": 0, "error_msg":'No image has been uploaded!'})
+       
+        #delete the old avatar      
+        files_root = os.path.join(settings.MEDIA_ROOT, 'avatar')
+        files = [file for root,dirs,total_files in os.walk(files_root) for file in total_files]
+        for file in files:
+            print(file)
+            res = re.match(r"^%s\.[a-zA-Z]{3,4}$" % user.username, file)
+            if res.group():
+                my_file = os.path.join(files_root, file)
+                os.remove(my_file)
+                break
+
         try:
             avatar.name = user.username + '.' + avatar.name.split('.')[-1]
             user.user_profile = avatar
