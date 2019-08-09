@@ -1,0 +1,92 @@
+{
+  "name": "DublinBus",
+  "short_name": "DublinBus",
+  "start_url": "http://localhost:8000/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "A predictive bus application",
+  "orientation": "any",
+  "icons": [
+      {
+          "src": "avatar_default.png",
+          "sizes": "160x160",
+          "type": "image/png"
+      },
+      {
+          "src": "Aviva.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "book-of-kells.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "botanic-gardens.jpeg",
+          "sizes": "160x160",
+          "type": "image/jpeg"
+      },
+      {
+          "src": "ChesterBeatty.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "christ_church.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "custom-house.jpeg",
+          "sizes": "160x160",
+          "type": "image/jpeg"
+      },
+      {
+          "src": "Dublin_Bus_Icon.png",
+          "sizes": "160x160",
+          "type": "image/png"
+      },
+      {
+          "src": "dublin-castle.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "dublin-writers-museum.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "Dublin-Zoo.png",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "dublinia.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "epic.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "Farmleigh-House.jpeg",
+          "sizes": "160x160",
+          "type": "image/jpeg"
+      },
+      {
+          "src": "glasnevin.jpg",
+          "sizes": "160x160",
+          "type": "image/jpg"
+      },
+      {
+          "src": "threeBusDub.png",
+          "sizes": "160x160",
+          "type": "image/png"
+      }
+  ]
+
+}
