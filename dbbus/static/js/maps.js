@@ -207,8 +207,8 @@ directionsSetUp = function(){
           center: userLatLng,
           radius: 1000, //position.coords.accuracy,
           map: map,
-          fillColor: '#0000FF',
-          fillOpacity: 0.5,
+          fillColor: '#7709e6',
+          fillOpacity: 0.6,
           strokeOpacity: 0,
       });
       map.fitBounds(circle.getBounds());
@@ -869,7 +869,7 @@ function initStopPage(){
 
             $('#weather_heading').show().html(displayDescription).css({'font-size':20});
             $('#currentTemperature').show().html(Math.round(data.temperature) + "℃").css({'font-size':55,"line-height":"100%"});
-            
+
             var weatherIcon = data.icon.toUpperCase().split('-');
             weatherIcon = weatherIcon.join('_')
             
@@ -883,16 +883,16 @@ function initStopPage(){
 	    		  }
 	    		});
             icons.set("weatherIcon", Skycons[weatherIcon])
-              icons.play();  
+              icons.play();
 
             // Displaying Sunrise
             var sunrise_time = new Date(data_daily.data[0].sunriseTime*1000)
             var sunrise = ("Sunrise: " + sunrise_time.getHours() + ":" + sunrise_time.getMinutes());
-            
+
             // Displaying Sunset
             var sunset_time = new Date(data_daily.data[0].sunsetTime*1000)
             var sunset = ("Sunset: " + sunset_time.getHours() + ":" + sunset_time.getMinutes());
-            
+
             // Displaying Wind Speed
             var displayWind = ("Wind Speed: " + Math.round(data.windSpeed) + " m/s");
 
@@ -901,7 +901,7 @@ function initStopPage(){
 
             // Displaying pressure
             var pressure = ("Pressure: " + Math.round(data.pressure) + "hPa") ;
-            
+
             // Displaying pressure
             var visibility = ("Visibility: " + Math.round(data.visibility) + "km") ;
             //Display Weather Stats on overlay8
@@ -922,22 +922,22 @@ function initStopPage(){
               icons.play();
               var date = new Date(data_hourly[i]['time']*1000)
               if(i == 0){
-            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white','margin-left':'5px'})            	  
+            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white','margin-left':'5px'})
               }else{
-            	  $('#weathertime'+i).html(date.getHours()+":00").css({'text-align':'center','color':'white','margin-left':'5px'})            	  
+            	  $('#weathertime'+i).html(date.getHours()+":00").css({'text-align':'center','color':'white','margin-left':'5px'})
               }
               $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature))+"℃").css({'text-align':'center','color':'white'})
               $('#weather_hourly div').css({'float':'left','height':'100px','width':'60px','margin-left':'5px'})
               $('#weather_hourly').css({'height':'100px','overflow':'hidden'})
           }
-              for(var i=0;i<data_daily.data.length;i++){ 
+              for(var i=0;i<data_daily.data.length;i++){
                   if(i == 0){
                 	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><div id="weatherDailyIcon'+i+'" width="55" height="55"></div><div id="weatherDailyTemp'+i+'"></div></div>')
                 	  $('#weekday'+i).html('Weekday').css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"}).append('<hr>')
                 	  $('#weatherDailyTemp'+i).html('Temp:Min/Max').css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"34%",'margin-right':'0px'}).append('<hr>')
-                	  
-                	  $('#weatherDailyIcon'+i).html('Forecast').css({'text-align':'center','color':'white','float':'left','font-size':20,'width':"33%",'margin-right':'0px'}).append('<hr>')             	  
-                  }else{                	  
+
+                	  $('#weatherDailyIcon'+i).html('Forecast').css({'text-align':'center','color':'white','float':'left','font-size':20,'width':"33%",'margin-right':'0px'}).append('<hr>')
+                  }else{
                 	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTemp'+i+'"></div></div>')
                 	  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
                 	  weatherIcon = weatherIcon.join('_')
@@ -956,8 +956,8 @@ function initStopPage(){
                 	  $('#weekday'+i).html(fnToweek(iWeek)).css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"})
                 	  $('#weatherDailyTemp'+i).html(Math.round((data_daily.data[i].temperatureMin))+"℃/"+Math.round((data_daily.data[i].temperatureMax))+"℃").css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"33%",'margin-right':'12px'})
                   }
-                  
-           	  
+
+
               }
             })
             function fnToweek(n){
