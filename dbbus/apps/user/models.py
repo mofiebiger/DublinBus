@@ -7,7 +7,6 @@ from django.db import models
 class User(AbstractUser,models.Model):
     '''this class is used to store the information about the users'''
 
-    
     user_profile = models.ImageField(verbose_name='user_image',  upload_to='avatar',default = 'default.jpg')
 
     class Meta:

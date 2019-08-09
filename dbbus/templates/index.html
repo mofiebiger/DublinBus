@@ -66,13 +66,6 @@
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
 
-        <!-- will probs not need the link below! save for now! -->
-        <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
-
-        <!-- Path to manifest.json -->
-        <!-- <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}"> -->
-
-
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
 
@@ -84,13 +77,6 @@
     <header>
       <h1 id="title">Dublin Bus | Journey Planner</h1>
     </header>
-
-    <!-- Splash Screen Overlay -->
-    <!-- <div id="splash_overlay">
-      <div id="splash-content">
-        <img src="{% static 'images/threeBusDub.png' %}"></img>
-      </div>
-    </div> -->
 
     <!--NavBar - displays overlays (above map)-->
     <ul id="nav">
@@ -205,7 +191,8 @@
             <button type="button" id="removeFav_bus" hidden>Remove Favourite</button>
           </div>
           <h3 id="busid"></h3>
-          <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
+{#          will be changed to the real start point and end point#}
+          <p>From <span id="start_point"></span> to <span id="end_point"></span> </p>
           <input type="text" id="bus_id" value="39A" hidden>
       </div>
   </div>
@@ -229,8 +216,8 @@
 
         <div class="weatherDescription">
         <div>
-        <canvas id="weatherIcon" width="128" height="128" style="float:center;"></canvas>
-        <div id="currentTemperature" width="128" height="128" style="float:center;"></div>
+        <canvas id="weatherIcon"></canvas>
+        <div id="currentTemperature"></div>
         </div>     
         </div>
        <hr>

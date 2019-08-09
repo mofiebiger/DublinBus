@@ -1,5 +1,6 @@
 body {
     overflow: auto;
+    font-size: 1em;
 }
 
 #map {
@@ -120,11 +121,6 @@ header #title {
     color: white;
 }
 
-font-size: {
-  1em;
-
-}
-
 #directionsSource {
     /* align-items: center; */
     width: 60%;
@@ -231,7 +227,7 @@ font-size: {
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background-color: #6D8ACC;
-    border-color: #717B87 -moz-use-text-color #717B87 #717B87;
+    /*border-color: #717B87 -moz-use-text-color #717B87 #717B87;*/
     border-style: solid none solid solid;
     border-width: 1px 0 1px 1px;
     color: #FFFFFF !important;
@@ -309,7 +305,7 @@ form {
 }
 
 #researchContent {
-	overflow:"hidden";
+	overflow: hidden;
 	margin:0px;
 	padding: 0px;
 }
@@ -319,4 +315,27 @@ form {
   height: 50px;
   float: right;
   padding: 5px;
+}
+
+#weatherIcon{
+    align-self: center;
+    width: 128px;
+    height: 128px;
+}
+#currentTemperature{
+    align-self: center;
+    width: 128px;
+    height: 128px;
+}
+.out{
+  width: 500px;
+  height: 900px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+#tourism-image {
+  height: 1px;
+  width: 2px;
+  border-radius: 5px;
 }

@@ -20,7 +20,6 @@ from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
 from prediction.models import StopInformation
 from django.core import serializers
-# from user.models import User, UserBusNumber, UserStop, UserRoute
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
 FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
@@ -34,10 +33,6 @@ class IndexView(TemplateView):
             "maps_api" : settings.GOOGLE_MAPS_API_KEY
         }
         return render(request, 'index.html', api)
-
-# class serviceWorker(TemplateView):
-#     template_name = 'js/serviceworker.js'
-#     content_type = 'application/javascript'
 
 # /user/register
 class RegisterView(TemplateView):
@@ -196,13 +191,12 @@ class LoginView(TemplateView):
                 # go to the index page as default.
                 # go to the next_url
                 next_url = request.GET.get('next', reverse('user:index'))
-                # 跳转到next_url
                 response = redirect(next_url) # HttpResponseRedirect
-                # 判断是否需要记住用户名
+                # if remember me is checked
                 remember = request.POST.get('remember')
 
                 if remember == 'on':
-                    # 记住用户名
+                    # remember username
                     response.set_cookie('username', username, max_age=7*24*3600)
                 else:
                     response.delete_cookie('username')
@@ -211,11 +205,9 @@ class LoginView(TemplateView):
                 return JsonResponse({"res": 1})
 
             else:
-                # 用户未激活
+                # user is not activated
                 return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
-                # return render(request, 'login.html', {'errmsg':'Account has not been activated'})
         else:
-            # 用户名或密码错误
             return JsonResponse({"res": 0, 'errmsg': 'username or password wrong'})
 
 
@@ -570,15 +562,11 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
             subject = 'Contact information-from ' + user.username + "-email:" + user.email
             message = contact
             sender = settings.EMAIL_FROM
-            print(sender)
             receiver = [settings.EMAIL_FROM]
-            print(receiver)
             send_mail(subject, message, sender, receiver)
         except Exception as e:
-            print(e)
             return JsonResponse({"res":0,"error_msg":'information sent error! please try again'})
 
-        #         return JsonResponse(data)
         return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
 
 
@@ -594,31 +582,6 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
 
     def post(self, request):
         stop_id = request.POST.get('stop_id')
-        # bus_id = request.POST.get('bus_id')
         json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
-        # print(type(json_data))
-        # print(333333)
         json_data = json.loads(json_data)
-        # print(type(json_data))
-        # print(22222)
-        # # dic={}
-        # # dic
-        # # response_data = {'data': string_data}
-
         return JsonResponse(json_data, safe=False)
-
-class StopsView(TemplateView):
-    def get(self, request):
-        '''stop/route page'''
-        return render(request, 'Stops_Routes.html')
-
-#
-# def set_session(request):
-#     request.session['username'] = 'reanjie'
-#     request.session['age'] = '18'
-#     return HttpResponse('set sessions')
-#
-# def get_session(request):
-#     username = request.session['username']
-#     age = request.session['age']
-#     return HttpResponse(username+':'+age)

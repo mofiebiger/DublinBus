@@ -263,13 +263,5 @@ class UserTests(TestCase):
         #testing the status code of the contact page
         self.assertEqual(response.status_code, 200)
 
-    def test_stop_routes_GET(self):
-        request = self.factory.get('/user/stops/')
-        request.user = self.user
-        response = views.StopsView().get(request)
-
-        #testing the status code of the contact page
-        self.assertEqual(response.status_code, 200)
-
 if __name__ == '__main__':
     unittest.main(verbosity=2)
