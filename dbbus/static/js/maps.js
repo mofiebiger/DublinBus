@@ -45,7 +45,7 @@ directionsSetUp = function(){
     directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: false
     });
-    
+
   } //directionsSetUp Ends
 
   function trafficSetup() {
@@ -203,8 +203,8 @@ directionsSetUp = function(){
           center: userLatLng,
           radius: 1000, //position.coords.accuracy,
           map: map,
-          fillColor: '#0000FF',
-          fillOpacity: 0.5,
+          fillColor: '#7709e6',
+          fillOpacity: 0.6,
           strokeOpacity: 0,
       });
       map.fitBounds(circle.getBounds());
@@ -409,7 +409,7 @@ directionsSetUp = function(){
       invokeTourismBtns();
 
    function setBusRoute(){
-	   
+
 	   $('#busRoute #searchBusRoute').keyup(function(){
 		   $(this).removeAttr('name');
 		   $.ajax({
@@ -422,7 +422,7 @@ directionsSetUp = function(){
 		   }).done(function(stop_list){
 			   var selectData = "";
 			   for (var i = 0; i < stop_list.length; i++) {
-				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){					   
+				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){
 					   selectData += "<li id=\"" + stop_list[i]['route'] +"_" + stop_list[i]['origin'] +"_" + stop_list[i]['destination'] + "\">" + stop_list[i]['route']+ "(" + stop_list[i]['origin'] + "→" + stop_list[i]['destination'] + ")</li>";
 			   }}
 			   fieldString = "<ul id=\"busSelector\" >" + selectData + "</ul> ";
@@ -431,31 +431,31 @@ directionsSetUp = function(){
 			   console.log($("#busRoute #searchBusRoute li").css("height"));
 			   $("#busRoute #busSelector li").click(function(){
 				   $('#busRoute #searchBusRoute').val($(this).html()).attr('name',$(this).attr('id'));
-				   
+
 				   $(this).parent().parent().hide();
 			   }).css('overflow','hidden');
-			   
+
 		   });
-		   
+
 	   })
-	   
+
 	   function match_left(word,stop_list){
 		   for (var i = 0; i < stop_list.length; i++){
-			   
-		   } 
-		   
+
+		   }
+
 	   }
-		
-		
+
+
       // display stops along a bus route
-      
+
 		$('#searchBus').bind('click',function(){
 						var bus_route = $('#busRoute #searchBusRoute').attr('name');
 						console.log(bus_route);
 						if(typeof(bus_route) == "undefined"){
 							return false;
-						}else{		
-							
+						}else{
+
 							route_list = bus_route.split('_')
 							console.log(route_list);
 					    		// display stops along a bus route
@@ -474,12 +474,12 @@ directionsSetUp = function(){
 					    					var stops = obj;
 					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
 					    				}
-		
+
 					                    directionsDisplay.setMap(null);
-					                    directionsDisplay.setMap(map);					    				
-					    				
+					                    directionsDisplay.setMap(map);
+
 					    				//remove the markers created before
-					    				
+
 					    				for(var i=0;i< marker_list.length;i++){
 					                		marker_list[i].setMap(null);
 					                	}
@@ -492,8 +492,8 @@ directionsSetUp = function(){
 //					    				});
 //					    				Path.setMap(map);
 //					    				marker_list.push(Path);
-					     		
-		
+
+
 					    				var markers = stops.map(function (location, i) {
 					    					return new google.maps.Marker({
 					    						position: location,
@@ -512,8 +512,8 @@ directionsSetUp = function(){
 					    			          //     // console.log("var markers");
 					    			          // var markerCluster = new MarkerClusterer(map, markers,
 					    			          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-					    			      }					    				
-					    				
+					    			      }
+
 					    			}else{
 					    				alert(stop_list.errmsg);
 					    			}
@@ -522,7 +522,7 @@ directionsSetUp = function(){
 		      	})
       };
       setBusRoute();
-		      	
+
 
 }; //InitMap Ends
 
@@ -862,10 +862,10 @@ function initStopPage(){
 
             $('#weather_heading').show().html(displayDescription).css({'font-size':20});
             $('#currentTemperature').show().html(Math.round(data.temperature) + "℃").css({'font-size':55,"line-height":"100%"});
-            
+
             var weatherIcon = data.icon.toUpperCase().split('-');
             weatherIcon = weatherIcon.join('_')
-            
+
             //var weatherIcon = "snow";
 	    	  var icons = new Skycons({
 	    		  "monochrome": false,
@@ -876,16 +876,16 @@ function initStopPage(){
 	    		  }
 	    		});
             icons.set("weatherIcon", Skycons[weatherIcon])
-              icons.play();  
+              icons.play();
 
             // Displaying Sunrise
             var sunrise_time = new Date(data_daily.data[0].sunriseTime*1000)
             var sunrise = ("Sunrise: " + sunrise_time.getHours() + ":" + sunrise_time.getMinutes());
-            
+
             // Displaying Sunset
             var sunset_time = new Date(data_daily.data[0].sunsetTime*1000)
             var sunset = ("Sunset: " + sunset_time.getHours() + ":" + sunset_time.getMinutes());
-            
+
             // Displaying Wind Speed
             var displayWind = ("Wind Speed: " + Math.round(data.windSpeed) + " m/s");
 
@@ -894,7 +894,7 @@ function initStopPage(){
 
             // Displaying pressure
             var pressure = ("Pressure: " + Math.round(data.pressure) + "hPa") ;
-            
+
             // Displaying pressure
             var visibility = ("Visibility: " + Math.round(data.visibility) + "km") ;
             //Display Weather Stats on overlay8
@@ -915,22 +915,22 @@ function initStopPage(){
               icons.play();
               var date = new Date(data_hourly[i]['time']*1000)
               if(i == 0){
-            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white','margin-left':'5px'})            	  
+            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white','margin-left':'5px'})
               }else{
-            	  $('#weathertime'+i).html(date.getHours()+":00").css({'text-align':'center','color':'white','margin-left':'5px'})            	  
+            	  $('#weathertime'+i).html(date.getHours()+":00").css({'text-align':'center','color':'white','margin-left':'5px'})
               }
               $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature))+"℃").css({'text-align':'center','color':'white'})
               $('#weather_hourly div').css({'float':'left','height':'100px','width':'60px','margin-left':'5px'})
               $('#weather_hourly').css({'height':'100px','overflow':'hidden'})
           }
-              for(var i=0;i<data_daily.data.length;i++){ 
+              for(var i=0;i<data_daily.data.length;i++){
                   if(i == 0){
                 	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><div id="weatherDailyIcon'+i+'" width="55" height="55"></div><div id="weatherDailyTemp'+i+'"></div></div>')
                 	  $('#weekday'+i).html('Weekday').css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"}).append('<hr>')
                 	  $('#weatherDailyTemp'+i).html('Temp:Min/Max').css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"34%",'margin-right':'0px'}).append('<hr>')
-                	  
-                	  $('#weatherDailyIcon'+i).html('Forecast').css({'text-align':'center','color':'white','float':'left','font-size':20,'width':"33%",'margin-right':'0px'}).append('<hr>')             	  
-                  }else{                	  
+
+                	  $('#weatherDailyIcon'+i).html('Forecast').css({'text-align':'center','color':'white','float':'left','font-size':20,'width':"33%",'margin-right':'0px'}).append('<hr>')
+                  }else{
                 	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTemp'+i+'"></div></div>')
                 	  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
                 	  weatherIcon = weatherIcon.join('_')
@@ -949,8 +949,8 @@ function initStopPage(){
                 	  $('#weekday'+i).html(fnToweek(iWeek)).css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"})
                 	  $('#weatherDailyTemp'+i).html(Math.round((data_daily.data[i].temperatureMin))+"℃/"+Math.round((data_daily.data[i].temperatureMax))+"℃").css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"33%",'margin-right':'12px'})
                   }
-                  
-           	  
+
+
               }
             })
             function fnToweek(n){
@@ -995,9 +995,3 @@ function initStopPage(){
              	end_point.val(start_point_value);
         	 });
         });
-        
-
-		      	
-      	
-        
-  
