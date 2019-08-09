@@ -45,7 +45,7 @@ directionsSetUp = function(){
     directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: false
     });
-
+    
   } //directionsSetUp Ends
 
   function trafficSetup() {
@@ -201,7 +201,7 @@ directionsSetUp = function(){
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
-          radius: 1000,
+          radius: 1000, //position.coords.accuracy,
           map: map,
           fillColor: '#7709e6',
           fillOpacity: 0.6,
@@ -409,7 +409,7 @@ directionsSetUp = function(){
       invokeTourismBtns();
 
    function setBusRoute(){
-
+	   
 	   $('#busRoute #searchBusRoute').keyup(function(){
 		   $(this).removeAttr('name');
 		   $.ajax({
@@ -422,7 +422,7 @@ directionsSetUp = function(){
 		   }).done(function(stop_list){
 			   var selectData = "";
 			   for (var i = 0; i < stop_list.length; i++) {
-				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){
+				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){					   
 					   selectData += "<li id=\"" + stop_list[i]['route'] +"_" + stop_list[i]['origin'] +"_" + stop_list[i]['destination'] + "\">" + stop_list[i]['route']+ "(" + stop_list[i]['origin'] + "→" + stop_list[i]['destination'] + ")</li>";
 			   }}
 			   fieldString = "<ul id=\"busSelector\" >" + selectData + "</ul> ";
@@ -431,31 +431,31 @@ directionsSetUp = function(){
 			   console.log($("#busRoute #searchBusRoute li").css("height"));
 			   $("#busRoute #busSelector li").click(function(){
 				   $('#busRoute #searchBusRoute').val($(this).html()).attr('name',$(this).attr('id'));
-
+				   
 				   $(this).parent().parent().hide();
 			   }).css('overflow','hidden');
-
+			   
 		   });
-
+		   
 	   })
-
+	   
 	   function match_left(word,stop_list){
 		   for (var i = 0; i < stop_list.length; i++){
-
-		   }
-
+			   
+		   } 
+		   
 	   }
-
-
+		
+		
       // display stops along a bus route
-
+      
 		$('#searchBus').bind('click',function(){
 						var bus_route = $('#busRoute #searchBusRoute').attr('name');
 						console.log(bus_route);
 						if(typeof(bus_route) == "undefined"){
 							return false;
-						}else{
-
+						}else{		
+							
 							route_list = bus_route.split('_')
 							console.log(route_list);
 					    		// display stops along a bus route
@@ -474,12 +474,12 @@ directionsSetUp = function(){
 					    					var stops = obj;
 					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
 					    				}
-
+		
 					                    directionsDisplay.setMap(null);
-					                    directionsDisplay.setMap(map);
-
+					                    directionsDisplay.setMap(map);					    				
+					    				
 					    				//remove the markers created before
-
+					    				
 					    				for(var i=0;i< marker_list.length;i++){
 					                		marker_list[i].setMap(null);
 					                	}
@@ -492,8 +492,8 @@ directionsSetUp = function(){
 //					    				});
 //					    				Path.setMap(map);
 //					    				marker_list.push(Path);
-
-
+					     		
+		
 					    				var markers = stops.map(function (location, i) {
 					    					return new google.maps.Marker({
 					    						position: location,
@@ -512,8 +512,8 @@ directionsSetUp = function(){
 					    			          //     // console.log("var markers");
 					    			          // var markerCluster = new MarkerClusterer(map, markers,
 					    			          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-					    			      }
-
+					    			      }					    				
+					    				
 					    			}else{
 					    				alert(stop_list.errmsg);
 					    			}
@@ -522,7 +522,7 @@ directionsSetUp = function(){
 		      	})
       };
       setBusRoute();
-
+		      	
 
 }; //InitMap Ends
 
@@ -865,7 +865,7 @@ function initStopPage(){
 
             var weatherIcon = data.icon.toUpperCase().split('-');
             weatherIcon = weatherIcon.join('_')
-
+            
             //var weatherIcon = "snow";
 	    	  var icons = new Skycons({
 	    		  "monochrome": false,
@@ -995,3 +995,9 @@ function initStopPage(){
              	end_point.val(start_point_value);
         	 });
         });
+        
+
+		      	
+      	
+        
+  
