@@ -380,8 +380,15 @@ directionsSetUp = function(){
     }
 
       initStopPage();
-      initFavsPage();
-      deleteFavourites();
+      var is_authenticated = $('.is_authenticated').value;
+      if(is_authenticated == "yes"){
+          initFavsPage();
+          deleteFavourites();
+      }else{
+          console.log("no favs")
+      }
+
+
       on8();
 
       function invokeTourismBtns(){
@@ -597,10 +604,12 @@ function writeStopDetails(){
                         fetchStopAddress(result.stop_lat, result.stop_lon);
           })
 
-                  //get user_favourite_stop
-                  //compare with selected stop id
-                  //determine which button to show
-                  $.ajax({
+                  var is_authenticated = $('.is_authenticated').value;
+                  if(is_authenticated == "yes"){
+                        //get user_favourite_stop
+                        //compare with selected stop id
+                        //determine which button to show
+                        $.ajax({
                         type:"GET",
                         url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
                         async: true,
@@ -620,6 +629,11 @@ function writeStopDetails(){
                             console.log('show button fail')
                         },
                     });
+                  }else{
+                      $('.login-required').show();
+                        console.log("stop not auth");
+                  }
+
 
                   //add on click functions to each bus routes
                   $(".routesList a").each(function(){
@@ -640,27 +654,34 @@ function writeStopDetails(){
                               $('#removeFav_bus').hide();
                               $('#bus_info').show();
 
-                                //ajax get users' favs buses
-                                //compare with clicked bus id
-                                //determine which button to be shown
-                              $.ajax({
-                                type:"GET",
-                                url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
-                                async: true,
-                                success:function(result2){
-                                    var msg = "#addFav_bus";
-                                    for(var i =0; i < result2['user_bus_list'].length; i++){
-                                        if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g,"")){
-                                            msg = "#removeFav_bus"
-                                            break
+                              var is_authenticated = $('.is_authenticated').value;
+                              if(is_authenticated == "yes"){
+                                    //ajax get users' favs buses
+                                    //compare with clicked bus id
+                                    //determine which button to be shown
+                                    $.ajax({
+                                    type:"GET",
+                                    url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
+                                    async: true,
+                                    success:function(result2){
+                                        var msg = "#addFav_bus";
+                                        for(var i =0; i < result2['user_bus_list'].length; i++){
+                                            if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g,"")){
+                                                msg = "#removeFav_bus"
+                                                break
+                                            }
                                         }
-                                    }
-                                    $(msg).show()
-                                },
-                                error:function(){
-                                    console.log('result2 failed. show button fail')
-                                },
-                        })
+                                        $(msg).show()
+                                    },
+                                    error:function(){
+                                        console.log('result2 failed. show button fail')
+                                    },
+                            })
+                              }else{
+                                  $('.login-required').show();
+                                  console.log("route not auth");
+                              }
+
                       },
                       error: function(){
                           alert("result1 failed. post bus info ajax failed");

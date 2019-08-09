@@ -104,6 +104,14 @@
 
     </script>
 
+<div>
+    {% if user.is_authenticated %}
+        <input type="hidden" value="yes" class="is_authenticated">
+    {% else %}
+        <input type="hidden" value="no" class="is_authenticated">
+    {% endif %}
+
+</div>
 <header>
 <div class="off-canvas-wrap" data-offcanvas>
 
@@ -184,6 +192,7 @@
       <div class='fav_buttons'>
           <button type='button' id='addFav' hidden>Add Favourites</button>
           <button type='button' id='removeFav' hidden>Remove Favourites</button>
+          <button type='button' class='login-required' data-toggle="stopPage userPage" hidden>Login and add this stop as favourite</button>
       </div>
       <div></div>
       <div id="stop_content"></div>
@@ -203,43 +212,44 @@
 
 <div class="off-canvas position-left" id="favsPage" data-off-canvas>
     <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
-<div class="grid-y grid-padding-x" style="height: 100%;">
-<br>
-<div class="cell shrink">
-    {% csrf_token %}
-    {% if user.is_authenticated %}
-                <button id="delete_favs">Manage Favourites</button>
-<button id="submit_delete" hidden>Confirm Change</button>
-   <ul class="tabs" data-tabs id="tab-headers">
-     <li class="tabs-title is-active" id="fav_stop"><a href="#panel1" aria-selected="true">Stops</a></li>
-     <li class="tabs-title" id="fav_route"><a data-tabs-target="panel2" href="#panel2">Routes</a></li>
-     <li class="tabs-title" id="fav_bus"><a data-tabs-target="panel3" href="#panel2">Buses</a></li>
-</ul>
-    <div class="tabs-content" data-tabs-content="tab-headers">
-  <div class="tabs-panel is-active" id="panel1">
-      <p>stop list</p>
-      <ul id="stop_list" style="list-style: none">
-      </ul>
-  </div>
-  <div class="tabs-panel" id="panel2">
-      <p>routes list</p>
-      <ul id="route_list" style="list-style: none">
-      </ul>
-  </div>
-  <div class="tabs-panel" id="panel3">
-      <p>bus list</p>
-      <ul id="bus_list" style="list-style: none">
-      </ul>
-  </div>
-    </div>
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="grid-y grid-padding-x" style="height: 100%;">
+    <br>
+    <div class="cell shrink">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            <input type="hidden" value="yes" class="is_authenticated">
+            <button id="delete_favs">Manage Favourites</button>
+            <button id="submit_delete" hidden>Confirm Change</button>
+            <ul class="tabs" data-tabs id="tab-headers">
+                <li class="tabs-title is-active" id="fav_stop"><a href="#panel1" aria-selected="true">Stops</a></li>
+                <li class="tabs-title" id="fav_route"><a data-tabs-target="panel2" href="#panel2">Routes</a></li>
+                <li class="tabs-title" id="fav_bus"><a data-tabs-target="panel3" href="#panel2">Buses</a></li>
+            </ul>
+            <div class="tabs-content" data-tabs-content="tab-headers">
+                <div class="tabs-panel is-active" id="panel1">
+                    <p>stop list</p>
+                    <ul id="stop_list" style="list-style: none">
+                    </ul>
+                </div>
+                <div class="tabs-panel" id="panel2">
+                    <p>routes list</p>
+                    <ul id="route_list" style="list-style: none">
+                    </ul>
+                </div>
+                <div class="tabs-panel" id="panel3">
+                    <p>bus list</p>
+                    <ul id="bus_list" style="list-style: none">
+                    </ul>
+                </div>
+            </div>
     {% else %}
-        please log in to use favourite
+        <input type="hidden" value="no" class="is_authenticated">
+        <button type='button' class='login-required' data-toggle="favsPage userPage">Login and enjoy all features we offered</button>
     {% endif %}
-
-</div>
-</div>
+    </div>
+    </div>
 </div>
 
 <div class="off-canvas position-left " id="contactPage" data-off-canvas>

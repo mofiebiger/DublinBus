@@ -392,7 +392,7 @@ class TestView(TemplateView):
             return JsonResponse(name_dict)
 
 #/user/bus_info
-class BusInfoView(LoginRequiredMixin, TemplateView):
+class BusInfoView(TemplateView):
     def get(self, request):
 
         stops = UserStop.objects.filter(station_user=request.user)
@@ -408,7 +408,7 @@ class BusInfoView(LoginRequiredMixin, TemplateView):
 
 
 #/user/favorite_stop
-class FavoriteStopView(LoginRequiredMixin, TemplateView):
+class FavoriteStopView(TemplateView):
     '''store the favorite stops of user'''
 
     def get(self, request):
@@ -450,7 +450,7 @@ class FavoriteStopView(LoginRequiredMixin, TemplateView):
         return JsonResponse({"res":1})
 
 #/user/favorite_bus_number
-class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
+class FavoriteBusNumberView(TemplateView):
     '''store the favorite bus numbers of user'''
 
     def get(self, request):
@@ -503,7 +503,7 @@ class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
 
 
 #/user/favorite_route
-class FavoriteRouteView(LoginRequiredMixin, TemplateView):
+class FavoriteRouteView(TemplateView):
     '''store the favorite routes of user'''
 
     def get(self, request):
@@ -575,7 +575,7 @@ class ContactUsView(TemplateView):
         return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
 
 
-class StopInfoView(LoginRequiredMixin, TemplateView):
+class StopInfoView(TemplateView):
     def get(self, request):
         #get all stop_information from database
         #send data to front end in json format
