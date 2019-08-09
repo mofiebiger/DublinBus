@@ -127,7 +127,7 @@ class BusRouteView(TemplateView):
         destination = request.GET.get('destination')
 
         result = BusRouteNumber.objects.filter(route=bus_route, origin=origin, destination=destination)
-
+        stops_final_list = []
         if result.exists():
             stops_list = re.sub('\s|\'',"",(result[0].stops).strip('[]')).split(',')
             for i in range(len(stops_list)):
@@ -137,8 +137,12 @@ class BusRouteView(TemplateView):
             print('me1')
             json_data = serializers.serialize('json', position_result)
             json_data = json.loads(json_data)
-
-            return JsonResponse({'res':1,'stops':json_data})
+            for i in range(len(stops_list)):
+                for j in range(len(json_data)):
+                    if json_data[j]['fields']['stop_id'] == stops_list[i]:
+                        stops_final_list.append(json_data[j])
+                        break
+            return JsonResponse({'res':1,'stops':stops_final_list})
         else:
             return JsonResponse({'res':0,'errmsg':'the route does not exist!'})
 
@@ -150,16 +154,18 @@ class PredictionRouteView(TemplateView):
         routes = content['routes']
         date = content['date']
         time = content['time']
+        print(routes)
         #transform data to the standard format
-        try:
-            new_routes = []
-            for i in range(len(routes)):
-                bus_route = routes[i]['short_name'].upper()
-                number_stops = routes[i]['num_stops']
+        new_routes = []
+        for i in range(len(routes)):
+            bus_route = routes[i]['short_name'].upper()
+            number_stops = routes[i]['num_stops']
+            try:
                 value = prediction_route(date,bus_route,time,number_stops)
                 text = str(round(value/60))+"min"
                 new_routes.append({'text':text,'value':value})
-        except Exception as e:
-            print(repr(e))
-            return JsonResponse({'res': 0,'errmsg':'Please try again'})
+            except Exception as e:
+                new_routes.append({'text':"",'value':0})
+                print(repr(e))
+#             return JsonResponse({'res': 0,'errmsg':'Please try again'})
         return JsonResponse({'res': 1,'response_leg':new_routes})
