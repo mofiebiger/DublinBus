@@ -201,7 +201,7 @@ directionsSetUp = function(){
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
           center: userLatLng,
-          radius: 1000, //position.coords.accuracy,
+          radius: 1000,
           map: map,
           fillColor: '#7709e6',
           fillOpacity: 0.6,

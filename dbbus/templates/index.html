@@ -19,6 +19,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <!--favicon links-->
+        {% for icon in PWA_APP_ICONS %}
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
@@ -37,6 +38,8 @@
         <meta name="msapplication-TileColor" content="#b91d47">
         <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
         <meta name="theme-color" content="#ffffff">
+
+        {% endfor %}
 
         <!--navBar Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -59,18 +62,26 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
         </script>
 
-
         <!--Map / Navigation / Tourism / Display Bus Stops-->
         <script type="text/javascript" src="{% static 'js/maps.js' %}"></script>
 
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
 
-        <!-- will probs not need the link below! save for now! -->
-        <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
-
-        <!-- Path to manifest.json -->
-        <!-- <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}"> -->
+        <script type="text/javascript">
+          // Initialize the service worker
+          if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('/serviceworker.js', {
+                  scope: '.' // <--- THIS BIT IS REQUIRED
+              }).then(function (registration) {
+                  // Registration was successful
+                  console.log('django-progressive-web-app: ServiceWorker registration successful with scope: ', registration.scope);
+              }, function (err) {
+                  // registration failed :(
+                  console.log('django-progressive-web-app: ServiceWorker registration failed: ', err);
+              });
+          }
+        </script>
 
 
         <!--title - dublin bus-->
@@ -85,13 +96,6 @@
       <h1 id="title">Dublin Bus | Journey Planner</h1>
     </header>
 
-    <!-- Splash Screen Overlay -->
-    <!-- <div id="splash_overlay">
-      <div id="splash-content">
-        <img src="{% static 'images/threeBusDub.png' %}"></img>
-      </div>
-    </div> -->
-
     <!--NavBar - displays overlays (above map)-->
     <ul id="nav">
       <li><a>Journey Planner</a></li>
@@ -99,7 +103,7 @@
       <li><a>Favourites</a></li>
       <li><a>Stops</a></li>
       <li><a>Contact</a></li>
-      <li style="float:right"><a onclick="get_weather()"><i class="fa fa-cloud"></i></a></li>
+      <li style="float:right"><a onclick="on8()"><i class="fa fa-cloud"></i></a></li>
       <li style="float:right"><a ><i class="fa fa-user"></i></a></li>
     </ul>
 
@@ -138,9 +142,9 @@
               <input id="searchBusRoute" class="controls" type="text" placeholder="Bus Route">
               <div id="researchContent"></div>
             	<button id="searchBus">search</button>
-            </div>	
-            	
-            
+            </div>
+
+
             <div id="dateTime-panel">
               <div id="date">
                 <input id="rightNow" type="date" name="fname" value="2019-02-02">
@@ -220,7 +224,7 @@
 
 
 
-    <!--weather overlay -->
+     <!--weather overlay -->
     <div class="overlay" id="overlay8">
       <a href="javascript:void(0)" class="closebtn">&times;</a>
       <div id="weatherInfo">
@@ -243,7 +247,7 @@
 	  <div id="weather_daily"></div>
       </div>
     </div>
-
+  
     <!--logIn overlay -->
     <div class="overlay" id="overlay6">
       <a href="javascript:void(0)" class="closebtn">&times;</a>
