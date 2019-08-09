@@ -547,7 +547,7 @@ class FavoriteRouteView(LoginRequiredMixin, TemplateView):
         return JsonResponse({"res":1})
 
 
-class ContactUsView(LoginRequiredMixin, TemplateView):
+class ContactUsView(TemplateView):
     '''contact information'''
     def get(self,request):
         return render(request, 'contactPage.html')
