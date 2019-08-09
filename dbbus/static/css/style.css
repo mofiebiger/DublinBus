@@ -21,6 +21,7 @@ ul {
 
 li {
     float: left;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 li a {
@@ -69,9 +70,7 @@ header h1 {
 
 #journeyInfo {
     text-align: center;
-    /* top: 40%; */
     color: white;
-    //background-color: #333;
     height: 20%;
     font-family: 'Allerta Stencil', sans-serif;
 }
@@ -83,49 +82,41 @@ header #title {
 }
 
 #touristInfo {
+    color: white;
     text-align: center;
     color: white;
+    font-family: 'Allerta Stencil', sans-serif;
+    /* display: none; */
 }
 
 #favouritesInfo {
     text-align: center;
-    top;
-    40%;
     color: white;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #FAQInfo {
     text-align: center;
-    top;
-    40%;
     color: white;
+     font-family: 'Allerta Stencil', sans-serif;
 }
 
 #ContactInfo {
     text-align: center;
-    top;
-    40%;
     color: white;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #logIn {
     text-align: center;
-    top;
-    40%;
     color: white;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
-#trafficInfo {
-    text-align: center;
-    top;
-    40%;
-    color: white;
-}
 
 #weatherInfo {
     text-align: center;
-    top;
-    40%;
+    font-family: 'Allerta Stencil', sans-serif;
     color: white;
 }
 
@@ -136,31 +127,52 @@ font-size: {
 
 #directionsSource {
     /* align-items: center; */
+    width: 60%;
 
     margin: 15px;
     padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
-#directionsDestination {
+#directionsDestination,	#searchBusRoute, #researchContent{
     /* align-items: center; */
-
-    margin: 15px;
+    width: 60%;
+    /* margin: 15px; */
     padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 62px;
 }
-#date {
+#rightNow {
     /* align-items: center; */
-
+    width: 60%;
     margin: 15px;
     padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 #time-button {
     /* align-items: center; */
-
+    width: 60%;
     margin: 15px;
     padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #today {
+    width: 60%;
     padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#geoButton{
+    width: 50%;
+    font-family: 'Allerta Stencil', sans-serif;
+    align-items: center;
+    margin: 15px;
+    padding: 8px;
+    background-color: yellow;
+    border-color: yellow;
+    border-radius: 5px;
 }
 
 #navigateButton {
@@ -170,6 +182,7 @@ font-size: {
     background-color: yellow;
     border-color: yellow;
     border-radius: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #directionsSteps {
@@ -177,7 +190,8 @@ font-size: {
     background-color: white;
     padding: 2%;
     border-radius: 10px;
-    display: none;
+    display: block;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 #weather_stats {
     margin: 5%;
@@ -209,6 +223,7 @@ font-size: {
     right: -14px;
     top: 5px;
     text-align: center;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 .gmap-control-active {
     -moz-border-bottom-colors: none;
@@ -221,8 +236,87 @@ font-size: {
     border-width: 1px 0 1px 1px;
     color: #FFFFFF !important;
     font-weight: bold;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
-#tourism-image {
-    padding: 5% !important;
+.tourismbutton {
+  align-self: center;
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  width: 50%;
+  font-family: 'Allerta Stencil', sans-serif;
+}
+
+#container img {
+  width: 90%;
+  height: 200px;
+  border-radius: 5px;
+  align-self: center;
+
+}
+
+#container {
+  font-family: 'Allerta Stencil', sans-serif;
+  color: black;
+  background-color: white;
+  width: 80%;
+  border-radius: 5px;
+  margin: 50px;
+}
+
+.websiteBtn {
+
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
+  display: inline-block;
+
+}
+
+.tourismNavBtn {
+
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
+  display: inline-block;
+}
+
+form {
+  display:inline-block;
+}
+
+
+#researchContent li {
+	    /* align-items: center; */
+    width: 100%;
+    height:20px;
+    line-height:20px;
+    margin:0px;
+	text-align:left;
+    padding: 0px;
+    font-family: 'Allerta Stencil', sans-serif;
+	
+	
+}
+
+#researchContent {
+	overflow:"hidden";
+	margin:0px;
+	padding: 0px;
+}
+
+#switch_position {
+  width: 50px;
+  height: 50px;
+  float: right;
+  padding: 5px;
 }

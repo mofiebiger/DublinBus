@@ -13,11 +13,15 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 from distutils.log import debug
+#from django.conf import settings
 import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'templates', 'serviceworker.js')
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -29,11 +33,42 @@ SECRET_KEY = config.secret_key
 sys.dont_write_bytecode = True
 
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+#ALLOWED_HOSTS = []
+
 # # quit the debug model
-DEBUG=False
+# # DEBUG=False
 
 ALLOWED_HOST=['*']
 
+GOOGLE_MAPS_API_KEY = config.map_api_key
+
+PWA_APP_NAME = 'Dublin Bus'
+PWA_APP_SHORT_NAME = 'DB Bus'
+PWA_APP_DESCRIPTION = "Dublin Bus Progressive Web App"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/user/index'
+PWA_APP_ICONS = [
+{
+'src': '/static/images/icons/android-chrome-192x192.png',
+'sizes': '192x192',
+'type': 'image/png'
+}
+]
+PWA_APP_SPLASH_SCREEN = [
+{
+'src': '/static/images/splash/Windows10/SplashScreen.scale-125.png',
+'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+}
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
 
 # Application definition
 
@@ -84,21 +119,28 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+if 'TRAVIS' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql_psycopg2',
+            'NAME':     'travisdb',  # Must match travis.yml setting
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': config.name,
         'USER': config.user,
         'PASSWORD': config.password,
         'HOST': 'localhost',
-        
-        # Server port
-        'PORT':3306,
-
-        # Tunnel Port
-        # 'PORT':5000
+        'PORT':5000,
+        }
     }
-}
 
 AUTH_USER_MODEL ='user.User'
 

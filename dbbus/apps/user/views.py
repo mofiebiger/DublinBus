@@ -1,3 +1,4 @@
+
 import json
 import os
 import re
@@ -18,6 +19,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import config
 from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
+from prediction.models import StopInformation
+from django.core import serializers
 # from user.models import User, UserBusNumber, UserStop, UserRoute
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
@@ -28,20 +31,14 @@ class IndexView(TemplateView):
     '''index page'''
     def get(self, request):
         '''index page'''
-        return render(request, 'index.html')
+        api = {
+            "maps_api" : settings.GOOGLE_MAPS_API_KEY
+        }
+        return render(request, 'index.html', api)
 
-
-
-
-class TourismView(TemplateView):
-    def get(self, request):
-        return render(request, 'tourismPage.html')
-
-class serviceWorker(TemplateView):
-    template_name = 'js/serviceworker.js'
-    content_type = 'application/javascript'
-
-
+# class serviceWorker(TemplateView):
+#     template_name = 'js/serviceworker.js'
+#     content_type = 'application/javascript'
 
 # /user/register
 class RegisterView(TemplateView):
@@ -201,7 +198,7 @@ class LoginView(TemplateView):
 
                 # return response
                 return JsonResponse({"res": 1})
-                
+
             else:
                 # 用户未激活
                 return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
@@ -378,18 +375,7 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
             '''favourites page'''
             return render(request, 'favourites.html')
 
-
-class TestView(TemplateView):
-        def get(self, request):
-            '''favourites page'''
-            return render(request, 'test_map.html')
-
-        def query(request):
-            r = request.GET.get("toolsname")
-            name_dict = "123"
-            return JsonResponse(name_dict)
-
-
+#/user/bus_info
 class BusInfoView(LoginRequiredMixin, TemplateView):
     def get(self, request):
 
@@ -573,6 +559,36 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
         return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
 
 
+class StopInfoView(LoginRequiredMixin, TemplateView):
+    def get(self, request):
+        #get all stop_information from database
+        #send data to front end in json format
+        json_data = serializers.serialize('json', StopInformation.objects.all())
+        json_data = json.loads(json_data)
+        #only send fields to front end
+
+        return JsonResponse(json_data, safe=False)
+
+    def post(self, request):
+        stop_id = request.POST.get('stop_id')
+        # bus_id = request.POST.get('bus_id')
+        json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
+        # print(type(json_data))
+        # print(333333)
+        json_data = json.loads(json_data)
+        # print(type(json_data))
+        # print(22222)
+        # # dic={}
+        # # dic
+        # # response_data = {'data': string_data}
+
+        return JsonResponse(json_data, safe=False)
+
+class StopsView(TemplateView):
+    def get(self, request):
+        '''stop/route page'''
+        return render(request, 'Stops_Routes.html')
+
 #
 # def set_session(request):
 #     request.session['username'] = 'reanjie'
@@ -583,3 +599,4 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
 #     username = request.session['username']
 #     age = request.session['age']
 #     return HttpResponse(username+':'+age)
+

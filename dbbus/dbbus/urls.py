@@ -24,7 +24,7 @@ urlpatterns = [
     path('prediction/', include('prediction.urls',namespace='prediction')),
     path('captcha/', include('captcha.urls')),
     path('',IndexView.as_view()),
-    #path('', include('pwa.urls')),
+    path('', include('pwa.urls')),
     path('foundation/', include('foundation.urls',namespace='foundation'))
 ]
 
