@@ -52,7 +52,7 @@ class RegisterView(TemplateView):
         # recieve the data and get the data
         code = int(request.POST.get('code'))
         username = request.POST.get('user_name')
-        if code == 1 :        
+        if code == 1 :
             password = request.POST.get('pwd')
             r_password = request.POST.get('cpwd')
             email = request.POST.get('email')
@@ -71,7 +71,7 @@ class RegisterView(TemplateView):
             except User.DoesNotExist:
                 # if user does not exist in the database ,set the the user as None
                 user = None
-    
+
             if user:
                 # if user already exists, return the error message
                 return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
@@ -82,20 +82,20 @@ class RegisterView(TemplateView):
             except User.DoesNotExist:
                 # if user does not exist in the database ,set the the user as None
                 email_check = None
-    
+
             if email_check:
                 # if user already exists, return the error message
                 return JsonResponse({"res": 0, "error_msg": email + ' has been registered.'});
                 # return HttpResponse("the email has benn registered..");
-            
+
             # if user does not exist, do the next step,do the registration
             user = User.objects.create_user(username, email, password)
             user.is_active = 0
             user.save()
-    
+
              # send the active email,and encrypt user content information
         else:
-            user = User.objects.get(username=username)  
+            user = User.objects.get(username=username)
         try:
              # encript the information about user
             serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
@@ -610,7 +610,7 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
 class StopsView(TemplateView):
     def get(self, request):
         '''stop/route page'''
-        return render(request, 'stops_routes.html')
+        return render(request, 'Stops_Routes.html')
 
 #
 # def set_session(request):
