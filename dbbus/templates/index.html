@@ -224,7 +224,7 @@
 
 
 
-    <!--weather overlay -->
+     <!--weather overlay -->
     <div class="overlay" id="overlay8">
       <a href="javascript:void(0)" class="closebtn">&times;</a>
       <div id="weatherInfo">
@@ -232,20 +232,22 @@
         <h1> Current Weather </h1>
 
         <div class="weatherDescription">
-        <canvas id="weatherIcon" width="128" height="128"></canvas>
-        <div id="weather_heading"></div>
+        <div>
+        <canvas id="weatherIcon" width="128" height="128" style="float:center;"></canvas>
+        <div id="currentTemperature" width="128" height="128" style="float:center;"></div>
+        </div>     
         </div>
-
-            <hr>
-
-            <div id="weather_stats"></div>
-
-            <hr>
-
-      </div>
+       <hr>
+        <div id="weather_heading"></div>
+       <hr>
       <div id="weather_hourly"></div>
+      <hr>
+      <div id="weather_stats"></div>
+      <hr>
+	  <div id="weather_daily"></div>
+      </div>
     </div>
-
+  
     <!--logIn overlay -->
     <div class="overlay" id="overlay6">
       <a href="javascript:void(0)" class="closebtn">&times;</a>

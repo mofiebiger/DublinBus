@@ -1,3 +1,4 @@
+
 import json
 import os
 import re
@@ -598,3 +599,4 @@ class StopsView(TemplateView):
 #     username = request.session['username']
 #     age = request.session['age']
 #     return HttpResponse(username+':'+age)
+
