@@ -1,3 +1,4 @@
+
 import json
 import os
 import re
@@ -50,52 +51,39 @@ class RegisterView(TemplateView):
         '''process the registration request'''
 
         # recieve the data and get the data
-        code = int(request.POST.get('code'))
         username = request.POST.get('user_name')
-        if code == 1 :        
-            password = request.POST.get('pwd')
-            r_password = request.POST.get('cpwd')
-            email = request.POST.get('email')
-            if not all([username, password, email]):
-                # if the data is not complete,return the error information
-                return JsonResponse({"res": 0, "error_msg": "Data not complete."});
-                # verify the email format
-            if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-                return JsonResponse({"res": 0, "error_msg": "The format of Email is not correct."});
-            # check the password whether they are the same
-            if password != r_password:
-                return JsonResponse({"res": 0, "error_msg": "the passwords are not match."});
-            # check if the user already exists.
-            try:
-                user = User.objects.get(username=username)
-            except User.DoesNotExist:
-                # if user does not exist in the database ,set the the user as None
-                user = None
-    
-            if user:
-                # if user already exists, return the error message
-                return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
-                # return HttpResponse("the email has benn registered..");
+        password = request.POST.get('pwd')
+        r_password = request.POST.get('cpwd')
+        email = request.POST.get('email')
 
-            try:
-                email_check = User.objects.get(email=email)
-            except User.DoesNotExist:
-                # if user does not exist in the database ,set the the user as None
-                email_check = None
-    
-            if email_check:
-                # if user already exists, return the error message
-                return JsonResponse({"res": 0, "error_msg": email + ' has been registered.'});
-                # return HttpResponse("the email has benn registered..");
-            
-            # if user does not exist, do the next step,do the registration
-            user = User.objects.create_user(username, email, password)
-            user.is_active = 0
-            user.save()
-    
-             # send the active email,and encrypt user content information
-        else:
-            user = User.objects.get(username=username)  
+        if not all([username, password, email]):
+            # if the data is not complete,return the error information
+            return JsonResponse({"res": 0, "error_msg": "Data not complete."});
+            # verify the email format
+        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
+            return JsonResponse({"res": 0, "error_msg": "The format of Email is not correct."});
+        # check the password whether they are the same
+        if password != r_password:
+            return JsonResponse({"res": 0, "error_msg": "the passwords are not match."});
+        # check if the user already exists.
+        try:
+            user = User.objects.get(username=username)
+            print('user')
+        except User.DoesNotExist:
+            # if user does not exist in the database ,set the the user as None
+            user = None
+
+        if user:
+            # if user already exists, return the error message
+            return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
+            # return HttpResponse("the email has benn registered..");
+
+        # if user does not exist, do the next step,do the registration
+        user = User.objects.create_user(username, email, password)
+        user.is_active = 0
+        user.save()
+
+         # send the active email,and encrypt user content information
         try:
              # encript the information about user
             serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
@@ -110,6 +98,7 @@ class RegisterView(TemplateView):
             html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
 
             send_mail(subject, message, sender, receiver, html_message=html_message)
+
 
             return JsonResponse({"res": 1})
         except:
@@ -598,7 +587,7 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
 class StopsView(TemplateView):
     def get(self, request):
         '''stop/route page'''
-        return render(request, 'stops_routes.html')
+        return render(request, 'Stops_Routes.html')
 
 #
 # def set_session(request):
@@ -610,3 +599,4 @@ class StopsView(TemplateView):
 #     username = request.session['username']
 #     age = request.session['age']
 #     return HttpResponse(username+':'+age)
+
