@@ -45,6 +45,31 @@ ALLOWED_HOST=['*']
 
 GOOGLE_MAPS_API_KEY = config.map_api_key
 
+PWA_APP_NAME = 'Dublin Bus'
+PWA_APP_SHORT_NAME = 'DB Bus'
+PWA_APP_DESCRIPTION = "Dublin Bus Progressive Web App"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/user/index'
+PWA_APP_ICONS = [
+{
+'src': '/static/images/icons/android-chrome-192x192.png',
+'sizes': '192x192',
+'type': 'image/png'
+}
+]
+PWA_APP_SPLASH_SCREEN = [
+{
+'src': '/static/images/splash/Windows10/SplashScreen.scale-125.png',
+'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+}
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,7 +118,6 @@ WSGI_APPLICATION = 'dbbus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 
 if 'TRAVIS' in os.environ:
     DATABASES = {

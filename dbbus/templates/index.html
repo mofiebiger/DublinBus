@@ -62,21 +62,11 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
         </script>
 
-
         <!--Map / Navigation / Tourism / Display Bus Stops-->
         <script type="text/javascript" src="{% static 'js/maps.js' %}"></script>
 
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
-
-        <!-- will probs not need the link below! save for now! -->
-        <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
-
-        <!-- Path to manifest.json -->
-        <!-- <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}"> -->
-
-        <!-- Path to manifest.json -->
-        <link rel="manifest" href="/manifest.json">
 
         <script type="text/javascript">
           // Initialize the service worker
@@ -105,13 +95,6 @@
     <header>
       <h1 id="title">Dublin Bus | Journey Planner</h1>
     </header>
-
-    <!-- Splash Screen Overlay -->
-    <!-- <div id="splash_overlay">
-      <div id="splash-content">
-        <img src="{% static 'images/threeBusDub.png' %}"></img>
-      </div>
-    </div> -->
 
     <!--NavBar - displays overlays (above map)-->
     <ul id="nav">
