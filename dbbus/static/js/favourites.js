@@ -1,29 +1,5 @@
 $(function(){
-    function myFunction(id){
-        return typeof id === 'string' ? document.getElementById(id):id;
-    }
     $(document).ready(function(){
-        //get all titles (li) and contents for each title (div)
-        var titles = myFunction('tab-header').getElementsByTagName('li');
-        var divs = myFunction('tab-content').getElementsByClassName('dom');
-        // make sure number of titles equals to number of contents
-        if(titles.length != divs.length) return;
-        // go through every titles
-        for(var i=0; i<titles.length; i++){
-            // take li tag under the title
-            var li = titles[i];
-            li.id = i;
-            // add listener to mouse move
-            li.onmousemove = function(){
-                for(var j=0; j<titles.length; j++){
-                    titles[j].className = '';
-                    divs[j].style.display = 'none';
-                }
-                this.className = 'selected';
-                divs[this.id].style.display = 'block';
-            }
-        }
-
         //get bus number
         $.ajax({
         type:"GET",

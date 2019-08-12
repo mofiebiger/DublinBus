@@ -1,4 +1,3 @@
-//load favouties page
     $(document).ready(function(){
       	$('#forget_pw_div').load('/user/forget_password');
 
