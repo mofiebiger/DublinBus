@@ -552,7 +552,16 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
         return render(request, 'contactPage.html')
 
     def post(self, request):
-
+        cookie = request.COOKIES
+        response =  JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
+        if 'sent_email_in_one_hour' not in cookie:
+            request.session['send_time']=0
+            send_time = 0;
+            response.set_cookie('sent_email_in_one_hour', 'Yes',expires = 3600)
+        else:
+            send_time = request.session.get('send_time')
+        if send_time >=3:
+            return JsonResponse({"res":0,"error_msg":'You have send email 3 times in one hour, Please try it later!'})
         user = request.user
         contact = request.POST.get('contact')
         print(contact)
@@ -564,10 +573,12 @@ class ContactUsView(LoginRequiredMixin, TemplateView):
             sender = settings.EMAIL_FROM
             receiver = [settings.EMAIL_FROM]
             send_mail(subject, message, sender, receiver)
+            send_time += 1
+            request.session['send_time'] = send_time
         except Exception as e:
             return JsonResponse({"res":0,"error_msg":'information sent error! please try again'})
 
-        return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
+        return response
 
 
 class StopInfoView(LoginRequiredMixin, TemplateView):
