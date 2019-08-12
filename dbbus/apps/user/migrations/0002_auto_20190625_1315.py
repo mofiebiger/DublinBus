@@ -73,7 +73,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='is_active',
-            field=models.SmallIntegerField(choices=[(0, 'not activated'), (1, 'activated')], default=0, verbose_name='is_active'),
+            field=models.IntegerField(choices=[(0, 'not activated'), (1, 'activated')], default=0, verbose_name='is_active'),
         ),
         migrations.AlterField(
             model_name='userbusnumber',
