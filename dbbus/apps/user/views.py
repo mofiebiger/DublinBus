@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import feedparser as fp
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -585,32 +586,7 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
         json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
         json_data = json.loads(json_data)
         return JsonResponse(json_data, safe=False)
-import json
-import os
-import re
 
-from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
-from django.http import HttpResponse, JsonResponse
-from django.http import QueryDict
-from django.shortcuts import render, redirect
-from django.template.context_processors import request
-from django.urls import reverse
-from django.views.generic import TemplateView
-from itsdangerous import SignatureExpired, BadSignature
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-
-import config
-from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
-from user.models import User, UserBusNumber, UserStop, UserRoute
-from prediction.models import StopInformation
-from django.core import serializers
-# from user.models import User, UserBusNumber, UserStop, UserRoute
-
-REGISTER_ENCRYPT_KEY = config.register_encrypt_key
-FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
 
 #/user/index or ''
 class IndexView(TemplateView):
@@ -1212,6 +1188,28 @@ class StopsView(TemplateView):
     def get(self, request):
         '''stop/route page'''
         return render(request, 'stops_routes.html')
+
+
+class TrafficFeedView(TemplateView):
+    def get(self, request):
+        """
+        Return traffic feed information.
+        """
+        feed = fp.parse("https://www.dublinlive.ie/all-about/traffic-and-travel?service=rss")
+
+        trafficdata = dict()
+
+        entries = feed['entries']
+
+        for idx, entry in enumerate(entries):
+
+            entries[idx] = {'title':entry['title'], 'link':entry['link']}
+
+        return JsonResponse({'data':entries})
+
+
+
+
 
 #
 # def set_session(request):

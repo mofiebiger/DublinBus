@@ -400,8 +400,9 @@ directionsSetUp = function(){
       initFavsPage();
       // deleteFavourites();
 
-
+    
       on8();
+      TrafficFeed();
 
       function invokeTourismBtns(){
         $('#tourismNatureBtn').on('click',function(event){
@@ -1064,6 +1065,36 @@ $("#splash-content").show().center();
 setTimeout(function(){
         $("#splash_overlay").fadeOut();
       }, 2000);
+
+
+function TrafficFeed() {
+
+    $.ajax({
+        'url': window.location.protocol+"//"+window.location.host+"/user/TrafficFeed",
+        'type':'get',
+        'dataType':'json',
+    }).done(function(trafficdata){
+
+        var entries = trafficdata['data']
+
+        var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
+        
+        for (i=0; i<entries.length; i++) {           
+            
+            innertext_ += entries[i].title;
+
+            innertext_ += "<br><a href=" + entries[i].link + ">more >>></a>"
+
+            if (i < entries.length - 1) {
+                innertext_ += "</li><hr><li>";
+            }
+        };
+        innertext_ += "</li></ul>";
+
+        $("#trafficfeed").html(innertext_);
+        // make a list here and put it in the div
+    })
+}
 
 
 function on8() {
