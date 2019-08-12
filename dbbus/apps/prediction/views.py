@@ -99,6 +99,7 @@ class StopInfoNearbyView(TemplateView):
         for stop in stops_data:
             if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
                 clean_data.append(stop)
+
         return JsonResponse({'stops':clean_data})
 
 

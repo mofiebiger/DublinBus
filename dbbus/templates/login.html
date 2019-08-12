@@ -230,9 +230,117 @@
 
 </style>
 
+{#    user profile css#}
+    <style>
+
+.card-user-profile {
+  position: relative;
+  z-index: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 1rem;
+  border: 0;
+  border-radius: 0;
+  background: #fefefe;
+  box-shadow: none;
+  overflow: hidden;
+  color: #0a0a0a;
+}
+
+.card-user-profile > :last-child {
+  margin-bottom: 0;
+}
+
+.card-user-profile:hover .card-user-profile-img {
+  opacity: 1;
+}
+
+.card-user-profile-content {
+  position: relative;
+}
+
+.card-user-profile-content::before {
+  position: absolute;
+  content: '';
+  top: -3.4375rem;
+  left: -1.875rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 3.4375rem 0 0 31.25rem;
+  z-index: 0;
+  border-color: transparent transparent transparent #fefefe;
+}
+
+.card-user-profile-actions {
+  -webkit-flex: 0 1 auto;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+  padding: 1rem;
+  background: #e6e6e6;
+  background: #fefefe;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.card-user-profile-actions > :last-child {
+  margin-bottom: 0;
+}
+
+.card-user-profile-img {
+  max-width: 100%;
+  opacity: 0.85;
+  transition: all 0.25s ease;
+}
+
+.card-user-profile-avatar {
+  position: absolute;
+  bottom: 100%;
+  left: 1rem;
+  z-index: 2;
+  max-width: 5.625rem;
+}
+
+.card-user-profile-avatar img {
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+}
+
+.card-user-profile-name {
+  margin-bottom: 0;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.card-user-profile-button {
+  margin-bottom: 0;
+  -webkit-flex: 1 0 0;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+}
+
+.card-user-profile-button + .card-user-profile-button {
+  margin-left: 1rem;
+}
+
+.card-user-profile-info {
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+
+    </style>
+
 </head>
 <body>
 		  {% csrf_token %}
+          <input type="hidden" value="no" class="is_authenticated">
     <div class="form-registration" style="display: none;" id="register_div" >
   <div class="registration-box">
   <div class="row collapse expanded">
@@ -326,53 +434,77 @@
 </div>
 
     <div id="user_info" style="display: none;">
-            <!--profile start here-->
-            <div class="profile">
-            <div class="wrap">
-                <div class="profile-main">
-                    <div class="profile-pic wthree">
-                        {% csrf_token %}
-                        <img id="id_avatar"  height="60px" width="60px" src="" alt="avatar">
-                        <form id="change_avatar" enctype="multipart/form-data">
-                            <input  type="file" name="file" id="file_upload">
-                            <button type="button" id="upload_avatar">Confirm Change</button>
-                        </form>
-                        <h2 id="id_username"></h2>
-                        <p id="id_email"></p>
-                    </div>
-                    <div class="w3-message">
-                        <div class="wthree_tab_grid_sub">
-                            <div class="wthree_tab_grid_sub_left">
-                                <a id="reset_pw"><h5>Reset password</h5></a>
-                            </div>
-                            <div class="wthree_tab_grid_sub_left">
-                                <a id="logout" href="http://127.0.0.1:8000/user/logout"><h5>Logout</h5></a>
+        {% csrf_token %}
+        <div class="card-user-profile">
+{#          <div class="card-profile-stats-intro">#}
+{#            <img class="card-profile-stats-intro-pic" src="https://pbs.twimg.com/profile_images/732634911761260544/OxHbNdTF.jpg" alt="profile-image" />#}
+{#            <img class="card-profile-stats-intro-pic" id="id_avatar"  height="60px" width="60px" src="" alt="profile-image">#}
+{#              <form id="change_avatar" enctype="multipart/form-data">#}
+{#                  <input  type="file" name="file" id="file_upload">#}
+{#                  <button type="button" id="upload_avatar">Confirm Change</button>#}
+{#              </form>#}
+{#            <div class="card-profile-stats-intro-content">#}
+{#              <h3>Joe Smith</h3>#}
+{#              <p>Joined Jan.16th 2017</p>#}
+{#              <h3 id="id_username"></h3>#}
+{#              <p id="id_email"></p>#}
+{#            </div> <!-- /.card-profile-stats-intro-content -->#}
+{#          </div> <!-- /.card-profile-stats-intro -->#}
 
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="wthree_footer_copy">
-                    <p></p>
-                </div>
+          <img class="card-user-profile-img" src="/static/images/dbbus_title.jpg" alt="picture of bus" />
+          <div class="card-user-profile-content card-section">
+            <div class="card-user-profile-avatar">
+{#              <img src="https://pbs.twimg.com/profile_images/422887689612820482/sZtHMJu5.png" alt="picture of yeti" />#}
+              <img class="card-profile-stats-intro-pic" id="id_avatar"  height="60px" width="60px" src="" alt="profile-image">
+
             </div>
+            <form id="change_avatar" enctype="multipart/form-data">
+                  <input  type="file" name="file" id="file_upload">
+                  <button type="button" id="upload_avatar">Confirm Change</button>
+              </form>
+            <p class="card-user-profile-name" id="id_username"></p>
+            <p class="card-user-profile-status" id="id_email"></p>
+{#            <p class="card-user-profile-name">Abominable Snowman</p>#}
+{#            <p class="card-user-profile-status">Yeti Web Designer</p>#}
+{#            <p class="card-user-profile-info">The Yeti, once better known as the Abominable Snowman, is a mysterious bipedal creature said to live in the mountains of Asia. It sometimes leaves tracks in snow, but is also said to dwell below the Himalayan snow line.</p>#}
+          </div>
+          <hr />
+
+          <div class="card-user-profile-actions">
+{#            <a href="#" class="card-user-profile-button button hollow">Follow</a>#}
+{#            <a href="#" class="card-user-profile-button button hollow secondary">More Info</a>#}
+            <a class="card-user-profile-button button hollow" id="reset_pw">Reset password</a>
+            <a class="card-user-profile-button button hollow" id="logout" href="http://127.0.0.1:8000/user/logout">Log out</a>
+          </div>
+        </div> <!-- /.card-profile-stats -->
+    </div>
+
+    <div id="forget_pw_div" style="display: none;">
+        <a href="#" class="toLogin">Back to login</a>
+        <p class="subheader">You such a big foolish，how dare you forget your password？OK, I forgive you! Please input your email to change your password!</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                Email: <input type="email" placeholder="Enter your email">
+                <br>
+                Verify code：{{ forget_form.captcha }}
+                <input type="submit" class="button" value="Submit">
             </div>
+        </form>
+        <h1>{{ forget_form.errors }}{{ errormg }}</h1>
+    </div>
 
-        </div>
-
-    <div id="forget_pw_div" style="display: none;"></div>
-
-     <div id="reset_pw_div" style="display: none;">
-    <h1>Dear {{user.username}}:</h1>
-    <h2>Your email is :{{user.email}},you can reset your password</h2>
-    <form method="post" >
+    <div id="reset_pw_div" style="display: none;">
+         <a href="#" class="toProfile">Back to profile</a>
+{#    <h1>Dear {{user.username}}:</h1>#}
+{#    <h2>Your email is :{{user.email}},you can reset your password</h2>#}
+    <form>
       {% csrf_token %}
-      <P><span>Password：</span><input type="password" name="new_pwd" placeholder="至少6位"></P>
-      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder="至少6位"></P>
-      <p><input type="submit" value="submit"></p>
-        <p class="or-divider"><span>or</span></p>
-    <input class="button expanded toLogin" type="button" value="Back to Login In">
+      <P><input type="password" name="email" placeholder="" hidden></P>
+      <P><span>New Password：</span><input type="password" name="new_pwd" placeholder=""></P>
+      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder=""></P>
+      <p><input type="submit" value="submit" id="resetPwBtn"></p>
     </form>
     <h1>{{ msg }}</h1>
   </div>
@@ -413,10 +545,15 @@
         $('#login_div').attr("style","display:none;");
         $('#register_div').attr("style","display:block;");
     });
+    $('.toProfile').on('click', function(){
+        $('#reset_pw_div').attr("style","display:none;");
+        $('#user_info').attr("style","display:block;");
+    });
     $('.toLogin').on('click', function(){
         $('#login_div').attr("style","display:block;");
         $('#register_div').attr("style","display:none;");
         $('#reset_pw_div').attr('style',"display:none;");
+        $('#forget_pw_div').attr('style',"display:none;");
     });
     $('#reset_pw').on('click', function(){
             $('#reset_pw_div').attr('style',"style","display:block;");
