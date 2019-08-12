@@ -255,16 +255,10 @@ directionsSetUp = function(){
                             + "<h4>"+stop_content[i].stop_name+"</h4>"
                             + "<button class='markerNavBtn' data-toggle='navigator'>Navigate</button>";
               bindInfoWindow(marker, map, infowindow, content_html);
-
-              // marker.addListener('click', function () {
-              //     infowindow.open(map, marker);
-              // });
-          }
-          //TODO
-          $('.markerNavBtn').on('click', function(){
-              console.log(stops[i].lat,stops[i].lng);
-                        fetchMarkerAddress(stops[i].lat,stops[i].lng);
+              $('.stopNavBtn').on('click', function(){
+                        fetchStopAddress(result.stop_lat, result.stop_lon);
                   });
+          }
       markerCluster = new MarkerClusterer(map, markers,
     		  {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
@@ -532,18 +526,6 @@ directionsSetUp = function(){
 }; //InitMap Ends
 
 var marker_list = new Array();
-
-function fetchMarkerAddress(lat, lng){
-      markerLatLng = new google.maps.LatLng(lat, lng);
-      var Locate = new google.maps.Geocoder();
-
-      Locate.geocode({ 'location' : stopLatLng }, function(results, status){
-          if(status == google.maps.GeocoderStatus.OK){
-            var _r = results[0];
-            $Selectors.dirDst.val(_r.formatted_address);
-          }
-      });
-    }//fetchStopAddress Ends
 
 function fetchStopAddress(lat, lng){
       stopLatLng = new google.maps.LatLng(lat, lng);

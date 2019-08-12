@@ -1,0 +1,264 @@
+#map {
+    height: 600px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+
+/* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
+.center {
+    width: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.flash {
+    background-color: black;
+    min-height: 100vh;
+    color: white;
+    text-align: center;
+    display: block;
+}
+
+
+#rightNow {
+    /* align-items: center; */
+    width: 60%;
+    margin: 15px;
+    padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+#time-button {
+    /* align-items: center; */
+    width: 60%;
+    margin: 15px;
+    padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#today {
+    width: 60%;
+    padding: 8px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#geoButton{
+    width: 50%;
+    font-family: 'Allerta Stencil', sans-serif;
+    align-items: center;
+    margin: 15px;
+    padding: 8px;
+    background-color: yellow;
+    border-color: yellow;
+    border-radius: 5px;
+}
+
+#navigateButton {
+    align-items: center;
+    margin: 15px;
+    padding: 8px;
+    background-color: yellow;
+    border-color: yellow;
+    border-radius: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#directionsSteps {
+    margin: 9%;
+    background-color: white;
+    padding: 2%;
+    border-radius: 10px;
+    display: block;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+#weather_stats {
+    margin: 5%;
+}
+
+.gmap-control-container {
+    margin: 5px;
+}
+.gmap-control {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    -moz-user-select: none;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    color: #333333 !important;
+    cursor: pointer;
+    direction: ltr;
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: normal;
+    min-width: 54px;
+    overflow: hidden;
+    padding: 8px 7px 7px;
+    position: relative;
+    right: -14px;
+    top: 5px;
+    text-align: center;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+.gmap-control-active {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #6D8ACC;
+    border-color: #717B87 -moz-use-text-color #717B87 #717B87;
+    border-style: solid none solid solid;
+    border-width: 1px 0 1px 1px;
+    color: #FFFFFF !important;
+    font-weight: bold;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+.tourismbutton {
+  align-self: center;
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  width: 50%;
+  font-family: 'Allerta Stencil', sans-serif;
+}
+
+#container img {
+  width: 90%;
+  height: 200px;
+  border-radius: 5px;
+  align-self: center;
+
+}
+
+
+
+.websiteBtn {
+
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
+  display: inline-block;
+
+}
+
+.tourismNavBtn {
+
+  margin: 15px;
+  padding: 8px;
+  background-color: yellow;
+  border-color: yellow;
+  border-radius: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
+  display: inline-block;
+}
+
+/*contact page*/
+.contact-panel-button {
+  background: #0a0a0a;
+  color: #fefefe;
+  width: auto;
+  padding: 0.25rem 1.25rem;
+  text-align: center;
+  position: absolute;
+  top: -30px;
+  right: 20px;
+  transition: background 0.25s ease-in-out;
+}
+
+.contact-panel-button:after {
+  content: "⥣";
+  margin-left: 5px;
+}
+
+.contact-panel-button:hover {
+  background: #242424;
+  color: #f0f0f0;
+}
+
+.is-active .contact-panel-button:after {
+  content: "⥥";
+}
+
+.contact-panel {
+  padding: 1rem;
+  z-index: 1;
+  background: #0a0a0a;
+  position: fixed;
+  transition: bottom 0.5s ease-in-out;
+}
+
+.contact-panel label {
+  color: #fefefe;
+  width: 100%;
+}
+
+.contact-panel input[type="text"],
+.contact-panel input[type="email"],
+.contact-panel textarea {
+  background: #303030;
+  border: #0a0a0a;
+  transition: background 0.3s ease-in-out;
+}
+
+.contact-panel input[type="text"]:focus,
+.contact-panel input[type="email"]:focus,
+.contact-panel textarea:focus {
+  background: #fefefe;
+}
+
+.contact-panel .contact-panel-actions {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.contact-panel .submit-button {
+  margin-bottom: 0;
+}
+
+.contact-panel .cancel-button {
+  margin-bottom: 0;
+  padding: 0.75rem 1rem;
+  color: #fefefe;
+  transition: background 0.25s ease-in-out;
+}
+
+.contact-panel .cancel-button:hover {
+  background: #242424;
+  color: #f0f0f0;
+}
+
+.contact-panel.is-active {
+  bottom: 0;
+}
+
+@media screen and (max-width: 39.9375em) {
+  .contact-panel {
+    width: 100%;
+    right: 0;
+  }
+}
+/*end of contact page*/
+
+/*for stop page*/
+
+/*end of stop page*/
+
+
+
