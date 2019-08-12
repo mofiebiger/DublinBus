@@ -220,16 +220,18 @@ directionsSetUp = function(){
       }).done(function(stops){
         var obj = stops.stops;
         console.log(obj);
-      for (var i = 0; i < obj.length; i++) {
+
+      // The location of Dubin
+      var dublin = {lat: 53.3498, lng: -6.2603};
+      if (obj.length === 0){
+          alert("There is no Dublin bus stop nearby.")
+      }   else {
+          for (var i = 0; i < obj.length; i++) {
           var stops = obj;
           stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
       }
 
-      // The location of Dubin
-      var dublin = {lat: 53.3498, lng: -6.2603};
-
-
-      var markers = stops.map(function (location, i) {
+          var markers = stops.map(function (location, i) {
           return new google.maps.Marker({
               position: location,
               map: map,
@@ -252,6 +254,8 @@ directionsSetUp = function(){
           var markerCluster = new MarkerClusterer(map, markers,
               {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
+      }
+
     });
 
 
@@ -380,13 +384,8 @@ directionsSetUp = function(){
     }
 
       initStopPage();
-      var is_authenticated = $('.is_authenticated').value;
-      if(is_authenticated == "yes"){
-          initFavsPage();
-          deleteFavourites();
-      }else{
-          console.log("no favs")
-      }
+      initFavsPage();
+      // deleteFavourites();
 
 
       on8();
@@ -602,10 +601,8 @@ function writeStopDetails(){
 
                   $('.stopNavBtn').on('click', function(){
                         fetchStopAddress(result.stop_lat, result.stop_lon);
-          })
+                  });
 
-                  var is_authenticated = $('.is_authenticated').value;
-                  if(is_authenticated == "yes"){
                         //get user_favourite_stop
                         //compare with selected stop id
                         //determine which button to show
@@ -615,24 +612,26 @@ function writeStopDetails(){
                         async: true,
                         success:function(result1){
                             //msg stors the id of the button
-                            var msg = "#addFav"
-                            for(var i =0; i < result1['user_stop_list'].length; i++){
-                                //if the stop id is in the users' favourites list
-                                if (result1['user_stop_list'][i] == $('#stop_id').val()){
-                                    msg = "#removeFav";
-                                    break
+                            // var msg = "#addFav";
+                            if (result1.res == 1) {
+                                var msg = "#addFav";
+                                for (var i = 0; i < result1['user_stop_list'].length; i++) {
+                                    //if the stop id is in the users' favourites list
+                                    if (result1['user_stop_list'][i] == $('#stop_id').val()) {
+                                        msg = "#removeFav";
+                                        break
+                                    }
                                 }
+                                $(msg).show()
+                            }else{
+                                $('.login-required').show();
                             }
-                            $(msg).show()
+                            // $(msg).show()
                         },
                         error:function(){
                             console.log('show button fail')
                         },
                     });
-                  }else{
-                      $('.login-required').show();
-                        console.log("stop not auth");
-                  }
 
 
                   //add on click functions to each bus routes
@@ -654,33 +653,29 @@ function writeStopDetails(){
                               $('#removeFav_bus').hide();
                               $('#bus_info').show();
 
-                              var is_authenticated = $('.is_authenticated').value;
-                              if(is_authenticated == "yes"){
-                                    //ajax get users' favs buses
-                                    //compare with clicked bus id
-                                    //determine which button to be shown
-                                    $.ajax({
+                              //ajax get users' favs buses
+                              // compare with clicked bus id
+                              //determine which button to be shown
+                              $.ajax({
                                     type:"GET",
                                     url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
                                     async: true,
                                     success:function(result2){
-                                        var msg = "#addFav_bus";
-                                        for(var i =0; i < result2['user_bus_list'].length; i++){
-                                            if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g,"")){
-                                                msg = "#removeFav_bus"
-                                                break
+                                        if (result2.res == 1) {
+                                            var msg = "#addFav_bus";
+                                            for (var i = 0; i < result2['user_bus_list'].length; i++) {
+                                                if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g, "")) {
+                                                    msg = "#removeFav_bus"
+                                                    break
+                                                }
                                             }
+                                            $(msg).show()
                                         }
-                                        $(msg).show()
                                     },
                                     error:function(){
                                         console.log('result2 failed. show button fail')
                                     },
                             })
-                              }else{
-                                  $('.login-required').show();
-                                  console.log("route not auth");
-                              }
 
                       },
                       error: function(){
@@ -819,8 +814,9 @@ function initFavsPage(){
         url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
         async: true,
         success:function(result){
-            var msg = ""
-            for(var i =0; i < result['user_bus_list'].length; i++){
+            var msg = "";
+            if (result.res == 1){
+                for(var i =0; i < result['user_bus_list'].length; i++){
                 msg += "<li><a href='#'>"
                     + "<span class='bus_number'>" + result['user_bus_list'][i]['bus_number']+ "</span>"
                     + " from "
@@ -828,7 +824,12 @@ function initFavsPage(){
                     + " to "
                     + "<span class='end_point'>" + result['user_bus_list'][i]['end_point'] + "</span>"
                     + "</a><button class='delete_bus_number' hidden>delete</button></li>"
+                 }
+            } else {
+                msg = "";
             }
+
+
             //write lis to bus_list div
             $('#bus_list').html(msg)
         },
@@ -843,12 +844,17 @@ function initFavsPage(){
         // data:{'user': user},
         async: true,
         success:function(result){
-            var msg = ""
-            for(var i =0; i < result['user_stop_list'].length; i++){
+            var msg = "";
+            if (result.res == 1){
+                for(var i =0; i < result['user_stop_list'].length; i++){
                 msg += "<li><a href='#' id='" + result['user_stop_list'][i] + "'>"
                     +result['user_stop_list'][i]
                     +"</a><button class='delete_stop' hidden>delete</button></li>"
+                }
+            }else{
+                msg = "";
             }
+
             // write lis tko stop_list div
             $('#stop_list').html(msg)
         },
@@ -863,12 +869,16 @@ function initFavsPage(){
         async: true,
         success:function(result){
             var msg = "";
-            for(var i =0; i < result['user_routes_list'].length; i++){
-                msg += "<li><a href='#'>"
-                    +"<span class='route_start'>"+result['user_routes_list'][i]['route_start']+"</span>"
-                    +" to "
-                    +"<span class='route_end'>"+ result['user_routes_list'][i]['route_end'] + "</span> "
-                    +"</a><button class='delete_route' hidden>delete</button></li>"
+            if (result.res == 1) {
+                for (var i = 0; i < result['user_routes_list'].length; i++) {
+                    msg += "<li><a href='#'>"
+                        + "<span class='route_start'>" + result['user_routes_list'][i]['route_start'] + "</span>"
+                        + " to "
+                        + "<span class='route_end'>" + result['user_routes_list'][i]['route_end'] + "</span> "
+                        + "</a><button class='delete_route' hidden>delete</button></li>"
+                }
+            }else{
+                msg = "";
             }
             //write lis to #route_list div
             $('#route_list').html(msg)
@@ -877,6 +887,8 @@ function initFavsPage(){
             console.log('favorite route fail')
         },
         })
+
+    deleteFavourites();
 }
 
 function deleteFavourites(){
@@ -1003,10 +1015,8 @@ function deleteFavourites(){
 $(document).ready(function(){
       $('#userPage').load('/user/login');
       $('#contactPage').load('/user/contact');
+
 });
-// $('#user-trigger').on('click', function(){
-//     $('#userPage').load('/user/login');
-// })
 
       // used code from 'https://css-tricks.com/prefilling-date-input/'
       // this is used for a default of todays date
@@ -1100,7 +1110,7 @@ function on8() {
               icons.set("weatherIcon"+i, Skycons[weatherIcon]);
               icons.play();
               var date = new Date(data_hourly[i]['time'])
-              console.log(date)
+              // console.log(date)
               $('#weathertime'+i).html(date.getHours())
               $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature - 32) * 5/9))
               $('#weather_hourly div').css({'float':'left'})
@@ -1142,7 +1152,8 @@ function on8() {
 			});
 		return false;
 	});
-        
+
+
 
 		      	
       	

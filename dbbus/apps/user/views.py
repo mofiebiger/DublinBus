@@ -323,12 +323,35 @@ class ResetPasswordView(TemplateView):
             return render(request,'404.html')
 
 
+    # def post(self,request,token):
+    #
+    #     reset_form=ResetPwdForm(request.POST)
+    #
+    #     #check if the user information is complete
+    #     if reset_form.is_valid():
+    #         new_password = request.POST.get('new_pwd')
+    #         rnew_password = request.POST.get('cnew_pwd')
+    #
+    #         if new_password != rnew_password:
+    #             return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
+    #
+    #         serializer = Serializer(FORGET_PASSWORD_ENCRYPT_KEY, 3600)
+    #         try:
+    #             user_id = serializer.loads(token)
+    #             user = User.objects.get(id=user_id)
+    #             user.set_password(new_password)
+    #             user.save()
+    #             return JsonResponse({"res": 1})
+    #
+    #         # check if the link is valid
+    #         except BadSignature as e:
+    #             return render(request,'404.html')
+    #
+    #     else:
+    #         return JsonResponse({"res": 0, "error_msg":'the data has some error'})
+
     def post(self,request,token):
 
-        reset_form=ResetPwdForm(request.POST)
-
-        #check if the user information is complete
-        if reset_form.is_valid():
             new_password = request.POST.get('new_pwd')
             rnew_password = request.POST.get('cnew_pwd')
 
@@ -347,8 +370,7 @@ class ResetPasswordView(TemplateView):
             except BadSignature as e:
                 return render(request,'404.html')
 
-        else:
-            return JsonResponse({"res": 0, "error_msg":'the data has some error'})
+            # return JsonResponse({"res": 0, "error_msg":'the data has some error'})
 
 
 
@@ -381,16 +403,6 @@ class FavouritesView(LoginRequiredMixin, TemplateView):
             return render(request, 'favourites.html')
 
 
-class TestView(TemplateView):
-        def get(self, request):
-            '''favourites page'''
-            return render(request, 'test_map.html')
-
-        def query(request):
-            r = request.GET.get("toolsname")
-            name_dict = "123"
-            return JsonResponse(name_dict)
-
 #/user/bus_info
 class BusInfoView(TemplateView):
     def get(self, request):
@@ -413,13 +425,16 @@ class FavoriteStopView(TemplateView):
 
     def get(self, request):
         '''return the user's favortie stop list'''
+        if request.user.is_authenticated:
+            # get the stop information from the database
+            stops = UserStop.objects.filter(station_user=request.user)
+            stops = list(stops)
+            stop_list = [stop.stop for stop in stops]
+            json_file = {"user_stop_list": stop_list, "res": 1}
+            return JsonResponse(json_file)
+        else:
+            return JsonResponse({"res": 0, "error_msg":'not logged in'})
 
-        #get the stop information from the database
-        stops = UserStop.objects.filter(station_user=request.user)
-        stops = list(stops)
-        stop_list = [stop.stop for stop in stops]
-        json_file = {"user_stop_list": stop_list}
-        return JsonResponse(json_file)
 
     def post(self, request):
         '''add new stop information'''
@@ -455,14 +470,18 @@ class FavoriteBusNumberView(TemplateView):
 
     def get(self, request):
         '''return the user's favortie bus list'''
+        if request.user.is_authenticated:
+            # get the stop information from the database
+            buses = UserBusNumber.objects.filter(bus_number_user=request.user)
+            buses = list(buses)
+            buses_list = [{'bus_number': bus.bus_number, 'start_point': bus.start_point, 'end_point': bus.end_point} for
+                          bus
+                          in buses]
+            json_file = {"user_bus_list": buses_list, "res": 1}
+            return JsonResponse(json_file)
+        else:
+            return JsonResponse({"res": 0, "error_msg":'not logged in'})
 
-         #get the stop information from the database
-        buses = UserBusNumber.objects.filter(bus_number_user=request.user)
-        buses = list(buses)
-        buses_list = [{'bus_number': bus.bus_number, 'start_point': bus.start_point, 'end_point': bus.end_point} for bus
-                      in buses]
-        json_file = {"user_bus_list": buses_list}
-        return JsonResponse(json_file)
 
     def post(self, request):
         '''add new bus information'''
@@ -508,13 +527,15 @@ class FavoriteRouteView(TemplateView):
 
     def get(self, request):
         '''return the user's favortie route list'''
-
-         #get the stop information from the database
-        routes = UserRoute.objects.filter(route_user=request.user)
-        routes = list(routes)
-        routes_list = [{'route_start': route.route_start, 'route_end': route.route_end} for route in routes]
-        json_file = {"user_routes_list": routes_list}
-        return JsonResponse(json_file)
+        if request.user.is_authenticated:
+            # get the stop information from the database
+            routes = UserRoute.objects.filter(route_user=request.user)
+            routes = list(routes)
+            routes_list = [{'route_start': route.route_start, 'route_end': route.route_end} for route in routes]
+            json_file = {"user_routes_list": routes_list, "res": 1}
+            return JsonResponse(json_file)
+        else:
+            return JsonResponse({"res": 0, "error_msg": 'not logged in'})
 
     def post(self, request):
         '''add new route information'''

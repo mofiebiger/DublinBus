@@ -54,9 +54,9 @@ class StopInfoView(TemplateView):
 class BusInfoView(TemplateView):
 
     def get(self,request,bus_id):
-        if not stop_id:
+        if not bus_id:
             return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
-        stop_info = StopInformation.objects.filter(stop_id=stop_id)
+        stop_info = StopInformation.objects.filter(stop_id=bus_id)
 
             #stop does not exist
         if len(stop_info) == 0:

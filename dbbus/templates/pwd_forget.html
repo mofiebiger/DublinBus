@@ -4,31 +4,48 @@
  
 <head>
   <meta charset="UTF-8">
-  <title>forget password </title>
- 
-<style>
-.out{
-  width: 500px;
-  height: 900px;
-  margin: 0 auto;
-  margin-top: 100px;
-}
-</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.js"></script>
+
 </head>
 <body>
  
- 
-  <div class="out">
-    <h1>You such a big foolish，how dare you forget your password？OK, I forgive you !, Please input your email to change your password!</h1>
-    <form method="post">
-          {% csrf_token %}
-      <P><span>email：</span><input type="text" name="email"></P>
-      <P><span>verify code：</span>{{ forget_form.captcha }}</P>
+ {% csrf_token %}
+{#  <div class="out">#}
+{#    <form method="post">#}
+{#          {% csrf_token %}#}
+{#      <P><span>email：</span><input type="text" name="email"></P>#}
+{#      <P><span>verify code：</span>{{ forget_form.captcha }}</P>#}
+{##}
+{#        <p><button type="button" value="Send verification email." ></button></p>#}
+{#    </form>#}
+{#    <h1>{{ forget_form.errors }}{{ errormg }}</h1>#}
+{#  </div>#}
+{#  <section class="newsletter-subscribe">#}
+  <div class="newsletter-subscribe-inner">
+    <a href="#" id="forget_password">Back to login</a>
+    <p class="subheader">You such a big foolish，how dare you forget your password？OK, I forgive you! Please input your email to change your password!</p>
 
-        <p><button type="button" value="Send verification email." ></button></p>
-    </form>
-    <h1>{{ forget_form.errors }}{{ errormg }}</h1>
+  <form method="post">
+    <div>
+      Email: <input type="email" placeholder="Enter your email">
+        <br>
+        Verify code：{{ forget_form.captcha }}
+
+        <input type="submit" class="button" value="Submit">
+      </div>
+  </form>
+       <h1>{{ forget_form.errors }}{{ errormg }}</h1>
   </div>
+
+{#</section>#}
+
+
  <script>
      $(document).ready(function(){
 
