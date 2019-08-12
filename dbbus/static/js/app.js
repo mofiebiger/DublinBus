@@ -247,32 +247,27 @@ directionsSetUp = function(){
                      infoWindow.setContent(html);
                      infoWindow.open(map, marker);
                 });
+
             }
           for (var i = 0; i < markers.length; i++) {
               var marker = markers[i];
               marker_list.push(marker);
               content_html = "<h3>"+stop_content[i].stop_id+"</h3>"
-                            + "<h4>"+stop_content[i].stop_name+"</h4>"
-                            + "<button class='markerNavBtn' data-toggle='navigator'>Navigate</button>";
+                  + "<h4>"+stop_content[i].stop_name+"</h4>"
+                  + "<button class='markerNavBtn' data-toggle='navigator' onclick='fetchMarkerAddress("+ stops[i].lat +","+stops[i].lng+")'>Navigate</button>"
+                  + "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail("+stop_content[i].stop_id+")'>See Details</button>";
               bindInfoWindow(marker, map, infowindow, content_html);
 
-              // marker.addListener('click', function () {
-              //     infowindow.open(map, marker);
-              // });
+
           }
-          //TODO
-          $('.markerNavBtn').on('click', function(){
-              console.log(stops[i].lat,stops[i].lng);
-                        fetchMarkerAddress(stops[i].lat,stops[i].lng);
-                  });
+
+
+
       markerCluster = new MarkerClusterer(map, markers,
     		  {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
 
     });
-
-
-
     }
 
     function geolocateUser() {
@@ -384,7 +379,6 @@ directionsSetUp = function(){
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
                         fetchTourismAddress(latitude, longitude);
-                        $('#nav li').eq(0).click();
                     });
                 }
                 else {
@@ -537,12 +531,13 @@ function fetchMarkerAddress(lat, lng){
       markerLatLng = new google.maps.LatLng(lat, lng);
       var Locate = new google.maps.Geocoder();
 
-      Locate.geocode({ 'location' : stopLatLng }, function(results, status){
+      Locate.geocode({ 'location' : markerLatLng }, function(results, status){
           if(status == google.maps.GeocoderStatus.OK){
             var _r = results[0];
             $Selectors.dirDst.val(_r.formatted_address);
           }
       });
+      console.log("fetch marker address end")
     }//fetchStopAddress Ends
 
 function fetchStopAddress(lat, lng){
@@ -1012,6 +1007,130 @@ function deleteFavourites(){
         $('#submit_delete').hide();
         $('#delete_favs').show();
     })
+
+}
+
+function seeStopDetail(stop_id){
+    console.log("in seeStopDetail");
+    var token = $('input[name="csrfmiddlewaretoken"]').val();
+    $('#search_stop').val(stop_id);
+          $('#addFav').hide();
+          $('#removeFav').hide();
+          //path selected stop id to bus_info
+          $.ajax({
+              ache:false,
+              type: "POST",
+              url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
+              data:{'stop_id':$('#search_stop').val().split(",",1)[0],'csrfmiddlewaretoken':token},
+              async:true,
+              success:function(result){
+                  result = result[0]['fields'];
+                  // console.log(result[0]['fields']);
+                  var content_html="<h2>"+result.stop_name+"</h2>"
+                      + "<h3>" + result.stop_id +"</h3>"
+                      + "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>"
+                      + "<input type='text' id='stop_id' value='"+ result.stop_id +"' hidden>"
+                      + "<ul class='routesList'>";
+                  //delete the qoutes in results
+                  var routes = result.stop_routes.toString().replace(/\'/g,"").replace(/\]/g,"").split(",");
+                  for (var i =1; i < routes.length; i++){
+                      content_html += "<li><a class='"+ routes[i] +"'>"+ routes[i]+"</a></li> "
+                  }
+                  content_html +="</ul>";
+                  content_html +="<div id='test_error'></div>";
+
+                  $('#stop_content').html(content_html);
+
+                  $('.stopNavBtn').on('click', function(){
+                        fetchStopAddress(result.stop_lat, result.stop_lon);
+                  });
+
+                        //get user_favourite_stop
+                        //compare with selected stop id
+                        //determine which button to show
+                        $.ajax({
+                        type:"GET",
+                        url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+                        async: true,
+                        success:function(result1){
+                            //msg stors the id of the button
+                            // var msg = "#addFav";
+                            if (result1.res == 1) {
+                                var msg = "#addFav";
+                                for (var i = 0; i < result1['user_stop_list'].length; i++) {
+                                    //if the stop id is in the users' favourites list
+                                    if (result1['user_stop_list'][i] == $('#stop_id').val()) {
+                                        msg = "#removeFav";
+                                        break
+                                    }
+                                }
+                                $(msg).show()
+                            }else{
+                                $('.login-required').show();
+                            }
+                            // $(msg).show()
+                        },
+                        error:function(){
+                            console.log('show button fail')
+                        },
+                    });
+
+
+                  //add on click functions to each bus routes
+                  $(".routesList a").each(function(){
+                    $(this).click(function(){
+
+                        //post clicked bus id
+                        //write bus info
+                        $.ajax({
+                          ache:false,
+                          type: "POST",
+                          url:window.location.protocol+"//"+window.location.host+'/user/bus_info',
+                          data:{'bus_id':$(this).text(),'csrfmiddlewaretoken':token},
+                          async:true,
+                          success:function(result1){
+                              $('#busid').html(result1);
+                              $('#bus_id').val(result1);
+                              $('#addFav_bus').hide();
+                              $('#removeFav_bus').hide();
+                              $('#bus_info').show();
+
+                              //ajax get users' favs buses
+                              // compare with clicked bus id
+                              //determine which button to be shown
+                              $.ajax({
+                                    type:"GET",
+                                    url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
+                                    async: true,
+                                    success:function(result2){
+                                        if (result2.res == 1) {
+                                            var msg = "#addFav_bus";
+                                            for (var i = 0; i < result2['user_bus_list'].length; i++) {
+                                                if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g, "")) {
+                                                    msg = "#removeFav_bus"
+                                                    break
+                                                }
+                                            }
+                                            $(msg).show()
+                                        }
+                                    },
+                                    error:function(){
+                                        console.log('result2 failed. show button fail')
+                                    },
+                            })
+
+                      },
+                      error: function(){
+                          alert("result1 failed. post bus info ajax failed");
+                        },
+                        })
+                     })
+                  })
+              },
+              error: function(){
+                  alert("result false");
+              },
+          })
 
 }
 
