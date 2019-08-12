@@ -391,10 +391,15 @@ directionsSetUp = function(){
       });
     }
 
-    initStopPage();
-    initFavsPage();
+      initStopPage();
+      initFavsPage();
+      // deleteFavourites();
 
-    function invokeTourismBtns(){
+    
+      on8();
+      TrafficFeed();
+
+      function invokeTourismBtns(){
         $('#tourismNatureBtn').on('click',function(event){
           event.preventDefault();
           diplayTouristPage("Nature")
@@ -1169,7 +1174,37 @@ setTimeout(function(){
       }, 2000);
 
 
-function get_weather() {
+function TrafficFeed() {
+
+    $.ajax({
+        'url': window.location.protocol+"//"+window.location.host+"/user/TrafficFeed",
+        'type':'get',
+        'dataType':'json',
+    }).done(function(trafficdata){
+
+        var entries = trafficdata['data']
+
+        var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
+        
+        for (i=0; i<entries.length; i++) {           
+            
+            innertext_ += entries[i].title;
+
+            innertext_ += "<br><a href=" + entries[i].link + ">more >>></a>"
+
+            if (i < entries.length - 1) {
+                innertext_ += "</li><hr><li>";
+            }
+        };
+        innertext_ += "</li></ul>";
+
+        $("#trafficfeed").html(innertext_);
+        // make a list here and put it in the div
+    })
+}
+
+
+function on8() {
             $.ajax({
               // 'url': "{% url "prediction:weather" %}",
               'url': window.location.protocol+"//"+window.location.host+"/prediction/weather",

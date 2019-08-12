@@ -313,6 +313,30 @@
 </div>
 </div>
 
+<div class="off-canvas position-right" id="trafficPage" data-off-canvas>
+  
+  {% comment %} Add X to close Window {% endcomment %}
+  <button class="close-button" aria-label="Close menu" type="button" data-close>
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <div class="grid-y grid-padding-x" style="height: 100%;">
+    <br>
+    <div class="cell shrink">
+      <h3> Traffic Info </h3>
+
+      {% comment %} Render the traffic rss feed in here {% endcomment %}
+      <hr>
+        <div id="trafficfeed">
+          {% comment %} Fill in Data here from js function {% endcomment %}     
+        </div>
+      <hr>
+
+{#<img class="thumbnail" src="https://placehold.it/550x350">#}
+    </div>
+  </div>
+</div>
+
 <div class="off-canvas position-right" id="testPage" data-off-canvas>
     <button class="close-button" aria-label="Close menu" type="button" data-close>
   <span aria-hidden="true">&times;</span>
@@ -341,6 +365,7 @@
 <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
 <li><a href="#" data-toggle="userPage" id="user-trigger">User</a></li>
 <li><a href="#" data-toggle="weatherPage">Weather</a></li>
+<li><a href="#" data-toggle="trafficPage">Traffic</a></li>
 </ul>
 </div>
 </div>

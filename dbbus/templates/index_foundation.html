@@ -260,11 +260,11 @@
 
 <div class="off-canvas position-right" id="weatherPage" data-off-canvas>
     <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
-<div class="grid-y grid-padding-x" style="height: 100%;">
-<br>
-<div class="cell shrink">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  <div class="grid-y grid-padding-x" style="height: 100%;">
+  <br>
+  <div class="cell shrink">
     <h1> Current Weather </h1>
 
         <div class="weatherDescription">
@@ -275,12 +275,30 @@
             <hr>
 
             <div id="weather_stats"></div>
-
+                  <div>HHHHHHHHHHHHH</div>
             <hr>
     <div id="weather_hourly"></div>
 {#<img class="thumbnail" src="https://placehold.it/550x350">#}
+  </div>
+  </div>
 </div>
-</div>
+
+<div class="off-canvas position-right" id="trafficPage" data-off-canvas>
+  
+  {% comment %} Add X to close Window {% endcomment %}
+  <button class="close-button" aria-label="Close menu" type="button" data-close>
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <div class="grid-y grid-padding-x" style="height: 100%;">
+    <br>
+    <div class="cell shrink">
+      <h1> Traffic Information </h1>
+
+    
+{#<img class="thumbnail" src="https://placehold.it/550x350">#}
+    </div>
+  </div>
 </div>
 
 <div class="off-canvas position-right" id="testPage" data-off-canvas>
@@ -311,6 +329,7 @@
 <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
 <li><a href="#" data-toggle="userPage" id="user-trigger">User</a></li>
 <li><a href="#" data-toggle="weatherPage">Weather</a></li>
+<li><a href="#" data-toggle="trafficPage">Traffic</a></li>
 {#<li><a href="#" data-toggle="testPage">Weather</a></li>#}
 </ul>
 </div>
