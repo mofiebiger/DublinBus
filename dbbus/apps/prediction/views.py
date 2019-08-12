@@ -88,7 +88,7 @@ class StopInfoNearbyView(TemplateView):
         radius = float(request.GET.get('radius'))
 
         #open json file
-        with open('static/json/stops_info.json','r') as load_f:
+        with open('static/json/stops_information.json','r') as load_f:
              stops_data = json.load(load_f)
 
         #add the stop into file where the distance is less than the radius
@@ -97,6 +97,7 @@ class StopInfoNearbyView(TemplateView):
             if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
                 clean_data.append(stop)
 #         print(stops_data)
+
         return JsonResponse({'stops':clean_data})
 
 

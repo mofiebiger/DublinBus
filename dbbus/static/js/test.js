@@ -195,11 +195,9 @@ directionsSetUp = function(){
     function displayCircle(position){
       //var Locater = new google.maps.Geocoder();
       userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      console.log(userLatLng);
-      console.log(userLatLng.lat);
-      console.log(userLatLng.lng);
       //Draw a circle around the user position to have an idea of the current localization accuracy
       var circle = new google.maps.Circle({
+          // center: {lat: 53.3498, lng: -6.2603},
           center: userLatLng,
           radius: 1000, //position.coords.accuracy,
           map: map,
@@ -213,47 +211,56 @@ directionsSetUp = function(){
       $.ajax({
         'async' : 'true',
         'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
-//          'url' : '/static/json/stops_info.json',
         'type': 'get',
         'dataType':'json',
+        // 'data':{'lat': 53.3498,'lon': -6.2603,'radius':1},
         'data':{'lat': userLatLng.lat,'lon': userLatLng.lng,'radius':1},
-      }).done(function(stops){
-        var obj = stops.stops;
-        console.log(obj);
-
-      // The location of Dubin
-      var dublin = {lat: 53.3498, lng: -6.2603};
-      if (obj.length === 0){
+      }).done(function(result){
+        var obj = result.stops;
+        // The location of Dubin
+        var dublin = {lat: 53.3498, lng: -6.2603};
+        if (obj.length === 0){
           alert("There is no Dublin bus stop nearby.")
       }   else {
+            var stops = [];
+            var stop_content = [];
           for (var i = 0; i < obj.length; i++) {
-          var stops = obj;
-          stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
-      }
+
+              stops[i] = {'lat': parseFloat(obj[i].stop_lat), 'lng': parseFloat(obj[i].stop_lon)};
+              stop_content[i] = {'id': obj[i].id, 'stop_id': obj[i].stop_id, 'stop_name': obj[i].stop_name};
+            }
 
           var markers = stops.map(function (location, i) {
-          return new google.maps.Marker({
-              position: location,
-              map: map,
-              // icon: markerImage,
-              // label: labels[i % labels.length]
+              return new google.maps.Marker({
+                  position: location,
+                  map: map,
+                  // icon: markerImage,
+              });
           });
-      });
-      var contentString = 'pppp';
-      var infowindow = new google.maps.InfoWindow({
-          content: ''
-      });
+          var content_html= '';
+          var infowindow = new google.maps.InfoWindow({
+            content: '',
+            });
 
-      for (var i = 0; i < markers.length; i++) {
-          var marker = markers[i];
-          // bindInfoWindow(marker, map, infowindow, content_html);
-          // marker.addListener('click', function () {
-          //     infowindow.open(map, marker);
-          // });
-          //     // console.log("var markers");
-          var markerCluster = new MarkerClusterer(map, markers,
-              {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      }
+          function bindInfoWindow(marker, map, infoWindow, html) {
+                google.maps.event.addListener(marker, 'click', function() {
+                     infoWindow.setContent(html);
+                     infoWindow.open(map, marker);
+                });
+            }
+          for (var i = 0; i < markers.length; i++) {
+              var marker = markers[i];
+              marker_list.push(marker);
+              content_html = "<h3>"+stop_content[i].stop_id+"</h3>"
+                            + "<h4>"+stop_content[i].stop_name+"</h4>"
+                            + "<button class='markerNavBtn' data-toggle='navigator'>Navigate</button>";
+              bindInfoWindow(marker, map, infowindow, content_html);
+              $('.stopNavBtn').on('click', function(){
+                        fetchStopAddress(result.stop_lat, result.stop_lon);
+                  });
+          }
+      markerCluster = new MarkerClusterer(map, markers,
+    		  {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
 
     });
@@ -418,61 +425,43 @@ directionsSetUp = function(){
       } //invokeTourismBtns Ends
       invokeTourismBtns();
 
-   function setBusRoute(){
-	   
-	   $('#busRoute #searchBusRoute').keyup(function(){
-		   $(this).removeAttr('name');
-		   $.ajax({
-			   'async' : 'false',
-//			'url' : window.location.protocol+"//"+window.location.host+"/prediction/get_bus_route_info",
-			   'url' : '/static/json/bus_route.json',
-			   'type': 'get',
-			   'dataType':'json',
-//			'data':{'bus_number': busNum,'origin': origin,'destination': dest},
-		   }).done(function(stop_list){
-			   var selectData = "";
-			   for (var i = 0; i < stop_list.length; i++) {
-				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){					   
-					   selectData += "<li id=\"" + stop_list[i]['route'] +"_" + stop_list[i]['origin'] +"_" + stop_list[i]['destination'] + "\">" + stop_list[i]['route']+ "(" + stop_list[i]['origin'] + "→" + stop_list[i]['destination'] + ")</li>";
-			   }}
-			   fieldString = "<ul id=\"busSelector\" >" + selectData + "</ul> ";
-			   $("#busRoute #researchContent").parent().css("position","relative");
-			   $("#busRoute #researchContent").html(fieldString).css({"position":"absolute","height":"100px"}).show();
-			   console.log($("#busRoute #searchBusRoute li").css("height"));
-			   $("#busRoute #busSelector li").click(function(){
-				   $('#busRoute #searchBusRoute').val($(this).html()).attr('name',$(this).attr('id'));
-				   
-				   $(this).parent().parent().hide();
-			   }).css('overflow','hidden');
-			   
-		   });
-		   
-	   })
-	   
+      function setBusRoute(){
+    $.ajax({
+        'async' : 'false',
+        'url' : '/static/json/bus_route.json',
+        'type': 'get',
+        'dataType':'json',
+    }).done(function(stop_data){
+		       for (var i = 0; i < stop_data.length; i++){
+                  $('#bus_datalist').append("<option value='"+ stop_data[i].route +","+stop_data[i].origin +","+ stop_data[i].destination +"' />");
+                  // $('#bus_datalist').append("<option value='"+ stop_data.route +", ("+stop_data.origin +" to "+ stop_data.description +")' />");
+              }
+    });
+
+
 	   function match_left(word,stop_list){
 		   for (var i = 0; i < stop_list.length; i++){
-			   
-		   } 
-		   
+
+		   }
+
 	   }
-		
-		
+
       // display stops along a bus route
-      
+
 		$('#searchBus').bind('click',function(){
-						var bus_route = $('#busRoute #searchBusRoute').attr('name');
+						var bus_route = $('#busRoute #searchBusRoute').val();
+						// var bus_route = $('#busRoute #searchBusRoute').attr('name');
 						console.log(bus_route);
 						if(typeof(bus_route) == "undefined"){
 							return false;
-						}else{		
-							
-							route_list = bus_route.split('_')
+						}else{
+
+							route_list = bus_route.split(',');
 							console.log(route_list);
 					    		// display stops along a bus route
 					    		$.ajax({
 					    			'async' : 'true',
 					    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
-					    			//  'url' : '/static/json/stops_info.json',
 					    			'type': 'get',
 					    			'dataType':'json',
 					    			'data':{'bus_number': route_list[0],'origin': route_list[1],'destination': route_list[2]},
@@ -484,12 +473,12 @@ directionsSetUp = function(){
 					    					var stops = obj;
 					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
 					    				}
-		
+
 					                    directionsDisplay.setMap(null);
-					                    directionsDisplay.setMap(map);					    				
-					    				
+					                    directionsDisplay.setMap(map);
+
 					    				//remove the markers created before
-					    				
+
 					    				for(var i=0;i< marker_list.length;i++){
 					                		marker_list[i].setMap(null);
 					                	}
@@ -502,8 +491,8 @@ directionsSetUp = function(){
 //					    				});
 //					    				Path.setMap(map);
 //					    				marker_list.push(Path);
-					     		
-		
+
+
 					    				var markers = stops.map(function (location, i) {
 					    					return new google.maps.Marker({
 					    						position: location,
@@ -522,8 +511,8 @@ directionsSetUp = function(){
 					    			          //     // console.log("var markers");
 					    			          // var markerCluster = new MarkerClusterer(map, markers,
 					    			          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-					    			      }					    				
-					    				
+					    			      }
+
 					    			}else{
 					    				alert(stop_list.errmsg);
 					    			}
@@ -537,6 +526,7 @@ directionsSetUp = function(){
 }; //InitMap Ends
 
 var marker_list = new Array();
+
 function fetchStopAddress(lat, lng){
       stopLatLng = new google.maps.LatLng(lat, lng);
       var Locate = new google.maps.Geocoder();
@@ -556,7 +546,6 @@ function writeStopsDataset(){
           url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
           async:true,
           success:function(result){
-              console.log('success writeStopsDataset()');
               for (var i = 0; i < result.length; i++){
                   var stop_data = result[i]['fields'];
                   $('#stop_datalist').append("<option value='"+ stop_data.stop_id +", "+stop_data.stop_name +"' />");
@@ -581,7 +570,6 @@ function writeStopDetails(){
               data:{'stop_id':$('#search_stop').val().split(",",1)[0],'csrfmiddlewaretoken':token},
               async:true,
               success:function(result){
-                  console.log(result);
                   result = result[0]['fields'];
                   // console.log(result[0]['fields']);
                   var content_html="<h2>"+result.stop_name+"</h2>"
@@ -1152,6 +1140,7 @@ function on8() {
 			});
 		return false;
 	});
+
 
 
 

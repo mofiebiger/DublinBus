@@ -1,22 +1,25 @@
 <!doctype html>
-{% load staticfiles %}
+
 <html class="no-js" lang="en" dir="ltr">
+
+{% load pwa %}
+{% load staticfiles %}
   <head>
+
+      {% progressive_web_app_meta %}
+
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foundation for Sites</title>
 
-{#      {% progressive_web_app_meta %}#}
+
 
     <!--external stylesheet-->
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
-{#    <link rel="stylesheet" href="{% static 'css/overlay.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'css/favourites_style.css' %}">#}
     <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
     <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
 
 {#      <script type="text/javascript" src="{% static 'js/vendor/jquery.js' %}"></script>#}
 {#      <script type="text/javascript" src="{% static 'js/vendor/what-input.js' %}"></script>#}
@@ -27,12 +30,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <!--favicon links-->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
-    <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
-    <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+        <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}">
 
     <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-launchimage-640-1136.png' %}" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-750-1334.png' %}" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
@@ -56,7 +59,6 @@
     <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
 
     <!--the use of jquery in javascript-->
-{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>#}
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.js"></script>
@@ -65,19 +67,18 @@
     <!--MarkerCluster-->
     <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
 
-{#      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJW4jsPlNKgv6jFm3B5Edp5ywgdqLWdmc&callback=initMap" async defer></script>#}
+
+    <!--Google Maps API-->
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
+    </script>
 
 
 
+    <!--Map / Navigation / Tourism / Display Bus Stops-->
+    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
 
     <!-- importing the skycons for weather dipslay -->
     <script src="{% static 'js/skycons.js' %}"></script>
-
-    <!-- will probs not need the link below! save for now! -->
-    <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
-
-    <!-- Path to manifest.json -->
-    <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}">
 
 
     <!--title - dublin bus-->
@@ -97,12 +98,7 @@
           ga('foundation.send', 'pageview');
 
         </script>
-    <!--Map / Navigation / Tourism / Display Bus Stops-->
-    <script type="text/javascript" src="{% static 'js/test.js' %}"></script>
 
-    <!--Google Maps API-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHStlI-HbW16s4z0MEG3VCgiNirwGiDM4&libraries=places&callback,visualization&callback=initMap" defer>
-        </script>
   </head>
   <body>
 
@@ -123,11 +119,6 @@
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
               <input id="directionsDestination" class="controls" type="text" placeholder="End">
               <input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style="width: 30px; height: 30px;"></button>
-            </div>
-			<div id="busRoute">
-              <input id="searchBusRoute" class="controls" type="text" placeholder="Bus Route">
-              <div id="researchContent"></div>
-            	<button id="searchBus">search</button>
             </div>
 
 
@@ -176,13 +167,19 @@
 <br>
 <div class="cell shrink">
     {% csrf_token %}
-        <div>
+    <ul class="tabs" data-tabs id="search-tab-headers">
+                <li class="tabs-title is-active" id="search_stop_header"><a href="#stop-panel" aria-selected="true">Stops</a></li>
+                <li class="tabs-title" id="search_route_header"><a data-tabs-target="bus-panel" href="#bus-panel">Routes</a></li>
+    </ul>
+    <div class="tabs-content" data-tabs-content="search-tab-headers">
+        <div class="tabs-panel is-active" id="stop-panel">
+              <div id="search-by-stop-div">
       <label>Type stop number or key word to select a stop:</label>
       <input type="text" id="search_stop" list="stop_datalist" />
       <datalist id="stop_datalist"></datalist>
       <button id="select_stop">Show Detail</button>
-  </div>
-        <div id="content">
+{#    </div>#}
+    <div id="content">
       <div class='fav_buttons'>
           <button type='button' id='addFav' hidden>Add Favourites</button>
           <button type='button' id='removeFav' hidden>Remove Favourites</button>
@@ -200,7 +197,22 @@
           <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
           <input type="text" id="bus_id" value="39A" hidden>
       </div>
+    </div>
   </div>
+        </div>
+
+        <div class="tabs-panel" id="bus-panel">
+            <div id="search-by-bus-div">
+                <div id="busRoute">
+              <label>Type bus number to select a bus route:</label>
+              <input type="text" id="searchBusRoute" list="bus_datalist"  placeholder="Bus Route" class="controls"/>
+              <datalist id="bus_datalist"></datalist>
+              <button id="searchBus">Search</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </div>
 </div>
@@ -219,7 +231,7 @@
             <ul class="tabs" data-tabs id="tab-headers">
                 <li class="tabs-title is-active" id="fav_stop"><a href="#panel1" aria-selected="true">Stops</a></li>
                 <li class="tabs-title" id="fav_route"><a data-tabs-target="panel2" href="#panel2">Routes</a></li>
-                <li class="tabs-title" id="fav_bus"><a data-tabs-target="panel3" href="#panel2">Buses</a></li>
+                <li class="tabs-title" id="fav_bus"><a data-tabs-target="panel3" href="#panel3">Buses</a></li>
             </ul>
             <div class="tabs-content" data-tabs-content="tab-headers">
                 <div class="tabs-panel is-active" id="panel1">
@@ -304,7 +316,6 @@
 <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
 <li><a href="#" data-toggle="userPage" id="user-trigger">User</a></li>
 <li><a href="#" data-toggle="weatherPage">Weather</a></li>
-{#<li><a href="#" data-toggle="testPage">Weather</a></li>#}
 </ul>
 </div>
 </div>
