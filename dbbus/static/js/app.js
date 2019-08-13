@@ -431,7 +431,7 @@ function initMap(position) {
     on8();
 
     // repeatedy refresh the traffic feed
-    setInterval(() =>  TrafficFeed(), 10000);
+    setInterval(() =>  TrafficFeed(), 100000);
 
     function invokeTourismBtns() {
         $('#tourismNatureBtn').on('click', function (event) {
@@ -1277,8 +1277,7 @@ function TrafficFeed() {
             if (entries[0].title != oldfeed[0].title) {
                 
                 // change the icon here to show a new noticifation 
-                console.log("changed traffic feed");
-                $("#TrafficMenu").html("updated");             
+                console.log("changed traffic feed");          
             }
         };
 
