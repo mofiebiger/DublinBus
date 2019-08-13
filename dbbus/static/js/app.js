@@ -1,5 +1,6 @@
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
 var marker_list = [];
+var oldfeed = "TEST";
 
 
 function initMap(position) {
@@ -428,7 +429,9 @@ function initMap(position) {
 
 
     on8();
-    TrafficFeed();
+
+    // repeatedy refresh the traffic feed
+    setInterval(() =>  TrafficFeed(), 10000);
 
     function invokeTourismBtns() {
         $('#tourismNatureBtn').on('click', function (event) {
@@ -665,13 +668,7 @@ function writeStopDetails() {
                     "<h3>" + result.stop_id + "</h3>" +
                     "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
                     "<input type='text' id='stop_id' value='" + result.stop_id + "' style='display: none'>";
-                // + "<ul class='routesList'>";
-                //delete the qoutes in results
-                // var routes = result.stop_routes.toString().replace(/\'/g,"").replace(/\]/g,"").split(",");
-                // for (var i =1; i < routes.length; i++){
-                //     content_html += "<li><a class='"+ routes[i] +"'>"+ routes[i]+"</a></li> "
-                // }
-                // content_html +="</ul>";
+
                 content_html += "<div id='test_error'></div>";
 
                 $('#stop_content').html(content_html);
@@ -712,7 +709,8 @@ function writeStopDetails() {
             error: function () {
                 alert("result false");
             },
-        })
+        });
+        Generate_Graph();
     })
 }
 
@@ -1275,6 +1273,15 @@ function TrafficFeed() {
 
         var entries = trafficdata['data']
 
+        if (oldfeed != "TEST") {
+            if (entries[0].title != oldfeed[0].title) {
+                
+                // change the icon here to show a new noticifation 
+                console.log("changed traffic feed");
+                $("#TrafficMenu").html("updated");             
+            }
+        };
+
         var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
 
         for (i = 0; i < entries.length; i++) {
@@ -1290,7 +1297,9 @@ function TrafficFeed() {
         innertext_ += "</li></ul>";
 
         $("#trafficfeed").html(innertext_);
-        // make a list here and put it in the div
+
+        // replace the old feed with the new one and wait to run again.
+        oldfeed = entries;
     })
 }
 
@@ -1585,5 +1594,3 @@ function Generate_Graph() {
         };
     });
 };
-
-Generate_Graph();
