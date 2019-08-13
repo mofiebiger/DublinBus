@@ -8,7 +8,7 @@ function initMap(position){
 	new google.maps.Size(24, 27),
 	new google.maps.Point(0, 0),
 	new google.maps.Point(12, 27),
-	
+
 	markerB = new google.maps.MarkerImage('marker.png'),
 	new google.maps.Size(24, 28),
 	new google.maps.Point(0, 0),
@@ -45,7 +45,7 @@ directionsSetUp = function(){
     directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: false
     });
-    
+
   } //directionsSetUp Ends
 
   function trafficSetup() {
@@ -102,7 +102,7 @@ directionsSetUp = function(){
    DirectionsRenderer = function(source, destination, date, time){
 //	  var methods = ['FEWER_TRANSFER','LESS_WALKING'];
 //	  for(var method_index=0;method_index<2;method_index++){
-//		  
+//
 //	  }
       var request = {
         origin: source,
@@ -118,7 +118,7 @@ directionsSetUp = function(){
       // show the route
       directionsService.route(request, function(response, status){
         if (status == google.maps.DirectionsStatus.OK){
-        	
+
           var show_div = document.getElementById('directionsSteps');
           var _route = response.routes[0].legs[0];
           console.log(_route);
@@ -146,7 +146,7 @@ directionsSetUp = function(){
             		var total_time = 0;
             		for(var i=0,j=0; i<_route['steps'].length; i++){
                      	  if (_route['steps'][i].travel_mode == "TRANSIT"){
-                     		  if(data.response_leg[j].text != "" && data.response_leg[j].value != 0){                     			  
+                     		  if(data.response_leg[j].text != "" && data.response_leg[j].value != 0){
                      			  response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
                      		  }
                      		j+=1;
@@ -154,13 +154,13 @@ directionsSetUp = function(){
                      	  total_time += _route['steps'][i]['duration'].value;
                   	 }
             		response.routes[0].legs[0].duration.value = total_time;
-            		response.routes[0].legs[0].duration.text = Math.round(total_time/60)+'mins';            		
-            		
+            		response.routes[0].legs[0].duration.text = Math.round(total_time/60)+'mins';
+
             	}else{
             		alert(data.errmsg);
             	}
             	// remove the points shown in the previous step
-            	deleteMarkers()            	
+            	deleteMarkers()
                 directionsDisplay.setDirections(response);
                 directionsDisplay.setPanel(show_div);
                 directionsDisplay.setMap(map);
@@ -414,7 +414,7 @@ directionsSetUp = function(){
       invokeTourismBtns();
 
    function setBusRoute(){
-	   
+
 	   $('#busRoute #searchBusRoute').keyup(function(){
 		   $(this).removeAttr('name');
 		   $.ajax({
@@ -427,7 +427,7 @@ directionsSetUp = function(){
 		   }).done(function(stop_list){
 			   var selectData = "";
 			   for (var i = 0; i < stop_list.length; i++) {
-				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){					   
+				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){
 					   selectData += "<li id=\"" + stop_list[i]['route'] +"_" + stop_list[i]['origin'] +"_" + stop_list[i]['destination'] + "\">" + stop_list[i]['route']+ "(" + stop_list[i]['origin'] + "→" + stop_list[i]['destination'] + ")</li>";
 			   }}
 			   fieldString = "<ul id=\"busSelector\" >" + selectData + "</ul> ";
@@ -436,23 +436,23 @@ directionsSetUp = function(){
 			   console.log($("#busRoute #searchBusRoute li").css("height"));
 			   $("#busRoute #busSelector li").click(function(){
 				   $('#busRoute #searchBusRoute').val($(this).html()).attr('name',$(this).attr('id'));
-				   
+
 				   $(this).parent().parent().hide();
 			   }).css('overflow','hidden');
-			   
+
 		   });
-		   
+
 	   })
-		
+
       // display stops along a bus route
-      
+
 		$('#searchBus').bind('click',function(){
 						var bus_route = $('#busRoute #searchBusRoute').attr('name');
 						console.log(bus_route);
 						if(typeof(bus_route) == "undefined"){
 							return false;
-						}else{		
-							
+						}else{
+
 							route_list = bus_route.split('_')
 							console.log(route_list);
 					    		// display stops along a bus route
@@ -471,8 +471,8 @@ directionsSetUp = function(){
 					    					var stops = obj;
 					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
 					    				}
-		
-					                    directionsDisplay.setMap(null);					    				
+
+					                    directionsDisplay.setMap(null);
 					    				//remove the markers created before
 					                    deleteMarkers()
 					    				var Path = new google.maps.Polyline({
@@ -484,8 +484,8 @@ directionsSetUp = function(){
 					    				});
 					    				Path.setMap(map);
 					    				marker_list.push(Path);
-					     		
-		
+
+
 					    				var markers = stops.map(function (location, i) {
 					    					return new google.maps.Marker({
 					    						position: location,
@@ -517,7 +517,7 @@ directionsSetUp = function(){
 					    		              position:  stops[stops.length-1],
 					    		              map: map,
 					    		              label:'B',
-					    		            });	
+					    		            });
 					    		          marker_list.push(start_point);
 					    		          marker_list.push(end_point);
 					    			}else{
@@ -528,7 +528,7 @@ directionsSetUp = function(){
 		      	})
       };
       setBusRoute();
-		      	
+
 
 }; //InitMap Ends
 
@@ -680,6 +680,7 @@ function writeStopDetails(){
           })
       })
       }
+
 
 function invokeAddStopBtn(){
           var token = $('input[name="csrfmiddlewaretoken"]').val();
@@ -872,7 +873,7 @@ function initStopPage(){
 
             var weatherIcon = data.icon.toUpperCase().split('-');
             weatherIcon = weatherIcon.join('_')
-            
+
             //var weatherIcon = "snow";
 	    	  var icons = new Skycons({
 	    		  "monochrome": false,
@@ -1016,7 +1017,7 @@ $(function(){
     setMapOnAll(null);
     markerCluster.clearMarkers();
     circle.setMap(null);
-    
+
   }
 
   // Shows any markers currently in the array.
@@ -1029,10 +1030,3 @@ $(function(){
 	clearAllMarkers();
     marker_list = [];
   }
-
-        
-
-		      	
-      	
-        
-  

@@ -44,6 +44,9 @@
         <!--Overlay-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <!--Stops chart-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
         <!--Google Fonts-->
         <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
 
@@ -66,13 +69,6 @@
         <!-- importing the skycons for weather dipslay -->
         <script src="{% static 'js/skycons.js' %}"></script>
 
-        <!-- will probs not need the link below! save for now! -->
-        <!-- <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script> -->
-
-        <!-- Path to manifest.json -->
-        <!-- <link rel="manifest" crossorigin="use-credentials" href="{% static 'json/manifest.json' %}"> -->
-
-
         <!--title - dublin bus-->
         <title>Dublin Bus</title>
 
@@ -84,13 +80,6 @@
     <header>
       <h1 id="title">Dublin Bus | Journey Planner</h1>
     </header>
-
-    <!-- Splash Screen Overlay -->
-    <!-- <div id="splash_overlay">
-      <div id="splash-content">
-        <img src="{% static 'images/threeBusDub.png' %}"></img>
-      </div>
-    </div> -->
 
     <!--NavBar - displays overlays (above map)-->
     <ul id="nav">
@@ -138,9 +127,9 @@
               <input id="searchBusRoute" class="controls" type="text" placeholder="Bus Route">
               <div id="researchContent"></div>
             	<button id="searchBus">search</button>
-            </div>	
-            	
-            
+            </div>
+
+
             <div id="dateTime-panel">
               <div id="date">
                 <input id="rightNow" type="date" name="fname" value="2019-02-02">
@@ -207,9 +196,12 @@
           <h3 id="busid"></h3>
           <p>From <span id="start_point">UCD</span> to <span id="end_point">CITY CENTER</span> </p>
           <input type="text" id="bus_id" value="39A" hidden>
-      </div>
+          </div>
   </div>
       </div>
+      <canvas id="myChart" width="400" height="400" aria-label="Stop Variations">
+      <p>Stop Variations</p>
+    </canvas>
     </div>
 
     <!--contact info overlay -->
@@ -231,7 +223,7 @@
         <div>
         <canvas id="weatherIcon" width="128" height="128" style="float:center;"></canvas>
         <div id="currentTemperature" width="128" height="128" style="float:center;"></div>
-        </div>     
+        </div>
         </div>
        <hr>
         <div id="weather_heading"></div>
@@ -254,6 +246,36 @@
 
     <!--The div element for the map -->
     <div id="map"></div>
+<!--
+    <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+  	var chart = new Chart(ctx, {
+  			// The type of chart we want to create
+  			type: 'line',
+
+        color: [
+            'red',    // color for data at index 0
+            'blue',   // color for data at index 1
+            'green',  // color for data at index 2
+            'black',  // color for data at index 3
+            //...
+        ],
+
+  			// The data for our dataset
+  			data: {
+  					labels: ['1 min','3 min', '5 min', '10 min', '15 min'],
+  					datasets: [{
+  							//label: 'Bus Stop Variations',
+  							backgroundColor: 'rgba(0, 4, 0, 0.5)',
+  							borderColor: 'rgba(0, 0, 4, 0.5)',
+  							data: [0, 10, 5, 2, 20, 30, 45]
+  					}]
+  			},
+
+  			// Configuration options go here
+  			options: options,
+  	}); -->
+</script>
 
   </body>
 
