@@ -50,12 +50,7 @@ def prediction_route(PDate, Routeid, PTime, Number_Stops):
     ddate = date(int(PDate[:4]), int(PDate[5:7]), int(PDate[-2:]))
     dtime = time(int(PTime[:2]), int(PTime[-2:]))
     
-    
-    
-#     if datetime.combine(ddate, dtime) < datetime.now():
-#         return "Please select a valid date/time. Only future values are valid."
 
-        
   
     
     # ========================== Weather Data ========================== # 

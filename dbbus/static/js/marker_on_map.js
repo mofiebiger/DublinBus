@@ -18,7 +18,7 @@ function writeAddressName(latLng) {
       function initMap(position) {
           console.log("init map function");
           var xmlhttp = new XMLHttpRequest();
-          var url = "../static/json/stops_info.json";
+          var url = "../static/json/stops_information.json";
           xmlhttp.onreadystatechange = function () {
               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 

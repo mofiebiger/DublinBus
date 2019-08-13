@@ -217,7 +217,6 @@ directionsSetUp = function(){
       $.ajax({
         'async' : 'true',
         'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
-//          'url' : '/static/json/stops_info.json',
         'type': 'get',
         'dataType':'json',
         'data':{'lat': userLatLng.lat,'lon': userLatLng.lng,'radius':1},
@@ -459,7 +458,6 @@ directionsSetUp = function(){
 					    		$.ajax({
 					    			'async' : 'true',
 					    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
-					    			//  'url' : '/static/json/stops_info.json',
 					    			'type': 'get',
 					    			'dataType':'json',
 					    			'data':{'bus_number': route_list[0],'origin': route_list[1],'destination': route_list[2]},
