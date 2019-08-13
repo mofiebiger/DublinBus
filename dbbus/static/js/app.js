@@ -595,7 +595,6 @@ function initMap(position) {
     }
     setBusRoute();
 
-    get_weather();
 
 
 }; //InitMap Ends
