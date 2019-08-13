@@ -70,7 +70,7 @@
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.js"></script>
-
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
   <!--MarkerCluster-->
   <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
@@ -299,6 +299,30 @@
       <div class="off-canvas position-left " id="contactPage" data-off-canvas>
       </div>
 
+      <div class="off-canvas position-right" id="GraphPage" data-off-canvas>
+
+        {% comment %} Add X to close Window {% endcomment %}
+        <button class="close-button" aria-label="Close menu" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <div class="grid-y grid-padding-x" style="height: 100%;">
+          <br>
+          <div class="cell shrink">
+            <h3> Sample Graphs </h3>
+
+            {% comment %} Render the traffic rss feed in here {% endcomment %}
+            <hr>
+            <div id="Graph_div">
+              {% comment %} Fill in Data here from js function {% endcomment %}
+            </div>
+            <hr>
+
+            {#<img class="thumbnail" src="https://placehold.it/550x350">#}
+          </div>
+        </div>
+      </div>
+
       <div class="off-canvas position-right" id="userPage" data-off-canvas>
       </div>
 
@@ -385,6 +409,7 @@
             <li><a href="#" data-toggle="contactPage">Contact</a></li>
           </ul>
           <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
+            <li><a href="#" data-toggle="GraphPage">Graphs</a></li>
             <li><a href="#" data-toggle="userPage" id="user-trigger">User</a></li>
             <li><a href="#" data-toggle="weatherPage">Weather</a></li>
             <li><a href="#" data-toggle="trafficPage">Traffic</a></li>

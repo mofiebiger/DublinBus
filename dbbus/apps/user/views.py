@@ -1,6 +1,8 @@
 import json
 import os
 import re
+import numpy as np
+import scipy.stats as stats
 import feedparser as fp
 
 from django.conf import settings
@@ -1195,6 +1197,9 @@ class TrafficFeedView(TemplateView):
     def get(self, request):
         """
         Return traffic feed information.
+
+        Need to pull mu from the front end. and sigma can be set here. 
+
         """
         feed = fp.parse("https://www.dublinlive.ie/all-about/traffic-and-travel?service=rss")
 
@@ -1207,6 +1212,18 @@ class TrafficFeedView(TemplateView):
             entries[idx] = {'title':entry['title'], 'link':entry['link']}
 
         return JsonResponse({'data':entries})
+
+class Graph_distributionView(TemplateView):
+    def get(self, request):
+        """
+        Returna normal distribution for plotting 
+        """
+        mu = 1
+        sigma = 0.3
+        xvals = np.linspace(0,5,500)
+        yvals = stats.norm.pdf(xvals,mu,sigma)
+
+        return JsonResponse({'x':list(xvals), 'y':list(yvals)})
 
 
 

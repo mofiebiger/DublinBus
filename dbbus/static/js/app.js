@@ -1546,3 +1546,44 @@ function deleteMarkers() {
     clearAllMarkers();
     marker_list = [];
 }
+
+
+function Generate_Graph() {
+
+    // Need to make the graph take inputs of time. So that mu can be changed as needed.
+    // sigma can be calucalted in the backend
+
+    $.ajax({
+        'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
+        'type': 'get',
+        'dataType': 'json',
+    }).done(function (graphdata) {
+
+        var x = graphdata['x'];
+        var y = graphdata['y'];
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(prepareChart);
+
+        function prepareChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'time');
+            data.addColumn('number', 'probability');
+
+            for(i = 0; i < x.length; i++)
+                data.addRow([x[i], y[i]]);
+        
+            var options = {
+                title: 'Sample Chart',
+                hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: 0},
+                'backgroundColor':'transparent'
+            };
+            // Create and draw the visualization.
+            var chart = new google.visualization.AreaChart(document.getElementById('Graph_div'));
+            chart.draw(data, options);    
+        };
+    });
+};
+
+Generate_Graph();
