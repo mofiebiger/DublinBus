@@ -260,5 +260,102 @@
 
 /*end of stop page*/
 
+/*css add fav button*/
+
+.button-like {
+
+  border: none;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 1rem;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 3rem;
+    /*border-color: #f1e62a;*/
+
+  color: #ffe00b;
+  transition: all ease 0.4s;
+}
+
+.button-like span {
+  margin-left: 0.5rem;
+}
+
+.button-like .fa,
+.button-like span {
+  transition: all ease 0.4s;
+}
+
+.button-like:focus {
+    /*border: 2px solid #8a8a8a;*/
+    background-color: #ffe00b;
+  /*background-color: transparent;*/
+}
+
+.button-like:focus .fa,
+.button-like:focus span {
+  color: #fefefe;
+}
+
+.button-like:hover {
+  /*border-color: #b9bab3;*/
+  /*background-color: transparent;*/
+    background-color: #ffe00b;
+}
+
+.button-like:hover .fa,
+.button-like:hover span {
+  /*color: #f1d925;*/
+    color: #fefefe;
+}
+
+
+.button-dislike {
+  /*border: 2px solid #8a8a8a;*/
+  border: none;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 1rem;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 3rem;
+  /*color: #1a7bba;*/
+  transition: all ease 0.4s;
+  /*background-color: #cc4b37;*/
+}
+
+.button-dislike .fa,
+.liked span {
+  /*color: #fefefe;*/
+    color: #1a7bba;
+}
+
+.button-dislike:focus {
+  /*background-color: #cc4b37;*/
+  background-color: #1a7bba;
+}
+
+.button-dislike:focus .fa,
+.button-dislike:focus span {
+  color: #fefefe;
+}
+
+.button-dislike:hover {
+  background-color: #1a7bba;
+  border-color: #1a7bba;
+}
+
+.button-dislike:hover .fa,
+.button-dislike:hover span {
+  color: #fefefe;
+}
+
+
+/*add fav button end*/
+
 
 

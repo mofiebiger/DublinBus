@@ -594,8 +594,8 @@ function writeStopsDataset(){
       }
 
 function writeStopDetails(){
-          var token = $('input[name="csrfmiddlewaretoken"]').val();
-          $('#select_stop').on('click', function(){
+      var token = $('input[name="csrfmiddlewaretoken"]').val();
+      $('#select_stop').on('click', function(){
           $('#addFav').hide();
           $('#removeFav').hide();
           //path selected stop id to bus_info
