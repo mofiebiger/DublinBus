@@ -389,7 +389,7 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
 
 
 
-class ContactUsView(LoginRequiredMixin, TemplateView):
+class ContactUsView(TemplateView):
     '''contact information'''
     def get(self,request):
         return render(request, 'contactPage.html')
