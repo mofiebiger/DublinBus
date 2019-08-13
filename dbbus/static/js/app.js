@@ -7,7 +7,7 @@ var oldfeed = "TEST";
 
 function initMap(position) {
 
-        // repeatedy refresh the traffic feed
+    // repeatedy refresh the traffic feed
     TrafficFeed();
     console.log("HERE");
     setInterval(() =>  TrafficFeed(), 600000);
