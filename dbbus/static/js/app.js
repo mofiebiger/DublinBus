@@ -3,8 +3,14 @@ var marker_list = [];
 var oldfeed = "TEST";
 
 
+
+
 function initMap(position) {
 
+        // repeatedy refresh the traffic feed
+    TrafficFeed();
+    console.log("HERE");
+    setInterval(() =>  TrafficFeed(), 600000);
 
     markerA = new google.maps.MarkerImage('marker.png')
     new google.maps.Size(24, 27),
@@ -429,10 +435,6 @@ function initMap(position) {
 
 
     on8();
-
-    // repeatedy refresh the traffic feed
-    
-    setInterval(() =>  TrafficFeed(), 600000);
 
     function invokeTourismBtns() {
         $('#tourismNatureBtn').on('click', function (event) {
@@ -1281,7 +1283,7 @@ function TrafficFeed() {
                 console.log("changed traffic feed");          
             }
         };
-
+        console.log("Here");
         var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
 
         for (i = 0; i < entries.length; i++) {
