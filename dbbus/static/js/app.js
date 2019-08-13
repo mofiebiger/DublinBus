@@ -431,6 +431,7 @@ function initMap(position) {
     on8();
 
     // repeatedy refresh the traffic feed
+    
     setInterval(() =>  TrafficFeed(), 600000);
 
     function invokeTourismBtns() {
