@@ -19,8 +19,9 @@ urlpatterns = [
 
     # '''meihan added'''
     path('stops', views.StopsView.as_view(), name = 'stops'),
-    
     path('bus_info', views.BusInfoView.as_view(), name = 'bus_info'),
     path('stop_info', views.StopInfoView.as_view(), name = 'stop_info'),
     path('TrafficFeed', views.TrafficFeedView.as_view(), name = 'TrafficFeed'),
+    path('Graph_distribution', views.Graph_distributionView.as_view(), name = 'Graph_distribution'),
+
 ]
