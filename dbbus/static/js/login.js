@@ -53,23 +53,79 @@
                     alert("Password updated successfully, you need to relogin");
                     location.href= window.location.protocol+"//"+window.location.host
 
-                } else if (result.res == 0 ){
-                    alert(result.error_msg)
-                } else{
-                	var error_messages = result.error_msg
-                	console.log(error_messages)
-//                	for(var i=0; i<error_messages.length,i++){
-//                		
-//                	}
-                    alert(result.error_msg[0])
-                }
-            },
+                }else{
+                	alert(result.error_msg)
+            }},
             error:function(){
-                alert('reset pw fail')
+                alert('Network problem!')
             },
         })
         return false;
     })
+    
+    		//reset password through email
+            $('#resetPwBtnByEmail').on('click', function(){
+            var new_pwd = $('.out input[name="new_pwd"]').val()
+            var rnew_pwd = $('.out input[name="rnew_pwd"]').val()
+
+        $.ajax({
+            type: "POST",
+            url: window.location.href,
+            async: false,
+            headers: {
+                "X-CSRFToken": $('.out input[name="csrfmiddlewaretoken"]').val()
+            },
+            data: {'new_pwd': new_pwd, 'rnew_pwd': rnew_pwd},
+            dataType: 'json',
+            success:function(result){
+                if (result.res == 1) {
+                    alert("Password updated successfully, you need to relogin");
+                    location.href= window.location.protocol+"//"+window.location.host
+
+                }else{
+                	alert(result.error_msg)
+            }},
+            error:function(){
+                alert('Network problem!')
+            },
+        })
+        return false;
+    })
+
+    
+    
+            $('#forgetPwBtn').on('click', function(){
+            var email = $('#forget_pw_div input[name="email"]').val()
+            var captcha_1 = $('#forget_pw_div #id_captcha_1').val()
+            var captcha_0 = $('#forget_pw_div #id_captcha_0').val()
+            console.log(email,captcha_1,captcha_0)
+
+        //post change_avatar
+        $.ajax({
+            type: "POST",
+            url: window.location.protocol+"//"+window.location.host+'/user/forget_password',
+            async: false,
+            headers: {
+                "X-CSRFToken": $('#forget_pw_div input[name="csrfmiddlewaretoken"]').val()
+            },
+//            data: {'email': email,'response':$('#forget_pw_div #id_captcha_1').val(), 'hashkey':$('#forget_pw_div #id_captcha_0').val()},
+            data: {'email': email,'captcha_0':captcha_0, 'captcha_1':captcha_1},
+            dataType: 'json',
+            success:function(result){
+                if (result.res == 1) {
+                    alert(result.success_msg);
+                    location.href= window.location.protocol+"//"+window.location.host
+
+                }else{
+                	alert(result.error_msg)
+            }},
+            error:function(){
+                alert('Network problem or Server Problem!')
+            },
+        })
+        return false;
+    })
+
 
 	  	$('#loginBtn').on('click',function(){
 		var username = $('#username').val()
@@ -91,7 +147,7 @@
 				}
 			},
 			error: function(){
-				alert("false");
+				alert("Network problem!");
 			},
 		});
 		});

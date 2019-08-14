@@ -295,14 +295,13 @@ class PasswordForgetView(TemplateView):
                 sender = settings.EMAIL_FROM
                 receiver = [email]
                 host_name = request.get_host()
-                # html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
+                html_message = '<h1'+user.username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
+                send_mail(subject, message, sender, receiver, html_message=html_message)
+                return JsonResponse({"res": 1, "success_msg":'The email has been sent successfully,please check your email!'})
+            return JsonResponse({"res": 0, "error_msg":'The email does not be registered, Please check! '})
 
-                # send_mail(subject, message, sender, receiver, html_message=html_message)
-                return render(request,'send_success.html')
-
-            return render(request,'pwd_forget.html',{'errormg':'email has not been found'})
         else:
-            return render(request,'pwd_forget.html',{'forget_form':forget_form})
+            return JsonResponse({"res": 0, "error_msg":'The captcha or email are wrong, Please check!'})
 
 
 #/user/reset_password/<token>
@@ -333,7 +332,7 @@ class ResetPasswordView(TemplateView):
         #check if the user information is complete
         if reset_form.is_valid():
             new_password = request.POST.get('new_pwd')
-            rnew_password = request.POST.get('cnew_pwd')
+            rnew_password = request.POST.get('rnew_pwd')
 
             if new_password != rnew_password:
                 return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
@@ -348,10 +347,14 @@ class ResetPasswordView(TemplateView):
 
             # check if the link is valid
             except BadSignature as e:
-                return render(request,'404.html')
+                return JsonResponse({"res": 0, "error_msg":'Page not found'})
 
         else:
-            return JsonResponse({"res": 0, "error_msg":'the data has some error'})
+            error_messages = ""
+            for i in reset_form.errors.keys():
+                error_messages+= reset_form.errors[i][0]+"\r\n"
+                
+            return JsonResponse({"res": 0, "error_msg":error_messages})
 
 
 

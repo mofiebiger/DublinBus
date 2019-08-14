@@ -483,13 +483,13 @@
         <a href="#" class="toLogin">Back to login</a>
         <p class="subheader">You such a big foolish，how dare you forget your password？OK, I forgive you! Please input your email to change your password!</p>
 
-        <form method="post">
+        <form>
             {% csrf_token %}
             <div>
-                Email: <input type="email" placeholder="Enter your email">
+                Email: <input type="email" name="email" placeholder="Enter your email">
                 <br>
                 Verify code：{{ forget_form.captcha }}
-                <input type="submit" class="button" value="Submit">
+                <input type="button" class="button" value="Submit" id="forgetPwBtn">
             </div>
         </form>
         <h1>{{ forget_form.errors }}{{ errormg }}</h1>
