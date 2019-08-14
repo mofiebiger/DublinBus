@@ -2,6 +2,7 @@ import json
 import os
 import re
 import numpy as np
+import pandas as pd
 import scipy.stats as stats
 import feedparser as fp
 
@@ -672,14 +673,19 @@ class Graph_distributionView(TemplateView):
         mus, lists of means  
         """
 
-        def find_sigma(mu):
+        def find_sigma(x):
             """
             Dont edit this function. log-linear fitting func to determine approporiate sigma from mu.
             """
-            lin = 0.128579170 * mu
-            log = 2.63975130 * np.log(2.33903903*(mu * 10**-27))
-            c = 1.53988325*10**3
-            return lin + log + c
+
+            # params: array([1.28579170e-01, 2.63975130e+01, 2.33903903e-27, 1.53988325e+03])
+
+            a = 0.128579170 
+            b = 26.3975130
+            c = 0.000000000000000000000000002339039
+            d = 1539.88325
+            
+            return a*x + b*np.log(c*x) + d
 
         # get content from the request 
         # content = json.loads(request.body)
@@ -687,7 +693,7 @@ class Graph_distributionView(TemplateView):
         # arrival times of the buses [in seconds! Not Minutes.]
         # mus = content['mus']
 
-        mus = [60,300,600]
+        mus = [60]
 
         graph_data = []
         
@@ -697,8 +703,10 @@ class Graph_distributionView(TemplateView):
             sigma = find_sigma(mu)
             
             # bounds of data set
-            xmin = 1
-            xmax = 4*sigma
+            xmin = -3*sigma + mu
+            xmax = 3*sigma + mu
+
+            print(sigma)
 
             xvals = np.linspace(xmin, xmax, 100)
 

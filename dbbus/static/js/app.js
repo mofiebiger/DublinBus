@@ -1564,8 +1564,6 @@ function Generate_Graph(arrival_times) {
 
     arrival_times = [60,300,600];
 
-    console.log(arrival_times);
-
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
         // 'type': 'POST',
@@ -1576,50 +1574,47 @@ function Generate_Graph(arrival_times) {
 
         graphdata = graphdata['graph_data'];
 
-        
-
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(prepareChart);
 
         function prepareChart() {
 
-            var data = new google.visualization.DataTable([
-                ['Time','Probability'],
-                [0,0]
-            ]);
+            var x_bound_upper = 0;
 
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', 'Probability');
+            
             graphdata.forEach( function(set) {
+
                 x = set['xvals'];
                 y = set['yvals'];
 
-                var temp = new google.visualization.DataTable();
-                temp.addColumn('number', 'Time');
-                temp.addColumn('number', 'Probability');
-
-                for(i = 0; i < x.length; i++)
-                    temp.addRow([x[i], y[i]]);
-                
-                console.log(x, y);
-
-                data = new google.visualization.data.join(
-                    data,
-                    temp,
-                    'full',
-                    ['Time','Probability'],
-                    [],
-                    []
-                );
-            });
-
+                for(i = 0; i < x.length; i++) {
+                    data.addRow([x[i], y[i]]);
+                    
+                    if (x[i] > x_bound_upper)
+                        x_bound_upper = x[i];
+                }
+            }); 
+            
             var options = {
                 title: 'Sample Chart',
-                hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},
+                hAxis: {
+                    title: 'Time',  
+                    titleTextStyle: {color: '#333'}, 
+                    minValue:0,
+                    viewWindow: {
+                        max: x_bound_upper + 0.5 * x_bound_upper
+                        },
+                    },
                 vAxis: {minValue: 0},
                 'backgroundColor':'transparent'
             };
-            // Create and draw the visualization.
+
             var chart = new google.visualization.AreaChart(document.getElementById('Graph_div'));
-            chart.draw(data, options);    
+            chart.draw(data, options); 
+
         };
     });
 };
