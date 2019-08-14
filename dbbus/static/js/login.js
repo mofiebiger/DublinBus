@@ -159,8 +159,7 @@
 			        		success:function(data){
 			        			if (data.res == 1){
 			        				alert(data.success_msg)
-			        			}else if (data.res == 0){
-			        				
+			        			}else if (data.res == 0){			        				
 			        				alert(data.error_msg)
 			        			}
 			        		},
