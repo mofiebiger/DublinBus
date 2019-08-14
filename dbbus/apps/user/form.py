@@ -16,6 +16,6 @@ class ResetPwdForm(forms.Form):
   
  
 class ChangePwdForm(forms.Form):
-    orignal_pwd = forms.CharField(required=True,min_length=8,max_length=20,error_messages={'required': 'password can not been empty.', 'min_length': "at least 8 bits"})
-    new_pwd=forms.CharField(required=True,min_length=8,max_length=20,error_messages={'required': 'password can not been empty.', 'min_length': "at least 8 bits"})
-    cnew_pwd = forms.CharField(required=True, min_length=6,max_length=20,error_messages={'required': 'password can not been empty.', 'min_length': "at least 8 bits"})  
+    original_pwd = forms.CharField(required=True, error_messages={'required': 'The original password can not been empty.'})
+    new_pwd=forms.CharField(required=True,min_length=8,max_length=20,error_messages={'required': ' The new password can not been empty.', 'min_length': "The new password must has at least 8 bits",'max_length': "The new password must has at most 20 bits"})
+    rnew_pwd = forms.CharField(required=True, min_length=6,max_length=20,error_messages={'required': 'The comfirm password can not been empty.', 'min_length': "The comfirm password must has at least 8 bits",'max_length': "The comfirm password must has at most 20 bits"})  

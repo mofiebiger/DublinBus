@@ -501,10 +501,10 @@
 {#    <h2>Your email is :{{user.email}},you can reset your password</h2>#}
     <form>
       {% csrf_token %}
-      <P><input type="password" name="email" placeholder="" hidden></P>
+      <P><input type="password" name="original_pwd" placeholder="" hidden></P>
       <P><span>New Password：</span><input type="password" name="new_pwd" placeholder=""></P>
-      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder=""></P>
-      <p><input type="submit" value="submit" id="resetPwBtn"></p>
+      <P><span>Confirm：</span><input type="password" name="rnew_pwd" placeholder=""></P>
+      <p><input type="button" value="submit" id="resetPwBtn"></p>
     </form>
     <h1>{{ msg }}</h1>
   </div>

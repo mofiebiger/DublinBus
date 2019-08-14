@@ -246,24 +246,27 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         '''process the password modification'''
         # get the user data
         username = request.user.username
-        original_password = request.POST.get('original_pwd')
-        new_password = request.POST.get('new_pwd')
-        rnew_password = request.POST.get('cnew_pwd')
+        change_password_form=ChangePwdForm(request.POST)
+        if change_password_form.is_valid():
+            # check the password whether they are the same
+            original_password = request.POST.get('original_pwd')
+            new_password = request.POST.get('new_pwd')
+            rnew_password = request.POST.get('rnew_pwd')
+            if new_password != rnew_password:
+                return JsonResponse({"res": 0, "error_msg":'The two passwords you typed do not match.'})
 
-        # verify the data,check if they are complete
-        if not all([original_password,new_password, rnew_password]):
-            return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
-
-        # check the password whether they are the same
-        if new_password != rnew_password:
-            return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
-
-        #if everything is good,then process the password modification
-        user = request.user
-        if user.check_password(original_password):
-            request.user.set_password(new_password)
-            user.save()
-        return JsonResponse({"res": 1})
+            #if everything is good,then process the password modification
+            user = request.user
+            if user.check_password(original_password):
+                request.user.set_password(new_password)
+                user.save()
+                return JsonResponse({"res": 1})
+            return JsonResponse({"res": 0, "error_msg":'The original password you typed is wrong, please check!'})
+        error_messages = ""
+        for i in change_password_form.errors.keys():
+            error_messages+= change_password_form.errors[i][0]+"\r\n"
+            
+        return JsonResponse({"res": 0, "error_msg":error_messages})
 
 
 

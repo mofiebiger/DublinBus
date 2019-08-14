@@ -2,6 +2,7 @@
 
         $('#upload_avatar').on('click', function(){
             var token = $('input[name="csrfmiddlewaretoken"]').val()
+            console.log(token)
             var form = new FormData();
             form.append('avatar', $('#file_upload')[0].files[0])
             form.append('csrfmiddlewaretoken', token)
@@ -32,40 +33,49 @@
     })
 
         $('#resetPwBtn').on('click', function(){
-            var token = $('input[name="csrfmiddlewaretoken"]').val()
-            var email = $('#reset_pw_div input[name="email"]').val()
+            var original_pwd = $('#reset_pw_div input[name="original_pwd"]').val()
             var new_pwd = $('#reset_pw_div input[name="new_pwd"]').val()
-            var rnew_pwd = $('#reset_pw_div input[name="cnew_pwd"]').val()
+            var rnew_pwd = $('#reset_pw_div input[name="rnew_pwd"]').val()
+            console.log(original_pwd,new_pwd,rnew_pwd)
 
         //post change_avatar
         $.ajax({
             type: "POST",
-            url: window.location.protocol+"//"+window.location.host+'/user/reset_password',
-            async: true,
-            data: {'email': email,'new_pwd': new_pwd, 'rnew_pwd': cnew_pwd, 'csrfmiddlewaretoken':token,},
-            processData:false,
-            contentType:false,
+            url: window.location.protocol+"//"+window.location.host+'/user/change_password',
+            async: false,
+            headers: {
+                "X-CSRFToken": $('#reset_pw_div input[name="csrfmiddlewaretoken"]').val()
+            },
+            data: {'original_pwd': original_pwd,'new_pwd': new_pwd, 'rnew_pwd': rnew_pwd},
+            dataType: 'json',
             success:function(result){
                 if (result.res == 1) {
-                    alert("Password updated successfully");
+                    alert("Password updated successfully, you need to relogin");
                     location.href= window.location.protocol+"//"+window.location.host
 
                 } else if (result.res == 0 ){
                     alert(result.error_msg)
                 } else{
-                    alert("either 0 nor 1")
+                	var error_messages = result.error_msg
+                	console.log(error_messages)
+//                	for(var i=0; i<error_messages.length,i++){
+//                		
+//                	}
+                    alert(result.error_msg[0])
                 }
             },
             error:function(){
                 alert('reset pw fail')
             },
         })
+        return false;
     })
 
 	  	$('#loginBtn').on('click',function(){
 		var username = $('#username').val()
 		var pwd = $('#pwd').val()
 		var token = $('input[name="csrfmiddlewaretoken"]').val()
+		console.log(token)
 
         //post login
 		$.ajax({
