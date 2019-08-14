@@ -410,6 +410,7 @@
     </figcaption>
   </figure>
     <form class="callout text-center">
+    {% csrf_token %}
 {#        <h2>Log in with your username</h2>#}
         <div class="floated-label-wrapper">
             <label for=username">Username</label>
@@ -501,7 +502,7 @@
 {#    <h2>Your email is :{{user.email}},you can reset your password</h2>#}
     <form>
       {% csrf_token %}
-      <P><input type="password" name="original_pwd" placeholder="" hidden></P>
+      <P><span>Original Password：</span><input type="password" name="original_pwd" placeholder="" hidden></P>
       <P><span>New Password：</span><input type="password" name="new_pwd" placeholder=""></P>
       <P><span>Confirm：</span><input type="password" name="rnew_pwd" placeholder=""></P>
       <p><input type="button" value="submit" id="resetPwBtn"></p>

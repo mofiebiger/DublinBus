@@ -173,7 +173,7 @@ class LoginView(TemplateView):
 
         #get the password forget info
         forget_form=ForgetPwdForm()
-        return render(request, 'login.html',{'forget_form':forget_form})
+        return render(request, 'login.html',{'forget_form':forget_form,'username':username,'checked':checked})
     
         # return JsonResponse({'username':username, 'checked':checked})
 
@@ -198,8 +198,8 @@ class LoginView(TemplateView):
                 # aquire the url after login
                 # go to the index page as default.
                 # go to the next_url
-                next_url = request.GET.get('next', reverse('user:index'))
-                response = redirect(next_url) # HttpResponseRedirect
+
+                response = JsonResponse({"res": 1})
                 # if remember me is checked
                 remember = request.POST.get('remember')
 
@@ -210,7 +210,7 @@ class LoginView(TemplateView):
                     response.delete_cookie('username')
 
                 # return response
-                return JsonResponse({"res": 1})
+                return response
 
             else:
                 # user is not activated

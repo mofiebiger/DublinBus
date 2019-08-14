@@ -2,7 +2,6 @@
 
         $('#upload_avatar').on('click', function(){
             var token = $('input[name="csrfmiddlewaretoken"]').val()
-            console.log(token)
             var form = new FormData();
             form.append('avatar', $('#file_upload')[0].files[0])
             form.append('csrfmiddlewaretoken', token)
@@ -36,9 +35,8 @@
             var original_pwd = $('#reset_pw_div input[name="original_pwd"]').val()
             var new_pwd = $('#reset_pw_div input[name="new_pwd"]').val()
             var rnew_pwd = $('#reset_pw_div input[name="rnew_pwd"]').val()
-            console.log(original_pwd,new_pwd,rnew_pwd)
 
-        //post change_avatar
+        //post change_password
         $.ajax({
             type: "POST",
             url: window.location.protocol+"//"+window.location.host+'/user/change_password',
@@ -98,7 +96,6 @@
             var email = $('#forget_pw_div input[name="email"]').val()
             var captcha_1 = $('#forget_pw_div #id_captcha_1').val()
             var captcha_0 = $('#forget_pw_div #id_captcha_0').val()
-            console.log(email,captcha_1,captcha_0)
 
         //post change_avatar
         $.ajax({
@@ -128,22 +125,26 @@
 
 
 	  	$('#loginBtn').on('click',function(){
-		var username = $('#username').val()
-		var pwd = $('#pwd').val()
-		var token = $('input[name="csrfmiddlewaretoken"]').val()
-		console.log(token)
-
+		var username = $('#login_div #username').val()
+		var pwd = $('#login_div #pwd').val()
+		var remember = $('#login_div input[name="remember"]:checked').val()
         //post login
 		$.ajax({
 			cache:false,
 			type: "POST",
 			url:window.location.protocol+"//"+window.location.host+"/user/login",
-			data:{'username':username, 'pwd': pwd,'csrfmiddlewaretoken':token},
+            headers: {
+                "X-CSRFToken": $('#login_div input[name="csrfmiddlewaretoken"]').val()
+            },
+			data:{'username':username, 'pwd': pwd, 'remember':remember},
 			async:false,
 			success:function(result){
 				if (result.res == 1){
 
 					location.href=window.location.protocol+"//"+window.location.host;
+				}else if (result.res == 0){
+
+					alert(result.errmsg)
 				}
 			},
 			error: function(){
