@@ -682,6 +682,8 @@ class Graph_distributionView(TemplateView):
 
         # get content from the request 
         content = json.loads(request.body)
+        
+        # arrival times of the buses [in seconds! Not Minutes.]
         mus = content['mus']
 
         graph_data = []
@@ -689,10 +691,19 @@ class Graph_distributionView(TemplateView):
         for idx in range(len(mus)):
 
             mu = mus[idx]
-            s = find_sigma(mu)
-        xvals = 
-        yvals = stats.norm.pdf(xvals,mu,sigma)
+            sigma = find_sigma(mu)
+            
+            # bounds of data set
+            xmin = -4*s
+            xmax = 4*s
 
+            xvals = np.linspace(xmin, xmax, 100)
+            yvals = stats.norm.pdf(xvals,mu,sigma)
+
+            graph_data.append({'yvals':yvals, 'xvals':xvals})
+
+
+        
         return JsonResponse({'x':list(xvals), 'y':list(yvals)})
 
 
