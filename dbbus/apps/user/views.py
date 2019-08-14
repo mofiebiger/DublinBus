@@ -23,6 +23,8 @@ from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
 from prediction.models import StopInformation
 from django.core import serializers
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
 FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
@@ -660,6 +662,7 @@ class TrafficFeedView(TemplateView):
         return JsonResponse({'data':entries})
 
 class Graph_distributionView(TemplateView):
+    
     def get(self, request):
         """
         Returna normal distribution for plotting 
@@ -672,7 +675,19 @@ class Graph_distributionView(TemplateView):
         return JsonResponse({'x':list(xvals), 'y':list(yvals)})
 
 
-
+class CaptchaRefreshView(TemplateView):
+    
+    def get(self,request):
+        """
+        refresh the captcha if user can not see  it clearly
+        """       
+        new_key = CaptchaStore.generate_key()
+        to_json_response = {
+            'key': new_key,
+            'image_url': captcha_image_url(new_key),
+        }
+        return JsonResponse(to_json_response)
+        
 
 
 #

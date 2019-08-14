@@ -119,6 +119,7 @@
                 alert('Network problem or Server Problem!')
             },
         })
+        $('.captcha').click();        
         return false;
     })
 
@@ -215,4 +216,12 @@
 			$('#login_div').attr("style","display:none;")
         })
 
+        
+        
+        $('.captcha').click(function(){
+             $.getJSON("/refresh/",
+                      function(result){
+                 $('.captcha').attr('src', result['image_url']);
+                 $('#id_captcha_0').val(result['key'])
+              });});
 })

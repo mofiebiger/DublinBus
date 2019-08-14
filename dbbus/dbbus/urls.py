@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include,re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from apps.user.views import IndexView
+from apps.user.views import IndexView,CaptchaRefreshView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('user.urls',namespace='user')),
@@ -10,7 +10,8 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path('',IndexView.as_view()),
     path('', include('pwa.urls')),
-    path('foundation/', include('foundation.urls',namespace='foundation'))
+    path('foundation/', include('foundation.urls',namespace='foundation')),
+    path('refresh/', CaptchaRefreshView.as_view(), name='captcha-refresh'),
 ]
 
 if settings.DEBUG:
