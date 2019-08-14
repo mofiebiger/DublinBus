@@ -663,13 +663,34 @@ class TrafficFeedView(TemplateView):
 
 class Graph_distributionView(TemplateView):
     
-    def get(self, request):
+    def post(self, request):
         """
-        Returna normal distribution for plotting 
+        Returna normal distribution for plotting
+
+        Inputs: 
+        mus, lists of means  
         """
-        mu = 1
-        sigma = 0.3
-        xvals = np.linspace(0,5,500)
+
+        def find_sigma(mu):
+            """
+            Dont edit this function. log-linear fitting func to determine approporiate sigma from mu.
+            """
+            lin = 0.128579170 * mu
+            log = 2.6397513 * np.log(2.33903903*(mu * 10**(-27)))
+            c = 1.53988325
+            return lin + log + c
+
+        # get content from the request 
+        content = json.loads(request.body)
+        mus = content['mus']
+
+        graph_data = []
+        
+        for idx in range(len(mus)):
+
+            mu = mus[idx]
+            s = find_sigma(mu)
+        xvals = 
         yvals = stats.norm.pdf(xvals,mu,sigma)
 
         return JsonResponse({'x':list(xvals), 'y':list(yvals)})
