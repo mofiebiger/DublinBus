@@ -53,7 +53,7 @@ class RegisterView(TemplateView):
         username = request.POST.get('user_name')
         if code == 1 :
             password = request.POST.get('pwd')
-            r_password = request.POST.get('cpwd')
+            r_password = request.POST.get('rpwd')
             email = request.POST.get('email')
             if not all([username, password, email]):
                 # if the data is not complete,return the error information
@@ -110,7 +110,7 @@ class RegisterView(TemplateView):
 
             send_mail(subject, message, sender, receiver, html_message=html_message)
 
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1,"success_msg":'The email has been sent successfully,please check your email!'})
         except:
             return JsonResponse({"res": 0, "error_msg":"send email failed"})
 
@@ -129,13 +129,14 @@ class ActiveView(TemplateView):
 
             #if the user is already activated,return the error message
             if user.is_active == 1:
-                return JsonResponse({"res": 0, "error_msg":"your email has been verified"})
+
+                return render(request,'active.html',{'user':user,"error_msg":"your email has been verified, Please login in directly!"})
 
             # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1,"user":user})
+            return render(request,'active.html',{'user':user})
         except SignatureExpired as e:
             # activation link has expired
-            return JsonResponse({"res": 0, "error_msg":'the date has been expired'})
+            return render(request,'active.html',{'user':user,"error_msg":'the active link has been expired'})
         except BadSignature as e:
             # link is not correct,return the not found page
             return render(request,'404.html')
@@ -151,10 +152,10 @@ class ActiveView(TemplateView):
             user.is_active = 1
             user.save()
              # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1,"success_msg":"Congratulations!,Your email has been verified, Please go to Dublin-bus index page to login!"})
         except BadSignature as e:
             # link is not correct,return the not found page
-            return render(request,'404.html')
+            return JsonResponse({"res": 0,'error_msg':'The link is not correct!!'})
 
 # /user/login
 class LoginView(TemplateView):

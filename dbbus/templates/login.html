@@ -348,13 +348,14 @@
       <div class="registration-box-form-section">
         <h1 class="registration-box-title">Sign up</h1>
 	    <form id="new_user_form" method="post" class="callout text-center">
+	    {% csrf_token %}
             <div class="floated-label-wrapper">
                 <label for=reg-username">Username</label>
                 <input class="registration-box-input" type="text" name="reg-username" id="user_name" placeholder="Username" aria-describedby="reg-hint1" aria-errormessage="reg-error1" required>
                 <span class="form-error" id="reg-error1">
                 Yo, you had better fill this out, it's required.
                 </span>
-                <p class="help-text" id="reg-hint1">Your password must have at least 10 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
             </div>
             <div class="floated-label-wrapper">
                 <label for="reg-email">Email</label>
@@ -362,7 +363,7 @@
                 <span class="form-error" id="reg-error1">
                 Yo, you had better fill this out, it's required.
                 </span>
-                <p class="help-text" id="reg-hint1">Your password must have at least 10 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
             </div>
             <div class="floated-label-wrapper">
                 <label for="reg-pwd">Password</label>

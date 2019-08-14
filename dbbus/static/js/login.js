@@ -91,13 +91,13 @@
     })
 
     
-    
+    		//FORGET PASSOWRD function
             $('#forgetPwBtn').on('click', function(){
             var email = $('#forget_pw_div input[name="email"]').val()
             var captcha_1 = $('#forget_pw_div #id_captcha_1').val()
             var captcha_0 = $('#forget_pw_div #id_captcha_0').val()
 
-        //post change_avatar
+
         $.ajax({
             type: "POST",
             url: window.location.protocol+"//"+window.location.host+'/user/forget_password',
@@ -105,7 +105,6 @@
             headers: {
                 "X-CSRFToken": $('#forget_pw_div input[name="csrfmiddlewaretoken"]').val()
             },
-//            data: {'email': email,'response':$('#forget_pw_div #id_captcha_1').val(), 'hashkey':$('#forget_pw_div #id_captcha_0').val()},
             data: {'email': email,'captcha_0':captcha_0, 'captcha_1':captcha_1},
             dataType: 'json',
             success:function(result){
@@ -123,7 +122,7 @@
         return false;
     })
 
-
+//    	login function
 	  	$('#loginBtn').on('click',function(){
 		var username = $('#login_div #username').val()
 		var pwd = $('#login_div #pwd').val()
@@ -145,6 +144,8 @@
 				}else if (result.res == 0){
 
 					alert(result.errmsg)
+				}else{
+					
 				}
 			},
 			error: function(){
@@ -153,6 +154,38 @@
 		});
 		});
 
+//    	register function
+        $('#regBtn').on('click',function(){
+        	var username = $('#new_user_form #user_name').val()
+        	var email = $('#new_user_form #reg-email').val()
+        	var pwd = $('#new_user_form #reg-pwd').val()
+        	var rpwd = $('#new_user_form #re-pwd').val()
+        	var code = 1
+        	//post register
+        	$.ajax({
+        		cache:false,
+        		type: "POST",
+        		url:window.location.protocol+"//"+window.location.host+"/user/register",
+        		headers: {
+        			"X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
+        		},
+        		data:{'user_name':username, 'pwd':pwd, 'rpwd':rpwd, 'code':code, 'email':email},
+        		async:false,
+        		success:function(result){
+        			if (result.res == 1){
+        				alert(result.success_msg)
+        				$('#loginBtn').onclick();
+        			}else if (result.res == 0){
+        				
+        				alert(result.error_msg)
+        			}
+        		},
+        		error: function(){
+        			alert("Network problem!");
+        		},
+        	});
+        });
+        
 
 
 	  	$('#forget_password').on('click', function(){
