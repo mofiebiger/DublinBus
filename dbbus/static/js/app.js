@@ -9,7 +9,6 @@ function initMap(position) {
 
     // repeatedy refresh the traffic feed
     TrafficFeed();
-    console.log("HERE");
     setInterval(() =>  TrafficFeed(), 600000);
 
     markerA = new google.maps.MarkerImage('marker.png')
@@ -1558,31 +1557,60 @@ function deleteMarkers() {
 }
 
 
-function Generate_Graph() {
+function Generate_Graph(arrival_times) {
 
     // Need to make the graph take inputs of time. So that mu can be changed as needed.
     // sigma can be calucalted in the backend
 
+    arrival_times = [60,300,600];
+
+    console.log(arrival_times);
+
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
-        'type': 'get',
+        // 'type': 'POST',
+        'type':'get',
         'dataType': 'json',
+        // 'data':{'mus':arrival_times}
     }).done(function (graphdata) {
 
-        var x = graphdata['x'];
-        var y = graphdata['y'];
+        graphdata = graphdata['graph_data'];
+
+        
 
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(prepareChart);
 
         function prepareChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'time');
-            data.addColumn('number', 'probability');
 
-            for(i = 0; i < x.length; i++)
-                data.addRow([x[i], y[i]]);
-        
+            var data = new google.visualization.DataTable([
+                ['Time','Probability'],
+                [0,0]
+            ]);
+
+            graphdata.forEach( function(set) {
+                x = set['xvals'];
+                y = set['yvals'];
+
+                var temp = new google.visualization.DataTable();
+                temp.addColumn('number', 'Time');
+                temp.addColumn('number', 'Probability');
+
+                for(i = 0; i < x.length; i++)
+                    temp.addRow([x[i], y[i]]);
+                
+                console.log(x, y);
+
+                data = new google.visualization.data.join(
+                    data,
+                    temp,
+                    'full',
+                    ['Time','Probability'],
+                    [],
+                    []
+                );
+            });
+
             var options = {
                 title: 'Sample Chart',
                 hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},

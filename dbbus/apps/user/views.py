@@ -663,7 +663,8 @@ class TrafficFeedView(TemplateView):
 
 class Graph_distributionView(TemplateView):
     
-    def post(self, request):
+    # def post(self, request):
+    def get(self, request):
         """
         Returna normal distribution for plotting
 
@@ -676,15 +677,17 @@ class Graph_distributionView(TemplateView):
             Dont edit this function. log-linear fitting func to determine approporiate sigma from mu.
             """
             lin = 0.128579170 * mu
-            log = 2.6397513 * np.log(2.33903903*(mu * 10**(-27)))
-            c = 1.53988325
+            log = 2.63975130 * np.log(2.33903903*(mu * 10**-27))
+            c = 1.53988325*10**3
             return lin + log + c
 
         # get content from the request 
-        content = json.loads(request.body)
+        # content = json.loads(request.body)
         
         # arrival times of the buses [in seconds! Not Minutes.]
-        mus = content['mus']
+        # mus = content['mus']
+
+        mus = [60,300,600]
 
         graph_data = []
         
@@ -694,17 +697,16 @@ class Graph_distributionView(TemplateView):
             sigma = find_sigma(mu)
             
             # bounds of data set
-            xmin = -4*s
-            xmax = 4*s
+            xmin = 1
+            xmax = 4*sigma
 
             xvals = np.linspace(xmin, xmax, 100)
+
             yvals = stats.norm.pdf(xvals,mu,sigma)
 
-            graph_data.append({'yvals':yvals, 'xvals':xvals})
+            graph_data.append({'yvals':list(yvals), 'xvals':list(xvals)})
 
-
-        
-        return JsonResponse({'x':list(xvals), 'y':list(yvals)})
+        return JsonResponse({'graph_data':graph_data})
 
 
 class CaptchaRefreshView(TemplateView):
