@@ -1,17 +1,33 @@
+
+
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
+ 
 <head>
-    <meta charset="UTF-8">
-    <title>active page</title>
-    
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>active your email</title>
+ <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/active_email.js' %}"></script>
+
 </head>
 <body>
-
-<form method="post" >
-<h1>Dear {{user.username}}</h1>
-<h1>your email is {{user.email}}</h1>
-<h1>Please click the active button to verify your email</h1>
-<input type="submit" name="" value="Active" class="input_submit">
-</form>
+ 
+ 
+  <div class="out" id="active_email_div">
+    <h1>Dear {{user.username}}:</h1>
+    <h2>Your email is :{{user.email}}</h2>
+    {% if error_msg %}    
+    <h2>{{ error_msg }}</h2>
+    {% else %}
+    <h2>you can click the button below to active your account</h2>
+    <form method="post" >
+      {% csrf_token %}
+      <p><input type="button" value="submit" id="activeEmail"></p>
+    </form>
+    {% endif %}
+  </div>
+ 
 </body>
 </html>

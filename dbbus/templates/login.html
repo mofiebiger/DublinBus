@@ -348,13 +348,14 @@
       <div class="registration-box-form-section">
         <h1 class="registration-box-title">Sign up</h1>
 	    <form id="new_user_form" method="post" class="callout text-center">
+	    {% csrf_token %}
             <div class="floated-label-wrapper">
                 <label for=reg-username">Username</label>
                 <input class="registration-box-input" type="text" name="reg-username" id="user_name" placeholder="Username" aria-describedby="reg-hint1" aria-errormessage="reg-error1" required>
                 <span class="form-error" id="reg-error1">
                 Yo, you had better fill this out, it's required.
                 </span>
-                <p class="help-text" id="reg-hint1">Your password must have at least 10 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
             </div>
             <div class="floated-label-wrapper">
                 <label for="reg-email">Email</label>
@@ -362,7 +363,7 @@
                 <span class="form-error" id="reg-error1">
                 Yo, you had better fill this out, it's required.
                 </span>
-                <p class="help-text" id="reg-hint1">Your password must have at least 10 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
             </div>
             <div class="floated-label-wrapper">
                 <label for="reg-pwd">Password</label>
@@ -410,6 +411,7 @@
     </figcaption>
   </figure>
     <form class="callout text-center">
+    {% csrf_token %}
 {#        <h2>Log in with your username</h2>#}
         <div class="floated-label-wrapper">
             <label for=username">Username</label>
@@ -483,13 +485,13 @@
         <a href="#" class="toLogin">Back to login</a>
         <p class="subheader">You such a big foolish，how dare you forget your password？OK, I forgive you! Please input your email to change your password!</p>
 
-        <form method="post">
+        <form>
             {% csrf_token %}
             <div>
-                Email: <input type="email" placeholder="Enter your email">
+                Email: <input type="email" name="email" placeholder="Enter your email">
                 <br>
                 Verify code：{{ forget_form.captcha }}
-                <input type="submit" class="button" value="Submit">
+                <input type="button" class="button" value="Submit" id="forgetPwBtn">
             </div>
         </form>
         <h1>{{ forget_form.errors }}{{ errormg }}</h1>
@@ -501,10 +503,10 @@
 {#    <h2>Your email is :{{user.email}},you can reset your password</h2>#}
     <form>
       {% csrf_token %}
-      <P><input type="password" name="email" placeholder="" hidden></P>
+      <P><span>Original Password：</span><input type="password" name="original_pwd" placeholder="" hidden></P>
       <P><span>New Password：</span><input type="password" name="new_pwd" placeholder=""></P>
-      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder=""></P>
-      <p><input type="submit" value="submit" id="resetPwBtn"></p>
+      <P><span>Confirm：</span><input type="password" name="rnew_pwd" placeholder=""></P>
+      <p><input type="button" value="submit" id="resetPwBtn"></p>
     </form>
     <h1>{{ msg }}</h1>
   </div>
@@ -544,6 +546,11 @@
     $('#toRegister').on('click', function(){
         $('#login_div').attr("style","display:none;");
         $('#register_div').attr("style","display:block;");
+        $('#new_user_form #user_name').val('')
+        $('#new_user_form #reg-email').val('')
+        $('#new_user_form #reg-pwd').val('')
+        $('#new_user_form #re-pwd').val('')
+        
     });
     $('.toProfile').on('click', function(){
         $('#reset_pw_div').attr("style","display:none;");

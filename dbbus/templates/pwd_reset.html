@@ -6,7 +6,8 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <title>reset your password</title>
-
+  	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
 </head>
 <body>
  
@@ -16,9 +17,9 @@
     <h2>Your email is :{{user.email}},you can reset your password</h2>
     <form method="post" >
       {% csrf_token %}
-      <P><span>Password：</span><input type="password" name="new_pwd" placeholder="至少6位"></P>
-      <P><span>Confirm：</span><input type="password" name="cnew_pwd" placeholder="至少6位"></P>
-      <p><input type="submit" value="submit"></p>
+      <P><span>Password：</span><input type="password" name="new_pwd" placeholder="min:8bits,max:20bits"></P>
+      <P><span>Confirm：</span><input type="password" name="rnew_pwd" placeholder="min:8bits,max:20bits"></P>
+      <p><input type="button" value="submit" id="resetPwBtnByEmail"></p>
     </form>
     <h1>{{ msg }}</h1>
   </div>

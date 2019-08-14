@@ -23,6 +23,8 @@ from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
 from prediction.models import StopInformation
 from django.core import serializers
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
 FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
@@ -53,7 +55,7 @@ class RegisterView(TemplateView):
         username = request.POST.get('user_name')
         if code == 1 :
             password = request.POST.get('pwd')
-            r_password = request.POST.get('cpwd')
+            r_password = request.POST.get('rpwd')
             email = request.POST.get('email')
             if not all([username, password, email]):
                 # if the data is not complete,return the error information
@@ -104,13 +106,13 @@ class RegisterView(TemplateView):
             subject = 'Welcome to register dublin bus API'
             message = ''
             sender = settings.EMAIL_FROM
-            receiver = [email]
+            receiver = [user.email]
             host_name = request.get_host()
             html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
 
             send_mail(subject, message, sender, receiver, html_message=html_message)
 
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1,"success_msg":'The email has been sent successfully,please check your email!'})
         except:
             return JsonResponse({"res": 0, "error_msg":"send email failed"})
 
@@ -129,13 +131,14 @@ class ActiveView(TemplateView):
 
             #if the user is already activated,return the error message
             if user.is_active == 1:
-                return JsonResponse({"res": 0, "error_msg":"your email has been verified"})
+
+                return render(request,'active.html',{'user':user,"error_msg":"your email has been verified, Please login in directly!"})
 
             # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1,"user":user})
+            return render(request,'active.html',{'user':user})
         except SignatureExpired as e:
             # activation link has expired
-            return JsonResponse({"res": 0, "error_msg":'the date has been expired'})
+            return render(request,'active.html',{'user':user,"error_msg":'the active link has been expired'})
         except BadSignature as e:
             # link is not correct,return the not found page
             return render(request,'404.html')
@@ -151,10 +154,10 @@ class ActiveView(TemplateView):
             user.is_active = 1
             user.save()
              # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1,"success_msg":"Congratulations!,Your email has been verified, Please go to Dublin-bus index page to login!"})
         except BadSignature as e:
             # link is not correct,return the not found page
-            return render(request,'404.html')
+            return JsonResponse({"res": 0,'error_msg':'The link is not correct!!'})
 
 # /user/login
 class LoginView(TemplateView):
@@ -173,7 +176,7 @@ class LoginView(TemplateView):
 
         #get the password forget info
         forget_form=ForgetPwdForm()
-        return render(request, 'login.html',{'forget_form':forget_form})
+        return render(request, 'login.html',{'forget_form':forget_form,'username':username,'checked':checked})
     
         # return JsonResponse({'username':username, 'checked':checked})
 
@@ -183,38 +186,36 @@ class LoginView(TemplateView):
         # get the user data
         username = request.POST.get('username')
         password = request.POST.get('pwd')
-
+        print(username,password)
         # verify the data,check if they are complete
         if not all([username, password]):
             return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
+        # user is not activated
+        if User.objects.filter(username=username, is_active=0).exists():
+            return JsonResponse({"res": 2, 'errmsg': 'Account has not been activated,Would you want to resend the active email?'})
         # login verification
         user = authenticate(username=username, password=password)
         if user is not None:
-            # if the username and password are correct
-            if user.is_active:
-                # check if the user's email is active
-                # store the user's login status
-                login(request, user)
-                # aquire the url after login
-                # go to the index page as default.
-                # go to the next_url
-                next_url = request.GET.get('next', reverse('user:index'))
-                response = redirect(next_url) # HttpResponseRedirect
-                # if remember me is checked
-                remember = request.POST.get('remember')
+            # check if the user's email is active
+            # store the user's login status
+            login(request, user)
+            # aquire the url after login
+            # go to the index page as default.
+            # go to the next_url
 
-                if remember == 'on':
-                    # remember username
-                    response.set_cookie('username', username, max_age=7*24*3600)
-                else:
-                    response.delete_cookie('username')
+            response = JsonResponse({"res": 1})
+            # if remember me is checked
+            remember = request.POST.get('remember')
 
-                # return response
-                return JsonResponse({"res": 1})
-
+            if remember == 'on':
+                # remember username
+                response.set_cookie('username', username, max_age=7*24*3600)
             else:
-                # user is not activated
-                return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
+                response.delete_cookie('username')
+
+            # return response
+            return response
+
         else:
             return JsonResponse({"res": 0, 'errmsg': 'username or password wrong'})
 
@@ -246,24 +247,27 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         '''process the password modification'''
         # get the user data
         username = request.user.username
-        original_password = request.POST.get('original_pwd')
-        new_password = request.POST.get('new_pwd')
-        rnew_password = request.POST.get('cnew_pwd')
+        change_password_form=ChangePwdForm(request.POST)
+        if change_password_form.is_valid():
+            # check the password whether they are the same
+            original_password = request.POST.get('original_pwd')
+            new_password = request.POST.get('new_pwd')
+            rnew_password = request.POST.get('rnew_pwd')
+            if new_password != rnew_password:
+                return JsonResponse({"res": 0, "error_msg":'The two passwords you typed do not match.'})
 
-        # verify the data,check if they are complete
-        if not all([original_password,new_password, rnew_password]):
-            return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
-
-        # check the password whether they are the same
-        if new_password != rnew_password:
-            return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
-
-        #if everything is good,then process the password modification
-        user = request.user
-        if user.check_password(original_password):
-            request.user.set_password(new_password)
-            user.save()
-        return JsonResponse({"res": 1})
+            #if everything is good,then process the password modification
+            user = request.user
+            if user.check_password(original_password):
+                request.user.set_password(new_password)
+                user.save()
+                return JsonResponse({"res": 1})
+            return JsonResponse({"res": 0, "error_msg":'The original password you typed is wrong, please check!'})
+        error_messages = ""
+        for i in change_password_form.errors.keys():
+            error_messages+= change_password_form.errors[i][0]+"\r\n"
+            
+        return JsonResponse({"res": 0, "error_msg":error_messages})
 
 
 
@@ -292,14 +296,13 @@ class PasswordForgetView(TemplateView):
                 sender = settings.EMAIL_FROM
                 receiver = [email]
                 host_name = request.get_host()
-                # html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
+                html_message = '<h1'+user.username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
+                send_mail(subject, message, sender, receiver, html_message=html_message)
+                return JsonResponse({"res": 1, "success_msg":'The email has been sent successfully,please check your email!'})
+            return JsonResponse({"res": 0, "error_msg":'The email does not be registered, Please check! '})
 
-                # send_mail(subject, message, sender, receiver, html_message=html_message)
-                return render(request,'send_success.html')
-
-            return render(request,'pwd_forget.html',{'errormg':'email has not been found'})
         else:
-            return render(request,'pwd_forget.html',{'forget_form':forget_form})
+            return JsonResponse({"res": 0, "error_msg":'The captcha or email are wrong, Please check!'})
 
 
 #/user/reset_password/<token>
@@ -330,7 +333,7 @@ class ResetPasswordView(TemplateView):
         #check if the user information is complete
         if reset_form.is_valid():
             new_password = request.POST.get('new_pwd')
-            rnew_password = request.POST.get('cnew_pwd')
+            rnew_password = request.POST.get('rnew_pwd')
 
             if new_password != rnew_password:
                 return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
@@ -345,10 +348,14 @@ class ResetPasswordView(TemplateView):
 
             # check if the link is valid
             except BadSignature as e:
-                return render(request,'404.html')
+                return JsonResponse({"res": 0, "error_msg":'Page not found'})
 
         else:
-            return JsonResponse({"res": 0, "error_msg":'the data has some error'})
+            error_messages = ""
+            for i in reset_form.errors.keys():
+                error_messages+= reset_form.errors[i][0]+"\r\n"
+                
+            return JsonResponse({"res": 0, "error_msg":error_messages})
 
 
 
@@ -389,7 +396,7 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
 
 
 
-class ContactUsView(LoginRequiredMixin, TemplateView):
+class ContactUsView(TemplateView):
     '''contact information'''
     def get(self,request):
         return render(request, 'contactPage.html')
@@ -655,6 +662,7 @@ class TrafficFeedView(TemplateView):
         return JsonResponse({'data':entries})
 
 class Graph_distributionView(TemplateView):
+    
     def get(self, request):
         """
         Returna normal distribution for plotting 
@@ -667,7 +675,19 @@ class Graph_distributionView(TemplateView):
         return JsonResponse({'x':list(xvals), 'y':list(yvals)})
 
 
-
+class CaptchaRefreshView(TemplateView):
+    
+    def get(self,request):
+        """
+        refresh the captcha if user can not see  it clearly
+        """       
+        new_key = CaptchaStore.generate_key()
+        to_json_response = {
+            'key': new_key,
+            'image_url': captcha_image_url(new_key),
+        }
+        return JsonResponse(to_json_response)
+        
 
 
 #
