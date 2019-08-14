@@ -546,6 +546,11 @@
     $('#toRegister').on('click', function(){
         $('#login_div').attr("style","display:none;");
         $('#register_div').attr("style","display:block;");
+        $('#new_user_form #user_name').val('')
+        $('#new_user_form #reg-email').val('')
+        $('#new_user_form #reg-pwd').val('')
+        $('#new_user_form #re-pwd').val('')
+        
     });
     $('.toProfile').on('click', function(){
         $('#reset_pw_div').attr("style","display:none;");

@@ -145,7 +145,30 @@
 
 					alert(result.errmsg)
 				}else{
-					
+					var ok = confirm(result.errmsg);
+					if(ok){
+			        	$.ajax({
+			        		cache:false,
+			        		type: "POST",
+			        		url:window.location.protocol+"//"+window.location.host+"/user/register",
+			        		headers: {
+			        			"X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
+			        		},
+			        		data:{'user_name':username, 'code':2},
+			        		async:false,
+			        		success:function(data){
+			        			if (data.res == 1){
+			        				alert(data.success_msg)
+			        			}else if (data.res == 0){
+			        				
+			        				alert(data.error_msg)
+			        			}
+			        		},
+			        		error: function(){
+			        			alert("Network problem!");
+			        		},
+			        	});						
+					}
 				}
 			},
 			error: function(){
@@ -156,7 +179,7 @@
 
 //    	register function
         $('#regBtn').on('click',function(){
-        	var username = $('#new_user_form #user_name').val()
+        	var user_name = $('#new_user_form #user_name').val()
         	var email = $('#new_user_form #reg-email').val()
         	var pwd = $('#new_user_form #reg-pwd').val()
         	var rpwd = $('#new_user_form #re-pwd').val()
@@ -169,12 +192,12 @@
         		headers: {
         			"X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
         		},
-        		data:{'user_name':username, 'pwd':pwd, 'rpwd':rpwd, 'code':code, 'email':email},
+        		data:{'user_name':user_name, 'pwd':pwd, 'rpwd':rpwd, 'code':code, 'email':email},
         		async:false,
         		success:function(result){
         			if (result.res == 1){
         				alert(result.success_msg)
-        				$('#loginBtn').onclick();
+        				$('.toLogin').click();
         			}else if (result.res == 0){
         				
         				alert(result.error_msg)

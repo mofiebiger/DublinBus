@@ -104,7 +104,7 @@ class RegisterView(TemplateView):
             subject = 'Welcome to register dublin bus API'
             message = ''
             sender = settings.EMAIL_FROM
-            receiver = [email]
+            receiver = [user.email]
             host_name = request.get_host()
             html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
 
@@ -184,38 +184,36 @@ class LoginView(TemplateView):
         # get the user data
         username = request.POST.get('username')
         password = request.POST.get('pwd')
-
+        print(username,password)
         # verify the data,check if they are complete
         if not all([username, password]):
             return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
+        # user is not activated
+        if User.objects.filter(username=username, is_active=0).exists():
+            return JsonResponse({"res": 2, 'errmsg': 'Account has not been activated,Would you want to resend the active email?'})
         # login verification
         user = authenticate(username=username, password=password)
         if user is not None:
-            # if the username and password are correct
-            if user.is_active:
-                # check if the user's email is active
-                # store the user's login status
-                login(request, user)
-                # aquire the url after login
-                # go to the index page as default.
-                # go to the next_url
+            # check if the user's email is active
+            # store the user's login status
+            login(request, user)
+            # aquire the url after login
+            # go to the index page as default.
+            # go to the next_url
 
-                response = JsonResponse({"res": 1})
-                # if remember me is checked
-                remember = request.POST.get('remember')
+            response = JsonResponse({"res": 1})
+            # if remember me is checked
+            remember = request.POST.get('remember')
 
-                if remember == 'on':
-                    # remember username
-                    response.set_cookie('username', username, max_age=7*24*3600)
-                else:
-                    response.delete_cookie('username')
-
-                # return response
-                return response
-
+            if remember == 'on':
+                # remember username
+                response.set_cookie('username', username, max_age=7*24*3600)
             else:
-                # user is not activated
-                return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
+                response.delete_cookie('username')
+
+            # return response
+            return response
+
         else:
             return JsonResponse({"res": 0, 'errmsg': 'username or password wrong'})
 
