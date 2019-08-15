@@ -390,7 +390,7 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
             avatar.name = user.username + '.' + avatar.name.split('.')[-1]
             user.user_profile = avatar
             user.save()
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1, 'url':user.user_profile.url})
         except:
             return JsonResponse({"res": 0, "error_msg":'avatar updates fail !'})
 
@@ -730,7 +730,6 @@ class CaptchaRefreshView(TemplateView):
         }
         return JsonResponse(to_json_response)
         
-
 
 #
 # def set_session(request):
