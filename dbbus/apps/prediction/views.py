@@ -91,22 +91,22 @@ class RealTimeStopInfoView(TemplateView):
 
 
 
-class StopInfoView(TemplateView):
-
-    def get(self,request,stop_id):
-        if not stop_id:
-            return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
-        stop_info = StopInformation.objects.filter(stop_id=stop_id)
-
-            #stop does not exist
-        if len(stop_info) == 0:
-            return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
-
-        json_data = serializers.serialize('json', stop_info)
-
-        json_data = json.loads(json_data)
-
-        return JsonResponse(json_data[0]['fields'], safe=False)
+# class StopInfoView(TemplateView):
+#
+#     def get(self,request,stop_id):
+#         if not stop_id:
+#             return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
+#         stop_info = StopInformation.objects.filter(stop_id=stop_id)
+#
+#             #stop does not exist
+#         if len(stop_info) == 0:
+#             return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
+#
+#         json_data = serializers.serialize('json', stop_info)
+#
+#         json_data = json.loads(json_data)
+#
+#         return JsonResponse(json_data[0]['fields'], safe=False)
 
 
 class BusInfoView(TemplateView):
@@ -166,7 +166,7 @@ class BusRouteView(TemplateView):
             stops_list = re.sub('\s|\'',"",(result[0].stops).strip('[]')).split(',')
             for i in range(len(stops_list)):
                 stops_list[i] = int(stops_list[i])
-            
+
             position_result = StopInformation.objects.filter(stop_id__in = stops_list)
             json_data = serializers.serialize('json', position_result)
             json_data = json.loads(json_data)
@@ -181,7 +181,8 @@ class BusRouteView(TemplateView):
 
 class PredictionRouteView(TemplateView):
     def post(self,request):
-                #get the data from the front-end
+        
+        #get the data from the front-end
         content = json.loads(request.body)
         routes = content['routes']
         date = content['date']
