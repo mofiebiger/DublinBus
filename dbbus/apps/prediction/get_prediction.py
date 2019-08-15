@@ -5,6 +5,7 @@ import pandas as pd
 import xgboost as xgb
 import requests as req
 import holidays as hol
+
 ie_holidays = hol.Ireland()
 
 from datetime import date, time, datetime
@@ -22,50 +23,81 @@ def set_season(x):
         return 'Spring'
     else:
         return 'Summer'
-       
+    
+def find_closest_(weather):
+    """
+    find the weather data closest to the current time stamp
+    """
+    
+    Now = datetime.now()
+    
+    server_time_fault = 1565867883 - 1565863997
+    
+    current_timestamp = datetime.timestamp(Now) + server_time_fault
 
-def prediction_route(PDate, Routeid, PTime, Number_Stops):
+    stamps = []
+    for t in weather:
+        stamps.append(t['time'])
+        
+    min_val = 100000000000000000
+    min_idx = 0
+    
+    for idx, val in enumerate(stamps):
+        
+        if ((val - current_timestamp) < min_val):
+            min_val = val - current_timestamp
+            min_idx = idx
+            
+    return weather[min_idx]
+        
+def prediction_route(StopA, StopB, PDate, PTime):
     """
     Return an estimate of travel time, in seconds, for a given journey. 
     
     inputs:
     ---------------------------------------
-    (str) Date:            YYYY-MM-DD
-    (str) Routeid:         lineid
-    (str) Time:            HH:MM
-    (int) Number_Stops:    Number of stops to be travelled
+    (str) PDate:            YYYY-MM-DD
+    (str) PTime:            HH:MM
     
+    (str) StopA:            Start Stop
+    (str) StopB:            End Stop
     
-    Outpus:
+    Outputs:
     ---------------------------------------
-    (int) time:            Seconds
+    (int) Travel Time:          Seconds
     """
     
     # =========================== Import Model ========================= #
     
     model = xgb.Booster()
-    model.load_model("static/ModelFiles/RouteModels/Route"+Routeid+".model")
+    model.load_model(f"ModelFiles/StopModels/{StopA}_{StopB}.model")
+
     # ====================== Dateand Time objects ====================== #
     
     ddate = date(int(PDate[:4]), int(PDate[5:7]), int(PDate[-2:]))
     dtime = time(int(PTime[:2]), int(PTime[-2:]))
     
-
-  
-    
     # ========================== Weather Data ========================== # 
-    # will need to sync this with the automated live weather updates to no waste calls. Also add forecasting option. 
+
+    Now = datetime.now()
     
-    weathercall = req.get(f"https://api.darksky.net/forecast/{config.darksky_api}/53.3498,-6.2603").content
-    weather = json.loads(weathercall)
-    weather= weather['currently']
+    day_diff  = ddate.day - Now.day
+    hour_diff = dtime.hour - Now.hour
+     
+    if day_diff > 2:
+        weather = full_weather['daily']
+        weather = find_closest_(weather)
+         
+    else:
+        weather = full_weather['hourly']
+        weather = find_closest_(weather)
     
     # ======================== Inputs DataFrame ======================== #
     
     predictors = ['temperature','humidity', 'windSpeed', 'rain', 'hour', 'holiday', 'weekend',
-              'icon_clear-day', 'icon_clear-night', 'icon_cloudy', 'icon_fog',
-              'icon_partly-cloudy-day', 'icon_partly-cloudy-night', 'icon_rain','icon_wind',
-              'month','season_Winter','season_Autumn','season_Summer','season_Spring']    
+                  'month','season_Winter','season_Autumn','season_Summer','season_Spring',
+                  'icon_clear-day', 'icon_clear-night', 'icon_cloudy', 'icon_fog',
+                  'icon_partly-cloudy-day', 'icon_partly-cloudy-night', 'icon_rain','icon_wind']  
     
     # Make dataframe of inputs. 
     inputs = pd.DataFrame(np.zeros(len(predictors))).T
@@ -83,9 +115,10 @@ def prediction_route(PDate, Routeid, PTime, Number_Stops):
     inputs.rain = float(weather['precipIntensity'])/0.0394
     
     # ========================= Weekday/Weekend ======================== #    
-    
+
     if ddate.weekday() in [5,6]:
-        inputs.weekday=False
+        inputs.weekday=False         
+        
     else:
         inputs.weekday=True 
     
@@ -97,19 +130,8 @@ def prediction_route(PDate, Routeid, PTime, Number_Stops):
     # ========================= Applying Model ========================= #
     
     inputdata = xgb.DMatrix(inputs)
-    estimate = model.predict(inputdata)
-    
-    # ======================= Adjust for #stops ======================== #
-    
-    estimate = estimate.tolist()[0]
-    
-    with open("static/stops_per_line.txt",'r') as f:
-        stopnums = json.loads(f.readlines()[0])
-    
-    total_stops = stopnums[Routeid][0][0]
-    
-    travel_time_estimate = int((Number_Stops/total_stops) * estimate)
+    estimate = model.predict(inputdata) 
     
     # ========================= Returning Data ========================= #
     
-    return travel_time_estimate
+    return int(round(estimate.tolist()[0],0))
