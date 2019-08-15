@@ -1,4 +1,5 @@
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
+
 var marker_list = [];
 var oldfeed = "TEST";
 
@@ -110,7 +111,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-
+    
+    
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -139,13 +141,17 @@ function initMap(position) {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
-                                'name': _route.steps[i].transit.line.name
+                                'name': _route.steps[i].transit.line.name,
+                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
-                                'name': _route.steps[i].transit.headsign
+                                'name': _route.steps[i].transit.headsign,
+                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
                             })
                         }
                     }
@@ -205,6 +211,7 @@ function initMap(position) {
             }
         });
     } //DirectionsRenderer Ends
+
 
     function fetchGeoAddress(position) {
         var Locater = new google.maps.Geocoder();
@@ -687,7 +694,7 @@ function invokeDeleteRoutesBtn() {
 }
 
 function displayBusDetail() {
-    $('#search-bus-id').html(route_list[0]);
+    $('#search-bus-id').html("Bus Number: " + route_list[0]);
     $('#bus-departure').html(route_list[1]);
     $('#bus-destination').html(route_list[2]);
     $('.bus-details').attr("style", "display:block;");
@@ -787,7 +794,7 @@ function writeStopDetails() {
                 if (result.res == 1) {
                     result = result.json_data[0]['fields'];
                     var content_html = "<h2>" + result.stop_name + "</h2>" +
-                        "<h3>" + result.stop_id + "</h3>" +
+                        "<h3>" + " Stop Number: " + result.stop_id + "</h3>" +
                         "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
                         "<input type='text' id='stop_id' value='" + result.stop_id + "' style='display: none'>";
                     content_html += "<div id='test_error'></div>";
@@ -1203,7 +1210,7 @@ function deleteFavourites() {
 
         //hide the deleted stop info and store stop id
         $('.delete_stop').on('click', function () {
-            $(this).prarent().hide();
+            $(this).parent().hide();
 
             $(this).hide();
             deleted_stop.push($(this).prev().attr('id'));
@@ -1466,7 +1473,7 @@ function TrafficFeed() {
         if (oldfeed != "TEST") {
             if (entries[0].title != oldfeed[0].title) {
 
-                // change the icon here to show a new noticifation 
+                // change the icon here to show a new noticifation
                 console.log("changed traffic feed");
             }
         };
