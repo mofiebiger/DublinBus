@@ -6,87 +6,510 @@
 	<title>Login</title>
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
-	<style type = "text/css">
-	.r_con{width:400px;}
-	.reg_title{width:360px;height:50px;float:left;margin-left:30px;border-bottom:1px solid #e0e0e0}
-	.reg_title h1{height:50px;line-height:50px;float:left;font-size:24px;color:#a8a8a8;font-weight:bold;}
+	{# registration form#}
+    <style>
 
-	.reg_form{width:360px;margin:30px 0 0 30px;float:left;position:relative;}
-	.reg_form li{height:70px;}
-	.reg_form li label{width:70px;height:40px;line-height:40px;float:left;font-size:14px;color:#a8a8a8}
-	.reg_form li input{width:288px;height:38px;border:1px solid #e0e0e0;float:left;outline:none;text-indent:10px;background-color:#f8f8f8}
-	.reg_form li.agreement input{width:15px;height:15px;float:left;margin-top:13px}
-	.reg_form li.agreement label{width:300px;float:left;margin-left:10px;}
-	.reg_form li.reg_sub input{width:360px;height:40px;background-color:#47aa34;font-size:18px;color:#fff;font-family:'Microsoft Yahei';cursor:pointer;}
-	.reg_form li .error_tip{float:left;height:30px;line-height:30px;margin-left:70px;color:#e62e2e;display:none;}
-	.reg_form li .error_tip2{float:left;height:20px;line-height:20px;color:#e62e2e;display:none;}
-	</style>
+.form-registration {
+  background: #fefefe;
+}
+.registration-box-form-section {
+    max-width: 500px;
+  width: 100%;
+  background-color: rgba(54, 54, 54, 0.8);
+  padding: 20px;
+  color: #fefefe;
+}
+
+
+.form-registration-group .form-registration-social-button .fa {
+  vertical-align: text-top;
+  margin-right: 0.5rem;
+}
+
+
+
+.form-registration-group .form-registration-member-signin a {
+  margin-left: 0.25rem;
+}
+
+
+.form-registration-group .form-registration-terms a:first-child {
+  margin-right: 0.25rem;
+}
+
+.form-registration-group .form-registration-terms a:last-child {
+  margin-left: 0.25rem;
+}
+
+.or-divider {
+  position: relative;
+  margin: 1.5rem 0px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  height: 0px;
+  border: 1px solid #e6e6e6;
+}
+
+.or-divider span {
+  color: #8a8a8a;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  top: -12px;
+  background-color: #fefefe;
+  padding: 0 8px;
+}
+{# end of form-registration#}
+</style>
+
+    <style>
+
+.registration-box {
+  box-shadow: 0 2px 4px rgba(10, 10, 10, 0.4);
+  background: #fefefe;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 39.9375em) {
+  .login-box .or {
+    top: 85%;
+  }
+}
+
+.registration-box-title {
+  font-weight: 300;
+  font-size: 1.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.registration-box-input {
+  margin-bottom: 1.25rem;
+  height: 2rem;
+  border: 0;
+  padding-left: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #1779ba;
+  font-weight: 400;
+}
+
+.registration-box-input:focus {
+  color: #1779ba;
+  transition: 0.2s ease-in-out;
+  box-shadow: none;
+  border: 0;
+  border-bottom: 2px solid #1779ba;
+}
+
+.registration-box-submit-button {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0 1rem 0;
+  padding: 0.85em 1em;
+  -webkit-appearance: none;
+  border: 1px solid transparent;
+  border-radius: 0;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  font-size: 0.9rem;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  background-color: #1779ba;
+  color: #fefefe;
+  display: block;
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  border-radius: 0;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+[data-whatinput='mouse'] .registration-box-submit-button {
+  outline: 0;
+}
+
+.registration-box-submit-button:hover, .registration-box-submit-button:focus {
+  background-color: #126195;
+  color: #fefefe;
+}
+
+.registration-box-submit-button:hover,
+.registration-box-submit-button:focus {
+  box-shadow: 0 2px 4px rgba(10, 10, 10, 0.4);
+}
+
+.registration-box-submit-button:active {
+  box-shadow: 0 1px 2px rgba(10, 10, 10, 0.4);
+}
+
+</style>
+    {# form-login css#}
+    <style>
+
+.form-login {
+  background: #fefefe;
+}
+
+.form-login .form-login-img {
+  position: relative;
+}
+
+.form-login .form-login-img .form-login-img-caption {
+  position: absolute;
+  padding: 0.5rem;
+  text-align: center;
+  width: 100%;
+  bottom: 0;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(1, rgba(254, 254, 254, 0.3)), color-stop(0, #fefefe));
+}
+
+.or-divider {
+  position: relative;
+  margin: 1.5rem 0px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  height: 0px;
+  border: 1px solid #e6e6e6;
+}
+
+.or-divider span {
+  color: #8a8a8a;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  top: -12px;
+  background-color: #fefefe;
+  padding: 0 8px;
+}
+{# end of form-registration#}
+</style>
+
+    {#login input lable css#}
+    <style>
+.floated-label-wrapper {
+  position: relative;
+}
+
+.floated-label-wrapper label {
+  background: #fefefe;
+  color: #1779ba;
+  font-size: 0.75rem;
+  font-weight: 600;
+  left: 0.75rem;
+  opacity: 0;
+  padding: 0 0.25rem;
+  position: absolute;
+  top: 2rem;
+  transition: all 0.15s ease-in;
+  z-index: -1;
+}
+
+.floated-label-wrapper label input[type=text],
+.floated-label-wrapper label input[type=email],
+.floated-label-wrapper label input[type=password] {
+  border-radius: 4px;
+  font-size: 1.75em;
+  padding: 0.5em;
+}
+
+.floated-label-wrapper label.show {
+  opacity: 1;
+  top: -0.85rem;
+  z-index: 1;
+  transition: all 0.15s ease-in;
+}
+
+
+
+</style>
+
+{#    user profile css#}
+    <style>
+
+.card-user-profile {
+  position: relative;
+  z-index: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 1rem;
+  border: 0;
+  border-radius: 0;
+  background: #fefefe;
+  box-shadow: none;
+  overflow: hidden;
+  color: #0a0a0a;
+}
+
+.card-user-profile > :last-child {
+  margin-bottom: 0;
+}
+
+.card-user-profile:hover .card-user-profile-img {
+  opacity: 1;
+}
+
+.card-user-profile-content {
+  position: relative;
+}
+
+.card-user-profile-content::before {
+  position: absolute;
+  content: '';
+  top: -3.4375rem;
+  left: -1.875rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 3.4375rem 0 0 31.25rem;
+  z-index: 0;
+  border-color: transparent transparent transparent #fefefe;
+}
+
+.card-user-profile-actions {
+  -webkit-flex: 0 1 auto;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+  padding: 1rem;
+  background: #e6e6e6;
+  background: #fefefe;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.card-user-profile-actions > :last-child {
+  margin-bottom: 0;
+}
+
+.card-user-profile-img {
+  max-width: 100%;
+  opacity: 0.85;
+  transition: all 0.25s ease;
+}
+
+.card-user-profile-avatar {
+  position: absolute;
+  bottom: 100%;
+  left: 1rem;
+  z-index: 2;
+  max-width: 5.625rem;
+}
+
+.card-user-profile-avatar img {
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+}
+
+.card-user-profile-name {
+  margin-bottom: 0;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+.card-user-profile-button {
+  margin-bottom: 0;
+  -webkit-flex: 1 0 0;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0;
+}
+
+.card-user-profile-button + .card-user-profile-button {
+  margin-left: 1rem;
+}
+
+.card-user-profile-info {
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+
+    </style>
 
 </head>
 <body>
-		<div class="r_con fr" id="login_div" style="display: none;">
-			<div class="reg_title clearfix">
-				<h1>Login</h1>
-				<a href="/user/register">register</a>
-			</div>
-			<div class="reg_form clearfix">
-							<form method="post" >
-                        {% csrf_token %}
-						<input type="text" name="username" id='username' class="name_input" value="{{ username }}" placeholder="please input email address">
-						<div class="user_error" id="user_error">&nbsp;</div>
-						<input type="password" name="pwd" id="pwd" class="pass_input" placeholder="please input password">
-						<div class="pwd_error" id="pwd_error">&nbsp;</div>
-						<div class="more_input clearfix">
-							<input type="checkbox" name="remember" {{ checked }}>
-							<label>Remember Name</label>
-{#							<button id="forget_password">Forget Password</button>#}
-							<a href="#" id="forget_password">Forget Password</a>
-						</div>
-                        <p class="error" id="test_error">&nbsp; </p>
-                        <button type="button" id='loginBtn'value="Login" name="">Login</button>
-					</form>
-			</div>
-
-
+		  {% csrf_token %}
+          <input type="hidden" value="no" class="is_authenticated">
+    <div class="form-registration" style="display: none;" id="register_div" >
+  <div class="registration-box">
+  <div class="row collapse expanded">
+    <div class="small-12 medium-6 column small-order-2 medium-order-1">
+      <div class="registration-box-form-section">
+        <h1 class="registration-box-title">Sign up</h1>
+	    <form id="new_user_form" method="post" class="callout text-center">
+	    {% csrf_token %}
+            <div class="floated-label-wrapper">
+                <label for=reg-username">Username</label>
+                <input class="registration-box-input" type="text" name="reg-username" id="user_name" placeholder="Username" aria-describedby="reg-hint1" aria-errormessage="reg-error1" required>
+                <span class="form-error" id="reg-error1">
+                Yo, you had better fill this out, it's required.
+                </span>
+                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
+            </div>
+            <div class="floated-label-wrapper">
+                <label for="reg-email">Email</label>
+                <input class="registration-box-input" type="email" name="email" id="reg-email" placeholder="Email" >
+                <span class="form-error" id="reg-error1">
+                Yo, you had better fill this out, it's required.
+                </span>
+                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
+            </div>
+            <div class="floated-label-wrapper">
+                <label for="reg-pwd">Password</label>
+                <input class="registration-box-input" type="password" name="pwd" id="reg-pwd" placeholder="Password" aria-describedby="reg-hint3" aria-errormessage="reg-error3">
+                <span class="form-error" id="reg-error3">
+                Yo, you had better fill this out, it's required.
+                </span>
+                <p class="help-text" id="reg-hint3">Your password must have at least 10 characters, a number, and an Emoji.</p>
+            </div>
+            <div class="floated-label-wrapper">
+                <label for="re-pwd">Password Confirmation</label>
+        <input class="registration-box-input" type="password" name="cpwd" id="re-pwd" placeholder="Retype password" aria-describedby="reg-hint4" aria-errormessage="reg-error4" data-equalto="reg-pwd">
+                <span class="form-error" id="reg-error4">
+                Passwords suppose to match.
+                </span>
+                <p class="help-text" id="reg-hint4">Your password must have at least 10 characters, a number, and an Emoji.</p>
             </div>
 
-        <div id="forget_pw_div" style="display: none;"></div>
+		<span class="error_tip"></span>
+        <span class="error_tip"></span>
+        <span class="error_tip"></span>
+        <span class="error_tip"></span>
+        <p class="error" id="test_error"></p>
+{#						<button type="button" id='regBtn'value="Register" name="" disabled="disabled">Register</button>#}
+		<button class="registration-box-submit-button" type="button" id='regBtn'value="Register" name="">SIGN ME UP</button>
 
-		<div id="user_info" style="display: none;">
-            <!--profile start here-->
-            <div class="profile">
-            <div class="wrap">
-                <div class="profile-main">
-                    <div class="profile-pic wthree">
-                        {% csrf_token %}
-                        <img id="id_avatar"  height="60px" width="60px" src="" alt="avatar">
-                        <form id="change_avatar" enctype="multipart/form-data">
-                            <input  type="file" name="file" id="file_upload">
-                            <button type="button" id="upload_avatar">Confirm Change</button>
-                        </form>
-                        <h2 id="id_username"></h2>
-                        <p id="id_email"></p>
-                    </div>
-                    <div class="w3-message">
-                        <div class="wthree_tab_grid_sub">
-                            <div class="wthree_tab_grid_sub_left">
-                                <a id="reset_pw" href="http://127.0.0.1:8000/user/change_password"><h5>Reset password</h5></a>
-                            </div>
-                            <div class="wthree_tab_grid_sub_left">
-                                <a id="logout" href="http://127.0.0.1:8000/user/logout"><h5>Logout</h5></a>
+        <span class="error_tip"></span>
 
-                            </div>
-                            <div class="clear"> </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="wthree_footer_copy">
-                    <p></p>
-                </div>
-            </div>
-            </div>
+    <p class="or-divider"><span>or</span></p>
+    <input class="button expanded toLogin" type="button" value="Sign In">
+    </form>
+{#                <p class="error" id="test_error">dddd</p>#}
+                {{ errmsg }}
+  </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+    <div class="form-login" id="login_div" style="display: block;">
+    <figure class="form-login-img">
+    <img src="{% static 'images/dbbus_title.jpg' %}" alt="" />
+    <figcaption class="form-login-img-caption">
+        Log in with your name
+    </figcaption>
+  </figure>
+    <form class="callout text-center">
+    {% csrf_token %}
+{#        <h2>Log in with your username</h2>#}
+        <div class="floated-label-wrapper">
+            <label for=username">Username</label>
+            <input type="text" name="username input" id='username' class="name_input" value="{{ username }}" placeholder="Username">
         </div>
+        <div class="floated-label-wrapper">
+            <label for="pwd">Password</label>
+            <input type="password" name="password input" id="pwd" class="pass_input" placeholder="Password">
+        </div>
+{#        <input id="show-password" type="checkbox"><label for="show-password">Show password</label>#}
+        <input class="button expanded" type="button" id='loginBtn'value="Log in">
+{#        <button type="button" id='loginBtn' value="Login" name="">Login</button>#}
+        <div class="more_input clearfix">
+			<input type="checkbox" name="remember" {{ checked }}>
+			<label>Remember Me</label>
+			<a href="#" id="forget_password">Forget Password?</a>
+		</div>
+    <p class="or-divider"><span>or</span></p>
+    <input class="button expanded" type="button" value="Sign Up" id="toRegister">
+    </form>
+
+</div>
+
+    <div id="user_info" style="display: none;">
+        {% csrf_token %}
+        <div class="card-user-profile">
+{#          <div class="card-profile-stats-intro">#}
+{#            <img class="card-profile-stats-intro-pic" src="https://pbs.twimg.com/profile_images/732634911761260544/OxHbNdTF.jpg" alt="profile-image" />#}
+{#            <img class="card-profile-stats-intro-pic" id="id_avatar"  height="60px" width="60px" src="" alt="profile-image">#}
+{#              <form id="change_avatar" enctype="multipart/form-data">#}
+{#                  <input  type="file" name="file" id="file_upload">#}
+{#                  <button type="button" id="upload_avatar">Confirm Change</button>#}
+{#              </form>#}
+{#            <div class="card-profile-stats-intro-content">#}
+{#              <h3>Joe Smith</h3>#}
+{#              <p>Joined Jan.16th 2017</p>#}
+{#              <h3 id="id_username"></h3>#}
+{#              <p id="id_email"></p>#}
+{#            </div> <!-- /.card-profile-stats-intro-content -->#}
+{#          </div> <!-- /.card-profile-stats-intro -->#}
+
+          <img class="card-user-profile-img" src="/static/images/dbbus_title.jpg" alt="picture of bus" />
+          <div class="card-user-profile-content card-section">
+            <div class="card-user-profile-avatar">
+{#              <img src="https://pbs.twimg.com/profile_images/422887689612820482/sZtHMJu5.png" alt="picture of yeti" />#}
+              <img class="card-profile-stats-intro-pic" id="id_avatar"  height="60px" width="60px" src="" alt="profile-image">
+
+            </div>
+            <form id="change_avatar" enctype="multipart/form-data">
+                  <input  type="file" name="file" id="file_upload">
+                  <button type="button" id="upload_avatar">Confirm Change</button>
+              </form>
+            <p class="card-user-profile-name" id="id_username"></p>
+            <p class="card-user-profile-status" id="id_email"></p>
+{#            <p class="card-user-profile-name">Abominable Snowman</p>#}
+{#            <p class="card-user-profile-status">Yeti Web Designer</p>#}
+{#            <p class="card-user-profile-info">The Yeti, once better known as the Abominable Snowman, is a mysterious bipedal creature said to live in the mountains of Asia. It sometimes leaves tracks in snow, but is also said to dwell below the Himalayan snow line.</p>#}
+          </div>
+          <hr />
+
+          <div class="card-user-profile-actions">
+{#            <a href="#" class="card-user-profile-button button hollow">Follow</a>#}
+{#            <a href="#" class="card-user-profile-button button hollow secondary">More Info</a>#}
+            <a class="card-user-profile-button button hollow" id="reset_pw">Reset password</a>
+            <a class="card-user-profile-button button hollow" id="logout" href="http://127.0.0.1:8000/user/logout">Log out</a>
+          </div>
+        </div> <!-- /.card-profile-stats -->
+    </div>
+
+    <div id="forget_pw_div" style="display: none;">
+        <a href="#" class="toLogin">Back to login</a>
+        <p class="subheader">You such a big foolish，how dare you forget your password？OK, I forgive you! Please input your email to change your password!</p>
+
+        <form>
+            {% csrf_token %}
+            <div>
+                Email: <input type="email" name="email" placeholder="Enter your email">
+                <br>
+                Verify code：{{ forget_form.captcha }}
+                <input type="button" class="button" value="Submit" id="forgetPwBtn">
+            </div>
+        </form>
+        <h1>{{ forget_form.errors }}{{ errormg }}</h1>
+    </div>
+
+    <div id="reset_pw_div" style="display: none;">
+         <a href="#" class="toProfile">Back to profile</a>
+{#    <h1>Dear {{user.username}}:</h1>#}
+{#    <h2>Your email is :{{user.email}},you can reset your password</h2>#}
+    <form>
+      {% csrf_token %}
+      <P><span>Original Password：</span><input type="password" name="original_pwd" placeholder="" hidden></P>
+      <P><span>New Password：</span><input type="password" name="new_pwd" placeholder=""></P>
+      <P><span>Confirm：</span><input type="password" name="rnew_pwd" placeholder=""></P>
+      <p><input type="button" value="submit" id="resetPwBtn"></p>
+    </form>
+    <h1>{{ msg }}</h1>
+  </div>
 	
 </body>
 <script>
@@ -102,6 +525,52 @@
         $('#user_info').attr("style","display:none;")
         $('#login_div').attr("style","display:block;")
     {% endif %}
+
+</script>
+
+<script>
+    $(function () {
+  var showClass = 'show';
+
+  $('input').on('checkval', function () {
+    var label = $(this).prev('label');
+    if(this.value !== '') {
+      label.addClass(showClass);
+    } else {
+      label.removeClass(showClass);
+    }
+  }).on('keyup', function () {
+    $(this).trigger('checkval');
+  });
+});
+    $('#toRegister').on('click', function(){
+        $('#login_div').attr("style","display:none;");
+        $('#register_div').attr("style","display:block;");
+        $('#new_user_form #user_name').val('')
+        $('#new_user_form #reg-email').val('')
+        $('#new_user_form #reg-pwd').val('')
+        $('#new_user_form #re-pwd').val('')
+        
+    });
+    $('.toProfile').on('click', function(){
+        $('#reset_pw_div').attr("style","display:none;");
+        $('#user_info').attr("style","display:block;");
+    });
+    $('.toLogin').on('click', function(){
+        $('#login_div').attr("style","display:block;");
+        $('#register_div').attr("style","display:none;");
+        $('#reset_pw_div').attr('style',"display:none;");
+        $('#forget_pw_div').attr('style',"display:none;");
+    });
+    $('#reset_pw').on('click', function(){
+            $('#reset_pw_div').attr('style',"style","display:block;");
+			$('#user_info').attr("style","display:none;")
+        })
+    $('#reset_pw').on('click', function(){
+            $('#reset_pw_div').attr('style',"style","display:block;");
+			$('#user_info').attr("style","display:none;")
+        })
+
 
 </script>
 </html>

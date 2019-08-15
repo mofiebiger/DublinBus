@@ -1,7 +1,10 @@
-
 import json
 import os
 import re
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+import feedparser as fp
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -21,10 +24,12 @@ from user.form import ForgetPwdForm, ResetPwdForm, ChangePwdForm
 from user.models import User, UserBusNumber, UserStop, UserRoute
 from prediction.models import StopInformation
 from django.core import serializers
-# from user.models import User, UserBusNumber, UserStop, UserRoute
+from captcha.models import CaptchaStore
+from captcha.helpers import captcha_image_url
 
 REGISTER_ENCRYPT_KEY = config.register_encrypt_key
 FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
+
 
 #/user/index or ''
 class IndexView(TemplateView):
@@ -35,10 +40,6 @@ class IndexView(TemplateView):
             "maps_api" : settings.GOOGLE_MAPS_API_KEY
         }
         return render(request, 'index.html', api)
-
-# class serviceWorker(TemplateView):
-#     template_name = 'js/serviceworker.js'
-#     content_type = 'application/javascript'
 
 # /user/register
 class RegisterView(TemplateView):
@@ -51,39 +52,52 @@ class RegisterView(TemplateView):
         '''process the registration request'''
 
         # recieve the data and get the data
+        code = int(request.POST.get('code'))
         username = request.POST.get('user_name')
-        password = request.POST.get('pwd')
-        r_password = request.POST.get('cpwd')
-        email = request.POST.get('email')
+        if code == 1 :
+            password = request.POST.get('pwd')
+            r_password = request.POST.get('rpwd')
+            email = request.POST.get('email')
+            if not all([username, password, email]):
+                # if the data is not complete,return the error information
+                return JsonResponse({"res": 0, "error_msg": "Data not complete."});
+                # verify the email format
+            if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
+                return JsonResponse({"res": 0, "error_msg": "The format of Email is not correct."});
+            # check the password whether they are the same
+            if password != r_password:
+                return JsonResponse({"res": 0, "error_msg": "the passwords are not match."});
+            # check if the user already exists.
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                # if user does not exist in the database ,set the the user as None
+                user = None
 
-        if not all([username, password, email]):
-            # if the data is not complete,return the error information
-            return JsonResponse({"res": 0, "error_msg": "Data not complete."});
-            # verify the email format
-        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-            return JsonResponse({"res": 0, "error_msg": "The format of Email is not correct."});
-        # check the password whether they are the same
-        if password != r_password:
-            return JsonResponse({"res": 0, "error_msg": "the passwords are not match."});
-        # check if the user already exists.
-        try:
+            if user:
+                # if user already exists, return the error message
+                return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
+                # return HttpResponse("the email has benn registered..");
+
+            try:
+                email_check = User.objects.get(email=email)
+            except User.DoesNotExist:
+                # if user does not exist in the database ,set the the user as None
+                email_check = None
+
+            if email_check:
+                # if user already exists, return the error message
+                return JsonResponse({"res": 0, "error_msg": email + ' has been registered.'});
+                # return HttpResponse("the email has benn registered..");
+
+            # if user does not exist, do the next step,do the registration
+            user = User.objects.create_user(username, email, password)
+            user.is_active = 0
+            user.save()
+
+             # send the active email,and encrypt user content information
+        else:
             user = User.objects.get(username=username)
-            print('user')
-        except User.DoesNotExist:
-            # if user does not exist in the database ,set the the user as None
-            user = None
-
-        if user:
-            # if user already exists, return the error message
-            return JsonResponse({"res": 0, "error_msg": username + ' has been registered.'});
-            # return HttpResponse("the email has benn registered..");
-
-        # if user does not exist, do the next step,do the registration
-        user = User.objects.create_user(username, email, password)
-        user.is_active = 0
-        user.save()
-
-         # send the active email,and encrypt user content information
         try:
              # encript the information about user
             serializer = Serializer(REGISTER_ENCRYPT_KEY, 3600)
@@ -93,14 +107,13 @@ class RegisterView(TemplateView):
             subject = 'Welcome to register dublin bus API'
             message = ''
             sender = settings.EMAIL_FROM
-            receiver = [email]
+            receiver = [user.email]
             host_name = request.get_host()
             html_message = '<h1>' + username + ', Welcome to be a member of us</h1>please click the link below to activate your account<br/><a href="http://' + host_name + '/user/active/' + token + '">http://' + host_name + '/user/active/' + token + '</a>'
 
             send_mail(subject, message, sender, receiver, html_message=html_message)
 
-
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1,"success_msg":'The email has been sent successfully,please check your email!'})
         except:
             return JsonResponse({"res": 0, "error_msg":"send email failed"})
 
@@ -119,13 +132,14 @@ class ActiveView(TemplateView):
 
             #if the user is already activated,return the error message
             if user.is_active == 1:
-                return JsonResponse({"res": 0, "error_msg":"your email has been verified"})
+
+                return render(request,'active.html',{'user':user,"error_msg":"your email has been verified, Please login in directly!"})
 
             # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1,"user":user})
+            return render(request,'active.html',{'user':user})
         except SignatureExpired as e:
             # activation link has expired
-            return JsonResponse({"res": 0, "error_msg":'the date has been expired'})
+            return render(request,'active.html',{'user':user,"error_msg":'the active link has been expired'})
         except BadSignature as e:
             # link is not correct,return the not found page
             return render(request,'404.html')
@@ -141,10 +155,10 @@ class ActiveView(TemplateView):
             user.is_active = 1
             user.save()
              # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1,"success_msg":"Congratulations!,Your email has been verified, Please go to Dublin-bus index page to login!"})
         except BadSignature as e:
             # link is not correct,return the not found page
-            return render(request,'404.html')
+            return JsonResponse({"res": 0,'error_msg':'The link is not correct!!'})
 
 # /user/login
 class LoginView(TemplateView):
@@ -160,7 +174,11 @@ class LoginView(TemplateView):
             checked = ''
 
         # return the information
-        return render(request, 'login.html')
+
+        #get the password forget info
+        forget_form=ForgetPwdForm()
+        return render(request, 'login.html',{'forget_form':forget_form,'username':username,'checked':checked})
+    
         # return JsonResponse({'username':username, 'checked':checked})
 
     def post(self, request):
@@ -169,42 +187,37 @@ class LoginView(TemplateView):
         # get the user data
         username = request.POST.get('username')
         password = request.POST.get('pwd')
-
+        print(username,password)
         # verify the data,check if they are complete
         if not all([username, password]):
             return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
+        # user is not activated
+        if User.objects.filter(username=username, is_active=0).exists():
+            return JsonResponse({"res": 2, 'errmsg': 'Account has not been activated,Would you want to resend the active email?'})
         # login verification
         user = authenticate(username=username, password=password)
         if user is not None:
-            # if the username and password are correct
-            if user.is_active:
-                # check if the user's email is active
-                # store the user's login status
-                login(request, user)
-                # aquire the url after login
-                # go to the index page as default.
-                # go to the next_url
-                next_url = request.GET.get('next', reverse('user:index'))
-                # 跳转到next_url
-                response = redirect(next_url) # HttpResponseRedirect
-                # 判断是否需要记住用户名
-                remember = request.POST.get('remember')
+            # check if the user's email is active
+            # store the user's login status
+            login(request, user)
+            # aquire the url after login
+            # go to the index page as default.
+            # go to the next_url
 
-                if remember == 'on':
-                    # 记住用户名
-                    response.set_cookie('username', username, max_age=7*24*3600)
-                else:
-                    response.delete_cookie('username')
+            response = JsonResponse({"res": 1})
+            # if remember me is checked
+            remember = request.POST.get('remember')
 
-                # return response
-                return JsonResponse({"res": 1})
-
+            if remember == 'on':
+                # remember username
+                response.set_cookie('username', username, max_age=7*24*3600)
             else:
-                # 用户未激活
-                return JsonResponse({"res": 2, 'errmsg': 'Account has not been activsted'})
-                # return render(request, 'login.html', {'errmsg':'Account has not been activated'})
+                response.delete_cookie('username')
+
+            # return response
+            return response
+
         else:
-            # 用户名或密码错误
             return JsonResponse({"res": 0, 'errmsg': 'username or password wrong'})
 
 
@@ -235,36 +248,33 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         '''process the password modification'''
         # get the user data
         username = request.user.username
-        original_password = request.POST.get('original_pwd')
-        new_password = request.POST.get('new_pwd')
-        rnew_password = request.POST.get('cnew_pwd')
+        change_password_form=ChangePwdForm(request.POST)
+        if change_password_form.is_valid():
+            # check the password whether they are the same
+            original_password = request.POST.get('original_pwd')
+            new_password = request.POST.get('new_pwd')
+            rnew_password = request.POST.get('rnew_pwd')
+            if new_password != rnew_password:
+                return JsonResponse({"res": 0, "error_msg":'The two passwords you typed do not match.'})
 
-        # verify the data,check if they are complete
-        if not all([original_password,new_password, rnew_password]):
-            return JsonResponse({"res": 0, "error_msg":'Data is not complete'})
-
-        # check the password whether they are the same
-        if new_password != rnew_password:
-            return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
-
-        #if everything is good,then process the password modification
-        user = request.user
-        if user.check_password(original_password):
-            request.user.set_password(new_password)
-            user.save()
-        return JsonResponse({"res": 1})
+            #if everything is good,then process the password modification
+            user = request.user
+            if user.check_password(original_password):
+                request.user.set_password(new_password)
+                user.save()
+                return JsonResponse({"res": 1})
+            return JsonResponse({"res": 0, "error_msg":'The original password you typed is wrong, please check!'})
+        error_messages = ""
+        for i in change_password_form.errors.keys():
+            error_messages+= change_password_form.errors[i][0]+"\r\n"
+            
+        return JsonResponse({"res": 0, "error_msg":error_messages})
 
 
 
 # /user/forget_password
 class PasswordForgetView(TemplateView):
     '''forget password page'''
-
-    def get(self, request):
-        '''get the password forget page'''
-        forget_form=ForgetPwdForm()
-        return render(request, 'pwd_forget.html',{'forget_form':forget_form})
-
     def post(self, request):
         '''process resetting the password of user '''
         forget_form = ForgetPwdForm(request.POST)
@@ -287,14 +297,13 @@ class PasswordForgetView(TemplateView):
                 sender = settings.EMAIL_FROM
                 receiver = [email]
                 host_name = request.get_host()
-                # html_message = '<h1'+username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
+                html_message = '<h1'+user.username+', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://'+host_name+'/user/reset_password/'+token+'">http://'+host_name+'/user/reset_password/'+token+'</a>'
+                send_mail(subject, message, sender, receiver, html_message=html_message)
+                return JsonResponse({"res": 1, "success_msg":'The email has been sent successfully,please check your email!'})
+            return JsonResponse({"res": 0, "error_msg":'The email does not be registered, Please check! '})
 
-                # send_mail(subject, message, sender, receiver, html_message=html_message)
-                return render(request,'send_success.html')
-
-            return render(request,'pwd_forget.html',{'errormg':'email has not been found'})
         else:
-            return render(request,'pwd_forget.html',{'forget_form':forget_form})
+            return JsonResponse({"res": 0, "error_msg":'The captcha or email are wrong, Please check!'})
 
 
 #/user/reset_password/<token>
@@ -325,7 +334,7 @@ class ResetPasswordView(TemplateView):
         #check if the user information is complete
         if reset_form.is_valid():
             new_password = request.POST.get('new_pwd')
-            rnew_password = request.POST.get('cnew_pwd')
+            rnew_password = request.POST.get('rnew_pwd')
 
             if new_password != rnew_password:
                 return JsonResponse({"res": 0, "error_msg":'the passwords are not match'})
@@ -340,10 +349,14 @@ class ResetPasswordView(TemplateView):
 
             # check if the link is valid
             except BadSignature as e:
-                return render(request,'404.html')
+                return JsonResponse({"res": 0, "error_msg":'Page not found'})
 
         else:
-            return JsonResponse({"res": 0, "error_msg":'the data has some error'})
+            error_messages = ""
+            for i in reset_form.errors.keys():
+                error_messages+= reset_form.errors[i][0]+"\r\n"
+                
+            return JsonResponse({"res": 0, "error_msg":error_messages})
 
 
 
@@ -361,6 +374,18 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
         #check if the user information is complete
         if not all([avatar]):
            return JsonResponse({"res": 0, "error_msg":'No image has been uploaded!'})
+       
+        #delete the old avatar      
+        files_root = os.path.join(settings.MEDIA_ROOT, 'avatar')
+        files = [file for root,dirs,total_files in os.walk(files_root) for file in total_files]
+        for file in files:
+            print(file)
+            res = re.match(r"^%s\.[a-zA-Z]{3,4}$" % user.username, file)
+            if res.group():
+                my_file = os.path.join(files_root, file)
+                os.remove(my_file)
+                break
+
         try:
             avatar.name = user.username + '.' + avatar.name.split('.')[-1]
             user.user_profile = avatar
@@ -370,13 +395,62 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
             return JsonResponse({"res": 0, "error_msg":'avatar updates fail !'})
 
 
-class FavouritesView(LoginRequiredMixin, TemplateView):
-        def get(self, request):
-            '''favourites page'''
-            return render(request, 'favourites.html')
+
+
+class ContactUsView(TemplateView):
+    '''contact information'''
+    def get(self,request):
+        return render(request, 'contactPage.html')
+
+    def post(self, request):
+        cookie = request.COOKIES
+        response =  JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
+        if 'sent_email_in_one_hour' not in cookie:
+            request.session['send_time']=0
+            send_time = 0;
+            response.set_cookie('sent_email_in_one_hour', 'Yes',expires = 3600)
+        else:
+            send_time = request.session.get('send_time')
+        if send_time >=3:
+            return JsonResponse({"res":0,"error_msg":'You have send email 3 times in one hour, Please try it later!'})
+        user = request.user
+        contact = request.POST.get('contact')
+        print(contact)
+        if not contact:
+            return JsonResponse({"res":0,"error_msg":'no information'})
+        try:
+            subject = 'Contact information-from ' + user.username + "-email:" + user.email
+            message = contact
+            sender = settings.EMAIL_FROM
+            receiver = [settings.EMAIL_FROM]
+            send_mail(subject, message, sender, receiver)
+            send_time += 1
+            request.session['send_time'] = send_time
+        except Exception as e:
+            return JsonResponse({"res":0,"error_msg":'information sent error! please try again'})
+
+        return response
+
+
+class StopInfoView(TemplateView):
+    def get(self, request):
+        #get all stop_information from database
+        #send data to front end in json format
+        json_data = serializers.serialize('json', StopInformation.objects.all())
+        json_data = json.loads(json_data)
+        #only send fields to front end
+
+        return JsonResponse(json_data, safe=False)
+
+    def post(self, request):
+        stop_id = request.POST.get('stop_id')
+        json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
+        json_data = json.loads(json_data)
+        return JsonResponse(json_data, safe=False)
+
 
 #/user/bus_info
-class BusInfoView(LoginRequiredMixin, TemplateView):
+class BusInfoView(TemplateView):
     def get(self, request):
 
         stops = UserStop.objects.filter(station_user=request.user)
@@ -392,18 +466,21 @@ class BusInfoView(LoginRequiredMixin, TemplateView):
 
 
 #/user/favorite_stop
-class FavoriteStopView(LoginRequiredMixin, TemplateView):
+class FavoriteStopView(TemplateView):
     '''store the favorite stops of user'''
 
     def get(self, request):
         '''return the user's favortie stop list'''
+        if request.user.is_authenticated:
+            # get the stop information from the database
+            stops = UserStop.objects.filter(station_user=request.user)
+            stops = list(stops)
+            stop_list = [stop.stop for stop in stops]
+            json_file = {"user_stop_list": stop_list, "res": 1}
+            return JsonResponse(json_file)
+        else:
+            return JsonResponse({"res": 0, "error_msg":'not logged in'})
 
-        #get the stop information from the database
-        stops = UserStop.objects.filter(station_user=request.user)
-        stops = list(stops)
-        stop_list = [stop.stop for stop in stops]
-        json_file = {"user_stop_list": stop_list}
-        return JsonResponse(json_file)
 
     def post(self, request):
         '''add new stop information'''
@@ -434,19 +511,23 @@ class FavoriteStopView(LoginRequiredMixin, TemplateView):
         return JsonResponse({"res":1})
 
 #/user/favorite_bus_number
-class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
+class FavoriteBusNumberView(TemplateView):
     '''store the favorite bus numbers of user'''
 
     def get(self, request):
         '''return the user's favortie bus list'''
+        if request.user.is_authenticated:
+            # get the stop information from the database
+            buses = UserBusNumber.objects.filter(bus_number_user=request.user)
+            buses = list(buses)
+            buses_list = [{'bus_number': bus.bus_number, 'start_point': bus.start_point, 'end_point': bus.end_point} for
+                          bus
+                          in buses]
+            json_file = {"user_bus_list": buses_list, "res": 1}
+            return JsonResponse(json_file)
+        else:
+            return JsonResponse({"res": 0, "error_msg":'not logged in'})
 
-         #get the stop information from the database
-        buses = UserBusNumber.objects.filter(bus_number_user=request.user)
-        buses = list(buses)
-        buses_list = [{'bus_number': bus.bus_number, 'start_point': bus.start_point, 'end_point': bus.end_point} for bus
-                      in buses]
-        json_file = {"user_bus_list": buses_list}
-        return JsonResponse(json_file)
 
     def post(self, request):
         '''add new bus information'''
@@ -487,18 +568,20 @@ class FavoriteBusNumberView(LoginRequiredMixin, TemplateView):
 
 
 #/user/favorite_route
-class FavoriteRouteView(LoginRequiredMixin, TemplateView):
+class FavoriteRouteView(TemplateView):
     '''store the favorite routes of user'''
 
     def get(self, request):
         '''return the user's favortie route list'''
-
-         #get the stop information from the database
-        routes = UserRoute.objects.filter(route_user=request.user)
-        routes = list(routes)
-        routes_list = [{'route_start': route.route_start, 'route_end': route.route_end} for route in routes]
-        json_file = {"user_routes_list": routes_list}
-        return JsonResponse(json_file)
+        if request.user.is_authenticated:
+            # get the stop information from the database
+            routes = UserRoute.objects.filter(route_user=request.user)
+            routes = list(routes)
+            routes_list = [{'route_start': route.route_start, 'route_end': route.route_end} for route in routes]
+            json_file = {"user_routes_list": routes_list, "res": 1}
+            return JsonResponse(json_file)
+        else:
+            return JsonResponse({"res": 0, "error_msg": 'not logged in'})
 
     def post(self, request):
         '''add new route information'''
@@ -531,35 +614,7 @@ class FavoriteRouteView(LoginRequiredMixin, TemplateView):
         return JsonResponse({"res":1})
 
 
-class ContactUsView(LoginRequiredMixin, TemplateView):
-    '''contact information'''
-    def get(self,request):
-        return render(request, 'contactPage.html')
-
-    def post(self, request):
-
-        user = request.user
-        contact = request.POST.get('contact')
-        print(contact)
-        if not contact:
-            return JsonResponse({"res":0,"error_msg":'no information'})
-        try:
-            subject = 'Contact information-from ' + user.username + "-email:" + user.email
-            message = contact
-            sender = settings.EMAIL_FROM
-            print(sender)
-            receiver = [settings.EMAIL_FROM]
-            print(receiver)
-            send_mail(subject, message, sender, receiver)
-        except Exception as e:
-            print(e)
-            return JsonResponse({"res":0,"error_msg":'information sent error! please try again'})
-
-        #         return JsonResponse(data)
-        return JsonResponse({"res":1,"success_msg":'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
-
-
-class StopInfoView(LoginRequiredMixin, TemplateView):
+class StopInfoView(TemplateView):
     def get(self, request):
         #get all stop_information from database
         #send data to front end in json format
@@ -573,21 +628,109 @@ class StopInfoView(LoginRequiredMixin, TemplateView):
         stop_id = request.POST.get('stop_id')
         # bus_id = request.POST.get('bus_id')
         json_data = serializers.serialize('json',StopInformation.objects.filter(stop_id=stop_id))
-        # print(type(json_data))
-        # print(333333)
+
         json_data = json.loads(json_data)
-        # print(type(json_data))
-        # print(22222)
-        # # dic={}
-        # # dic
-        # # response_data = {'data': string_data}
+
 
         return JsonResponse(json_data, safe=False)
 
 class StopsView(TemplateView):
     def get(self, request):
         '''stop/route page'''
-        return render(request, 'Stops_Routes.html')
+
+        return render(request, 'stops_routes.html')
+
+
+
+class TrafficFeedView(TemplateView):
+    def get(self, request):
+        """
+        Return traffic feed information.
+
+        Need to pull mu from the front end. and sigma can be set here. 
+
+        """
+        feed = fp.parse("https://www.dublinlive.ie/all-about/traffic-and-travel?service=rss")
+
+        trafficdata = dict()
+
+        entries = feed['entries']
+
+        for idx, entry in enumerate(entries):
+
+            entries[idx] = {'title':entry['title'], 'link':entry['link']}
+
+        return JsonResponse({'data':entries})
+
+class Graph_distributionView(TemplateView):
+    
+    # def post(self, request):
+    def get(self, request):
+        """
+        Returna normal distribution for plotting
+
+        Inputs: 
+        mus, lists of means  
+        """
+
+        def find_sigma(x):
+            """
+            Dont edit this function. log-linear fitting func to determine approporiate sigma from mu.
+            """
+
+            # params: array([1.28579170e-01, 2.63975130e+01, 2.33903903e-27, 1.53988325e+03])
+
+            a = 0.128579170 
+            b = 26.3975130
+            c = 0.000000000000000000000000002339039
+            d = 1539.88325
+            
+            return a*x + b*np.log(c*x) + d
+
+        # get content from the request 
+        # content = json.loads(request.body)
+        
+        # arrival times of the buses [in seconds! Not Minutes.]
+        # mus = content['mus']
+
+        mus = [60]
+
+        graph_data = []
+        
+        for idx in range(len(mus)):
+
+            mu = mus[idx]
+            sigma = find_sigma(mu)
+            
+            # bounds of data set
+            xmin = -3*sigma + mu
+            xmax = 3*sigma + mu
+
+            print(sigma)
+
+            xvals = np.linspace(xmin, xmax, 100)
+
+            yvals = stats.norm.pdf(xvals,mu,sigma)
+
+            graph_data.append({'yvals':list(yvals), 'xvals':list(xvals)})
+
+        return JsonResponse({'graph_data':graph_data})
+
+
+class CaptchaRefreshView(TemplateView):
+    
+    def get(self,request):
+        """
+        refresh the captcha if user can not see  it clearly
+        """       
+        new_key = CaptchaStore.generate_key()
+        to_json_response = {
+            'key': new_key,
+            'image_url': captcha_image_url(new_key),
+        }
+        return JsonResponse(to_json_response)
+        
+
 
 #
 # def set_session(request):
