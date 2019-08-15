@@ -248,6 +248,26 @@
   bottom: 0;
 }
 
+.trafficfeedlist ul {
+  margin: 0;
+}
+
+.trafficfeedlist li, a{
+  position: relative;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: #ddd;
+  color: #444;
+  text-decoration: none;
+  border-radius: .3em;
+  transition: all .3s ease-out;   
+}
+
+.trafficfeedlist li:hover{
+  background: #eee;
+}
+
 @media screen and (max-width: 39.9375em) {
   .contact-panel {
     width: 100%;

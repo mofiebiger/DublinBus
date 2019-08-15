@@ -12,6 +12,54 @@ from prediction.get_prediction import prediction_route
 from geopy.distance import geodesic
 from django.core import serializers
 import re
+import threading
+import time
+import datetime
+
+def prediction_weather_funct():
+    """
+    Pull weather forecast data from dark sky api
+    """
+
+    weathercall = requests.get(f"https://api.darksky.net/forecast/{config.darksky_api}/53.3498,-6.2603").content
+    weather = json.loads(weathercall)
+    return {'hourly':weather['hourly']['data'], 'daily':weather['daily']['data']}
+
+full_weather = ""
+
+class Weatherforecast():
+
+    global full_weather
+    """ 
+    Pull forecast information hourly in background to reduce overhead of prediction functions. 
+    """
+
+    def __init__(self, interval):
+        """ Constructor: Make a background job whihch automatically updates the weather infomration.
+        (int) Interval: time to sleep after running update function
+        """
+        self.interval = interval
+        thread = threading.Thread(target=self.update_information, args=())
+        thread.setDaemon(True)
+        thread.start()
+
+    def update_information(self):
+        """ Method that runs in background updating global variable weatherinformation """
+
+        while True:
+
+            full_weather = prediction_weather_funct()
+
+            print(f"####  Updating Weather Information @ {datetime.datetime.now()}  ####")
+
+            # set weather forecast information as an attribute of weather instance.
+            self.update = Weatherforecast
+
+            #sleep for set interval (~ 30min/ 1hr)
+            time.sleep(self.interval)
+
+# Access forecast information via Weather.update
+Weatherforecast(3600)
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
@@ -43,22 +91,22 @@ class RealTimeStopInfoView(TemplateView):
 
 
 
-class StopInfoView(TemplateView):
-
-    def get(self,request,stop_id):
-        if not stop_id:
-            return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
-        stop_info = StopInformation.objects.filter(stop_id=stop_id)
-
-            #stop does not exist
-        if len(stop_info) == 0:
-            return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
-
-        json_data = serializers.serialize('json', stop_info)
-
-        json_data = json.loads(json_data)
-
-        return JsonResponse(json_data[0]['fields'], safe=False)
+# class StopInfoView(TemplateView):
+#
+#     def get(self,request,stop_id):
+#         if not stop_id:
+#             return JsonResponse({'res':0,'errmsg': 'Data is not complete'})
+#         stop_info = StopInformation.objects.filter(stop_id=stop_id)
+#
+#             #stop does not exist
+#         if len(stop_info) == 0:
+#             return JsonResponse({'res':0,'errmsg': 'the stop does not exist'})
+#
+#         json_data = serializers.serialize('json', stop_info)
+#
+#         json_data = json.loads(json_data)
+#
+#         return JsonResponse(json_data[0]['fields'], safe=False)
 
 
 class BusInfoView(TemplateView):
@@ -118,7 +166,7 @@ class BusRouteView(TemplateView):
             stops_list = re.sub('\s|\'',"",(result[0].stops).strip('[]')).split(',')
             for i in range(len(stops_list)):
                 stops_list[i] = int(stops_list[i])
-            
+
             position_result = StopInformation.objects.filter(stop_id__in = stops_list)
             json_data = serializers.serialize('json', position_result)
             json_data = json.loads(json_data)
@@ -133,7 +181,8 @@ class BusRouteView(TemplateView):
 
 class PredictionRouteView(TemplateView):
     def post(self,request):
-                #get the data from the front-end
+        
+        #get the data from the front-end
         content = json.loads(request.body)
         routes = content['routes']
         date = content['date']

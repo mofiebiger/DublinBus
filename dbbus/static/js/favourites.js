@@ -129,7 +129,7 @@ $(function(){
                         console.log(result);
                     },
                     error: function(){
-                        alert("remove bus number failed");
+                    	swal("remove bus number failed", "Please try it later!", "error");
                     },
                 });
         })
@@ -149,7 +149,7 @@ $(function(){
 				        console.log(result);
 			        },
 			        error: function(){
-				        alert("remove stop failed");
+			        	swal("remove stop failed", "Please try it later!", "error");
 			        },
 		        });
         })
@@ -169,7 +169,7 @@ $(function(){
 				        console.log(result);
 			        },
 			        error: function(){
-				        alert("remove route failed");
+			        	swal("remove route failed", "Please try it later!", "error");
 			        },
 		        });
         })

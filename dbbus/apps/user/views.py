@@ -34,7 +34,6 @@ FORGET_PASSWORD_ENCRYPT_KEY = config.forget_password_encrypt_key
 # /user/index or ''
 class IndexView(TemplateView):
     '''index page'''
-
     def get(self, request):
         '''index page'''
         api = {
@@ -42,11 +41,9 @@ class IndexView(TemplateView):
         }
         return render(request, 'index.html', api)
 
-
 # /user/register
 class RegisterView(TemplateView):
     '''register page '''
-
     def get(self, request):
         '''show the register page'''
         return render(request, 'register.html')
@@ -116,8 +113,7 @@ class RegisterView(TemplateView):
 
             send_mail(subject, message, sender, receiver, html_message=html_message)
 
-            return JsonResponse(
-                {"res": 1, "success_msg": 'The email has been sent successfully,please check your email!'})
+            return JsonResponse({"res": 1, "success_msg": 'The email has been sent successfully,please check your email!'})
         except:
             return JsonResponse({"res": 0, "error_msg": "send email failed"})
 
@@ -125,7 +121,6 @@ class RegisterView(TemplateView):
 # user/active/<token>
 class ActiveView(TemplateView):
     '''user activation'''
-
     def get(self, request, token):
         '''get user activation page'''
         # decrypt the user information
@@ -137,8 +132,8 @@ class ActiveView(TemplateView):
 
             # if the user is already activated,return the error message
             if user.is_active == 1:
-                return render(request, 'active.html',
-                              {'user': user, "error_msg": "your email has been verified, Please login in directly!"})
+              
+                return render(request, 'active.html',{'user': user, "error_msg": "your email has been verified, Please login in directly!"})
 
             # if the user is activated successfully, return the successful information.
             return render(request, 'active.html', {'user': user})
@@ -160,17 +155,14 @@ class ActiveView(TemplateView):
             user.is_active = 1
             user.save()
             # if the user is activated successfully, return the successful information.
-            return JsonResponse({"res": 1,
-                                 "success_msg": "Congratulations!,Your email has been verified, Please go to Dublin-bus index page to login!"})
+            return JsonResponse({"res": 1, "success_msg": "Congratulations!,Your email has been verified, Please go to Dublin-bus index page to login!"})
         except BadSignature as e:
             # link is not correct,return the not found page
             return JsonResponse({"res": 0, 'error_msg': 'The link is not correct!!'})
 
-
 # /user/login
 class LoginView(TemplateView):
     '''login page'''
-
     def get(self, request):
         '''show the login page'''
         # check if the 'remember name' checkbox is active
@@ -201,8 +193,7 @@ class LoginView(TemplateView):
             return JsonResponse({"res": 0, "error_msg": 'Data is not complete'})
         # user is not activated
         if User.objects.filter(username=username, is_active=0).exists():
-            return JsonResponse(
-                {"res": 2, 'errmsg': 'Account has not been activated,Would you want to resend the active email?'})
+            return JsonResponse({"res": 2, 'errmsg': 'Account has not been activated,Would you want to resend the active email?'})
         # login verification
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -252,6 +243,7 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
         change_password_form = ChangePwdForm()
         return render(request, 'pwd_change.html', {'change_password_form': change_password_form})
 
+      
     def post(self, request):
         '''process the password modification'''
         # get the user data
@@ -278,11 +270,11 @@ class PasswordChangeView(LoginRequiredMixin, TemplateView):
 
         return JsonResponse({"res": 0, "error_msg": error_messages})
 
+      
 
 # /user/forget_password
 class PasswordForgetView(TemplateView):
     '''forget password page'''
-
     def post(self, request):
         '''process resetting the password of user '''
         forget_form = ForgetPwdForm(request.POST)
@@ -307,8 +299,7 @@ class PasswordForgetView(TemplateView):
                 host_name = request.get_host()
                 html_message = '<h1' + user.username + ', This email is used to reset your password!</h1>please click the link below to reset your password.<br/><a href="http://' + host_name + '/user/reset_password/' + token + '">http://' + host_name + '/user/reset_password/' + token + '</a>'
                 send_mail(subject, message, sender, receiver, html_message=html_message)
-                return JsonResponse(
-                    {"res": 1, "success_msg": 'The email has been sent successfully,please check your email!'})
+                return JsonResponse({"res": 1, "success_msg": 'The email has been sent successfully,please check your email!'})
             return JsonResponse({"res": 0, "error_msg": 'The email does not be registered, Please check! '})
 
         else:
@@ -335,6 +326,7 @@ class ResetPasswordView(TemplateView):
             # link is not correct,return the not found page
             return render(request, '404.html')
 
+          
     def post(self, request, token):
 
         reset_form = ResetPwdForm(request.POST)
@@ -367,6 +359,8 @@ class ResetPasswordView(TemplateView):
             return JsonResponse({"res": 0, "error_msg": error_messages})
 
 
+          
+          
 class AvatarUpdateView(LoginRequiredMixin, TemplateView):
     '''avatar change page'''
 
@@ -396,21 +390,21 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
             avatar.name = user.username + '.' + avatar.name.split('.')[-1]
             user.user_profile = avatar
             user.save()
-            return JsonResponse({"res": 1})
+            return JsonResponse({"res": 1, 'url':user.user_profile.url})
         except:
             return JsonResponse({"res": 0, "error_msg": 'avatar updates fail !'})
 
 
+          
+          
 class ContactUsView(TemplateView):
     '''contact information'''
-
     def get(self, request):
         return render(request, 'contactPage.html')
 
     def post(self, request):
         cookie = request.COOKIES
-        response = JsonResponse({"res": 1,
-                                 "success_msg": 'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
+        response = JsonResponse({"res": 1, "success_msg": 'Your message has been sent to the manager,we are very thankful, and we will contact to you as soon as possible!'})
         if 'sent_email_in_one_hour' not in cookie:
             request.session['send_time'] = 0
             send_time = 0;
@@ -418,8 +412,7 @@ class ContactUsView(TemplateView):
         else:
             send_time = request.session.get('send_time')
         if send_time >= 3:
-            return JsonResponse(
-                {"res": 0, "error_msg": 'You have send email 3 times in one hour, Please try it later!'})
+            return JsonResponse({"res": 0, "error_msg": 'You have send email 3 times in one hour, Please try it later!'})
         user = request.user
         contact = request.POST.get('contact')
         print(contact)
@@ -632,7 +625,9 @@ class TrafficFeedView(TemplateView):
     def get(self, request):
         """
         Return traffic feed information.
-        Need to pull mu from the front end. and sigma can be set here.
+        
+        Need to pull mu from the front end. and sigma can be set here. 
+        
         """
         feed = fp.parse("https://www.dublinlive.ie/all-about/traffic-and-travel?service=rss")
 
@@ -641,9 +636,10 @@ class TrafficFeedView(TemplateView):
         entries = feed['entries']
 
         for idx, entry in enumerate(entries):
-            entries[idx] = {'title': entry['title'], 'link': entry['link']}
 
-        return JsonResponse({'data': entries})
+            entries[idx] = {'title':entry['title'], 'link':entry['link']}
+
+        return JsonResponse({'data':entries})
 
 
 class Graph_distributionView(TemplateView):

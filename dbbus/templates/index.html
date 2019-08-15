@@ -1,103 +1,124 @@
+
 <!doctype html>
 
 <html class="no-js" lang="en" dir="ltr">
 
 {% load pwa %}
 {% load staticfiles %}
-  <head>
 
-      {% progressive_web_app_meta %}
+<head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation for Sites</title>
+  {% progressive_web_app_meta %}
 
-
-
-    <!--external stylesheet-->
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
-    <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
-{#    <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">#}
-{#      <script type="text/javascript" src="{% static 'js/vendor/jquery.js' %}"></script>#}
-{#      <script type="text/javascript" src="{% static 'js/vendor/what-input.js' %}"></script>#}
-{#      <script type="text/javascript" src="{% static 'js/vendor/foundation.js' %}"></script>#}
-{#      <script type="text/javascript" src="{% static 'js/vendor/foundation.min.js' %}"></script>#}
-{#      <script type="text/javascript" src="{% static 'js/app.js' %}"></script>#}
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <!--favicon links-->
-      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
-        <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
-        <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
-        <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}">
-
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-launchimage-640-1136.png' %}" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-750-1334.png' %}" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1242-2208.png' %}" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1125x2436.png' %}" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1536x2048.png' %}" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1668x2224.png' %}" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-2048x2732.png' %}" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-
-    <meta name="msapplication-TileColor" content="#b91d47">
-    <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
-    <meta name="theme-color" content="#ffffff">
-
-    <!--navBar Icons-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--Overlay-->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!--Google Fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
-
-    <!--the use of jquery in javascript-->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.js"></script>
-
-
-    <!--MarkerCluster-->
-    <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
-
-
-    <!--Google Maps API-->
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap" defer>
-    </script>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foundation for Sites</title>
 
 
 
-    <!--Map / Navigation / Tourism / Display Bus Stops-->
-    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
 
-    <!-- importing the skycons for weather dipslay -->
-    <script src="{% static 'js/skycons.js' %}"></script>
+  <!--external stylesheet-->
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+  <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">
+
+  {#      <script type="text/javascript" src="{% static 'js/vendor/jquery.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/what-input.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/foundation.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/foundation.min.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/app.js' %}"></script>#}
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!--favicon links-->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+  <link rel="mask-icon" href="{% static 'images/icon/safari-pinned-tab.svg' %}" color="#5bbad5">
 
 
-    <!--title - dublin bus-->
-    <title>Dublin Bus</title>
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-launchimage-640-1136.png' %}"
+    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-750-1334.png' %}"
+    media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1242-2208.png' %}"
+    media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1125x2436.png' %}"
+    media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1536x2048.png' %}"
+    media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-1668x2224.png' %}"
+    media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+  <link rel="apple-touch-startup-image" href="{% static 'images/splash/ios-appicon-2048x2732.png' %}"
+    media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
+
+  <meta name="msapplication-TileColor" content="#b91d47">
+  <meta name="msapplication-config" content="{% static 'images/icon/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+
+  <!--navBar Icons-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!--Overlay-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--Google Fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Acme|Allerta+Stencil|DM+Serif+Text&display=swap" rel="stylesheet">
+
+  <!--the use of jquery in javascript-->
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <!--MarkerCluster-->
+  <script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
 
 
-    <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <!--Google Maps API-->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key={{ maps_api }}&libraries=places&callback,visualization&callback=initMap"
+    defer>
+  </script>
 
-          ga('create', 'UA-2195009-2', 'auto');
-          ga('send', 'pageview');
 
-          ga('create', 'UA-2195009-27', 'auto', {name: "foundation"});
-          ga('foundation.send', 'pageview');
 
-        </script>
+  <!--Map / Navigation / Tourism / Display Bus Stops-->
+  <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
 
+  <!-- importing the skycons for weather dipslay -->
+  <script src="{% static 'js/skycons.js' %}"></script>
+
+
+  <!--title - dublin bus-->
+  <title>Dublin Bus</title>
+
+
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-2195009-2', 'auto');
+    ga('send', 'pageview');
+    
+    ga('create', 'UA-2195009-27', 'auto', {
+      name: "foundation"
+    });
+    ga('foundation.send', 'pageview');
+  </script>
+  
   </head>
   <body>
 
@@ -114,11 +135,12 @@
 </button>
     <h1 style="color:#e5e5e5;"> Journey Planner </h1>
             <div id="directionsPanel">
-            {% csrf_token %}
+              {% csrf_token %}
               <button id="geoButton">Use Current Location</button>
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
                 <input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style="width: 30px; height: 30px;"></button>
                 <input id="directionsDestination" class="controls" type="text" placeholder="End">
+
             </div>
                  <div class='fav_buttons'>
                   <button class="button-like" id='addFav_route'  style="display: none"><i class="fa fa-star"></i></button>
@@ -201,34 +223,93 @@
     </div>
   </div>
         </div>
+      </div>
 
-        <div class="tabs-panel" id="bus-panel">
-            <div id="search-by-bus-div">
-                <div id="busRoute">
-              <label>Type bus number to select a bus route:</label>
-              <input type="text" id="searchBusRoute" list="bus_datalist"  placeholder="Bus Route" class="controls"/>
-              <datalist id="bus_datalist"></datalist>
-              <button id="searchBus">Search</button>
-            </div>
-            <div id="route_content">
+      <div class="off-canvas position-left" id="tourismPage" data-off-canvas>
+        <button class="close-button" aria-label="Close menu" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="grid-y grid-padding-x" style="height: 100%;">
+          <br>
+          <div class="cell shrink">
+            <h1> What to do in Dublin </h1>
 
-              <div class='fav_buttons'>
-                  <button class="button-like" id='addFav_bus'  style="display: none"><i class="fa fa-star"></i></button>
-                  <button class="button-dislike" id='removeFav_bus'  style="display: none"><i class="fa fa-trash"></i></button>
-                  <button class='login-required' data-toggle="stopPage userPage" hidden>Login and add this route as favourite</button>
-              </div>
-              <div class='bus-details'style="display: none">
-                  <h3 id="search-bus-id"></h3>
-                  <p>From<span id="bus-departure"></span> to <span id="bus-destination"></span> </p>
-              </div>
-            </div>
-            </div>
+            <button id="tourismNatureBtn" class="tourismbutton">Nature</button>
+            <button id="tourismDrinkBtn" class="tourismbutton">Breweries</button>
+            <button id="tourismLandmarksBtn" class="tourismbutton">Landmarks</button>
+            <button id="tourismMuseumsBtn" class="tourismbutton">Museums & Galleries</button>
+            <button id="tourismChurchesBtn" class="tourismbutton">Churches</button>
+            <div id="container"></div>
+            <div class="touristInfo"></div>
+          </div>
         </div>
-    </div>
+      </div>
+  </div>
 
-</div>
-</div>
-</div>
+<div class="off-canvas position-bottom" id="stopPage" data-off-canvas data-transition="overlap">
+<div class="grid-y grid-padding-x" style="height: 100%;">
+<br>
+<div class="cell shrink">
+    <div class="offcanvas-full-screen-inner">
+      <button class="close-button" aria-label="Close menu" type="button" data-close>
+  <span aria-hidden="true">&times;</span>
+</button>
+    {% csrf_token %}
+    <ul class="tabs" data-tabs id="search-tab-headers">
+                <li class="tabs-title is-active" id="search_stop_header"><a href="#stop-panel" aria-selected="true">Stops</a></li>
+                <li class="tabs-title" id="search_route_header"><a data-tabs-target="bus-panel" href="#bus-panel">Routes</a></li>
+    </ul>
+    <div class="tabs-content" data-tabs-content="search-tab-headers">
+        <div class="tabs-panel is-active" id="stop-panel">
+              <div id="search-by-stop-div">
+      <label>Type stop number or key word to select a stop:</label>
+      <input type="text" id="search_stop" list="stop_datalist" />
+      <datalist id="stop_datalist"></datalist>
+      <button id="select_stop">Show Detail</button>
+{#    </div>#}
+    <div id="content">
+      <div class='fav_buttons'>
+          <button class="button-like" id='addFav'  style="display: none"><i class="fa fa-star"></i></button>
+{#          <i class="button-like fa fa-star" id='addFav' style="display: none"></i>#}
+          <button class="button-dislike" id='removeFav' style="display: none"><i class="fa fa-trash"></i></button>
+
+          <button type='button' class='login-required' data-toggle="stopPage userPage" hidden>Login and add this stop as favourite</button>
+      </div>
+      <div></div>
+      <div id="stop_content"></div>
+    </div>
+  </div>
+              </div>
+
+              <div class="tabs-panel" id="bus-panel">
+                <div id="search-by-bus-div">
+                  <div id="busRoute">
+                    <label>Type bus number to select a bus route:</label>
+                    <input type="text" id="searchBusRoute" list="bus_datalist" placeholder="Bus Route"
+                      class="controls" />
+                    <datalist id="bus_datalist"></datalist>
+                    <button id="searchBus">Search</button>
+                  </div>
+                  <div id="route_content">
+
+                    <div class='fav_buttons'>
+                      <button type='button' id='addFav_bus' hidden>Add Favourites</button>
+                      <button type='button' id='removeFav_bus' hidden>Remove Favourites</button>
+                      <button type='button' class='login-required' data-toggle="stopPage userPage" hidden>Login and add
+                        this route as favourite</button>
+                    </div>
+                    <div class='bus-details' style="display: none">
+                      <h3 id="search-bus-id"></h3>
+                      <p>From<span id="bus-departure"></span> to <span id="bus-destination"></span> </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
 </div>
 
 <div class="off-canvas position-bottom" id="favsPage" data-off-canvas data-transition="overlap">
@@ -244,12 +325,12 @@
             <button id="delete_favs" class="edit-favourite-button">Manage Favourites</button>
             <button id="submit_delete" class="confirm-favourite-button" hidden>Confirm Change</button>
             <ul class="tabs" data-tabs id="tab-headers">
-                <li class="tabs-title is-active" id="fav_stop"><a href="#panel1" aria-selected="true">Stops</a></li>
-                <li class="tabs-title" id="fav_route"><a data-tabs-target="panel2" href="#panel2">Routes</a></li>
-                <li class="tabs-title" id="fav_bus"><a data-tabs-target="panel3" href="#panel3">Buses</a></li>
+              <li class="tabs-title is-active" id="fav_stop"><a href="#panel1" aria-selected="true">Stops</a></li>
+              <li class="tabs-title" id="fav_route"><a data-tabs-target="panel2" href="#panel2">Routes</a></li>
+              <li class="tabs-title" id="fav_bus"><a data-tabs-target="panel3" href="#panel3">Buses</a></li>
             </ul>
             <div class="tabs-content" data-tabs-content="tab-headers">
-                <div class="tabs-panel is-active" id="panel1">
+ <div class="tabs-panel is-active" id="panel1">
                     <ul id="stop_list" style="list-style: none">
                     </ul>
                 </div>
@@ -305,38 +386,46 @@
         <canvas id="weatherIcon"></canvas>
         <div id="currentTemperature"></div>
         </div>
-        </div>
-       <hr>
-        <div id="weather_heading"></div>
-       <hr>
-      <div id="weather_hourly"></div>
-      <hr>
-      <div id="weather_stats"></div>
-      <hr>
-	  <div id="weather_daily"></div>
-      </div>
-    </div>
-</div>
-</div>
-</div>
-
-<div id="offcanvas-full-screen" class="offcanvas-full-screen" data-off-canvas data-transition="overlap">
-  <div class="offcanvas-full-screen-inner">
-    <button class="offcanvas-full-screen-close" aria-label="Close menu" type="button" data-close>
-      <span aria-hidden="true">&times;</span>
-    </button>
-
-    <ul class="offcanvas-full-screen-menu">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About us</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Contact us</a></li>
-    </ul>
+                </div>
+                <hr>
+                <div id="weather_heading"></div>
+                <hr>
+                <div id="weather_hourly"></div>
+                <hr>
+                <div id="weather_stats"></div>
+                <hr>
+                <div id="weather_daily"></div>
+              </div>
+            </div>
   </div>
-</div>
+        </div>
+      </div>
+    
+    <div class="off-canvas position-right" id="trafficPage" data-off-canvas>
 
+        {% comment %} Add X to close Window {% endcomment %}
+        <button class="close-button" aria-label="Close menu" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
 
-<div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
+        <div class="grid-y grid-padding-x" style="height: 100%;">
+          <br>
+          <div class="cell shrink">
+            <h3> Traffic Info </h3>
+
+            {% comment %} Render the traffic rss feed in here {% endcomment %}
+            <hr>
+            <div id="trafficfeed">
+              {% comment %} Fill in Data here from js function {% endcomment %}
+            </div>
+            <hr>
+
+            {#<img class="thumbnail" src="https://placehold.it/550x350">#}
+          </div>
+        </div>
+      </div>
+    
+    <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
 <div>
     <button class="offcanvas-full-screen-close" aria-label="Close menu" type="button" data-close>
       <span aria-hidden="true">&times;</span>
@@ -362,8 +451,7 @@
 
 </div>
 
-
-<div class="off-canvas-content" data-off-canvas-content>
+      <div class="off-canvas-content" data-off-canvas-content>
 <div class="title-bar-title hide-for-small-only">Dublin Bus | Journey Planner</div>
 <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
 <button class="menu-icon" type="button" data-toggle="offCanvasLeft"></button>
@@ -384,14 +472,14 @@
     <li><a href="#" data-toggle="userPage" id="user-trigger">Login</a></li>
       {% endif %}
 <li><a href="#" data-toggle="weatherPage">Weather</a></li>
-<li><a href="#" data-toggle="offcanvas-full-screen">Weather</a></li>
-</ul>
-</div>
-</div>
+<!-- <li><a href="#" data-toggle="offcanvas-full-screen">Weather</a></li> -->
+            <li><a href="#" id="TrafficMenu" data-toggle="trafficPage">Traffic</a></li>
+          </ul>
+        </div>
+      </div>
 
 
-  </div>
-
+    </div>
     </header>
 <!--The div element for the map -->
     <div id="map"></div>
@@ -404,5 +492,10 @@ $('body').css('overflow', 'hidden');
 </script>
   </body>
 
-</html>
 
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+
+</html>
