@@ -340,6 +340,12 @@
 
 </head>
 <body>
+<div class="grid-y grid-padding-x" style="height: 100%;">
+<br>
+<div class="cell shrink">
+<button class="close-button" aria-label="Close menu" type="button" data-close>
+  <span aria-hidden="true">&times;</span>
+</button>
 		  {% csrf_token %}
           <input type="hidden" value="no" class="is_authenticated">
     <div class="form-registration" style="display: none;" id="register_div" >
@@ -511,8 +517,10 @@
       <p><input type="button" value="submit" id="resetPwBtn"></p>
     </form>
     <h1>{{ msg }}</h1>
-  </div>
-	
+    </div>
+</div>
+</div>
+
 </body>
 <script>
     //if user logged in

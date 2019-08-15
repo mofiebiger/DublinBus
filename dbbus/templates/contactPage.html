@@ -107,21 +107,14 @@
 </head>
 <body>
 
-   <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
+
 <div class="grid-y grid-padding-x" style="height: 100%;">
 <br>
 <div class="cell shrink">
-{#<h1> Contact Information </h1>#}
-{#        <h1> Send Us A Message </h1>#}
-{#          <form id="contact_info">#}
+<button class="close-button" aria-label="Close menu" type="button" data-close>
+  <span aria-hidden="true">&times;</span>
+</button>
               {% csrf_token %}
-{#            <textarea name="contact" rows="10" cols="50" placeholder="Give us feedback about how we can make your experience on the Dublin Bus App better!!!"></textarea>#}
-{#            <input type="submit" value="Send">#}
-{#          </form>#}
-<div class="contact-panel" id="contact-panel" data-toggler=".is-active">
-{#  <a class="contact-panel-button" data-toggle="contact-panel">Contact us</a>#}
   <form id="contact_info">
     <div class="row">
       <label>Full name *
@@ -157,7 +150,6 @@
       <input type="submit" class="button submit-button" value="Submit">
     </div>
   </form>
-</div>
 
 </div>
 </div>
