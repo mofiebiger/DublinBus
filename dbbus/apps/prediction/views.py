@@ -12,6 +12,54 @@ from prediction.get_prediction import prediction_route
 from geopy.distance import geodesic
 from django.core import serializers
 import re
+import threading
+import time
+import datetime
+
+def prediction_weather_funct():
+    """
+    Pull weather forecast data from dark sky api
+    """
+
+    weathercall = requests.get(f"https://api.darksky.net/forecast/{config.darksky_api}/53.3498,-6.2603").content
+    weather = json.loads(weathercall)
+    return {'hourly':weather['hourly']['data'], 'daily':weather['daily']['data']}
+
+full_weather = ""
+
+class Weatherforecast():
+
+    global full_weather
+    """ 
+    Pull forecast information hourly in background to reduce overhead of prediction functions. 
+    """
+
+    def __init__(self, interval):
+        """ Constructor: Make a background job whihch automatically updates the weather infomration.
+        (int) Interval: time to sleep after running update function
+        """
+        self.interval = interval
+        thread = threading.Thread(target=self.update_information, args=())
+        thread.setDaemon(True)
+        thread.start()
+
+    def update_information(self):
+        """ Method that runs in background updating global variable weatherinformation """
+
+        while True:
+
+            full_weather = prediction_weather_funct()
+
+            print(f"####  Updating Weather Information @ {datetime.datetime.now()}  ####")
+
+            # set weather forecast information as an attribute of weather instance.
+            self.update = Weatherforecast
+
+            #sleep for set interval (~ 30min/ 1hr)
+            time.sleep(self.interval)
+
+# Access forecast information via Weather.update
+Weatherforecast(3600)
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
