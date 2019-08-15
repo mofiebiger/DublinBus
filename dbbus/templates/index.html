@@ -183,9 +183,10 @@
                 <div class="tabs-panel is-active" id="stop-panel">
                   <div id="search-by-stop-div">
                     <label>Type stop number or key word to select a stop:</label>
-                    <input type="text" id="search_stop" list="stop_datalist" />
+                    
                     <datalist id="stop_datalist"></datalist>
-                    <button id="select_stop">Show Detail</button>
+                    <input type="text" id="search_stop" list="stop_datalist" />
+                    <button id="select_stop" onclick="Generate_Graph()">Show Detail</button>
                     {#    </div>#}
                     <div id="content">
                       <div class='fav_buttons'>
