@@ -557,15 +557,15 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
-                        var Path = new google.maps.Polyline({
-                            path: stops,
-                            geodesic: true,
-                            strokeColor: '#00BBFF',
-                            strokeOpacity: 1.0,
-                            strokeWeight: 5
-                        });
-                        Path.setMap(map);
-                        marker_list.push(Path);
+//                        var Path = new google.maps.Polyline({
+//                            path: stops,
+//                            geodesic: true,
+//                            strokeColor: '#00BBFF',
+//                            strokeOpacity: 1.0,
+//                            strokeWeight: 5
+//                        });
+//                        Path.setMap(map);
+//                        marker_list.push(Path);
 
 
                         var markers = stops.map(function (location, i) {
