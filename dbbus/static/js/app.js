@@ -2,8 +2,7 @@ var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, mar
 var marker_list = [];
 var oldfeed = "TEST";
 
-
-
+Generate_Graph();
 
 function initMap(position) {
 
@@ -12,7 +11,7 @@ function initMap(position) {
     setInterval(() => TrafficFeed(), 600000);
 
     markerA =
-    new google.maps.Size(24, 27),
+        new google.maps.Size(24, 27),
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 27),
 
@@ -834,7 +833,6 @@ function writeStopDetails() {
                 swal("Network fail!", "Please try it later!", "error");
             },
         })
-        Generate_Graph();
     })
 }
 
@@ -1749,19 +1747,26 @@ function deleteMarkers() {
     marker_list = [];
 }
 
-function Generate_Graph(arrival_times) {
+function Generate_Graph() {
 
     // Need to make the graph take inputs of time. So that mu can be changed as needed.
     // sigma can be calucalted in the backend
 
-    arrival_times = [60, 300, 600];
+    // pull stop number 
+    // then get real time info on stop
+    // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
+    // pass that data to graph distribution
+
+    
+
+    var arrival_times = JSON.stringify([30,60,600]);
 
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
         // 'type': 'POST',
         'type': 'get',
         'dataType': 'json',
-        // 'data':{'mus':arrival_times}
+        'data':{'mus':arrival_times}
     }).done(function (graphdata) {
 
         graphdata = graphdata['graph_data'];
@@ -1773,39 +1778,31 @@ function Generate_Graph(arrival_times) {
 
         function prepareChart() {
 
-            var x_bound_upper = 0;
+            var data = new google.visualization.DataTable(graphdata);
 
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', 'Probability');
+            graphdata[0].forEach(function (elem) {
+                data.addColumn('number', elem);
+            });
 
-            graphdata.forEach(function (set) {
-
-                x = set['xvals'];
-                y = set['yvals'];
-
-                for (i = 0; i < x.length; i++) {
-                    data.addRow([x[i], y[i]]);
-
-                    if (x[i] > x_bound_upper)
-                        x_bound_upper = x[i];
-                }
+            graphdata.forEach(function (row) {
+                if (row[0] != "Time")
+                    data.addRow(row);
             });
 
             var options = {
-                title: 'Sample Chart',
+                title: 'Bus Arrival Times: Stop 226',
                 hAxis: {
                     title: 'Time',
                     titleTextStyle: {
                         color: '#333'
                     },
-                    minValue: 0,
-                    viewWindow: {
-                        max: x_bound_upper + 0.5 * x_bound_upper
-                    },
+                    minValue: -1,
                 },
                 vAxis: {
-                    minValue: 0
+                    minValue: 0,
+                    baselineColor: '#fff',
+                    gridlineColor: '#fff',
+                    textPosition: 'none'
                 },
                 'backgroundColor': 'transparent'
             };
