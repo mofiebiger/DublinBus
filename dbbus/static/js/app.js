@@ -11,12 +11,12 @@ function initMap(position) {
     TrafficFeed();
     setInterval(() => TrafficFeed(), 600000);
 
-    markerA = new google.maps.MarkerImage('marker.png')
+    markerA =
     new google.maps.Size(24, 27),
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 27),
 
-        markerB = new google.maps.MarkerImage('marker.png'),
+        markerB =
         new google.maps.Size(24, 28),
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 28);
