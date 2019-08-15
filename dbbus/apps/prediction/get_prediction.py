@@ -70,7 +70,7 @@ def prediction_route(StopA, StopB, PDate, PTime):
     # =========================== Import Model ========================= #
     
     model = xgb.Booster()
-    model.load_model(f"ModelFiles/StopModels/{StopA}_{StopB}.model")
+    model.load_model(f"static/ModelFiles/StopModels/{StopA}_{StopB}.model")
 
     # ====================== Dateand Time objects ====================== #
     
