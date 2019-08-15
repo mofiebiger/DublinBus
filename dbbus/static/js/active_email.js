@@ -12,16 +12,16 @@
         		async:false,
         		success:function(result){
         			if (result.res == 1){
-        				alert(result.success_msg)
+        				swal("Good job", result.success_msg, "success");
     					location.href=window.location.protocol+"//"+window.location.host;
 
         				
         			}else{	
-        				alert(result.error_msg)
+        				swal("Verification failed", result.error_msg, "error");
         			}
         		},
         		error: function(){
-        			alert("Network problem!");
+        			swal("Network failed", "Please try it later!", "error");
         		},
         	});
         });

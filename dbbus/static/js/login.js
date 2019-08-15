@@ -16,17 +16,14 @@
             contentType:false,
             success:function(result){
                 if (result.res == 1) {
-                    alert("Profile updated successfully")
-                    location.href= window.location.protocol+"//"+window.location.host
-
-                } else if (result.res == 0 ){
-                    alert(result.error_msg)
+                	swal("Profile updated successfully", "success");
+                	location.href= window.location.protocol+"//"+window.location.host
                 } else{
-                    alert("either 0 nor 1")
-                }
+                	swal("Avatar change error", result.error_msg, "error");
+                } 
             },
             error:function(){
-                alert('change avatar fail')
+            	swal("Network failed", "Please try it later!", "error");
             },
         })
     })
@@ -48,14 +45,14 @@
             dataType: 'json',
             success:function(result){
                 if (result.res == 1) {
-                    alert("Password updated successfully, you need to relogin");
+                	swal("Change successfully","Password updated successfully, you need to relogin", "success");
                     location.href= window.location.protocol+"//"+window.location.host
 
                 }else{
-                	alert(result.error_msg)
+                	swal("Change password error", result.error_msg, "error");
             }},
             error:function(){
-                alert('Network problem!')
+            	swal("Network failed", "Please try it later!", "error");
             },
         })
         return false;
@@ -77,14 +74,14 @@
             dataType: 'json',
             success:function(result){
                 if (result.res == 1) {
-                    alert("Password updated successfully, you need to relogin");
+                	swal("Password change successfully","Password updated successfully, you need to relogin", "success");
                     location.href= window.location.protocol+"//"+window.location.host
 
                 }else{
-                	alert(result.error_msg)
+                	swal("Change password error", result.error_msg, "error");
             }},
             error:function(){
-                alert('Network problem!')
+            	swal("Network failed", "Please try it later!", "error");
             },
         })
         return false;
@@ -109,14 +106,14 @@
             dataType: 'json',
             success:function(result){
                 if (result.res == 1) {
-                    alert(result.success_msg);
+                	swal("Email sent successfully",result.success_msg, "success")
                     location.href= window.location.protocol+"//"+window.location.host
 
                 }else{
-                	alert(result.error_msg)
+                	swal("Email sent error", result.error_msg, "error");
             }},
             error:function(){
-                alert('Network problem or Server Problem!')
+            	swal("Network failed", "Please try it later!", "error");
             },
         })
         $('.captcha').click();        
@@ -143,36 +140,46 @@
 
 					location.href=window.location.protocol+"//"+window.location.host;
 				}else if (result.res == 0){
+					swal("login failed", result.errmsg, "error");
 
-					alert(result.errmsg)
 				}else{
-					var ok = confirm(result.errmsg);
-					if(ok){
-			        	$.ajax({
-			        		cache:false,
-			        		type: "POST",
-			        		url:window.location.protocol+"//"+window.location.host+"/user/register",
-			        		headers: {
-			        			"X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
-			        		},
-			        		data:{'user_name':username, 'code':2},
-			        		async:false,
-			        		success:function(data){
-			        			if (data.res == 1){
-			        				alert(data.success_msg)
-			        			}else if (data.res == 0){			        				
-			        				alert(data.error_msg)
-			        			}
-			        		},
-			        		error: function(){
-			        			alert("Network problem!");
-			        		},
-			        	});						
-					}
+					swal({
+						  title: "Are you sure?",
+						  text: result.errmsg,
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: true,
+						})
+						.then((willsent) => {
+						  if (willsent) {
+							  $.ajax({
+								  cache:false,
+								  type: "POST",
+								  url:window.location.protocol+"//"+window.location.host+"/user/register",
+								  headers: {
+									  "X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
+								  },
+								  data:{'user_name':username, 'code':2},
+								  async:false,
+								  success:function(data){
+									  if (data.res == 1){
+										  swal("Email sent successfully",result.success_msg, "success")
+									  }else if (data.res == 0){
+										  swal("Register fail", result.error_msg, "error");
+									  }
+								  },
+								  error: function(){
+									  swal("Network failed", "Please try it later!", "error");
+								  },
+							  });						
+						  } else {
+						    swal("Email has not be sent!");
+						  }
+						});
 				}
 			},
 			error: function(){
-				alert("Network problem!");
+				swal("Network failed", "Please try it later!", "error");
 			},
 		});
 		});
@@ -196,15 +203,14 @@
         		async:false,
         		success:function(result){
         			if (result.res == 1){
-        				alert(result.success_msg)
+        				swal("Register successfully",result.success_msg, "success")
         				$('.toLogin').click();
         			}else if (result.res == 0){
-        				
-        				alert(result.error_msg)
+        				swal("Register fail", result.error_msg, "error");
         			}
         		},
         		error: function(){
-        			alert("Network problem!");
+        			swal("Network failed", "Please try it later!", "error");
         		},
         	});
         });
@@ -225,3 +231,5 @@
                  $('#id_captcha_0').val(result['key'])
               });});
 })
+
+	

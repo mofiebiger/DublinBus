@@ -6,6 +6,7 @@
 	<title>Login</title>
 	<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	{# registration form#}
     <style>
 
@@ -355,7 +356,7 @@
                 <span class="form-error" id="reg-error1">
                 Yo, you had better fill this out, it's required.
                 </span>
-                <p class="help-text" id="reg-hint1">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint1">Your username can be characters, numbers, and an Emoji.</p>
             </div>
             <div class="floated-label-wrapper">
                 <label for="reg-email">Email</label>
@@ -371,7 +372,7 @@
                 <span class="form-error" id="reg-error3">
                 Yo, you had better fill this out, it's required.
                 </span>
-                <p class="help-text" id="reg-hint3">Your password must have at least 10 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint3">Your password must be between 8 characters and 20 characters, a number, and an Emoji.</p>
             </div>
             <div class="floated-label-wrapper">
                 <label for="re-pwd">Password Confirmation</label>
@@ -379,7 +380,7 @@
                 <span class="form-error" id="reg-error4">
                 Passwords suppose to match.
                 </span>
-                <p class="help-text" id="reg-hint4">Your password must have at least 10 characters, a number, and an Emoji.</p>
+                <p class="help-text" id="reg-hint4">Your confrim password should be same with the password you input.</p>
             </div>
 
 		<span class="error_tip"></span>
@@ -491,6 +492,7 @@
                 Email: <input type="email" name="email" placeholder="Enter your email">
                 <br>
                 Verify code：{{ forget_form.captcha }}
+                <br />
                 <input type="button" class="button" value="Submit" id="forgetPwBtn">
             </div>
         </form>
@@ -531,7 +533,6 @@
 <script>
     $(function () {
   var showClass = 'show';
-
   $('input').on('checkval', function () {
     var label = $(this).prev('label');
     if(this.value !== '') {

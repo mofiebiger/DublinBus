@@ -182,16 +182,14 @@ function initMap(position) {
                         response.routes[0].legs[0].duration.value = total_time;
                         response.routes[0].legs[0].duration.text = Math.round(total_time / 60) + 'mins';
 
-                    } else {
-                        alert(data.errmsg);
-                    }
+                    } 
                     // remove the points shown in the previous step
                     deleteMarkers()
                     directionsDisplay.setDirections(response);
                     directionsDisplay.setPanel(show_div);
                     directionsDisplay.setMap(map);
                 }).fail(function () {
-                    alert('ajax false');
+                	swal("Network fail!", "Please try it later!", "error");
                 });
                 pinA = new google.maps.Marker({
                         position: _route.start_location,
@@ -267,7 +265,7 @@ function initMap(position) {
                 lng: -6.2603
             };
             if (obj.length === 0) {
-                alert("There is no Dublin bus stop nearby.")
+            	swal("No stops!", "There is no Dublin bus stop nearby.", "warning");
             } else {
                 var stops = [];
                 var stop_content = [];
@@ -587,7 +585,8 @@ function initMap(position) {
                         }
 
                     } else {
-                        alert(stop_list.errmsg);
+                    	swal(stop_list.errmsg, "error");
+
                     }
                 });
             }
@@ -643,7 +642,7 @@ function writeStopsDataset() {
             }
         },
         error: function () {
-            alert("false");
+        	swal("Network fail!", "Please try it later!", "error");
         },
     });
 }
@@ -709,7 +708,7 @@ function writeStopDetails() {
                 });
             },
             error: function () {
-                alert("result false");
+            	swal("Network fail!", "Please try it later!", "error");
             },
         });
         Generate_Graph();
@@ -735,7 +734,7 @@ function invokeAddStopBtn() {
                 $('#removeFav').show();
             },
             error: function () {
-                alert("add failed");
+            	swal("Added fail!", "Please try it later!", "error");
             },
         });
     });
@@ -764,7 +763,7 @@ function invokeDeleteStopBtn() {
                 $('#removeFav').hide();
             },
             error: function () {
-                alert("remove failed" + token);
+            	swal("Remove failed!", "Please try it later!", "error");
             },
         });
     });
@@ -793,7 +792,7 @@ function invokeAddBusBtn() {
                 $('#removeFav_bus').show();
             },
             error: function () {
-                alert("add failed");
+            	swal("Add failed!", "Please try it later!", "error");
             },
         });
     });
@@ -827,7 +826,7 @@ function invokeDeleteBusBtn() {
                 $('#removeFav_bus').hide();
             },
             error: function () {
-                alert("delete failed");
+            	swal("delete failed!", "Please try it later!", "error");
             },
         });
     });
@@ -1009,7 +1008,7 @@ function deleteFavourites() {
                     console.log(result);
                 },
                 error: function () {
-                    alert("remove bus number failed");
+                	swal("remove bus number failed", "Please try it later!", "error");
                 },
             });
         })
@@ -1034,7 +1033,7 @@ function deleteFavourites() {
                     console.log(result);
                 },
                 error: function () {
-                    alert("remove stop failed");
+                	swal("remove stop failed", "Please try it later!", "error");
                 },
             });
         })
@@ -1060,7 +1059,7 @@ function deleteFavourites() {
                     console.log(result);
                 },
                 error: function () {
-                    alert("remove route failed");
+                	swal("remove route failed", "Please try it later!", "error");
                 },
             });
         })
@@ -1197,7 +1196,7 @@ function seeStopDetail(stop_id) {
             // })
         },
         error: function () {
-            alert("result false");
+        	swal("Network failed", "Please try it later!", "error");
         },
     })
 
@@ -1282,7 +1281,6 @@ function TrafficFeed() {
                 console.log("changed traffic feed");          
             }
         };
-        console.log("Here");
         var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
 
         for (i = 0; i < entries.length; i++) {
@@ -1525,7 +1523,7 @@ $('#contact_info').submit(function () {
             window.confirm(result.error_msg);
         }
     }).fail(function () {
-        alert("false1");
+    	swal("Network failed", "Please try it later!", "error");
     });
     return false;
 });
