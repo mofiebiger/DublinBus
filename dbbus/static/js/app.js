@@ -1,4 +1,5 @@
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
+
 var marker_list = [];
 var oldfeed = "TEST";
 
@@ -111,7 +112,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-
+    
+    
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -140,13 +142,17 @@ function initMap(position) {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
-                                'name': _route.steps[i].transit.line.name
+                                'name': _route.steps[i].transit.line.name,
+                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
-                                'name': _route.steps[i].transit.headsign
+                                'name': _route.steps[i].transit.headsign,
+                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
                             })
                         }
                     }
@@ -206,6 +212,7 @@ function initMap(position) {
             }
         });
     } //DirectionsRenderer Ends
+
 
     function fetchGeoAddress(position) {
         var Locater = new google.maps.Geocoder();
