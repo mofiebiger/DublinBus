@@ -86,13 +86,13 @@
 
     ga('create', 'UA-2195009-2', 'auto');
     ga('send', 'pageview');
-    
+
     ga('create', 'UA-2195009-27', 'auto', {
       name: "foundation"
     });
     ga('foundation.send', 'pageview');
   </script>
-  
+
   </head>
   <body>
 
@@ -110,7 +110,7 @@
     <h1 style="color:#e5e5e5;"> Journey Planner </h1>
             <div id="directionsPanel">
               {% csrf_token %}
-              <button id="geoButton">Use Current Location</button>
+              <button id="geoButton" class="official_button">Use Current Location</button>
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
                 <input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style="width: 30px; height: 30px;"></button>
                 <input id="directionsDestination" class="controls" type="text" placeholder="End">
@@ -132,7 +132,7 @@
                 <input id="time-button" type="time" name="fname">
               </div>
 
-              <button id="navigateButton">Navigate</button>
+              <button id="navigateButton" class="official_button" >Navigate</button>
             </div>
             <div id="directionsSteps"></div>
               <p id="error"></p>
@@ -162,26 +162,6 @@
 </div>
 </div>
 </div>
-
-<div class="off-canvas position-left" id="tourismPage" data-off-canvas>
-        <button class="close-button" aria-label="Close menu" type="button" data-close>
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div class="grid-y grid-padding-x" style="height: 100%;">
-          <br>
-          <div class="cell shrink">
-            <h1> What to do in Dublin </h1>
-
-            <button id="tourismNatureBtn" class="tourismbutton">Nature</button>
-            <button id="tourismDrinkBtn" class="tourismbutton">Breweries</button>
-            <button id="tourismLandmarksBtn" class="tourismbutton">Landmarks</button>
-            <button id="tourismMuseumsBtn" class="tourismbutton">Museums & Galleries</button>
-            <button id="tourismChurchesBtn" class="tourismbutton">Churches</button>
-            <div id="container"></div>
-            <div class="touristInfo"></div>
-          </div>
-        </div>
-      </div>
 
 <div class="off-canvas position-bottom" id="stopPage" data-off-canvas data-transition="overlap">
 <div class="grid-y grid-padding-x" style="height: 100%;">
@@ -235,7 +215,8 @@
               </div>
               <div class='bus-details'style="display: none">
                   <h3 id="search-bus-id"></h3>
-                  <p>From<span id="bus-departure"></span> to <span id="bus-destination"></span> </p>
+                  <p>From: <span id="bus-departure"></span> <br>
+                    To: <span id="bus-destination"></span> </p>
               </div>
             </div>
             </div>
@@ -303,7 +284,7 @@
 </div>
 </div>
 
-   
+
 <div class="off-canvas position-bottom" id="weatherPage" data-off-canvas data-transition="overlap">
 <div class="grid-y grid-padding-x" style="height: 100%;">
 <br>
@@ -335,7 +316,7 @@
   </div>
         </div>
       </div>
-    
+
 <div class="off-canvas position-bottom" id="trafficPage" data-off-canvas>
 
         {% comment %} Add X to close Window {% endcomment %}
@@ -359,7 +340,7 @@
           </div>
         </div>
       </div>
-    
+
 <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
 <div>
     <button class="offcanvas-full-screen-close" aria-label="Close menu" type="button" data-close>
