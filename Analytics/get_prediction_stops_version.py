@@ -6,17 +6,9 @@ import xgboost as xgb
 import requests as req
 import holidays as hol
 
-from datetime import datetime
-
 ie_holidays = hol.Ireland()
 
-import importlib
-importlib.reload(config)
-
 from datetime import date, time, datetime
-
-import time as timer
-
 
 def set_season(x):
     winter = [11,12,1]
@@ -31,17 +23,6 @@ def set_season(x):
         return 'Spring'
     else:
         return 'Summer'
-
-def get_weather_funct():
-    
-    # ========================== Weather Data ========================== # 
-    # will need to sync this with the automated live weather updates to not waste calls. Also add forecasting option. 
-    
-    weathercall = req.get(f"https://api.darksky.net/forecast/{config.darksky_api}/53.3498,-6.2603").content
-    weather = json.loads(weathercall)
-    return {'hourly':weather['hourly']['data'], 'daily':weather['daily']['data']}
-    
-full_weather = get_weather_funct()
     
 def find_closest_(weather):
     """
@@ -69,7 +50,6 @@ def find_closest_(weather):
             
     return weather[min_idx]
         
-s = timer.time()
 def prediction_route(StopA, StopB, PDate, PTime):
     """
     Return an estimate of travel time, in seconds, for a given journey. 
@@ -155,12 +135,3 @@ def prediction_route(StopA, StopB, PDate, PTime):
     # ========================= Returning Data ========================= #
     
     return int(round(estimate.tolist()[0],0))
-
-PDate = "2019-08-17"
-PTime = "07:00"
-StopA = "226"
-StopB = "228"
-
-print(prediction_route(StopA, StopB, PDate, PTime))
-
-print("time:{}".format(timer.time()-s))
