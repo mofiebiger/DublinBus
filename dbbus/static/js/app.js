@@ -1508,11 +1508,13 @@ function on8() {
         displayDescription = ("Today: " + data_daily.data[0].summary + " For now, it feels like " + weatherDescription.toLowerCase() + ".");
 
         $('#weather_heading').show().html(displayDescription).css({
-            'font-size': 20
+            'font-size': 20,
+            'color': '#e5e5e5'
         });
         $('#currentTemperature').show().html(Math.round(data.temperature) + "℃").css({
             'font-size': 55,
-            "line-height": "100%"
+            "line-height": "100%",
+            'color': '#e5e5e5'
         });
 
         var weatherIcon = data.icon.toUpperCase().split('-');
@@ -1551,7 +1553,8 @@ function on8() {
         var visibility = ("Visibility: " + Math.round(data.visibility) + "km");
         //Display Weather Stats on overlay8
         $('#weather_stats').show().html(sunrise + "<br/>" + sunset + "<br/><br/>" + displayWind + "<br/>" + displayHumidity + "<br/><br/>" + pressure + "<br/>" + visibility).css({
-            'font-size': 20
+            'font-size': 20,
+            'color': '#e5e5e5'
         });
         for (var i = 0; i < data_hourly.length; i++) {
             var weatherIcon = data_hourly[i].icon.toUpperCase().split('-');
