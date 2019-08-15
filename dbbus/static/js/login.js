@@ -151,27 +151,28 @@
 						  dangerMode: true,
 						})
 						.then((willsent) => {
-						  if (willsent) {
-							  $.ajax({
-								  cache:false,
-								  type: "POST",
-								  url:window.location.protocol+"//"+window.location.host+"/user/register",
-								  headers: {
-									  "X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
-								  },
-								  data:{'user_name':username, 'code':2},
-								  async:false,
-								  success:function(data){
-									  if (data.res == 1){
-										  swal("Email sent successfully",result.success_msg, "success")
-									  }else if (data.res == 0){
-										  swal("Register fail", result.error_msg, "error");
-									  }
-								  },
-								  error: function(){
-									  swal("Network failed", "Please try it later!", "error");
-								  },
-							  });						
+						  if (willsent) {							
+								  $.ajax({
+									  cache:false,
+									  type: "POST",
+									  url:window.location.protocol+"//"+window.location.host+"/user/register",
+									  headers: {
+										  "X-CSRFToken": $('#new_user_form input[name="csrfmiddlewaretoken"]').val()
+									  },
+									  data:{'user_name':username, 'code':2},
+									  async:false,
+									  success:function(data){
+										  if (data.res == 1){
+											  swal("Email sent successfully",data.success_msg, "success")
+										  }else if (data.res == 0){
+											  swal("Register fail", data.error_msg, "error");
+										  }
+									  },
+									  error: function(){
+										  swal("Network failed", "Please try it later!", "error");
+									  },
+								  });						
+							  
 						  } else {
 						    swal("Email has not be sent!");
 						  }
