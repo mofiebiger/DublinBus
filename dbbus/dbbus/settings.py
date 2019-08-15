@@ -32,13 +32,22 @@ PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
 PWA_APP_SCOPE = '/'
 PWA_APP_ORIENTATION = 'any'
-PWA_APP_START_URL = '/user/index'
-PWA_APP_ICONS = [
-{
-'src': '/static/images/icons/android-chrome-192x192.png',
+PWA_APP_START_URL = '/'
+PWA_APP_ICONS = [{
+'src': '/static/images/android-chrome-192x192.png',
 'sizes': '192x192',
 'type': 'image/png'
-}
+},
+{
+'src': '/static/images/android-launchericon-512-512.png',
+'sizes': '512x512',
+'type': 'image/png'
+},
+{
+'src': '/static/images/apple-touch-icon-114x114.png',
+'sizes': '114x114',
+'type': 'image/png'
+},
 ]
 PWA_APP_SPLASH_SCREEN = [
 {

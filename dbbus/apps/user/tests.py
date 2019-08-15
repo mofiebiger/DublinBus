@@ -28,13 +28,12 @@ class UserTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_register_user_POST(self):
-        pass
-        # request = self.factory.get('/user/register/')
-        # request.user = self.user
-        # response = views.RegisterView().post(request)
-        #
-        # #testing the status code of the index page
-        # self.assertEqual(response.status_code, 200)
+        request = self.factory.get('/user/register/')
+        request.user = self.user
+        response = views.RegisterView().post(request)
+
+        #testing the status code of the index page
+        self.assertEqual(response.status_code, 200)
 
     def test_active_user_GET(self):
         pass
@@ -83,21 +82,21 @@ class UserTests(TestCase):
         #testing the status code of the change password function
         self.assertEqual(response.status_code, 200)
 
-    def test_forget_password_GET(self):
-        request = self.factory.get('/user/forget_password/')
-        request.user = self.user
-        response = views.PasswordForgetView().get(request)
-
-        #testing the status code of the forget password function
-        self.assertEqual(response.status_code, 200)
-
-    def test_forget_password_POST(self):
-        request = self.factory.get('/user/forget_password/')
-        request.user = self.user
-        response = views.PasswordForgetView().post(request)
-
-        #testing the status code of the forget password function
-        self.assertEqual(response.status_code, 200)
+    # def test_forget_password_GET(self):
+    #     request = self.factory.get('/user/forget_password/')
+    #     request.user = self.user
+    #     response = views.PasswordForgetView().get(request)
+    #
+    #     #testing the status code of the forget password function
+    #     self.assertEqual(response.status_code, 200)
+    #
+    # def test_forget_password_POST(self):
+    #     request = self.factory.get('/user/forget_password/')
+    #     request.user = self.user
+    #     response = views.PasswordForgetView().post(request)
+    #
+    #     #testing the status code of the forget password function
+    #     self.assertEqual(response.status_code, 200)
 
     def test_reset_password_GET(self):
         pass
@@ -125,13 +124,14 @@ class UserTests(TestCase):
         #testing the status code of the reset password function
         self.assertEqual(response.status_code, 200)
 
-    def test_favourites_GET(self):
-        request = self.factory.get('/user/favourites/')
-        request.user = self.user
-        response = views.FavouritesView().get(request)
-
-        #testing the status code of the index page
-        self.assertEqual(response.status_code, 200)
+        #DELETED?!?!?
+    # def test_favourites_GET(self):
+    #     request = self.factory.get('/user/favourites/')
+    #     request.user = self.user
+    #     response = views.FavouritesView().get(request)
+    #
+    #     #testing the status code of the index page
+    #     self.assertEqual(response.status_code, 200)
 
     def test_bus_info_GET(self):
         pass
@@ -239,13 +239,13 @@ class UserTests(TestCase):
         #testing the status code of the contact page
         self.assertEqual(response.status_code, 200)
 
-    def test_contact_page_POST(self):
-        request = self.factory.get('/user/contact/')
-        request.user = self.user
-        response = views.ContactUsView().post(request)
-
-        #testing the status code of the contact page
-        self.assertEqual(response.status_code, 200)
+    # def test_contact_page_POST(self):
+    #     request = self.factory.get('/user/contact/')
+    #     request.user = self.user
+    #     response = views.ContactUsView().post(request)
+    #
+    #     #testing the status code of the contact page
+    #     self.assertEqual(response.status_code, 200)
 
     def test_stop_info_GET(self):
         request = self.factory.get('/user/stop_info/')
