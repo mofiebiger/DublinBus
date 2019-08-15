@@ -862,64 +862,59 @@ function invokeDeleteStopBtn(){
       }
 
 function invokeAddBusBtn(){
-          var token = $('input[name="csrfmiddlewaretoken"]').val();
-          $('#addFav_bus').on('click',function(){
-                var bus_number = $('#search-bus-id').html();
-                // var bus_number = $('#search-bus-id').val().replace(/\s+/g,"");
-                var start = $('#bus-departure').text();
-                var end = $('#bus-destination').text();
-                $.ajax({
-                    cache:false,
-                    type: "POST",
-                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
-                    data:{'bus_number':bus_number, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
-                    async:true,
-                    success:function(result){
-                        $('#addFav_bus').hide();
-                        $('#removeFav_bus').show();
-                    },
-                    error: function(){
-            	swal("Add failed!", "Please try it later!", "error");
-                    },
+    var token = $('input[name="csrfmiddlewaretoken"]').val();
+    $('#addFav_bus').on('click',function(){
+        var bus_number = $('#search-bus-id').html();
+        // var bus_number = $('#search-bus-id').val().replace(/\s+/g,"");
+        var start = $('#bus-departure').text();
+        var end = $('#bus-destination').text();
+        $.ajax({
+            cache:false,
+            type: "POST",
+            url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
+            data:{'bus_number':bus_number, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
+            async:true,
+            success:function(result){
+                $('#addFav_bus').hide();
+                $('#removeFav_bus').show();
+            },
+            error: function(){
+        swal("Add failed!", "Please try it later!", "error");
+            },
 
-                });
+        });
 
-                //get user_favourite_stop
-                //compare with selected stop id
-                //determine which button to show
-                $.ajax({
-                    type: "GET",
-                    url: window.location.protocol + "//" + window.location.host + '/user/favorite_stop',
-                    async: true,
-                    success: function (result1) {
-                        //msg stors the id of the button
-                        // var msg = "#addFav";
-                        if (result1.res == 1) {
-                            var msg = "#addFav";
-                            for (var i = 0; i < result1['user_stop_list'].length; i++) {
-                                //if the stop id is in the users' favourites list
-                                if (result1['user_stop_list'][i] == $('#stop_id').val()) {
-                                    msg = "#removeFav";
-                                    break
-                                }
-                            }
-                            $(msg).show()
-                        } else {
-                            $('.login-required').show();
+        //get user_favourite_stop
+        //compare with selected stop id
+        //determine which button to show
+        $.ajax({
+            type: "GET",
+            url: window.location.protocol + "//" + window.location.host + '/user/favorite_stop',
+            async: true,
+            success: function (result1) {
+                //msg stors the id of the button
+                // var msg = "#addFav";
+                if (result1.res == 1) {
+                    var msg = "#addFav";
+                    for (var i = 0; i < result1['user_stop_list'].length; i++) {
+                        //if the stop id is in the users' favourites list
+                        if (result1['user_stop_list'][i] == $('#stop_id').val()) {
+                            msg = "#removeFav";
+                            break
                         }
-                    },
-                    error: function () {
-                        console.log('show button fail')
-                    },
-                });
+                    }
+                    $(msg).show()
+                } else {
+                    $('.login-required').show();
+                }
             },
             error: function () {
-            	swal("Network fail!", "Please try it later!", "error");
+                swal("Network fail!", "Please try it later!", "error");
             },
         });
-        Generate_Graph();
-    })
-}
+    });
+};
+        // Generate_Graph();
 
 function invokeAddStopBtn() {
     var token = $('input[name="csrfmiddlewaretoken"]').val();
