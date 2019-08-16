@@ -1,7 +1,11 @@
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
+var markerImage = '/static/images/bus_icon.png';
 
 var marker_list = [];
 var oldfeed = "TEST";
+
+
+
 
 function initMap(position) {
 
@@ -10,7 +14,7 @@ function initMap(position) {
     setInterval(() => TrafficFeed(), 600000);
 
     markerA =
-        new google.maps.Size(24, 27),
+    new google.maps.Size(24, 27),
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 27),
 
@@ -137,6 +141,7 @@ function initMap(position) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
                         if (_route.steps[i].transit.line.hasOwnProperty("name")) {
                             aList.push({
+                                
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
@@ -301,7 +306,7 @@ function initMap(position) {
                     return new google.maps.Marker({
                         position: location,
                         map: map,
-                        // icon: markerImage,
+                        icon: markerImage,
                     });
                 });
 
@@ -309,11 +314,21 @@ function initMap(position) {
                 for (var i = 0; i < markers.length; i++) {
                     var marker = markers[i];
                     marker_list.push(marker);
-                    content_html = "<h3>" + stop_content[i].stop_id + "</h3>" +
-                        "<h4>" + stop_content[i].stop_name + "</h4>" +
+                    content_html = '<div class="iw-container">' +
+                    '<div class="iw-title">Stop Number: ' + stop_content[i].stop_id + '</div>' +
+                    '<div class="iw-content">' +
+                      '<div class="iw-subTitle">' + stop_content[i].stop_name + '</div>' +
                         "<button class='markerNavBtn' data-toggle='navigator' onclick='fetchMarkerAddress(" + stops[i].lat + "," + stops[i].lng + ")'>Navigate</button>" +
-                        "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail(" + stop_content[i].stop_id + ")'>See Details</button>";
+                        "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail(" + stop_content[i].stop_id + ")'>See Details</button></div>" +
+                    '<div class="iw-bottom-gradient"></div>' +
+                  '</div>';
+                        // "<div class='info-window-div'><h3>" + stop_content[i].stop_id + "</h3>" +
+                        // "<h4>" + stop_content[i].stop_name + "</h4>" +
+                        // "<button class='markerNavBtn' data-toggle='navigator' onclick='fetchMarkerAddress(" + stops[i].lat + "," + stops[i].lng + ")'>Navigate</button>" +
+                        // "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail(" + stop_content[i].stop_id + ")'>See Details</button></div>";
                     bindInfoWindow(marker, map, infowindow, content_html);
+
+                     google.maps.event.addListener(infowindow, 'domready', addInfoWindowStyle());
                 }
 
 
@@ -535,13 +550,12 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
-                        var lineSymbol = {
+                       var lineSymbol = {
                         	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
 //                        	    path: bus_image,
                         	    scale: 5,
                         	    strokeColor: '#1a7bba'
-                        	  };
-                                             var Path = new google.maps.Polyline({
+                        	  }; var Path = new google.maps.Polyline({
                          					    					path: stops,
                          					    				    icons: [{
                          					    				       icon: lineSymbol,
@@ -556,21 +570,36 @@ function initMap(position) {
                                              marker_list.push(Path);
 
                          map.setCenter(stops[0]);
+
+                        markerImage="/static/images/Map-Marker-Ball-Azure-icon.png";
                         var markers = stops.map(function (location, i) {
                             return new google.maps.Marker({
                                 position: location,
                                 map: map,
+                                icon: markerImage,
                             });
                         });
+                      
                         animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
                             marker_list.push(marker);
-                            content_html = "<h3>" + stop_content[i].stop_id + "</h3>" +
-                                "<h4>" + stop_content[i].stop_name + "</h4>" +
-                                "<button class='markerNavBtn' data-toggle='navigator' onclick='fetchMarkerAddress(" + stops[i].lat + "," + stops[i].lng + ")'>Navigate</button>" +
-                                "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail(" + stop_content[i].stop_id + ")'>See Details</button>";
+                            content_html =
+                                '<div class="iw-container">' +
+                    '<div class="iw-title">Stop Number: ' + stop_content[i].stop_id + '</div>' +
+                    '<div class="iw-content">' +
+                      '<div class="iw-subTitle">' + stop_content[i].stop_name + '</div>' +
+                        "<button class='markerNavBtn' data-toggle='navigator' onclick='fetchMarkerAddress(" + stops[i].lat + "," + stops[i].lng + ")'>Navigate</button>" +
+                        "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail(" + stop_content[i].stop_id + ")'>See Details</button></div>" +
+                    '<div class="iw-bottom-gradient"></div>' +
+                  '</div>';
+                                // "<h3>" + stop_content[i].stop_id + "</h3>" +
+                                // "<h4>" + stop_content[i].stop_name + "</h4>" +
+                                // "<button class='markerNavBtn' data-toggle='navigator' onclick='fetchMarkerAddress(" + stops[i].lat + "," + stops[i].lng + ")'>Navigate</button>" +
+                                // "<button class='toStopPage' data-toggle='stopPage' onclick='seeStopDetail(" + stop_content[i].stop_id + ")'>See Details</button>";
                             bindInfoWindow(marker, map, infowindow, content_html);
+
+                     google.maps.event.addListener(infowindow, 'domready', addInfoWindowStyle());
                         }
                         displayBusDetail();
                         invokeBusDetail();
@@ -587,8 +616,7 @@ function initMap(position) {
         })
     }
     setBusRoute();
-
-    function animateCircle(line) {
+function animateCircle(line) {
         var count = 0;
         window.setInterval(function() {
           count = (count + 1) % 200;
@@ -600,6 +628,7 @@ function initMap(position) {
     }
 
 
+
     invokeAddRoutesBtn();
     initAddFavRoutes();
     invokeDeleteRoutesBtn();
@@ -608,6 +637,52 @@ function initMap(position) {
 }; //InitMap Ends
 
 var marker_list = new Array();
+
+function addInfoWindowStyle(){
+
+                        // Reference to the DIV that wraps the bottom of infowindow
+                        var iwOuter = $('.info-window-div');
+
+                        /* Since this div is in a position prior to .gm-div style-iw.
+                         * We use jQuery and create a iwBackground variable,
+                         * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
+                        */
+                        var iwBackground = iwOuter.prev();
+
+                        // Removes background shadow DIV
+                        iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+
+                        // Removes white background DIV
+                        iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+
+                        // Moves the infowindow 115px to the right.
+                        iwOuter.parent().parent().css({left: '115px'});
+
+                        // Moves the shadow of the arrow 76px to the left margin.
+                        iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+
+                        // Moves the arrow 76px to the left margin.
+                        iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+
+                        // Changes the desired tail shadow color.
+                        iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+
+                        // Reference to the div that groups the close button elements.
+                        var iwCloseBtn = iwOuter.next();
+
+                        // Apply the desired effect to the close button
+                        iwCloseBtn.css({opacity: '1', right: '38px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
+
+                        // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
+                        if($('.iw-content').height() < 140){
+                          $('.iw-bottom-gradient').css({display: 'none'});
+                        }
+
+                        // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
+                        iwCloseBtn.mouseout(function(){
+                          $(this).css({opacity: '1'});
+                        });
+}
 
 function initAddFavRoutes() {
     //get user_favourite_stop
@@ -634,7 +709,6 @@ function initAddFavRoutes() {
         },
         error: function () {
             alert("Oops, something wrong, please try again.");
-            console.log('show button fail')
         },
     });
 }
@@ -716,7 +790,7 @@ function invokeDeleteRoutesBtn() {
 }
 
 function displayBusDetail() {
-    $('#search-bus-id').html("Bus Number: " + route_list[0]);
+    $('#search-bus-id').html(route_list[0]);
     $('#bus-departure').html(route_list[1]);
     $('#bus-destination').html(route_list[2]);
     $('.bus-details').attr("style", "display:block;");
@@ -816,7 +890,7 @@ function writeStopDetails() {
                 if (result.res == 1) {
                     result = result.json_data[0]['fields'];
                     var content_html = "<h2>" + result.stop_name + "</h2>" +
-                        "<h3>" + " Stop Number: " + result.stop_id + "</h3>" +
+                        "<h3>" + result.stop_id + "</h3>" +
                         "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
                         "<input type='text' id='stop_id' value='" + result.stop_id + "' style='display: none'>";
                     content_html += "<div id='test_error'></div>";
@@ -862,6 +936,7 @@ function writeStopDetails() {
                 swal("Network fail!", "Please try it later!", "error");
             },
         })
+        Generate_Graph();
     })
 }
 
@@ -1109,7 +1184,6 @@ function initStopPage() {
     //delete from favs
     invokeDeleteStopBtn();
 
-    //
     //add bus number to favourites
     // invokeAddBusBtn();
     //
@@ -1249,7 +1323,7 @@ function deleteFavourites() {
 
         //hide the deleted stop info and store stop id
         $('.delete_stop').on('click', function () {
-            $(this).parent().hide();
+            $(this).prarent().hide();
 
             $(this).hide();
             deleted_stop.push($(this).prev().attr('id'));
@@ -1446,8 +1520,8 @@ function invokeBusDetail() {
 
 //load  pages
 $(document).ready(function () {
-    $('#userPage').load('/user/login');
-    $('#contactPage').load('/user/contact');
+    $('#user-div').load('/user/login');
+    $('#contact-div').load('/user/contact');
 
 });
 
@@ -1792,6 +1866,7 @@ function deleteMarkers() {
     clearAllMarkers();
     marker_list = [];
 }
+
 
 function Generate_Graph() {
 
