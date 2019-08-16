@@ -30,11 +30,11 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], 
+        map: jQuery('#map')[0],
         directionsPanel: jQuery('#directionsPanel'),
         dirSrc: jQuery('#directionsSource'),
-        dirDst: jQuery('#directionsDestination'), 
-        navBtn: jQuery('#navigateButton'), 
+        dirDst: jQuery('#directionsDestination'),
+        navBtn: jQuery('#navigateButton'),
         directionsSteps: jQuery('#directionsSteps'),
         geoButton: jQuery('#geoButton')
     };
@@ -138,7 +138,7 @@ function initMap(position) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
                         if (_route.steps[i].transit.line.hasOwnProperty("name")) {
                             aList.push({
-                                
+
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
@@ -422,24 +422,11 @@ function initMap(position) {
                     var latitude = obj[i].latitude;
                     var longitude = obj[i].longitude;
 
-                    function on1() {
-                        //document.getElementById("overlay1").style.display = "block";
-                        $("overlay1").show();
-                    }
-                    console.log(fetchTourismAddress(latitude, longitude));
-
-                    // Geo Tourism Location Btn
-                    //$('#tourismNavBtn').on('click', function(e) {
-
-                    // Geo Tourism Location Btn
-                    //$('#tourismNavBtn').on('click', function(e) {
-
                     display += '<h2 style="color:#e5e5e5">' + locationName + '</h2>';
                     display += '<p style="color:#e5e5e5">' + short_description + '</p>';
                     display += '<img src ="/static/images/' + image + '" style="width: 300px"></img>';
-                    display += '<p style="color:#e5e5e5">' + long_description + '</p>';
+                    display += '<h5 style="color:#e5e5e5; text-align:left;">' + long_description + '</h5>';
                     display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
-                    //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
                     display += '<button type="button" class="tourismNavBtn"  data-toggle="navigator tourismPage">Navigate</button>'
                     display += '<hr>'
                 }
@@ -579,7 +566,7 @@ function initMap(position) {
                                 icon: markerImage,
                             });
                         });
-                      
+
                         animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
@@ -1224,7 +1211,7 @@ function initFavsPage() {
             	str += $(this).find('.end_point').html();
             	$('#searchBusRoute').val(str);
             	$('#searchBus').click();
-            	
+
             })
         },
         error: function () {
@@ -1890,16 +1877,15 @@ function Generate_Graph() {
         if (response_result == "0") {
             $("Graph_div").text("No Real Time Information Available for stop:" + stop_of_interest + "," + stop_of_interest_addr);
         } else {
-
             
             var content = real_time_data.content.results.slice(0, 4);
+
 
             var routeids = [];
             var arrival_times = [];
 
             content.forEach(function (elem) {
                 routeids.push(elem['route']);
-
 
                 var atime = elem["arrivaldatetime"];
                 var atime_date = atime.split(" ")[0].split("/");
