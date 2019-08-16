@@ -26,16 +26,13 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], //good
-        directionsPanel: jQuery('#directionsPanel'), //good
-        dirInputs: jQuery('.directionInputs'),
-        dirSrc: jQuery('#directionsSource'), //good
-        dirDst: jQuery('#directionsDestination'), //good
-        navBtn: jQuery('#navigateButton'), //good
-        directionsSteps: jQuery('#directionsSteps'), //good
-        paneToggle: jQuery('#paneToggle'),
-        geoButton: jQuery('#geoButton'), //good
-        paneResetBtn: jQuery('#paneReset')
+        map: jQuery('#map')[0], 
+        directionsPanel: jQuery('#directionsPanel'),
+        dirSrc: jQuery('#directionsSource'),
+        dirDst: jQuery('#directionsDestination'),
+        navBtn: jQuery('#navigateButton'),
+        directionsSteps: jQuery('#directionsSteps'),
+        geoButton: jQuery('#geoButton'),
     };
 
     // https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
@@ -109,8 +106,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-    
-    
+
+
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -1150,7 +1147,7 @@ function initFavsPage() {
             	str += $(this).find('.end_point').html();
             	$('#searchBusRoute').val(str);
             	$('#searchBus').click();
-            	
+
             })
         },
         error: function () {
@@ -1795,18 +1792,18 @@ function deleteMarkers() {
 
 function Generate_Graph() {
 
-    // For building an alternate for when the real time data is down. 
+    // For building an alternate for when the real time data is down.
     var default_lat = 53.353440;
     var default_lng = -6.332727;
 
-    // pull stop number 
+    // pull stop number
     // then get real time info on stop
     // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
     // pass that data to graph distribution
 
     var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
     var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
-    
+
     // $.ajax({
     //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
     //     // 'type': 'POST',
@@ -1829,8 +1826,8 @@ function Generate_Graph() {
     //         var now = Date();
 
     //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-            
-    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
+
+    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only.
 
     //         arrival_times.append(time_diff_seconds);
     //     };
@@ -1844,7 +1841,7 @@ function Generate_Graph() {
     var now = Date();
 
     var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-    
+
     console.log(time_diff_seconds);
 
 
