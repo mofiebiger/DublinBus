@@ -357,15 +357,24 @@ function initMap(position) {
 
 
     function fetchTourismAddress(lat, lng) {
-        tourismLatLng = new google.maps.LatLng(lat, lng);
+      console.log("fetch called");
+        var tourismLatLng = new google.maps.LatLng(lat, lng);
+        console.log(tourismLatLng);
         var Locate = new google.maps.Geocoder();
 
         Locate.geocode({
             'location': tourismLatLng
         }, function (results, status) {
+          console.log();
             if (status == google.maps.GeocoderStatus.OK) {
                 var _r = results[0];
                 $Selectors.dirDst.val(_r.formatted_address);
+                console.log($Selectors.dirDst.val());
+                console.log(_r.formatted_address);
+
+            }
+            else {
+              console.log('in else');
             }
         });
     } //fetchTourismAddress Ends
@@ -416,7 +425,7 @@ function initMap(position) {
                     var website = obj[i].link;
                     var latitude = obj[i].latitude;
                     var longitude = obj[i].longitude;
-        
+
                     display += '<h2 style="color:#e5e5e5">' + locationName + '</h2>';
                     display += '<p style="color:#e5e5e5">' + short_description + '</p>';
                     display += '<img src ="/static/images/' + image + '" style="width: 300px"></img>';
@@ -429,6 +438,7 @@ function initMap(position) {
             $("#container").html(display);
 
             $('.tourismNavBtn').click(function () {
+              console.log('click nav');
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (latitude, longitude) {
                         fetchTourismAddress(latitude, longitude);

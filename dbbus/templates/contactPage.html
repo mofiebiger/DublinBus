@@ -59,13 +59,13 @@
 
 			}).done(function(result){
 				 if(result.res == 1){
-           swal("Sent succesfully",result.success_msg,"success")
+           swal("Sent succesfully",result.success_msg,"success");
                     }else {
-                      swal("Sent failed",result.error_msg;_msg,"error")
+                      swal("Sent failed",result.error_msg,"error");
 
 				 	}
 			}).fail(function(){
-        swal("Network error","Please try it later","error")
+        swal("Network error","Please try it later","error");
 			});
 		return false;
 	});
