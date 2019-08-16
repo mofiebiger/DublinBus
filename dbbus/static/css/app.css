@@ -642,6 +642,46 @@
     background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 }
 
+.login-required{
+
+    border: 2px solid #e5e5e5;
+  /*background-color: transparent;*/
+  text-decoration: none;
+  margin: auto;
+  padding: auto;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+  color: #1a7bba;
+    background-color: #e5e5e5;
+  transition: all ease 0.4s;
+    /*margin-bottom: 5px;*/
+}
+
+.navbar-user-button{
+    border: 2px solid #e5e5e5;
+  background-color: transparent;
+  text-decoration: none;
+  margin: 15px;
+  padding: 8px;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+  color: #ffe00b;
+  transition: all ease 0.4s;
+    margin-bottom: 5px;
+}
+
+.navbar-image{
+
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+}
+
 
 
 

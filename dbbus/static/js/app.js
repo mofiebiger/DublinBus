@@ -557,6 +557,7 @@ function initMap(position) {
 
 
 
+                        markerImage="/static/images/Map-Marker-Ball-Azure-icon.png";
                         var markers = stops.map(function (location, i) {
                             return new google.maps.Marker({
                                 position: location,

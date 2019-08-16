@@ -3830,7 +3830,10 @@ select {
   border: 1px solid #cacaca;
   border-radius: 0;
   background-color: #fefefe;
-  font-size: 1rem; }
+  font-size: 1rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
   .dropdown-pane.is-opening {
     display: block; }
   .dropdown-pane.is-open {
