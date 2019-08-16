@@ -402,7 +402,7 @@ class StopInfoNearbyView(TemplateView):
         radius = 1.0
 
         #open json file
-        with open('static/json/stops_information.json','r') as load_f:
+        with open('static/json/stops_information.json','r',encoding="utf8") as load_f:
             stops_data = json.load(load_f)
 
         #add the stop into file where the distance is less than the radius
