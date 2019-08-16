@@ -198,8 +198,6 @@ def predict_time(StopA, StopB, PDate, PTime):
     
     return int(round(estimate.tolist()[0],0))
 
-print("prediction test :", predict_time("226", "228", "2019-08-16", "15:00"))
-
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
     def get(self,request):

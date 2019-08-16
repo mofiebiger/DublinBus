@@ -1776,7 +1776,7 @@ function Generate_Graph() {
         } else {
 
             console.log(real_time_data);
-            var content = real_time_data.content.results.slice(0, 4);
+            var content = real_time_data.content.results.slice(0, 3);
 
             var routeids = [];
             var arrival_times = [];
@@ -1792,18 +1792,13 @@ function Generate_Graph() {
                 var ar_date = new Date(atime_date[2], atime_date[1] - 1, atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
 
                 var current_timestamp = Date.now() - 3600 * 1000;
+
                 // - 3600 specific to a bug with my laptop, for testing only. 
                 var time_diff_seconds = (ar_date.getTime() - current_timestamp) / 1000;
-
-                console.log(ar_date);
-                console.log(Date());
-
-                console.log(time_diff_seconds);
 
                 arrival_times.push(time_diff_seconds);
             });
 
-            console.log(arrival_times);
             // Pass arrival times to back end
             arrival_times = JSON.stringify(arrival_times);
 
@@ -1834,14 +1829,22 @@ function Generate_Graph() {
                     });
 
                     graphdata.forEach(function (row) {
-                        if (row[0] != "Time to Arrival (min)")
+                        if (row[0] != "Time")
                             data.addRow(row);
                     });
 
                     var options = {
+
+                        width: $("#Graph_div").width(),
+                        height: $(window).height()*0.25,
+    
                         title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
+                        legend: {
+                            position: "top",
+                            alignment: "end"
+                        },
                         hAxis: {
-                            title: 'Time',
+                            title: 'Time to Arrival (min)',
                             titleTextStyle: {
                                 color: '#333'
                             },
@@ -1851,7 +1854,10 @@ function Generate_Graph() {
                             minValue: 0,
                             baselineColor: '#fff',
                             gridlineColor: '#fff',
-                            textPosition: 'none'
+                            textPosition: 'none',
+                            gridlines: {
+                                count:8
+                            },
                         },
                         'backgroundColor': 'transparent'
                     };
@@ -1861,16 +1867,8 @@ function Generate_Graph() {
             });
         };
     });
-
-    // var atime = "16/08/2019 00:22:00";
-    // var atime_date = atime.split(" ")[0].split("/");
-    // var atime_time = atime.split(" ")[1].split(":");
-
-    // var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    // var now = Date();
-
-    // var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-
-    // console.log(time_diff_seconds);
-
 };
+
+$(window).resize(function(){
+    Generate_Graph();
+});

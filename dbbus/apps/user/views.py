@@ -695,13 +695,13 @@ class Graph_distributionView(TemplateView):
 
         xvals = np.linspace(xmin, xmax, 1000)
         yvals = []
-        graph_data_title = ['Time to Arrival (min)']
+        graph_data_title = ['Time']
 
         for i in range(len(mus)):
 
             ys = stats.norm.pdf(xvals, mus[i], sigmas[i])
             yvals.append(list(ys))
-            graph_data_title.append(f'{busnums[i]}')
+            graph_data_title.append(f'Bus: {busnums[i]}')
 
         graph_data = [graph_data_title]
 
