@@ -1,0 +1,1021 @@
+var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
+var marker_list = [];
+
+
+function initMap(position){
+
+	markerA = new google.maps.MarkerImage('marker.png'),
+	new google.maps.Size(24, 27),
+	new google.maps.Point(0, 0),
+	new google.maps.Point(12, 27),
+
+	markerB = new google.maps.MarkerImage('marker.png'),
+	new google.maps.Size(24, 28),
+	new google.maps.Point(0, 0),
+	new google.maps.Point(12, 28);
+// Caching the Selectors
+$Selectors = {
+    map: jQuery('#map')[0], //good
+    directionsPanel: jQuery('#directionsPanel'), //good
+    dirInputs: jQuery('.directionInputs'),
+    dirSrc: jQuery('#directionsSource'), //good
+    dirDst: jQuery('#directionsDestination'), //good
+    navBtn: jQuery('#navigateButton'), //good
+    directionsSteps: jQuery('#directionsSteps'), //good
+    paneToggle: jQuery('#paneToggle'),
+    geoButton: jQuery('#geoButton'), //good
+    paneResetBtn: jQuery('#paneReset')
+};
+
+// https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
+function autoCompleteSetup(){
+    input1 = document.getElementById('directionsSource');
+    searchBox1 = new google.maps.places.Autocomplete(input1);
+    searchBox1.setComponentRestrictions(
+          {'country': ['irl']});
+
+    input2 = document.getElementById('directionsDestination');
+    searchBox2 = new google.maps.places.Autocomplete(input2);
+    searchBox2.setComponentRestrictions(
+          {'country': ['irl']});
+} //autoCompleteSetup Ends
+
+directionsSetUp = function(){
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer({
+    suppressMarkers: false
+    });
+
+  } //directionsSetUp Ends
+
+  function trafficSetup() {
+  // Creating a Custom Control and appending it to the map
+  var controlDiv = document.createElement('div'),
+      controlUI = document.createElement('div'),
+      trafficLayer = new google.maps.TrafficLayer();
+
+  jQuery(controlDiv).addClass('gmap-control-container').addClass('gmnoprint');
+  jQuery(controlUI).text('Traffic').addClass('gmap-control');
+  jQuery(controlDiv).append(controlUI);
+
+  // Traffic Btn Click Event
+  google.maps.event.addDomListener(controlUI, 'click', function() {
+      if (typeof trafficLayer.getMap() == 'undefined' || trafficLayer.getMap() === null) {
+          jQuery(controlUI).addClass('gmap-control-active');
+          trafficLayer.setMap(map);
+      } else {
+          trafficLayer.setMap(null);
+          jQuery(controlUI).removeClass('gmap-control-active');
+      }
+  });
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+} // trafficSetup Ends
+
+
+  function mapSetUp(){
+    map = new google.maps.Map(document.getElementById('map'),{
+    //map = new google.maps.Map($Selectors.map, {
+          zoom: 13,
+          //latitude and longitude of Dublin (Spire)
+          center: new google.maps.LatLng(53.3498, -6.2603),
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+
+          mapTypeControl: true,
+          mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.DEFAULT,
+          position: google.maps.ControlPosition.TOP_RIGHT
+          },
+
+          panControl: true,
+          panControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_TOP
+          }
+
+    });
+    autoCompleteSetup();
+    directionsSetUp();
+    trafficSetup();
+  } //mapSetUp Ends
+
+
+//  DirectionsRenderer = function(source, destination, date, time){
+   DirectionsRenderer = function(source, destination, date, time){
+//	  var methods = ['FEWER_TRANSFER','LESS_WALKING'];
+//	  for(var method_index=0;method_index<2;method_index++){
+//
+//	  }
+      var request = {
+        origin: source,
+        destination: destination,
+        provideRouteAlternatives: false,
+        travelMode: google.maps.DirectionsTravelMode.TRANSIT,
+        transitOptions: {
+            departureTime: new Date(date+" "+time),
+            modes: ['BUS'],
+            routingPreference: 'FEWER_TRANSFERS'  //FEWER_TRANSFER' and LESS_WALKING
+          },
+      };
+      // show the route
+      directionsService.route(request, function(response, status){
+        if (status == google.maps.DirectionsStatus.OK){
+
+          var show_div = document.getElementById('directionsSteps');
+          var _route = response.routes[0].legs[0];
+          console.log(_route);
+          var aList = new Array();
+          for(var i=0; i<_route['steps'].length; i++){
+        	  if (_route['steps'][i].travel_mode == "TRANSIT"){
+        	  if (_route.steps[i].transit.line.hasOwnProperty("name")){
+        		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.line.name});
+        	  }else{
+        		  aList.push({'short_name':_route.steps[i].transit.line.short_name,'num_stops':_route.steps[i].transit.num_stops,'name':_route.steps[i].transit.headsign})
+        	  }
+        	  }
+          }
+          var routes ={'routes':aList,'date':date, 'time':time}
+          	$.ajax({
+          		url:window.location.protocol+"//"+window.location.host+"/prediction/route",
+          		type: 'post',
+          		headers:{"X-CSRFToken":$("#directionsPanel input[name='csrfmiddlewaretoken']").val()},
+          		contentType: 'application/json;charset=UTF-8',
+          		dataType:'json',
+          		data: JSON.stringify(routes),
+          	}).done(function(data){
+            	console.log(data);
+            	if (data.res == 1){
+            		var total_time = 0;
+            		for(var i=0,j=0; i<_route['steps'].length; i++){
+                     	  if (_route['steps'][i].travel_mode == "TRANSIT"){
+                     		  if(data.response_leg[j].text != "" && data.response_leg[j].value != 0){
+                     			  response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
+                     		  }
+                     		j+=1;
+                     	  }
+                     	  total_time += _route['steps'][i]['duration'].value;
+                  	 }
+            		response.routes[0].legs[0].duration.value = total_time;
+            		response.routes[0].legs[0].duration.text = Math.round(total_time/60)+'mins';
+
+            	}else{
+            		alert(data.errmsg);
+            	}
+            	// remove the points shown in the previous step
+            	deleteMarkers()
+                directionsDisplay.setDirections(response);
+                directionsDisplay.setPanel(show_div);
+                directionsDisplay.setMap(map);
+          	}).fail(function(){
+          		alert('ajax false');
+          	});
+          pinA = new google.maps.Marker({
+            position: _route.start_location,
+            map: map,
+            icon: markerA
+          }),
+
+          pinB = new google.maps.Marker({
+            position: _route.end_location,
+            map: map,
+            icon: markerB
+          });
+//          marker_list.push(pinA);
+//          marker_list.push(pinB);
+        }
+      });
+    } //DirectionsRenderer Ends
+
+    function fetchGeoAddress(position){
+      var Locater = new google.maps.Geocoder();
+      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+      Locater.geocode({ 'location' : userLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirSrc.val(_r.formatted_address);
+          }
+      });
+    } //fetchGeoAddress Ends
+
+    function displayCircle(position){
+      //var Locater = new google.maps.Geocoder();
+      userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      console.log(userLatLng);
+      console.log(userLatLng.lat);
+      console.log(userLatLng.lng);
+      //Draw a circle around the user position to have an idea of the current localization accuracy
+      circle = new google.maps.Circle({
+          center: userLatLng,
+          radius: 1000, //position.coords.accuracy,
+          map: map,
+          fillColor: '#7709e6',
+          fillOpacity: 0.6,
+          strokeOpacity: 0,
+      });
+      //map.fitBounds(circle.getBounds());
+			map.setCenter(userLatLng);
+
+      // display stops
+      $.ajax({
+        'async' : 'true',
+        'url' : window.location.protocol+"//"+window.location.host+"/prediction/stops_nearby",
+        'type': 'get',
+        'dataType':'json',
+        'data':{'lat': userLatLng.lat,'lon': userLatLng.lng,'radius':1},
+      }).done(function(stops){
+        var obj = stops.stops;
+        console.log(obj);
+      for (var i = 0; i < obj.length; i++) {
+          var stops = obj;
+          stops[i] = {'lat': obj[i].stop_lat, 'lng': obj[i].stop_lon};
+      }
+
+      // The location of Dubin
+      var dublin = {lat: 53.3498, lng: -6.2603};
+
+
+      var markers = stops.map(function (location, i) {
+          return new google.maps.Marker({
+              position: location,
+              map: map,
+              // icon: markerImage,
+              // label: labels[i % labels.length]
+          });
+      });
+      var contentString = 'pppp';
+      var infowindow = new google.maps.InfoWindow({
+          content: ''
+      });
+
+      for (var i = 0; i < markers.length; i++) {
+          var marker = markers[i];
+          marker_list.push(marker);
+          // bindInfoWindow(marker, map, infowindow, content_html);
+          // marker.addListener('click', function () {
+          //     infowindow.open(map, marker);
+          // });
+          //     // console.log("var markers");
+      }
+      markerCluster = new MarkerClusterer(map, markers,
+    		  {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    });
+
+
+
+    }
+
+    function geolocateUser() {
+      // If the browser supports the Geolocation API
+      if (navigator.geolocation)
+      {
+        var positionOptions = {
+          enableHighAccuracy: true,
+          timeout: 10 * 1000 // 10 seconds
+        };
+        navigator.geolocation.getCurrentPosition(displayCircle, geolocationError, positionOptions);
+      }
+      else
+        document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+    }
+
+    window.onload = geolocateUser;
+
+    // Display if there is an error with the geolocation
+    function geolocationError(positionError) {
+      document.getElementById("error").innerHTML += "Error: " + positionError.message + "<br/>";
+    }
+
+
+    function fetchTourismAddress(lat, lng){
+      tourismLatLng = new google.maps.LatLng(lat, lng);
+      var Locate = new google.maps.Geocoder();
+
+      Locate.geocode({ 'location' : tourismLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirDst.val(_r.formatted_address);
+          }
+      });
+    }//fetchTourismAddress Ends
+
+      function invokeEvents(){
+        // Get Directions
+        $('#navigateButton').on('click',function(event){
+          event.preventDefault();
+          var src = $Selectors.dirSrc.val();
+          var dst = $Selectors.dirDst.val();
+          var date = $('#dateTime-panel #rightNow').val();
+          var time = $('#time #time-button').val();
+
+          DirectionsRenderer(src, dst, date, time);
+        });
+
+        // Use My Geo Location Btn
+        $Selectors.geoButton.on('click', function(e) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    fetchGeoAddress(position);
+                });
+            }
+            else {
+                document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+            }
+        });
+      } //invokeEvents Ends
+
+      mapSetUp();
+      invokeEvents();
+
+
+
+      // display tourism locations
+      function diplayTouristPage(category){
+          $.ajax({
+            'async' : 'true',
+            'url' : '/static/json/tourism_stops.json',
+            'type': 'get',
+            'dataType':'json',
+          }).done(function(obj){
+
+          var display = "";
+          for (var i = 0; i < obj.length; i++) {
+            if (obj[i].category == category){
+                var locationName = obj[i].name;
+                var short_description = obj[i].short_description;
+                var long_description = obj[i].description;
+                var image = obj[i].image;
+                var website = obj[i].link;
+                var latitude = obj[i].latitude;
+                var longitude = obj[i].longitude;
+
+                display += '<h2>' + locationName + '</h2>';
+                display += '<p>' + short_description + '</p>';
+                display += '<img src ="/static/images/' + image + '"></img>';
+                display += '<p>' + long_description + '</p>';
+                display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
+                display += '<button type="button" class="tourismNavBtn">Navigate</button>'
+                display += '<hr>'
+            }
+          }
+          $("#container").html(display);
+
+          $('.tourismNavBtn').click(function(){
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(latitude, longitude) {
+                        fetchTourismAddress(latitude, longitude);
+                        $('#nav li').eq(0).click();
+                    });
+                }
+                else {
+                    document.getElementById("error").innerHTML += "Your browser doesn't support the Geolocation API";
+                }
+
+
+          })
+      });
+    }
+ initStopPage();
+
+      function invokeTourismBtns(){
+        $('#tourismNatureBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Nature")
+        });
+
+        $('#tourismMuseumsBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Museums & Galleries")
+        });
+
+        $('#tourismDrinkBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Breweries")
+        });
+
+        $('#tourismLandmarksBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Landmarks")
+        });
+
+        $('#tourismChurchesBtn').on('click',function(event){
+          event.preventDefault();
+          diplayTouristPage("Churches")
+        });
+      } //invokeTourismBtns Ends
+      invokeTourismBtns();
+
+   function setBusRoute(){
+
+	   $('#busRoute #searchBusRoute').keyup(function(){
+		   $(this).removeAttr('name');
+		   $.ajax({
+			   'async' : 'false',
+//			'url' : window.location.protocol+"//"+window.location.host+"/prediction/get_bus_route_info",
+			   'url' : '/static/json/bus_route.json',
+			   'type': 'get',
+			   'dataType':'json',
+//			'data':{'bus_number': busNum,'origin': origin,'destination': dest},
+		   }).done(function(stop_list){
+			   var selectData = "";
+			   for (var i = 0; i < stop_list.length; i++) {
+				   if(stop_list[i]['route'].search( $('#busRoute #searchBusRoute').val()) != -1){
+					   selectData += "<li id=\"" + stop_list[i]['route'] +"_" + stop_list[i]['origin'] +"_" + stop_list[i]['destination'] + "\">" + stop_list[i]['route']+ "(" + stop_list[i]['origin'] + "→" + stop_list[i]['destination'] + ")</li>";
+			   }}
+			   fieldString = "<ul id=\"busSelector\" >" + selectData + "</ul> ";
+			   $("#busRoute #researchContent").parent().css("position","relative");
+			   $("#busRoute #researchContent").html(fieldString).css({"position":"absolute","height":"100px"}).show();
+			   console.log($("#busRoute #searchBusRoute li").css("height"));
+			   $("#busRoute #busSelector li").click(function(){
+				   $('#busRoute #searchBusRoute').val($(this).html()).attr('name',$(this).attr('id'));
+
+				   $(this).parent().parent().hide();
+			   }).css('overflow','hidden');
+
+		   });
+
+	   })
+
+      // display stops along a bus route
+
+		$('#searchBus').bind('click',function(){
+						var bus_route = $('#busRoute #searchBusRoute').attr('name');
+						console.log(bus_route);
+						if(typeof(bus_route) == "undefined"){
+							return false;
+						}else{
+
+							route_list = bus_route.split('_')
+							console.log(route_list);
+					    		// display stops along a bus route
+					    		$.ajax({
+					    			'async' : 'true',
+					    			'url' : window.location.protocol+"//"+window.location.host+"/prediction/bus_route",
+					    			'type': 'get',
+					    			'dataType':'json',
+					    			'data':{'bus_number': route_list[0],'origin': route_list[1],'destination': route_list[2]},
+					    		}).done(function(stop_list){
+					    			if(stop_list.res == 1){
+					    				var obj = stop_list.stops;
+					    				console.log(obj);
+					    				for (var i = 0; i < obj.length; i++) {
+					    					var stops = obj;
+					    					stops[i] = {'lat': parseFloat(obj[i]['fields'].stop_lat), 'lng': parseFloat(obj[i]['fields'].stop_lon)};
+					    				}
+
+					                    directionsDisplay.setMap(null);
+					    				//remove the markers created before
+					                    deleteMarkers()
+					    				var Path = new google.maps.Polyline({
+					    					path: stops,
+					    					geodesic: true,
+					    					strokeColor: '#00BBFF',
+					    					strokeOpacity: 1.0,
+					    					strokeWeight: 5
+					    				});
+					    				Path.setMap(map);
+					    				marker_list.push(Path);
+
+
+					    				var markers = stops.map(function (location, i) {
+					    					return new google.maps.Marker({
+					    						position: location,
+					    						map: map,
+					    						// icon: markerImage,
+					    						// label: labels[i % labels.length]
+					    					});
+					    				});
+					    			      for (var i = 0; i < markers.length; i++) {
+					    			          var marker = markers[i];
+					    			          marker_list.push(marker);
+					    			          // bindInfoWindow(marker, map, infowindow, content_html);
+					    			          // marker.addListener('click', function () {
+					    			          //     infowindow.open(map, marker);
+					    			          // });
+					    			          //     // console.log("var markers");
+					    			          // var markerCluster = new MarkerClusterer(map, markers,
+					    			          //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+					    			      }
+//					    			      console.log(stops.slice(1,stops.length-1))
+					    			      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+					    			      var start_point = new google.maps.Marker({
+					    		              position: stops[0],
+					    		              map: map,
+					    		              label:'A',
+					    		            });
+
+					    		          var end_point = new google.maps.Marker({
+					    		              position:  stops[stops.length-1],
+					    		              map: map,
+					    		              label:'B',
+					    		            });
+					    		          marker_list.push(start_point);
+					    		          marker_list.push(end_point);
+					    			}else{
+					    				alert(stop_list.errmsg);
+					    			}
+					    		});
+					    	}
+		      	})
+      };
+      setBusRoute();
+
+
+}; //InitMap Ends
+
+
+
+function fetchStopAddress(lat, lng){
+      stopLatLng = new google.maps.LatLng(lat, lng);
+      var Locate = new google.maps.Geocoder();
+
+      Locate.geocode({ 'location' : stopLatLng }, function(results, status){
+          if(status == google.maps.GeocoderStatus.OK){
+            var _r = results[0];
+            $Selectors.dirDst.val(_r.formatted_address);
+          }
+      });
+    }//fetchStopAddress Ends
+
+function writeStopsDataset(){
+          $.ajax({
+          ache:false,
+          type: "GET",
+          url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
+          async:true,
+          success:function(result){
+              console.log('success writeStopsDataset()');
+              for (var i = 0; i < result.length; i++){
+                  var stop_data = result[i]['fields'];
+                  $('#stop_list').append("<option value='"+ stop_data.stop_id +", "+stop_data.stop_name +"' />");
+              }
+          },
+          error: function(){
+              alert("false");
+          },
+      });
+      }
+
+function writeStopDetails(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#select_stop').on('click', function(){
+          $('#addFav').hide();
+          $('#removeFav').hide();
+          //path selected stop id to bus_info
+          $.ajax({
+              ache:false,
+              type: "POST",
+              url:window.location.protocol+"//"+window.location.host+'/user/stop_info',
+              data:{'stop_id':$('#search_stop').val().split(",",1)[0],'csrfmiddlewaretoken':token},
+              async:true,
+              success:function(result){
+                  result = result[0]['fields'];
+                  var content_html="<h2>"+result.stop_name+"</h2>"
+                      + "<h3>" + result.stop_id +"</h3>"
+                      + "<button class='stopNavBtn'>Navigate</button>"
+                      + "<input type='text' id='stop_id' value='"+ result.stop_id +"' hidden>"
+                      + "<ul class='routesList'>";
+                  //delete the qoutes in results
+                  var routes = result.stop_routes.toString().replace(/\'/g,"").replace(/\]/g,"").split(",");
+                  for (var i =1; i < routes.length; i++){
+                      content_html += "<li><a class='"+ routes[i] +"'>"+ routes[i]+"</a></li> "
+                  }
+                  content_html +="</ul>";
+                  content_html +="<div id='test_error'></div>";
+
+                  $('#stop_content').html(content_html);
+
+                  $('.stopNavBtn').click(function(){
+                      console.log("nav on click");
+                        console.log(result.stop_lat);
+                        console.log(result.stop_lon);
+                        fetchStopAddress(result.stop_lat, result.stop_lon);
+                        $('#nav li').eq(0).click();
+          })
+
+                  //get user_favourite_stop
+                  //compare with selected stop id
+                  //determine which button to show
+                  $.ajax({
+                        type:"GET",
+                        url: window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+                        async: true,
+                        success:function(result1){
+                            //msg stors the id of the button
+                            var msg = "#addFav"
+                            for(var i =0; i < result1['user_stop_list'].length; i++){
+                                //if the stop id is in the users' favourites list
+                                if (result1['user_stop_list'][i] == $('#stop_id').val()){
+                                    msg = "#removeFav";
+                                    break
+                                }
+                            }
+                            $(msg).show()
+                        },
+                        error:function(){
+                            console.log('show button fail')
+                        },
+                    });
+
+                  //add on click functions to each bus routes
+                  $(".routesList a").each(function(){
+                    $(this).click(function(){
+
+                        //post clicked bus id
+                        //write bus info
+                        $.ajax({
+                          ache:false,
+                          type: "POST",
+                          url:window.location.protocol+"//"+window.location.host+'/user/bus_info',
+                          data:{'bus_id':$(this).text(),'csrfmiddlewaretoken':token},
+                          async:true,
+                          success:function(result1){
+                              $('#busid').html(result1);
+                              $('#bus_id').val(result1);
+                              $('#addFav_bus').hide();
+                              $('#removeFav_bus').hide();
+                              $('#bus_info').show();
+
+                                //ajax get users' favs buses
+                                //compare with clicked bus id
+                                //determine which button to be shown
+                              $.ajax({
+                                type:"GET",
+                                url: window.location.protocol+"//"+window.location.host+'/user/favorite_bus_number',
+                                async: true,
+                                success:function(result2){
+                                    var msg = "#addFav_bus";
+                                    for(var i =0; i < result2['user_bus_list'].length; i++){
+                                        if (result2['user_bus_list'][i]['bus_number'] == $('#bus_id').val().replace(/\s+/g,"")){
+                                            msg = "#removeFav_bus"
+                                            break
+                                        }
+                                    }
+                                    $(msg).show()
+                                },
+                                error:function(){
+                                    console.log('result2 failed. show button fail')
+                                },
+                        })
+                      },
+                      error: function(){
+                          alert("result1 failed. post bus info ajax failed");
+                        },
+                        })
+                     })
+                  })
+              },
+              error: function(){
+                  alert("result false");
+              },
+          })
+      })
+      }
+
+
+function invokeAddStopBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#addFav').on('click',function(){
+              var stop_id = $('#stop_id').val();
+		        $.ajax({
+			        cache:false,
+			        type: "POST",
+			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+			        data:{'stop_id':stop_id,'csrfmiddlewaretoken':token},
+			        async:true,
+			        success:function(result){
+			            //change the button displayed
+				        $('#addFav').hide();
+				        $('#removeFav').show();
+			        },
+			        error: function(){
+				        alert("add failed");
+			        },
+		        });
+	        });
+      }
+
+function invokeDeleteStopBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#removeFav').on('click',function(){
+              var stop_id = $('#stop_id').val();
+              $.ajaxSetup({
+                  headers:{'X-CSRFToken': token}
+              });
+		        $.ajax({
+			        cache:false,
+			        type: "DELETE",
+			        url:window.location.protocol+"//"+window.location.host+'/user/favorite_stop',
+			        data:{'stop_id':stop_id, 'csrfmiddlewaretoken':token},
+			        async:true,
+			        success:function(result){
+				        $('#addFav').show();
+				        $('#removeFav').hide();
+			        },
+			        error: function(){
+				        alert("remove failed" + token);
+			        },
+		        });
+	        });
+      }
+
+function invokeAddBusBtn(){
+          var token = $('input[name="csrfmiddlewaretoken"]').val();
+          $('#addFav_bus').on('click',function(){
+                var bus_number = $('#bus_id').val().replace(/\s+/g,"");
+                var start = $('#start_point').text();
+                var end = $('#end_point').text();
+                $.ajax({
+                    cache:false,
+                    type: "POST",
+                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
+                    data:{'bus_number':bus_number, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
+                    async:true,
+                    success:function(result){
+                        $('#addFav_bus').hide();
+                        $('#removeFav_bus').show();
+                    },
+                    error: function(){
+                        alert("add failed");
+                    },
+                });
+            });
+      }
+
+function invokeDeleteBusBtn(){
+        $('#removeFav_bus').on('click',function(){
+                var bus_number = $('#bus_id').val().replace(/\s+/g,"");
+                var start = $('#start_point').text();
+                var end = $('#end_point').text();
+                $.ajaxSetup({
+                  headers:{'X-CSRFToken': token}
+              });
+                $.ajax({
+                    cache:false,
+                    type: "DELETE",
+                    url:window.location.protocol+"//"+window.location.host+"/user/favorite_bus_number",
+                    data:{'bus_number':bus_number, 'start_point': start, 'end_point': end,'csrfmiddlewaretoken':token},
+                    async:true,
+                    success:function(result, status, xml){
+                        $('#addFav_bus').show();
+                        $('#removeFav_bus').hide();
+                    },
+                    error: function(){
+                        alert("delete failed");
+                    },
+                });
+            });
+      }
+
+function initStopPage(){
+
+          //write stops dataset
+          writeStopsDataset();
+
+          //write details of selected stop
+          writeStopDetails();
+
+          //add stop number to favourites
+          invokeAddStopBtn();
+
+          //delete from favs
+          invokeDeleteStopBtn();
+
+          //add bus number to favourites
+          invokeAddBusBtn();
+
+          //delete from favs
+          invokeDeleteBusBtn();
+      }
+
+
+
+    //load favouties page
+    $(document).ready(function(){
+      $('#logIn').load('/user/login');
+      $('#favouritesInfo').load('/user/favourites');
+      // $('#touristInfo').load('/user/tourism');
+      $('#contactInfo').load('/user/contact');
+    })
+
+      // used code from 'https://css-tricks.com/prefilling-date-input/'
+      // this is used for a default of todays date
+      $(function(){
+        var today = new Date().toISOString().substr(0, 10);
+        $("input[id='rightNow']").attr('value',today);
+      })
+
+      // used code from 'https://codepen.io/rafaelcastrocouto/pen/Iyewu'
+      // this is used for a default of the exact time
+      $(function(){
+      var d = new Date();
+      var h = d.getHours();
+      var m = d.getMinutes();
+      if(h < 10) h = '0' + h;
+      if(m < 10) m = '0' + m;
+      $('input[type="time"]').each(function(){
+        $(this).attr({'value': h + ':' + m});
+      });
+      });
+
+      // Meihan is will potentially use this function for favourites page
+      // $(document).ready(function(){#}
+      //     $('#side_div').load('/user/test');#}
+      // })
+
+      //splash overlay code comes from: https://www.sitepoint.com/community/t/how-do-you-make-a-javascript-splash-page/44555/3
+      $.fn.center = function () {
+        this.css("position","absolute");
+        this.css("top", Math.max(0, (
+          ($(window).height() - $(this).outerHeight()) / 2) +
+           $(window).scrollTop()) + "px"
+        );
+        this.css("left", Math.max(0, (
+          ($(window).width() - $(this).outerWidth()) / 2) +
+           $(window).scrollLeft()) + "px"
+        );
+        return this;
+      }
+
+      $("#splash_overlay").show();
+      $("#splash-content").show().center();
+
+      setTimeout(function(){
+        $("#splash_overlay").fadeOut();
+      }, 2000);
+
+
+
+        function get_weather() {
+            $.ajax({
+              // 'url': "{% url "prediction:weather" %}",
+              'url': window.location.protocol+"//"+window.location.host+"/prediction/weather",
+              'type': 'get',
+              'dataType':'json',
+            }).done(function(data_total){
+            var data = data_total.currently;
+            var data_hourly = data_total.hourly.data;
+            var data_daily = data_total.daily;
+            var weatherDescription = data.summary;
+            displayDescription = ("Today: " + data_daily.data[0].summary+ " For now, it feels like " + weatherDescription.toLowerCase()+".");
+
+            $('#weather_heading').show().html(displayDescription).css({'font-size':20});
+            $('#currentTemperature').show().html(Math.round(data.temperature) + "℃").css({'font-size':55,"line-height":"100%"});
+
+            var weatherIcon = data.icon.toUpperCase().split('-');
+            weatherIcon = weatherIcon.join('_')
+
+            //var weatherIcon = "snow";
+	    	  var icons = new Skycons({
+	    		  "monochrome": false,
+	    		  "colors": {
+	    		    "main": "white",
+	    		    "cloud": "#c1c1c1",
+	    		    "moon": "#494960"
+	    		  }
+	    		});
+            icons.set("weatherIcon", Skycons[weatherIcon])
+              icons.play();
+
+            // Displaying Sunrise
+            var sunrise_time = new Date(data_daily.data[0].sunriseTime*1000)
+            var sunrise = ("Sunrise: " + sunrise_time.getHours() + ":" + sunrise_time.getMinutes());
+
+            // Displaying Sunset
+            var sunset_time = new Date(data_daily.data[0].sunsetTime*1000)
+            var sunset = ("Sunset: " + sunset_time.getHours() + ":" + sunset_time.getMinutes());
+
+            // Displaying Wind Speed
+            var displayWind = ("Wind Speed: " + Math.round(data.windSpeed) + " m/s");
+
+            // Displaying humidity
+            var displayHumidity = ("Humidity: " + Math.round(data.humidity * 100) + "%");
+
+            // Displaying pressure
+            var pressure = ("Pressure: " + Math.round(data.pressure) + "hPa") ;
+
+            // Displaying pressure
+            var visibility = ("Visibility: " + Math.round(data.visibility) + "km") ;
+            //Display Weather Stats on overlay8
+            $('#weather_stats').show().html(sunrise + "<br/>" + sunset + "<br/><br/>" +  displayWind + "<br/>" + displayHumidity + "<br/><br/>" + pressure + "<br/>" + visibility).css({'font-size':20});
+          for(var i=0;i<data_hourly.length;i++){
+              var weatherIcon = data_hourly[i].icon.toUpperCase().split('-');
+              weatherIcon = weatherIcon.join('_')
+        	  var icons = new Skycons({
+        		  "monochrome": false,
+        		  "colors": {
+        		    "main": "white",
+        		    "cloud": "#c1c1c1",
+        		    "moon": "#494960"
+        		  }
+        		});
+              $('#weather_hourly').append('<div><p id="weathertime'+i+'"></p><canvas id="weatherIcon'+i+'" width="55" height="55"></canvas><p id="weatherTemp'+i+'"></p></div>')
+              icons.set("weatherIcon"+i, Skycons[weatherIcon]);
+              icons.play();
+              var date = new Date(data_hourly[i]['time']*1000)
+              if(i == 0){
+            	  $('#weathertime'+i).html("Now").css({'text-align':'center','color':'white','margin-left':'5px'})
+              }else{
+            	  $('#weathertime'+i).html(date.getHours()+":00").css({'text-align':'center','color':'white','margin-left':'5px'})
+              }
+              $('#weatherTemp'+i).html(Math.round((data_hourly[i].temperature))+"℃").css({'text-align':'center','color':'white'})
+              $('#weather_hourly div').css({'float':'left','height':'100px','width':'60px','margin-left':'5px'})
+              $('#weather_hourly').css({'height':'100px','overflow':'hidden'})
+          }
+              for(var i=0;i<data_daily.data.length;i++){
+                  if(i == 0){
+                	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><div id="weatherDailyIcon'+i+'" width="55" height="55"></div><div id="weatherDailyTemp'+i+'"></div></div>')
+                	  $('#weekday'+i).html('Weekday').css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"}).append('<hr>')
+                	  $('#weatherDailyTemp'+i).html('Temp:Min/Max').css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"34%",'margin-right':'0px'}).append('<hr>')
+
+                	  $('#weatherDailyIcon'+i).html('Forecast').css({'text-align':'center','color':'white','float':'left','font-size':20,'width':"33%",'margin-right':'0px'}).append('<hr>')
+                  }else{
+                	  $('#weather_daily').append('<div><div id="weekday'+i+'"></div><canvas id="weatherDailyIcon'+i+'" width="55" height="55"></canvas><div id="weatherDailyTemp'+i+'"></div></div>')
+                	  var weatherIcon = data_daily.data[i].icon.toUpperCase().split('-');
+                	  weatherIcon = weatherIcon.join('_')
+                	  var icons = new Skycons({
+                		  "monochrome": false,
+                		  "colors": {
+                		    "main": "white",
+                		    "cloud": "#c1c1c1",
+                		    "moon": "#494960"
+                		  }
+                		});
+                	  icons.set("weatherDailyIcon"+i, Skycons[weatherIcon]);
+                	  icons.play();
+                	  var date = new Date(data_daily.data[i]['time']*1000)
+                	  var iWeek = date.getDay();
+                	  $('#weekday'+i).html(fnToweek(iWeek)).css({'text-align':'left','color':'white','float':'left','font-size':20,'width':"33%"})
+                	  $('#weatherDailyTemp'+i).html(Math.round((data_daily.data[i].temperatureMin))+"℃/"+Math.round((data_daily.data[i].temperatureMax))+"℃").css({'text-align':'right','color':'white','float':'right','font-size':20,'width':"33%",'margin-right':'12px'})
+                  }
+
+
+              }
+            })
+            function fnToweek(n){
+
+				if(n==0)
+				{
+					return 'Sunday';
+				}
+				else if(n==1){
+					return 'Monday';
+				}
+				else if(n==2){
+					return 'Tuesday';
+				}
+				else if(n==3){
+					return 'Wednesday';
+				}
+				else if(n==4){
+					return 'Thursday';
+				}
+				else if(n==5){
+					return 'Friday';
+				}
+				else{
+					return 'Saturday';
+				}
+			}
+
+        } // On8: AKA WeatherDisplay Ends
+
+
+
+
+
+//switch the origi point and destination point
+$(function(){
+	 $('#switch_position').click(function(){
+		 var start_point = $('#directionsSource');
+     	var start_point_value =start_point.val();
+     	var end_point = $('#directionsDestination');
+     	start_point.val(end_point.val());
+     	end_point.val(start_point_value);
+	 });
+});
+
+
+  // Sets the map on all markers in the array.
+  function setMapOnAll(map) {
+    for (var i = 0; i < marker_list.length; i++) {
+    	marker_list[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  function clearAllMarkers() {
+    setMapOnAll(null);
+    markerCluster.clearMarkers();
+    circle.setMap(null);
+
+  }
+
+  // Shows any markers currently in the array.
+  function showMarkers() {
+    setMapOnAll(map);
+  }
+
+  // Deletes all markers in the array by removing references to them.
+  function deleteMarkers() {
+	clearAllMarkers();
+    marker_list = [];
+  }
