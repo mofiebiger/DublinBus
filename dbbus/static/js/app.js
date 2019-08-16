@@ -1,4 +1,3 @@
-
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
 var markerImage = '/static/images/bus_icon.png';
 
@@ -1660,7 +1659,7 @@ function TrafficFeed() {
 //                console.log("changed traffic feed");
             }
         };
-        var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
+        var innertext_ = "<ul class=\"vertical menu trafficfeedlist\"><li>";
 
         for (i = 0; i < entries.length; i++) {
 
@@ -1669,7 +1668,7 @@ function TrafficFeed() {
             innertext_ += "<br><a href=" + entries[i].link + ">more >>></a>"
 
             if (i < entries.length - 1) {
-                innertext_ += "</li><hr><li>";
+                innertext_ += "</li><li>";
             }
         };
         innertext_ += "</li></ul>";

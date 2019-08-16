@@ -229,10 +229,11 @@ footer{
   margin: 0;
 }
 
-.trafficfeedlist li, a{
+.trafficfeedlist li{
   position: relative;
+  border-bottom: 3px solid black;
   display: block;
-  padding: 0;
+  padding: 15px;
   margin: 0;
   background: #ddd;
   color: #444;
