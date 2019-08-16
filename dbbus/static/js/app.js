@@ -1201,7 +1201,7 @@ function deleteFavourites() {
 
         //hide the deleted bus info and store bus number, start point, end point
         $('.delete_bus_number').on('click', function () {
-            $(this).prev().hide();
+            $(this).parent().hide();
             $(this).hide();
             deleted_bus_number.push([$(this).prev().children(".bus_number").html(),
                 $(this).prev().children(".start_point").html(),
@@ -1409,8 +1409,8 @@ function invokeBusDetail() {
 
 //load  pages
 $(document).ready(function () {
-    $('#userPage').load('/user/login');
-    $('#contactPage').load('/user/contact');
+    $('#user-div').load('/user/login');
+    $('#contact-div').load('/user/contact');
 
 });
 

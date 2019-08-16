@@ -4288,14 +4288,14 @@ select {
   left: 0;
   height: 100%;
   overflow-y: auto;
-  width: 100%;
-  -webkit-transform: translateX(-100%);
-      -ms-transform: translateX(-100%);
-          transform: translateX(-100%); }
+  width: 60%;
+  -webkit-transform: translateX(-250px);
+      -ms-transform: translateX(-250px);
+          transform: translateX(-250px); }
   .off-canvas-content .off-canvas.position-left {
-    -webkit-transform: translateX(-100%);
-        -ms-transform: translateX(-100%);
-            transform: translateX(-100%); }
+    -webkit-transform: translateX(-250px);
+        -ms-transform: translateX(-250px);
+            transform: translateX(-250px); }
     .off-canvas-content .off-canvas.position-left.is-transition-overlap.is-open {
       -webkit-transform: translate(0, 0);
           -ms-transform: translate(0, 0);
