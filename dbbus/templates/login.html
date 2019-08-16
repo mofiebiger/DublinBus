@@ -340,16 +340,11 @@
 
 </head>
 <body>
-<div class="grid-y grid-padding-x" style="height: 100%;">
-<br>
-<div class="cell shrink">
 		  {% csrf_token %}
           <input type="hidden" value="no" class="is_authenticated">
     <div class="form-registration" style="display: none;" id="register_div" >
-  <div class="registration-box">
-  <div class="row collapse expanded">
-    <div class="small-12 medium-6 column small-order-2 medium-order-1">
-      <div class="registration-box-form-section">
+{#  <div class="registration-box">#}
+{#      <div class="registration-box-form-section">#}
         <h1 class="registration-box-title">Sign up</h1>
 	    <form id="new_user_form" method="post" class="callout text-center">
 	    {% csrf_token %}
@@ -402,10 +397,9 @@
 {#                <p class="error" id="test_error">dddd</p>#}
                 {{ errmsg }}
   </div>
-      </div>
-    </div>
-  </div>
-</div>
+{#      </div>#}
+{#  </div>#}
+{#</div>#}
 
     <div class="form-login" id="login_div" style="display: block;">
     <figure class="form-login-img">
@@ -515,8 +509,7 @@
     </form>
     <h1>{{ msg }}</h1>
     </div>
-</div>
-</div>
+
 
 </body>
 <script>

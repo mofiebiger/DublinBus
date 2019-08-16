@@ -313,7 +313,7 @@
 {#</div>#}
 {#</div>#}
 
-<div  class="dropdown-pane"  data-position="bottom" data-alignment="center" data-dropdown data-hover="true" data-hover-pane="true" id="userPage">
+<div  class="dropdown-pane"  data-position="bottom" data-alignment="center" data-dropdown data-auto-focus="true" id="userPage">
 
 <div id="user-div">
 </div>
@@ -471,18 +471,21 @@
 
 </div>
 
+<div class="hero-section hide-for-small-only">
+  <div class="hero-section-text">
+{#      <img src="/static/images/dublin-bus-1-logo.png" height="40px" width="40px">#}
+    <h3>Dublin Bus | Journey Planner</h3>
+  </div>
+</div>
+
 <div class="off-canvas-content" data-off-canvas-content>
-<div class="title-bar-title hide-for-small-only">Dublin Bus | Journey Planner</div>
-<div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+<div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="large">
 <button class="menu-icon" type="button" data-toggle="offCanvasLeft"></button>
 <div class="title-bar-title">Dublin Bus | Journey Planner</div>
 <div class="title-bar-right">
         {% if user.is_authenticated %}
 
     <img class="navbar-image" src="{{ user.user_profile.url }}"   height="20px" width="20px" data-toggle="userPage" id="user-trigger">
-{#<i class="fa fa-user" data-toggle="userPage" id="user-trigger"></i>#}
-{#    <a style="color: white;"><i data-toggle="userPage" id="user-trigger" class="fa-user-plus" ></i></a>#}
-{#    <a href="#" data-toggle="userPage" id="user-trigger" style="color: white">My Account</a>#}
       {% else %}
     <i  class="fa fa-user" data-toggle="userPage" id="user-trigger"></i>
       {% endif %}</div>
