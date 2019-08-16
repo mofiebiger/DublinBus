@@ -1909,7 +1909,7 @@ function Generate_Graph() {
                 // -1 on month to account for index from 0-11 not 1-12
                 var ar_date = new Date(atime_date[2], atime_date[1] - 1, atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
 
-                var current_timestamp = Date.now() - 3600 * 1000;
+                var current_timestamp = Date.now();
 
                 // - 3600 specific to a bug with my laptop, for testing only. 
                 var time_diff_seconds = (ar_date.getTime() - current_timestamp) / 1000;
