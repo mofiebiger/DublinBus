@@ -3,8 +3,6 @@ var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, mar
 var marker_list = [];
 var oldfeed = "TEST";
 
-Generate_Graph();
-
 function initMap(position) {
 
     // repeatedy refresh the traffic feed
@@ -1756,17 +1754,60 @@ function deleteMarkers() {
 
 function Generate_Graph() {
 
-    // Need to make the graph take inputs of time. So that mu can be changed as needed.
-    // sigma can be calucalted in the backend
+    // For building an alternate for when the real time data is down. 
+    var default_lat = 53.353440;
+    var default_lng = -6.332727;
 
     // pull stop number 
     // then get real time info on stop
     // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
     // pass that data to graph distribution
 
+    var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
+    var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
     
+    // $.ajax({
+    //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
+    //     // 'type': 'POST',
+    //     'type': 'get',
+    //     'dataType': 'json',
+    // }).done(function (real_time_data){
+    //     content = real_time_data['results']
 
-    var arrival_times = JSON.stringify([30,60,600]);
+    //     var routeids = []
+    //     var arrival_times = []
+
+    //     content.forEach(elem){
+    //         routeids.append(elem['route']);
+
+    //         var atime = elem["arrivaldatetime"];
+    //         var atime_date = atime.split(" ")[0].split("/");
+    //         var atime_time = atime.split(" ")[1].split(":");
+
+    //         var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    //         var now = Date();
+
+    //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+            
+    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
+
+    //         arrival_times.append(time_diff_seconds);
+    //     };
+    // });
+
+    var atime = "16/08/2019 00:22:00";
+    var atime_date = atime.split(" ")[0].split("/");
+    var atime_time = atime.split(" ")[1].split(":");
+
+    var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    var now = Date();
+
+    var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+    
+    console.log)time_diff_seconds);
+
+
+    var arrival_times = JSON.stringify(arrival_times);
 
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
@@ -1797,7 +1838,7 @@ function Generate_Graph() {
             });
 
             var options = {
-                title: 'Bus Arrival Times: Stop 226',
+                title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
                 hAxis: {
                     title: 'Time',
                     titleTextStyle: {

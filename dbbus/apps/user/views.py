@@ -670,15 +670,8 @@ class Graph_distributionView(TemplateView):
             # 0.35 added after review of function to account for outliers in the data set. 
             return 0.35 * (a * x + b * np.log(c * x) + d)
 
-        # get content from the request
-        # content = json.loads(request.body)
-
         # arrival times of the buses [in seconds! Not Minutes.]
-        # mus = content['mus']
-
         mus = json.loads(data)
-
-        
 
         sigmas = []
         graph_data = []
@@ -716,8 +709,6 @@ class Graph_distributionView(TemplateView):
                 datarow.append(elem[index]/60)
           
             graph_data.append(datarow)
-        
-        print(graph_data)
 
         return JsonResponse({'graph_data': graph_data})
 
