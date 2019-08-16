@@ -677,13 +677,13 @@ class Graph_distributionView(TemplateView):
         sigmas = []
         graph_data = []
 
-        xmin = -60
+        xmin = -120
         xmax = 0
 
         for idx in range(len(mus)):
             
-            if mus[idx] < 90:
-                mus[idx] = 90
+            if mus[idx] < 60:
+                mus[idx] = 60
 
             mu = mus[idx]
             sigma = find_sigma(mu)
@@ -693,7 +693,7 @@ class Graph_distributionView(TemplateView):
             if (xmax < (3*sigma+mu)):
                 xmax = 3 * sigma + mu
 
-        xvals = np.linspace(xmin, xmax, 1000)
+        xvals = np.linspace(xmin, xmax, 2000)
         yvals = []
         graph_data_title = ['Time']
 

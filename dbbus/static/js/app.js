@@ -1778,8 +1778,6 @@ function Generate_Graph() {
             
             var content = real_time_data.content.results.slice(0, 4);
 
-            console.log(content);
-
             var routeids = [];
             var arrival_times = [];
 
@@ -1802,13 +1800,21 @@ function Generate_Graph() {
 
             });
 
-            $("#Graph_div_times").text("");
+            // add table to be filled
+            $("#Graph_div_times").html("<table id=\"table_times\" class=\"responsive-card-table striped\"></table>");
+            
+            // add header to table
+            $("#table_times").html("<tr>\
+            <th style=\"background-color:#707070\">Bus No.</th>\
+            <th style=\"background-color:#707070\">Time to Arrival</th>\
+            </tr>");
+
+            $("#table_times").css("width:90%;");
 
             for (let j=0; j<arrival_times.length; j++){
 
-                $("#Graph_div_times").append("<div>");
-                $("#Graph_div_times").append("Bus No."+ routeids[j] +" arriving in ~" + Math.round(arrival_times[j]/60) + " minutes.");
-                $("#Graph_div_times").append("</div><br><br>");
+                var row_str="<td>"+routeids[j]+"</td><td>"+Math.round(arrival_times[j]/60)+" mins</td>"
+                $("#table_times").append("<tr>"+row_str+"</tr>");
 
             };
 
