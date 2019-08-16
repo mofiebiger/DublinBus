@@ -109,8 +109,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-    
-    
+
+
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -140,16 +140,16 @@ function initMap(position) {
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
-                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'lat': _route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon': _route['steps'][i].transit.departure_stop.location.lng(),
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.headsign,
-                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'lat': _route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon': _route['steps'][i].transit.departure_stop.location.lng(),
                             })
                         }
                     }
@@ -1754,10 +1754,6 @@ function deleteMarkers() {
 
 function Generate_Graph() {
 
-    // For building an alternate for when the real time data is down. 
-    var default_lat = 53.353440;
-    var default_lng = -6.332727;
-
     // pull stop number 
     // then get real time info on stop
     // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
@@ -1765,99 +1761,116 @@ function Generate_Graph() {
 
     var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
     var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
-    
-    // $.ajax({
-    //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
-    //     // 'type': 'POST',
-    //     'type': 'get',
-    //     'dataType': 'json',
-    // }).done(function (real_time_data){
-    //     content = real_time_data['results']
-
-    //     var routeids = []
-    //     var arrival_times = []
-
-    //     content.forEach(elem){
-    //         routeids.append(elem['route']);
-
-    //         var atime = elem["arrivaldatetime"];
-    //         var atime_date = atime.split(" ")[0].split("/");
-    //         var atime_time = atime.split(" ")[1].split(":");
-
-    //         var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    //         var now = Date();
-
-    //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-            
-    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
-
-    //         arrival_times.append(time_diff_seconds);
-    //     };
-    // });
-
-    var atime = "16/08/2019 00:22:00";
-    var atime_date = atime.split(" ")[0].split("/");
-    var atime_time = atime.split(" ")[1].split(":");
-
-    var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    var now = Date();
-
-    var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-    
-    console.log)time_diff_seconds);
-
-
-    var arrival_times = JSON.stringify(arrival_times);
 
     $.ajax({
-        'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
+        'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
         // 'type': 'POST',
         'type': 'get',
         'dataType': 'json',
-        'data':{'mus':arrival_times}
-    }).done(function (graphdata) {
+    }).done(function (real_time_data) {
 
-        graphdata = graphdata['graph_data'];
+        var response_result = real_time_data['res']
 
-        google.charts.load('current', {
-            'packages': ['corechart']
-        });
-        google.charts.setOnLoadCallback(prepareChart);
+        if (response_result == "0") {
+            $("Graph_div").text("No Real Time Information Available for stop:" + stop_of_interest + "," + stop_of_interest_addr);
+        } else {
 
-        function prepareChart() {
+            console.log(real_time_data);
+            var content = real_time_data.content.results.slice(0, 4);
 
-            var data = new google.visualization.DataTable(graphdata);
+            var routeids = [];
+            var arrival_times = [];
 
-            graphdata[0].forEach(function (elem) {
-                data.addColumn('number', elem);
+            content.forEach(function (elem) {
+                routeids.push(elem['route']);
+
+                var atime = elem["arrivaldatetime"];
+                var atime_date = atime.split(" ")[0].split("/");
+                var atime_time = atime.split(" ")[1].split(":");
+
+                // -1 on month to account for index from 0-11 not 1-12
+                var ar_date = new Date(atime_date[2], atime_date[1] - 1, atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+
+                var current_timestamp = Date.now() - 3600 * 1000;
+                // - 3600 specific to a bug with my laptop, for testing only. 
+                var time_diff_seconds = (ar_date.getTime() - current_timestamp) / 1000;
+
+                console.log(ar_date);
+                console.log(Date());
+
+                console.log(time_diff_seconds);
+
+                arrival_times.push(time_diff_seconds);
             });
 
-            graphdata.forEach(function (row) {
-                if (row[0] != "Time")
-                    data.addRow(row);
+            console.log(arrival_times);
+            // Pass arrival times to back end
+            arrival_times = JSON.stringify(arrival_times);
+
+            $.ajax({
+                'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
+                // 'type': 'POST',
+                'type': 'get',
+                'dataType': 'json',
+                'data': {
+                    'mus': arrival_times,
+                    'busnums': JSON.stringify(routeids)
+                }
+            }).done(function (graphdata) {
+
+                graphdata = graphdata['graph_data'];
+
+                google.charts.load('current', {
+                    'packages': ['corechart']
+                });
+                google.charts.setOnLoadCallback(prepareChart);
+
+                function prepareChart() {
+
+                    var data = new google.visualization.DataTable(graphdata);
+
+                    graphdata[0].forEach(function (elem) {
+                        data.addColumn('number', elem);
+                    });
+
+                    graphdata.forEach(function (row) {
+                        if (row[0] != "Time to Arrival (min)")
+                            data.addRow(row);
+                    });
+
+                    var options = {
+                        title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
+                        hAxis: {
+                            title: 'Time',
+                            titleTextStyle: {
+                                color: '#333'
+                            },
+                            minValue: -1,
+                        },
+                        vAxis: {
+                            minValue: 0,
+                            baselineColor: '#fff',
+                            gridlineColor: '#fff',
+                            textPosition: 'none'
+                        },
+                        'backgroundColor': 'transparent'
+                    };
+                    var chart = new google.visualization.AreaChart(document.getElementById('Graph_div'));
+                    chart.draw(data, options);
+                };
             });
-
-            var options = {
-                title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
-                hAxis: {
-                    title: 'Time',
-                    titleTextStyle: {
-                        color: '#333'
-                    },
-                    minValue: -1,
-                },
-                vAxis: {
-                    minValue: 0,
-                    baselineColor: '#fff',
-                    gridlineColor: '#fff',
-                    textPosition: 'none'
-                },
-                'backgroundColor': 'transparent'
-            };
-
-            var chart = new google.visualization.AreaChart(document.getElementById('Graph_div'));
-            chart.draw(data, options);
-
         };
     });
+
+    // var atime = "16/08/2019 00:22:00";
+    // var atime_date = atime.split(" ")[0].split("/");
+    // var atime_time = atime.split(" ")[1].split(":");
+
+    // var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    // var now = Date();
+
+    // var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+
+    // console.log(time_diff_seconds);
+
 };
