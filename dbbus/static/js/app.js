@@ -275,7 +275,6 @@ function initMap(position) {
             'data': {
                 'lat': userLatLng.lat,
                 'lon': userLatLng.lng,
-                'radius': 1
             },
         }).done(function (result) {
             var obj = result.stops;
