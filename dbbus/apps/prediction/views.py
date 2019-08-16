@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from django.core import serializers
 from django.http import QueryDict
 import config
-from prediction.get_prediction import prediction_route
+# from prediction.get_prediction import prediction_route
 from geopy.distance import geodesic
 from django.core import serializers
 import re
@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 import holidays as hol
+import googlemaps
 ie_holidays = hol.Ireland()
 
 def prediction_weather_funct():
@@ -66,7 +67,6 @@ class Weatherforecast():
 
 # Access forecast information via Weather.update
 Weatherforecast(3600)
-
 
 def set_season(x):
     winter = [11,12,1]
@@ -132,71 +132,197 @@ def predict_time(StopA, StopB, PDate, PTime):
     # =========================== Import Model ========================= #
     
     model = xgb.Booster()
-    model.load_model(f"static/ModelFiles/StopModels/{StopA}_{StopB}.model")
 
-    # ====================== Dateand Time objects ====================== #
-    
-    ddate = date(int(PDate[:4]), int(PDate[5:7]), int(PDate[-2:]))
-    dtime = time(int(PTime[:2]), int(PTime[-2:]))
-    
-    # ========================== Weather Data ========================== # 
+    try:
 
-    Now = datetime.now()
-    
-    day_diff  = ddate.day - Now.day
-    hour_diff = dtime.hour - Now.hour
-     
-    if day_diff > 2:
-        weather = full_weather['daily']
-        weather = find_closest_(weather)
-         
-    else:
-        weather = full_weather['hourly']
-        weather = find_closest_(weather)
-    
-    # ======================== Inputs DataFrame ======================== #
-    
-    predictors = ['temperature','humidity', 'windSpeed', 'rain', 'hour', 'holiday', 'weekend',
-                  'month','season_Winter','season_Autumn','season_Summer','season_Spring',
-                  'icon_clear-day', 'icon_clear-night', 'icon_cloudy', 'icon_fog',
-                  'icon_partly-cloudy-day', 'icon_partly-cloudy-night', 'icon_rain','icon_wind']  
-    
-    # Make dataframe of inputs. 
-    inputs = pd.DataFrame(np.zeros(len(predictors))).T
-    inputs.columns = predictors
-    
-    inputs.hour = dtime.hour
-    inputs.month= ddate.month  
-    # ========================= Weather Columns ======================== #
-    
-    inputs.temperature = weather['temperature']
-    inputs.humidity = weather['humidity']
-    inputs.windSpeed = weather['windSpeed']
-    
-    # convert in inches of liquid water per hour to mm
-    inputs.rain = float(weather['precipIntensity'])/0.0394
-    
-    # ========================= Weekday/Weekend ======================== #    
+        model.load_model(f"static/ModelFiles/StopModels/{StopA}_{StopB}.model")
 
-    if ddate.weekday() in [5,6]:
-        inputs.weekday=False         
+        # ====================== Date and Time objects ====================== #
         
-    else:
-        inputs.weekday=True 
-    
-    # ===================== One Hot Encoded Columns ==================== #  
-    
-    inputs["icon_{0}".format(weather['icon'])]=1
-    inputs["season_{0}".format(set_season(ddate.month))]=1
-    
-    # ========================= Applying Model ========================= #
-    
-    inputdata = xgb.DMatrix(inputs)
-    estimate = model.predict(inputdata) 
-    
-    # ========================= Returning Data ========================= #
-    
-    return int(round(estimate.tolist()[0],0))
+        ddate = date(int(PDate[:4]), int(PDate[5:7]), int(PDate[-2:]))
+        dtime = time(int(PTime[:2]), int(PTime[-2:]))
+        
+        # ========================== Weather Data ========================== # 
+
+        Now = datetime.now()
+        
+        day_diff  = ddate.day - Now.day
+        hour_diff = dtime.hour - Now.hour
+        
+        if day_diff > 2:
+            weather = full_weather['daily']
+            weather = find_closest_(weather)
+            
+        else:
+            weather = full_weather['hourly']
+            weather = find_closest_(weather)
+        
+        # ======================== Inputs DataFrame ======================== #
+        
+        predictors = ['temperature','humidity', 'windSpeed', 'rain', 'hour', 'holiday', 'weekend',
+                    'month','season_Winter','season_Autumn','season_Summer','season_Spring',
+                    'icon_clear-day', 'icon_clear-night', 'icon_cloudy', 'icon_fog',
+                    'icon_partly-cloudy-day', 'icon_partly-cloudy-night', 'icon_rain','icon_wind']  
+        
+        # Make dataframe of inputs. 
+        inputs = pd.DataFrame(np.zeros(len(predictors))).T
+        inputs.columns = predictors
+        
+        inputs.hour = dtime.hour
+        inputs.month= ddate.month  
+        # ========================= Weather Columns ======================== #
+        
+        inputs.temperature = weather['temperature']
+        inputs.humidity = weather['humidity']
+        inputs.windSpeed = weather['windSpeed']
+        
+        # convert in inches of liquid water per hour to mm
+        inputs.rain = float(weather['precipIntensity'])/0.0394
+        
+        # ========================= Weekday/Weekend ======================== #    
+
+        if ddate.weekday() in [5,6]:
+            inputs.weekday=False         
+            
+        else:
+            inputs.weekday=True 
+        
+        # ===================== One Hot Encoded Columns ==================== #  
+        
+        inputs["icon_{0}".format(weather['icon'])]=1
+        inputs["season_{0}".format(set_season(ddate.month))]=1
+        
+        # ========================= Applying Model ========================= #
+        
+        inputdata = xgb.DMatrix(inputs)
+        estimate = model.predict(inputdata) 
+        
+        # ========================= Returning Data ========================= #
+        
+        return int(round(estimate.tolist()[0],0))
+
+    except Exception as e:
+
+        model.load_model("static/ModelFiles/StopModels/General.model")
+
+        stops = pd.read_json("static/json/stops_information.json")
+
+        cols = list(stops.columns)
+        cols[0] = 'ix'
+        stops.columns = cols
+        stops.drop(columns=cols[0], inplace=True)
+
+        # Function to get the distance between two stops. 
+        def get_distance(start, finish):
+            """
+            Distance between two (lat,lng) pairs
+            
+            Inputs:
+            ================================
+            (int) start: stopid of first stop
+            (int) finish: stopid of last stop
+            
+            Outputs:
+            ===============================
+            (int) the distance in metres between the stops. 
+            
+            Notes:
+            ===============================
+            If there is an error, or the api fails to find the distance a value of None will be returned. 
+            """
+            try:
+                begin = (stops[stops.stop_id==int(start) ]['stop_lat'].values[0], stops[stops.stop_id==int(start) ]['stop_lon'].values[0])
+                end   = (stops[stops.stop_id==int(finish)]['stop_lat'].values[0], stops[stops.stop_id==int(finish)]['stop_lon'].values[0])
+            except Exception as e:
+                return 350 # return avg distance in case of failure
+                
+            API_key = config.dmatrix_key #enter Google Maps API key
+            gmaps = googlemaps.Client(key=API_key)
+            
+            try:
+                call = gmaps.distance_matrix(begin, end, mode='walking')
+            
+            except Exception as eL:
+                return 350 # return avg distance in case of failure
+            
+            status = call['status']
+            
+            if status=='OK':
+                return call["rows"][0]["elements"][0]['distance']['value']
+            
+            else:
+                return 350 # return avg distance in case of failure
+
+        # ====================== Date and Time objects ====================== #
+        
+        ddate = date(int(PDate[:4]), int(PDate[5:7]), int(PDate[-2:]))
+        dtime = time(int(PTime[:2]), int(PTime[-2:]))
+        
+        # ========================== Weather Data ========================== # 
+
+        Now = datetime.now()
+        
+        day_diff  = ddate.day - Now.day
+        hour_diff = dtime.hour - Now.hour
+        
+        if day_diff > 2:
+            weather = full_weather['daily']
+            weather = find_closest_(weather)
+            
+        else:
+            weather = full_weather['hourly']
+            weather = find_closest_(weather)
+        
+        # ======================== Inputs DataFrame ======================== #
+        
+        predictors = ['temperature','humidity', 'windSpeed', 'rain', 'hour', 
+                      'holiday', 'weekend','month','distance',
+                      'season_Winter','season_Autumn','season_Summer','season_Spring',
+                      'icon_clear-day', 'icon_clear-night', 'icon_cloudy', 'icon_fog',
+                      'icon_partly-cloudy-day', 'icon_partly-cloudy-night', 
+                      'icon_rain','icon_wind'] 
+        
+        # Make dataframe of inputs. 
+        inputs = pd.DataFrame(np.zeros(len(predictors))).T
+        inputs.columns = predictors
+        
+        inputs.hour = dtime.hour
+        inputs.month= ddate.month  
+
+        # ========================= Distance between ======================= #
+        
+        inputs.distance = get_distance(StopA,StopB)
+
+        # ========================= Weather Columns ======================== #
+        
+        inputs.temperature = weather['temperature']
+        inputs.humidity = weather['humidity']
+        inputs.windSpeed = weather['windSpeed']
+        
+        # convert in inches of liquid water per hour to mm
+        inputs.rain = float(weather['precipIntensity'])/0.0394
+        
+        # ========================= Weekday/Weekend ======================== #    
+
+        if ddate.weekday() in [5,6]:
+            inputs.weekday=False         
+            
+        else:
+            inputs.weekday=True 
+        
+        # ===================== One Hot Encoded Columns ==================== #  
+        
+        inputs["icon_{0}".format(weather['icon'])]=1
+        inputs["season_{0}".format(set_season(ddate.month))]=1
+        
+        # ========================= Applying Model ========================= #
+        
+        inputdata = xgb.DMatrix(inputs)
+        estimate = model.predict(inputdata) 
+        
+        # ========================= Returning Data ========================= #
+        
+        return int(round(estimate.tolist()[0],0))
 
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
@@ -273,17 +399,19 @@ class StopInfoNearbyView(TemplateView):
         #get data
         lat = request.GET.get('lat')
         lon = request.GET.get('lon')
-        radius = float(request.GET.get('radius'))
+        radius = 1.0
 
         #open json file
         with open('static/json/stops_information.json','r') as load_f:
-             stops_data = json.load(load_f)
+            stops_data = json.load(load_f)
 
         #add the stop into file where the distance is less than the radius
         clean_data = []
         for stop in stops_data:
             if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
                 clean_data.append(stop)
+
+        print(stop)
 
         return JsonResponse({'stops':clean_data})
 
