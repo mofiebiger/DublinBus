@@ -5,7 +5,7 @@ body {
 
 #map {
     height: 800px;
-    /* The height is 400 pixels */
+    /* The height is 800 pixels */
     width: 100%;
     /* The width is the width of the web page */
 }
@@ -123,7 +123,7 @@ header #title {
 
 #directionsSource {
     /* align-items: center; */
-    width: 60%;
+    /* width: 60%; */
 
     margin: 15px;
     padding: 8px;
@@ -131,7 +131,7 @@ header #title {
 }
 #directionsDestination,	#searchBusRoute, #researchContent{
     /* align-items: center; */
-    width: 60%;
+    /* width: 60%; */
     /* margin: 15px; */
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
@@ -140,22 +140,17 @@ header #title {
     margin-left: 62px;
 }
 #rightNow {
-    /* align-items: center; */
-    width: 60%;
     margin: 15px;
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
 }
 #time-button {
-    /* align-items: center; */
-    width: 60%;
     margin: 15px;
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
 }
 
 #today {
-    width: 60%;
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
 }
@@ -297,11 +292,11 @@ form {
     height:20px;
     line-height:20px;
     margin:0px;
-	text-align:left;
+	  text-align: left;
     padding: 0px;
     font-family: 'Allerta Stencil', sans-serif;
-	
-	
+
+
 }
 
 #researchContent {

@@ -3,9 +3,6 @@ var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, mar
 var marker_list = [];
 var oldfeed = "TEST";
 
-
-
-
 function initMap(position) {
 
     // repeatedy refresh the traffic feed
@@ -13,7 +10,7 @@ function initMap(position) {
     setInterval(() => TrafficFeed(), 600000);
 
     markerA =
-    new google.maps.Size(24, 27),
+        new google.maps.Size(24, 27),
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 27),
 
@@ -718,7 +715,7 @@ function invokeDeleteRoutesBtn() {
 }
 
 function displayBusDetail() {
-    $('#search-bus-id').html(route_list[0]);
+    $('#search-bus-id').html("Bus Number: " + route_list[0]);
     $('#bus-departure').html(route_list[1]);
     $('#bus-destination').html(route_list[2]);
     $('.bus-details').attr("style", "display:block;");
@@ -818,7 +815,7 @@ function writeStopDetails() {
                 if (result.res == 1) {
                     result = result.json_data[0]['fields'];
                     var content_html = "<h2>" + result.stop_name + "</h2>" +
-                        "<h3>" + result.stop_id + "</h3>" +
+                        "<h3>" + " Stop Number: " + result.stop_id + "</h3>" +
                         "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
                         "<input type='text' id='stop_id' value='" + result.stop_id + "' style='display: none'>";
                     content_html += "<div id='test_error'></div>";
@@ -864,7 +861,6 @@ function writeStopDetails() {
                 swal("Network fail!", "Please try it later!", "error");
             },
         })
-        Generate_Graph();
     })
 }
 
@@ -1235,7 +1231,7 @@ function deleteFavourites() {
 
         //hide the deleted stop info and store stop id
         $('.delete_stop').on('click', function () {
-            $(this).prarent().hide();
+            $(this).parent().hide();
 
             $(this).hide();
             deleted_stop.push($(this).prev().attr('id'));
@@ -1498,7 +1494,7 @@ function TrafficFeed() {
         if (oldfeed != "TEST") {
             if (entries[0].title != oldfeed[0].title) {
 
-                // change the icon here to show a new noticifation 
+                // change the icon here to show a new noticifation
                 console.log("changed traffic feed");
             }
         };
@@ -1779,19 +1775,69 @@ function deleteMarkers() {
     marker_list = [];
 }
 
-function Generate_Graph(arrival_times) {
+function Generate_Graph() {
 
-    // Need to make the graph take inputs of time. So that mu can be changed as needed.
-    // sigma can be calucalted in the backend
+    // For building an alternate for when the real time data is down. 
+    var default_lat = 53.353440;
+    var default_lng = -6.332727;
 
-    arrival_times = [60, 300, 600];
+    // pull stop number 
+    // then get real time info on stop
+    // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
+    // pass that data to graph distribution
+
+    var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
+    var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
+    
+    // $.ajax({
+    //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
+    //     // 'type': 'POST',
+    //     'type': 'get',
+    //     'dataType': 'json',
+    // }).done(function (real_time_data){
+    //     content = real_time_data['results']
+
+    //     var routeids = []
+    //     var arrival_times = []
+
+    //     content.forEach(elem){
+    //         routeids.append(elem['route']);
+
+    //         var atime = elem["arrivaldatetime"];
+    //         var atime_date = atime.split(" ")[0].split("/");
+    //         var atime_time = atime.split(" ")[1].split(":");
+
+    //         var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    //         var now = Date();
+
+    //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+            
+    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
+
+    //         arrival_times.append(time_diff_seconds);
+    //     };
+    // });
+
+    var atime = "16/08/2019 00:22:00";
+    var atime_date = atime.split(" ")[0].split("/");
+    var atime_time = atime.split(" ")[1].split(":");
+
+    var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    var now = Date();
+
+    var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+    
+    console.log)time_diff_seconds);
+
+
+    var arrival_times = JSON.stringify(arrival_times);
 
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
         // 'type': 'POST',
         'type': 'get',
         'dataType': 'json',
-        // 'data':{'mus':arrival_times}
+        'data':{'mus':arrival_times}
     }).done(function (graphdata) {
 
         graphdata = graphdata['graph_data'];
@@ -1803,39 +1849,31 @@ function Generate_Graph(arrival_times) {
 
         function prepareChart() {
 
-            var x_bound_upper = 0;
+            var data = new google.visualization.DataTable(graphdata);
 
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', 'Probability');
+            graphdata[0].forEach(function (elem) {
+                data.addColumn('number', elem);
+            });
 
-            graphdata.forEach(function (set) {
-
-                x = set['xvals'];
-                y = set['yvals'];
-
-                for (i = 0; i < x.length; i++) {
-                    data.addRow([x[i], y[i]]);
-
-                    if (x[i] > x_bound_upper)
-                        x_bound_upper = x[i];
-                }
+            graphdata.forEach(function (row) {
+                if (row[0] != "Time")
+                    data.addRow(row);
             });
 
             var options = {
-                title: 'Sample Chart',
+                title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
                 hAxis: {
                     title: 'Time',
                     titleTextStyle: {
                         color: '#333'
                     },
-                    minValue: 0,
-                    viewWindow: {
-                        max: x_bound_upper + 0.5 * x_bound_upper
-                    },
+                    minValue: -1,
                 },
                 vAxis: {
-                    minValue: 0
+                    minValue: 0,
+                    baselineColor: '#fff',
+                    gridlineColor: '#fff',
+                    textPosition: 'none'
                 },
                 'backgroundColor': 'transparent'
             };

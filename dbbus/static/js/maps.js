@@ -211,7 +211,8 @@ directionsSetUp = function(){
           fillOpacity: 0.6,
           strokeOpacity: 0,
       });
-      map.fitBounds(circle.getBounds());
+      //map.fitBounds(circle.getBounds());
+			map.setCenter(userLatLng);
 
       // display stops
       $.ajax({
@@ -346,21 +347,11 @@ directionsSetUp = function(){
                 var latitude = obj[i].latitude;
                 var longitude = obj[i].longitude;
 
-                function on1() {
-                  //document.getElementById("overlay1").style.display = "block";
-                  $("overlay1").show();
-                }
-                console.log(fetchTourismAddress(latitude, longitude));
-
-                // Geo Tourism Location Btn
-                //$('#tourismNavBtn').on('click', function(e) {
-
                 display += '<h2>' + locationName + '</h2>';
                 display += '<p>' + short_description + '</p>';
                 display += '<img src ="/static/images/' + image + '"></img>';
                 display += '<p>' + long_description + '</p>';
                 display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
-                //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
                 display += '<button type="button" class="tourismNavBtn">Navigate</button>'
                 display += '<hr>'
             }

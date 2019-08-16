@@ -644,10 +644,13 @@ class Graph_distributionView(TemplateView):
     # def post(self, request):
     def get(self, request):
         """
-        Returna normal distribution for plotting
+        Return a normal distribution for plotting
         Inputs:
         mus, lists of means
         """
+
+        data = request.GET.get('mus')
+        print("################################# ",data)
 
         def find_sigma(x):
             """
@@ -661,33 +664,48 @@ class Graph_distributionView(TemplateView):
             c = 0.000000000000000000000000002339039
             d = 1539.88325
 
-            return a * x + b * np.log(c * x) + d
-
-        # get content from the request
-        # content = json.loads(request.body)
+            # 0.35 added after review of function to account for outliers in the data set. 
+            return 0.35 * (a * x + b * np.log(c * x) + d)
 
         # arrival times of the buses [in seconds! Not Minutes.]
-        # mus = content['mus']
+        mus = json.loads(data)
 
-        mus = [60]
-
+        sigmas = []
         graph_data = []
+
+        xmin = -60
+        xmax = 0
 
         for idx in range(len(mus)):
             mu = mus[idx]
             sigma = find_sigma(mu)
+            sigmas.append(sigma)
 
             # bounds of data set
-            xmin = -3 * sigma + mu
-            xmax = 3 * sigma + mu
+            if (xmax < (3*sigma+mu)):
+                xmax = 3 * sigma + mu
 
-            print(sigma)
+        xvals = np.linspace(xmin, xmax, 1000)
+        yvals = []
+        graph_data_title = ['Time']
 
-            xvals = np.linspace(xmin, xmax, 100)
+        for i in range(len(mus)):
 
-            yvals = stats.norm.pdf(xvals, mu, sigma)
+            ys = stats.norm.pdf(xvals, mus[i], sigmas[i])
+            yvals.append(list(ys))
+            graph_data_title.append(f'{mus[i]}')
 
-            graph_data.append({'yvals': list(yvals), 'xvals': list(xvals)})
+        graph_data = [graph_data_title]
+
+        for index, row in enumerate(xvals):
+
+            datarow = [row/60]
+
+            # pulling each row horizontally from the lists. (2D)
+            for elem in yvals:
+                datarow.append(elem[index]/60)
+          
+            graph_data.append(datarow)
 
         return JsonResponse({'graph_data': graph_data})
 
