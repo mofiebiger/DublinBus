@@ -5,9 +5,7 @@ body, html {
 
 #map {
     height: 100%;
-    /*/* The height is 800 pixels */*/
     width: 100%;
-    /* The width is the width of the web page */
 }
 
 /* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
@@ -116,7 +114,8 @@ body, html {
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background-color: #6D8ACC;
-    border-color: #717B87 -moz-use-text-color #717B87 #717B87;
+    border-color: #717B87;
+    -moz-use-text-color: #717B87 #717B87;
     border-style: solid none solid solid;
     border-width: 1px 0 1px 1px;
     color: #FFFFFF !important;
