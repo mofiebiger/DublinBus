@@ -535,7 +535,6 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
-                        var bus_image = "/static/images/book-of-kells.jpg"
                         var lineSymbol = {
                         	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
 //                        	    path: bus_image,
@@ -1110,6 +1109,7 @@ function initStopPage() {
     //delete from favs
     invokeDeleteStopBtn();
 
+    //
     //add bus number to favourites
     // invokeAddBusBtn();
     //
@@ -1127,13 +1127,13 @@ function initFavsPage() {
             var msg = "";
             if (result.res == 1) {
                 for (var i = 0; i < result['user_bus_list'].length; i++) {
-                    msg += "<li><a href='#'>" +
-                        "<span class='bus_number'>" + result['user_bus_list'][i]['bus_number'] + "</span>&nbsp;&nbsp;&nbsp;&nbsp;</a><button class='delete_bus_number' hidden>delete</button><br>" +
+                    msg += "<div><button class='delete_bus_number' hidden>delete</button><li class='favorite_bus_number' data-toggle='favsPage'><a href='#'>" +
+                        "<span class='bus_number' >" + result['user_bus_list'][i]['bus_number'] + "</span>&nbsp;&nbsp;&nbsp;&nbsp;</a>" +
                         " <span class='start_end'>" +
                         "<span class='start_point'>" + result['user_bus_list'][i]['start_point'] + "</span>&nbsp;&nbsp;" +
                         "<i class=\"fa fa-arrow-circle-right\"></i>&nbsp;&nbsp;" +
                         "<span class='end_point'>" + result['user_bus_list'][i]['end_point'] + "</span></span> " +
-                        "<hr></li>"
+                        "<hr></li></div>"
                 }
 
             } else {
@@ -1143,6 +1143,15 @@ function initFavsPage() {
 
             //write lis to bus_list div
             $('#bus_list').html(msg)
+            $('.favorite_bus_number').bind('click',function(){
+            	var str ="";
+            	str += $(this).find('.bus_number').html()+",";
+            	str += $(this).find('.start_point').html()+",";
+            	str += $(this).find('.end_point').html();
+            	$('#searchBusRoute').val(str);
+            	$('#searchBus').click();
+            	
+            })
         },
         error: function () {
             console.log('favorite bus number fail')
@@ -1183,11 +1192,11 @@ function initFavsPage() {
             var msg = "";
             if (result.res == 1) {
                 for (var i = 0; i < result['user_routes_list'].length; i++) {
-                    msg += "<li><a href='#'>" +
+                    msg += "<div><button class='delete_route' hidden>delete</button><li class='get_route_function' data-toggle='favsPage'><a href='#'>" +
                         "<span class='route_start'>" + result['user_routes_list'][i]['route_start'] + "</span><br>" +
                         "<i class=\"fa fa-arrow-circle-down\"></i><br>" +
                         "<span class='route_end'>" + result['user_routes_list'][i]['route_end'] + "</span><br> " +
-                        "</a><button class='delete_route' hidden>delete</button></li><hr>"
+                        "</a></li><hr></div>"
 
                 }
             } else {
@@ -1195,6 +1204,13 @@ function initFavsPage() {
             }
             //write lis to #route_list div
             $('#route_list').html(msg)
+            $('.get_route_function').bind('click',function(){
+            	var route_start= $(this).find('.route_start').html();
+            	var route_end= $(this).find('.route_end').html();
+            	$('#directionsSource').val(route_start);
+            	$('#directionsDestination').val(route_end);
+            	$('#navigateButton').click();
+        })
         },
         error: function () {
             alert("Oops, something wrong when showing the favourites, please try again.")
@@ -1222,11 +1238,11 @@ function deleteFavourites() {
 
         //hide the deleted bus info and store bus number, start point, end point
         $('.delete_bus_number').on('click', function () {
-            $(this).prev().hide();
+            $(this).parent().hide();
             $(this).hide();
-            deleted_bus_number.push([$(this).prev().children(".bus_number").html(),
-                $(this).prev().children(".start_point").html(),
-                $(this).prev().children(".end_point").html()
+            deleted_bus_number.push([$(this).next().children(".bus_number").html(),
+                $(this).next().find(".start_point").html(),
+                $(this).next().find(".end_point").html()
             ]);
             console.log(deleted_bus_number)
         });
