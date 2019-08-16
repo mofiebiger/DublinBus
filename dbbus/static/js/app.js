@@ -1,4 +1,3 @@
-
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
 var markerImage = '/static/images/bus_icon.png';
 
@@ -1396,8 +1395,8 @@ function deleteFavourites() {
             $(this).prev().hide();
             $(this).parent().hide();
             $(this).hide();
-            deleted_route.push([$(this).prev().children(".route_start").html(),
-                $(this).prev().children(".route_end").html()
+            deleted_route.push([$(this).next().find(".route_start").html(),
+                $(this).next().find(".route_end").html()
             ]);
         });
     })
