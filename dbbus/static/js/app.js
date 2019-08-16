@@ -357,27 +357,24 @@ function initMap(position) {
 
 
     function fetchTourismAddress(lat, lng) {
-      console.log("fetch called");
-        var tourismLatLng = new google.maps.LatLng(lat, lng);
-        console.log(tourismLatLng);
+        tourismLatLng = new google.maps.LatLng(lat, lng);
         var Locate = new google.maps.Geocoder();
 
         Locate.geocode({
             'location': tourismLatLng
         }, function (results, status) {
-          console.log();
             if (status == google.maps.GeocoderStatus.OK) {
                 var _r = results[0];
                 $Selectors.dirDst.val(_r.formatted_address);
-                console.log($Selectors.dirDst.val());
-                console.log(_r.formatted_address);
+            }
+            
+            if (status == google.maps.GeocoderStatus.UNKNOWN_ERROR) {
 
-            }
-            else {
-              console.log('in else');
-            }
+              swal("Your request cannot be  processed due to a server error. Please try agaain", "please try later.", "error");
+           }
         });
     } //fetchTourismAddress Ends
+
 
     function invokeEvents() {
         // Get Directions
@@ -438,7 +435,6 @@ function initMap(position) {
             $("#container").html(display);
 
             $('.tourismNavBtn').click(function () {
-              console.log('click nav');
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (latitude, longitude) {
                         fetchTourismAddress(latitude, longitude);
@@ -454,9 +450,6 @@ function initMap(position) {
 
     initStopPage();
     initFavsPage();
-    // deleteFavourites();
-
-
     on8();
 
     function invokeTourismBtns() {
