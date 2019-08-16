@@ -650,6 +650,7 @@ class Graph_distributionView(TemplateView):
         """
 
         data = request.GET.get('mus')
+        busnums = json.loads(request.GET.get('busnums'))
         print("################################# ",data)
 
         def find_sigma(x):
@@ -673,10 +674,14 @@ class Graph_distributionView(TemplateView):
         sigmas = []
         graph_data = []
 
-        xmin = -60
+        xmin = -120
         xmax = 0
 
         for idx in range(len(mus)):
+            
+            if mus[idx] < 60:
+                mus[idx] = 60
+
             mu = mus[idx]
             sigma = find_sigma(mu)
             sigmas.append(sigma)
@@ -685,7 +690,7 @@ class Graph_distributionView(TemplateView):
             if (xmax < (3*sigma+mu)):
                 xmax = 3 * sigma + mu
 
-        xvals = np.linspace(xmin, xmax, 1000)
+        xvals = np.linspace(xmin, xmax, 2000)
         yvals = []
         graph_data_title = ['Time']
 
@@ -693,7 +698,7 @@ class Graph_distributionView(TemplateView):
 
             ys = stats.norm.pdf(xvals, mus[i], sigmas[i])
             yvals.append(list(ys))
-            graph_data_title.append(f'{mus[i]}')
+            graph_data_title.append(f'Bus: {busnums[i]}')
 
         graph_data = [graph_data_title]
 
