@@ -108,32 +108,35 @@
   <span aria-hidden="true">&times;</span>
 </button>
     <h1 style="color:#e5e5e5;"> Journey Planner </h1>
+    <hr>
             <div id="directionsPanel">
               {% csrf_token %}
               <button id="geoButton" class="official_button">Use Current Location</button>
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
-                <input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style="width: 30px; height: 30px;"></button>
-                <input id="directionsDestination" class="controls" type="text" placeholder="End">
-
+              <input id="directionsDestination" class="controls" type="text" placeholder="End">
             </div>
-                 <div class='fav_buttons'>
+
+            <div id="dateTime-panel">
+                <div id="date">
+                  <input id="rightNow" type="date" name="fname" value="2019-02-02">
+                </div>
+
+                <div id="time">
+                  <input id="time-button" type="time" name="fname">
+                </div>
+            </div>
+
+              <div id="align-switch-fav">
+                <div class='fav_buttons'>
                   <button class="button-like" id='addFav_route'  style="display: none"><i class="fa fa-star"></i></button>
                   <button class="button-dislike" id='removeFav_route'  style="display: none"><i class="fa fa-trash"></i></button>
                   <button class='login-required' data-toggle="stopPage userPage" hidden>Login and add as favourite</button>
-                 </div>
-
-
-            <div id="dateTime-panel">
-              <div id="date">
-                <input id="rightNow" type="date" name="fname" value="2019-02-02">
-              </div>
-
-              <div id="time">
-                <input id="time-button" type="time" name="fname">
+                </div>
+                <input id="switch_position" type="image" src="{% static 'images/switch.png' %}"></button>
               </div>
 
               <button id="navigateButton" class="official_button" >Navigate</button>
-            </div>
+
             <div id="directionsSteps"></div>
               <p id="error"></p>
 </div>
@@ -149,7 +152,8 @@
      <button class="close-button" aria-label="Close menu" type="button" data-close>
   <span aria-hidden="true">&times;</span>
 </button>
-    <h1 style="color:#e5e5e5"> What to do in Dublin </h1>
+    <h1>What to do in Dublin </h1>
+    <hr>
 
         <button id="tourismNatureBtn" class="tourismbutton">Nature</button>
         <button id="tourismDrinkBtn" class="tourismbutton">Breweries</button>
@@ -168,9 +172,11 @@
 <br>
 <div class="cell shrink">
     <div class="offcanvas-full-screen-inner">
-      <button class="close-button" aria-label="Close menu" type="button" data-close>
+<button class="close-button" aria-label="Close menu" type="button" data-close>
   <span aria-hidden="true">&times;</span>
 </button>
+<h1> Bus Stops & Routes </h1>
+<hr>
     {% csrf_token %}
     <ul class="tabs" data-tabs id="search-tab-headers">
                 <li class="tabs-title is-active" id="search_stop_header"><a href="#stop-panel" aria-selected="true">Stops</a></li>
@@ -233,10 +239,12 @@
 <div class="grid-y grid-padding-x" style="height: 100%;">
 <br>
 <div class="cell shrink">
-    <button class="close-button" aria-label="Close menu" type="button" data-close>
+<h1> Your Favourites </h1>
+<hr>
+<button class="close-button" aria-label="Close menu" type="button" data-close>
   <span aria-hidden="true">&times;</span>
 </button>
-    </button>
+    <!-- </button> -->
         {% csrf_token %}
         {% if user.is_authenticated %}
             <button id="delete_favs" class="edit-favourite-button">Manage Favourites</button>
@@ -295,7 +303,8 @@
 </button>
       <div id="weatherInfo">
 
-        <h1 style="color:#e5e5e5;"> Current Weather </h1>
+        <h1> Dublin Weather </h1>
+        <hr>
 
         <div class="weatherDescription">
         <div>
@@ -327,7 +336,7 @@
         <div class="grid-y grid-padding-x" style="height: 100%;">
           <br>
           <div class="cell shrink">
-            <h3> Traffic Info </h3>
+            <h1> Current Traffic Feed </h1>
 
             {% comment %} Render the traffic rss feed in here {% endcomment %}
             <hr>
@@ -353,7 +362,7 @@
     <li><a href="#" data-toggle="stopPage offCanvasLeft">Stops/Routes</a></li>
     <li><a href="#" data-toggle="favsPage offCanvasLeft">Favourites</a></li>
     <li><a href="#" data-toggle="weatherPage offCanvasLeft">Weather</a></li>
-    <li><a href="#" data-toggle="trafficPage  offCanvasLeft">Traffic</a></li>
+    <li><a href="#" data-toggle="trafficPage  offCanvasLeft">RSS Feed</a></li>
     <li><a href="#" class="TrafficMenu" data-toggle="contactPage offCanvasLeft">Contact</a></li>
       <hr>
         {% if user.is_authenticated %}

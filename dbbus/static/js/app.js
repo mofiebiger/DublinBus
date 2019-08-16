@@ -29,16 +29,13 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], //good
-        directionsPanel: jQuery('#directionsPanel'), //good
-        dirInputs: jQuery('.directionInputs'),
-        dirSrc: jQuery('#directionsSource'), //good
-        dirDst: jQuery('#directionsDestination'), //good
-        navBtn: jQuery('#navigateButton'), //good
-        directionsSteps: jQuery('#directionsSteps'), //good
-        paneToggle: jQuery('#paneToggle'),
-        geoButton: jQuery('#geoButton'), //good
-        paneResetBtn: jQuery('#paneReset')
+        map: jQuery('#map')[0],
+        directionsPanel: jQuery('#directionsPanel'),
+        dirSrc: jQuery('#directionsSource'),
+        dirDst: jQuery('#directionsDestination'),
+        navBtn: jQuery('#navigateButton'), 
+        directionsSteps: jQuery('#directionsSteps'),
+        geoButton: jQuery('#geoButton'),
     };
 
     // https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
@@ -112,8 +109,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-    
-    
+
+
 
     DirectionsRenderer = function (source, destination, date, time) {
 

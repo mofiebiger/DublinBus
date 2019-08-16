@@ -4,6 +4,16 @@
     width: 100%;
     /* The width is the width of the web page */
 }
+html h1 {
+  font-family: 'Allerta Stencil', sans-serif;
+  color: white;
+  float: left;
+}
+
+html hr {
+  color: white;
+
+}
 
 /* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
 .center {
@@ -25,54 +35,34 @@
 
 
 #rightNow {
-    /* align-items: center; */
-    margin: 15px;
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
-
 }
+
 #time-button {
-    /* align-items: center; */
-    margin: 15px;
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
-
 }
-
-/* #today {
-    padding: 8px;
-    font-family: 'Allerta Stencil', sans-serif;
-} */
-
-/* #geoButton{
-    width: 50%;
-    font-family: 'Allerta Stencil', sans-serif;
-    align-items: center;
-    margin: 15px;
-    padding: 8px;
-    background-color: #ffe00b;
-    border-color: #ffe00b;
-    border-radius: 5px;
-}
-
-#navigateButton {
-    align-items: center;
-    margin: 15px;
-    padding: 8px;
-    background-color: #ffe00b;
-    border-color: #ffe00b;
-    border-radius: 5px;
-    font-family: 'Allerta Stencil', sans-serif;
-} */
 
 #directionsSteps {
-    margin: 9%;
-    background-color: white;
-    padding: 2%;
-    border-radius: 10px;
+    background-color: transparent;
     display: block;
-    font-family: 'Allerta Stencil', sans-serif;
 }
+
+.warnbox-content {
+  display: none;
+
+}
+
+.warnbox-c1, .warnbox-c2{
+  display: none;
+  background-color: transparent;
+}
+
+.adp-step{
+  border-radius: 5px;
+}
+
 #weather_stats {
     margin: 5%;
 }
@@ -121,8 +111,6 @@
   align-self: center;
   width: 70%;
   font-family: 'Allerta Stencil', sans-serif;
-
-
   border: 2px solid #e5e5e5;
   background-color: transparent;
   text-decoration: none;
@@ -150,39 +138,27 @@
 
 .websiteBtn {
   font-family: 'Allerta Stencil', sans-serif;
-  display: inline-block;
   border: 2px solid #e5e5e5;
   background-color: transparent;
-  text-decoration: none;
   margin: 15px;
   padding: 8px;
-  position: relative;
-  vertical-align: middle;
   text-align: center;
   display: inline-block;
   border-radius: 5px;
   color: #ffe00b;
-  transition: all ease 0.4s;
-  margin-bottom: 5px;
 
 }
 
 .tourismNavBtn {
   font-family: 'Allerta Stencil', sans-serif;
-  display: inline-block;
   border: 2px solid #e5e5e5;
   background-color: transparent;
-  text-decoration: none;
   margin: 15px;
   padding: 8px;
-  position: relative;
-  vertical-align: middle;
   text-align: center;
   display: inline-block;
   border-radius: 5px;
   color: #ffe00b;
-  transition: all ease 0.4s;
-  margin-bottom: 5px;
 }
 
 /*contact page*/
@@ -500,36 +476,38 @@
 
 .edit-favourite-button{
     border: 2px solid #e5e5e5;
-  background-color: transparent;
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #ffe00b;
-  transition: all ease 0.4s;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #ffe00b;
+    transition: all ease 0.4s;
     margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 .confirm-favourite-button{
 
     border: 2px solid #e5e5e5;
-  /*background-color: transparent;*/
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #1a7bba;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
     background-color: #e5e5e5;
-  transition: all ease 0.4s;
+    transition: all ease 0.4s;
     margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #offCanvasLeft .menu{
@@ -538,73 +516,75 @@
 
 .route_start{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
+
 .route_end{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
 
 #route_list{
     text-align: center;
 }
+
 .bus_number{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
 .start_end{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
 
 .official_button{
-  border: 2px solid #e5e5e5;
-  background-color: transparent;
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #ffe00b;
-  transition: all ease 0.4s;
+    border: 2px solid #e5e5e5;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #ffe00b;
+    transition: all ease 0.4s;
     margin-bottom: 5px;
     font-family: 'Allerta Stencil', sans-serif;
 }
 
 .delete_bus_number {
-  border: 2px solid #e5e5e5;
-  background-color: transparent;
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #ffe00b;
-  transition: all ease 0.4s;
-  margin-bottom: 5px;
-  font-family: 'Allerta Stencil', sans-serif;
+    border: 2px solid #e5e5e5;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #ffe00b;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #select_stop{
@@ -626,38 +606,43 @@
 }
 
 .stopNavBtn {
-  border: 2px solid #e5e5e5;
-  /*background-color: transparent;*/
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #1a7bba;
-  background-color: #e5e5e5;
-  transition: all ease 0.4s;
-  margin-bottom: 5px;
-  font-family: 'Allerta Stencil', sans-serif;
+    border: 2px solid #e5e5e5;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
+    background-color: #e5e5e5;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #searchBus {
-  border: 2px solid #e5e5e5;
-  /*background-color: transparent;*/
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #1a7bba;
-  background-color: #e5e5e5;
-  transition: all ease 0.4s;
-  margin-bottom: 5px;
-  font-family: 'Allerta Stencil', sans-serif;
+    border: 2px solid #e5e5e5;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
+    background-color: #e5e5e5;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
 
+#switch_position {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
 }
