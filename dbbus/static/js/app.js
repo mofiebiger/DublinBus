@@ -30,16 +30,13 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], //good
-        directionsPanel: jQuery('#directionsPanel'), //good
-        dirInputs: jQuery('.directionInputs'),
-        dirSrc: jQuery('#directionsSource'), //good
-        dirDst: jQuery('#directionsDestination'), //good
-        navBtn: jQuery('#navigateButton'), //good
-        directionsSteps: jQuery('#directionsSteps'), //good
-        paneToggle: jQuery('#paneToggle'),
-        geoButton: jQuery('#geoButton'), //good
-        paneResetBtn: jQuery('#paneReset')
+        map: jQuery('#map')[0], 
+        directionsPanel: jQuery('#directionsPanel'),
+        dirSrc: jQuery('#directionsSource'),
+        dirDst: jQuery('#directionsDestination'), 
+        navBtn: jQuery('#navigateButton'), 
+        directionsSteps: jQuery('#directionsSteps'),
+        geoButton: jQuery('#geoButton')
     };
 
     // https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
@@ -135,7 +132,6 @@ function initMap(position) {
 
                 var show_div = document.getElementById('directionsSteps');
                 var _route = response.routes[0].legs[0];
-                console.log(_route);
                 var aList = new Array();
                 for (var i = 0; i < _route['steps'].length; i++) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
@@ -178,14 +174,12 @@ function initMap(position) {
                     dataType: 'json',
                     data: JSON.stringify(routes),
                 }).done(function (data) {
-                    console.log(data);
                     if (data.res == 1) {
                         var total_time = 0;
                         for (var i = 0, j = 0; i < _route['steps'].length; i++) {
                             if (_route['steps'][i].travel_mode == "TRANSIT") {
                                 if (data.response_leg[j].text != "" && data.response_leg[j].value != 0) {
                                     response.routes[0].legs[0].steps[i].duration = data.response_leg[j];
-                                    alert( response.routes[0].legs[0].steps[i].transit.arrival_time.value+200);
                                 }
                                 j += 1;
                             }
@@ -277,7 +271,6 @@ function initMap(position) {
             'data': {
                 'lat': userLatLng.lat,
                 'lon': userLatLng.lng,
-                'radius': 1
             },
         }).done(function (result) {
             var obj = result.stops;
@@ -1532,7 +1525,7 @@ function seeStopDetail(stop_id) {
             if (result.res == 1) {
 
                 result = result.json_data[0]['fields'];
-                // console.log(result[0]['fields']);
+                
                 var content_html = "<h2>" + result.stop_name + "</h2>" +
                     "<h3>" + result.stop_id + "</h3>" +
                     "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
@@ -1946,10 +1939,6 @@ function deleteMarkers() {
 
 function Generate_Graph() {
 
-    // For building an alternate for when the real time data is down. 
-    var default_lat = 53.353440;
-    var default_lng = -6.332727;
-
     // pull stop number 
     // then get real time info on stop
     // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
@@ -1957,99 +1946,135 @@ function Generate_Graph() {
 
     var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
     var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
-    
-    // $.ajax({
-    //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
-    //     // 'type': 'POST',
-    //     'type': 'get',
-    //     'dataType': 'json',
-    // }).done(function (real_time_data){
-    //     content = real_time_data['results']
-
-    //     var routeids = []
-    //     var arrival_times = []
-
-    //     content.forEach(elem){
-    //         routeids.append(elem['route']);
-
-    //         var atime = elem["arrivaldatetime"];
-    //         var atime_date = atime.split(" ")[0].split("/");
-    //         var atime_time = atime.split(" ")[1].split(":");
-
-    //         var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    //         var now = Date();
-
-    //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-            
-    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
-
-    //         arrival_times.append(time_diff_seconds);
-    //     };
-    // });
-
-    var atime = "16/08/2019 00:22:00";
-    var atime_date = atime.split(" ")[0].split("/");
-    var atime_time = atime.split(" ")[1].split(":");
-
-    var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    var now = Date();
-
-    var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-    
-//    console.log(time_diff_seconds);
-
-
-    var arrival_times = JSON.stringify(arrival_times);
 
     $.ajax({
-        'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
+        'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
         // 'type': 'POST',
         'type': 'get',
         'dataType': 'json',
-        'data':{'mus':arrival_times}
-    }).done(function (graphdata) {
+    }).done(function (real_time_data) {
 
-        graphdata = graphdata['graph_data'];
+        var response_result = real_time_data['res']
 
-        google.charts.load('current', {
-            'packages': ['corechart']
-        });
-        google.charts.setOnLoadCallback(prepareChart);
+        if (response_result == "0") {
+            $("Graph_div").text("No Real Time Information Available for stop:" + stop_of_interest + "," + stop_of_interest_addr);
+        } else {
 
-        function prepareChart() {
+            
+            var content = real_time_data.content.results.slice(0, 4);
 
-            var data = new google.visualization.DataTable(graphdata);
+            var routeids = [];
+            var arrival_times = [];
 
-            graphdata[0].forEach(function (elem) {
-                data.addColumn('number', elem);
+            content.forEach(function (elem) {
+                routeids.push(elem['route']);
+
+
+                var atime = elem["arrivaldatetime"];
+                var atime_date = atime.split(" ")[0].split("/");
+                var atime_time = atime.split(" ")[1].split(":");
+
+
+                // -1 on month to account for index from 0-11 not 1-12
+                var ar_date = new Date(atime_date[2], atime_date[1] - 1, atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+
+                var current_timestamp = Date.now();
+
+                // - 3600 specific to a bug with my laptop, for testing only. 
+                var time_diff_seconds = (ar_date.getTime() - current_timestamp) / 1000;
+
+                arrival_times.push(time_diff_seconds);
+
             });
 
-            graphdata.forEach(function (row) {
-                if (row[0] != "Time")
-                    data.addRow(row);
-            });
+            // add table to be filled
+            $("#Graph_div_times").html("<table id=\"table_times\" class=\"responsive-card-table striped\"></table>");
+            
+            // add header to table
+            $("#table_times").html("<tr>\
+            <th style=\"border-bottom:1pt solid black;\">Bus No.</th>\
+            <th style=\"border-bottom:1pt solid black;\">Time to Arrival</th>\
+            </tr>");
 
-            var options = {
-                title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
-                hAxis: {
-                    title: 'Time',
-                    titleTextStyle: {
-                        color: '#333'
-                    },
-                    minValue: -1,
-                },
-                vAxis: {
-                    minValue: 0,
-                    baselineColor: '#fff',
-                    gridlineColor: '#fff',
-                    textPosition: 'none'
-                },
-                'backgroundColor': 'transparent'
+            $("#table_times").css("width:90%;");
+
+            for (let j=0; j<arrival_times.length; j++){
+
+                var row_str="<td>"+routeids[j]+"</td><td>"+Math.round(arrival_times[j]/60)+" mins</td>"
+                $("#table_times").append("<tr>"+row_str+"</tr>");
+
             };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('Graph_div'));
-            chart.draw(data, options);
+            // Pass arrival times to back end
+            arrival_times = JSON.stringify(arrival_times);
 
+            $.ajax({
+                'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
+                // 'type': 'POST',
+                'type': 'get',
+                'dataType': 'json',
+                'data': {
+                    'mus': arrival_times,
+                    'busnums': JSON.stringify(routeids)
+                }
+            }).done(function (graphdata) {
+
+                graphdata = graphdata['graph_data'];
+
+                google.charts.load('current', {
+                    'packages': ['corechart']
+                });
+                google.charts.setOnLoadCallback(prepareChart);
+
+                function prepareChart() {
+
+                    var data = new google.visualization.DataTable(graphdata);
+
+                    graphdata[0].forEach(function (elem) {
+                        data.addColumn('number', elem);
+                    });
+
+                    graphdata.forEach(function (row) {
+                        if (row[0] != "Time")
+                            data.addRow(row);
+                    });
+
+                    var options = {
+
+                        width: $("#Graph_div").width(),
+                        height: $(window).height()*0.25,
+    
+                        title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
+                        legend: {
+                            position: "top",
+                            alignment: "end"
+                        },
+                        hAxis: {
+                            title: 'Time to Arrival (min)',
+                            titleTextStyle: {
+                                color: '#333'
+                            },
+                            minValue: -1,
+                        },
+                        vAxis: {
+                            minValue: 0,
+                            baselineColor: '#fff',
+                            gridlineColor: '#fff',
+                            textPosition: 'none',
+                            gridlines: {
+                                count:8
+                            },
+                        },
+                        'backgroundColor': 'transparent'
+                    };
+                    var chart = new google.visualization.AreaChart(document.getElementById('Graph_div'));
+                    chart.draw(data, options);
+                };
+            });
         };
     });
 };
+
+$(window).resize(function(){
+    Generate_Graph();
+});
