@@ -1,4 +1,5 @@
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
+var markerImage = '/static/images/bus_icon.png';
 
 var marker_list = [];
 var oldfeed = "TEST";
@@ -300,7 +301,7 @@ function initMap(position) {
                     return new google.maps.Marker({
                         position: location,
                         map: map,
-                        // icon: markerImage,
+                        icon: markerImage,
                     });
                 });
 
@@ -555,10 +556,12 @@ function initMap(position) {
                         //                     marker_list.push(Path);
 
 
+
                         var markers = stops.map(function (location, i) {
                             return new google.maps.Marker({
                                 position: location,
                                 map: map,
+                                icon: markerImage,
                             });
                         });
                         for (var i = 0; i < markers.length; i++) {
