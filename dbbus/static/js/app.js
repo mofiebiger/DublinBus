@@ -804,8 +804,8 @@ function displayBusDetail() {
             if (result2.res == 1) {
                 var msg = "#addFav_bus";
                 for (var i = 0; i < result2['user_bus_list'].length; i++) {
-                    if (result2['user_bus_list'][i]['bus_number'] == route_list[0].replace(/\s+/g, "")) {
-                        msg = "#removeFav_bus"
+                    if ((result2['user_bus_list'][i]['bus_number'] == route_list[0]) && (result2['user_bus_list'][i]['start_point'] == route_list[1]) && (result2['user_bus_list'][i]['end_point'] == route_list[2])) {
+                        msg = "#removeFav_bus";
                         break
                     }
                 }

@@ -3825,7 +3825,7 @@ select {
   z-index: 10;
   display: none;
   width: 300px;
-  padding: 1rem;
+  /*padding: 1rem;*/
   visibility: hidden;
   border: 1px solid #cacaca;
   border-radius: 0;
