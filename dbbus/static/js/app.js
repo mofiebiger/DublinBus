@@ -10,7 +10,7 @@ function initMap(position) {
     setInterval(() => TrafficFeed(), 600000);
 
     markerA =
-        new google.maps.Size(24, 27),
+    new google.maps.Size(24, 27),
         new google.maps.Point(0, 0),
         new google.maps.Point(12, 27),
 
@@ -26,16 +26,13 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], //good
-        directionsPanel: jQuery('#directionsPanel'), //good
-        dirInputs: jQuery('.directionInputs'),
-        dirSrc: jQuery('#directionsSource'), //good
-        dirDst: jQuery('#directionsDestination'), //good
-        navBtn: jQuery('#navigateButton'), //good
-        directionsSteps: jQuery('#directionsSteps'), //good
-        paneToggle: jQuery('#paneToggle'),
-        geoButton: jQuery('#geoButton'), //good
-        paneResetBtn: jQuery('#paneReset')
+        map: jQuery('#map')[0],
+        directionsPanel: jQuery('#directionsPanel'),
+        dirSrc: jQuery('#directionsSource'),
+        dirDst: jQuery('#directionsDestination'),
+        navBtn: jQuery('#navigateButton'), 
+        directionsSteps: jQuery('#directionsSteps'),
+        geoButton: jQuery('#geoButton'),
     };
 
     // https://thewebstorebyg.wordpress.com/2013/01/11/custom-directions-panel-with-google-maps-api-v3/
@@ -109,8 +106,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-    
-    
+
+
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -140,20 +137,16 @@ function initMap(position) {
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
-                                'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
-                                'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
-                                'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
+                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.headsign,
-                                'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
-                                'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
-                                'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
+                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
                             })
                         }
                     }
@@ -208,8 +201,8 @@ function initMap(position) {
                         map: map,
                         icon: markerB
                     });
-                          marker_list.push(pinA);
-                          marker_list.push(pinB);
+                //          marker_list.push(pinA);
+                //          marker_list.push(pinB);
             }
         });
     } //DirectionsRenderer Ends
@@ -535,35 +528,23 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
-                        var bus_image = "/static/images/book-of-kells.jpg"
-                        var lineSymbol = {
-                        	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-//                        	    path: bus_image,
-                        	    scale: 5,
-                        	    strokeColor: '#1a7bba'
-                        	  };
-                                             var Path = new google.maps.Polyline({
-                         					    					path: stops,
-                         					    				    icons: [{
-                         					    				       icon: lineSymbol,
-                         					    				       offset: '100%'
-                         					    				     }],
-                         					    					geodesic: true,
-                         					    					strokeColor: '#00BBFF',
-                         					    					strokeOpacity: 1.0,
-                         					    					strokeWeight: 5
-                         					    				});
-                                             Path.setMap(map);
-                                             marker_list.push(Path);
+                        //                     var Path = new google.maps.Polyline({
+                        // 					    					path: stops,
+                        // 					    					geodesic: true,
+                        // 					    					strokeColor: '#00BBFF',
+                        // 					    					strokeOpacity: 1.0,
+                        // 					    					strokeWeight: 5
+                        // 					    				});
+                        //                     Path.setMap(map);
+                        //                     marker_list.push(Path);
 
-                         map.setCenter(stops[0]);
+
                         var markers = stops.map(function (location, i) {
                             return new google.maps.Marker({
                                 position: location,
                                 map: map,
                             });
                         });
-                        animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
                             marker_list.push(marker);
@@ -589,16 +570,7 @@ function initMap(position) {
     }
     setBusRoute();
 
-    function animateCircle(line) {
-        var count = 0;
-        window.setInterval(function() {
-          count = (count + 1) % 200;
 
-          var icons = line.get('icons');
-          icons[0].offset = (count / 2) + '%';
-          line.set('icons', icons);
-      }, 50);
-    }
 
 
     invokeAddRoutesBtn();
@@ -863,6 +835,7 @@ function writeStopDetails() {
                 swal("Network fail!", "Please try it later!", "error");
             },
         })
+        Generate_Graph();
     })
 }
 
@@ -1506,7 +1479,8 @@ function TrafficFeed() {
 
             innertext_ += entries[i].title;
 
-            innertext_ += "<br><a href=" + entries[i].link + ">more >>></a>"
+            innertext_ += "<br><a href=" + entries[i].link + ">more 
+          </a>"
 
             if (i < entries.length - 1) {
                 innertext_ += "</li><hr><li>";
@@ -1777,69 +1751,19 @@ function deleteMarkers() {
     marker_list = [];
 }
 
-function Generate_Graph() {
+function Generate_Graph(arrival_times) {
 
-    // For building an alternate for when the real time data is down. 
-    var default_lat = 53.353440;
-    var default_lng = -6.332727;
+    // Need to make the graph take inputs of time. So that mu can be changed as needed.
+    // sigma can be calucalted in the backend
 
-    // pull stop number 
-    // then get real time info on stop
-    // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
-    // pass that data to graph distribution
-
-    var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
-    var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
-    
-    // $.ajax({
-    //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
-    //     // 'type': 'POST',
-    //     'type': 'get',
-    //     'dataType': 'json',
-    // }).done(function (real_time_data){
-    //     content = real_time_data['results']
-
-    //     var routeids = []
-    //     var arrival_times = []
-
-    //     content.forEach(elem){
-    //         routeids.append(elem['route']);
-
-    //         var atime = elem["arrivaldatetime"];
-    //         var atime_date = atime.split(" ")[0].split("/");
-    //         var atime_time = atime.split(" ")[1].split(":");
-
-    //         var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    //         var now = Date();
-
-    //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-            
-    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
-
-    //         arrival_times.append(time_diff_seconds);
-    //     };
-    // });
-
-    var atime = "16/08/2019 00:22:00";
-    var atime_date = atime.split(" ")[0].split("/");
-    var atime_time = atime.split(" ")[1].split(":");
-
-    var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
-    var now = Date();
-
-    var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-    
-    console.log(time_diff_seconds);
-
-
-    var arrival_times = JSON.stringify(arrival_times);
+    arrival_times = [60, 300, 600];
 
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
         // 'type': 'POST',
         'type': 'get',
         'dataType': 'json',
-        'data':{'mus':arrival_times}
+        // 'data':{'mus':arrival_times}
     }).done(function (graphdata) {
 
         graphdata = graphdata['graph_data'];
@@ -1851,31 +1775,39 @@ function Generate_Graph() {
 
         function prepareChart() {
 
-            var data = new google.visualization.DataTable(graphdata);
+            var x_bound_upper = 0;
 
-            graphdata[0].forEach(function (elem) {
-                data.addColumn('number', elem);
-            });
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', 'Probability');
 
-            graphdata.forEach(function (row) {
-                if (row[0] != "Time")
-                    data.addRow(row);
+            graphdata.forEach(function (set) {
+
+                x = set['xvals'];
+                y = set['yvals'];
+
+                for (i = 0; i < x.length; i++) {
+                    data.addRow([x[i], y[i]]);
+
+                    if (x[i] > x_bound_upper)
+                        x_bound_upper = x[i];
+                }
             });
 
             var options = {
-                title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
+                title: 'Sample Chart',
                 hAxis: {
                     title: 'Time',
                     titleTextStyle: {
                         color: '#333'
                     },
-                    minValue: -1,
+                    minValue: 0,
+                    viewWindow: {
+                        max: x_bound_upper + 0.5 * x_bound_upper
+                    },
                 },
                 vAxis: {
-                    minValue: 0,
-                    baselineColor: '#fff',
-                    gridlineColor: '#fff',
-                    textPosition: 'none'
+                    minValue: 0
                 },
                 'backgroundColor': 'transparent'
             };

@@ -21,7 +21,8 @@ body {
 
 h1 {
   font-size: 2em;
-  margin: 0.67em 0; }
+  margin: 0.67em 0;
+}
 
 hr {
   -webkit-box-sizing: content-box;
@@ -89,11 +90,11 @@ button,
 select {
   text-transform: none; }
 
-button,
+/* button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  -webkit-appearance: button; }
+  -webkit-appearance: button; } */
 
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
@@ -2763,12 +2764,11 @@ textarea[readonly] {
   background-color: #e6e6e6;
   cursor: not-allowed; }
 
-[type='submit'],
+/* [type='submit'],
 [type='button'] {
   -webkit-appearance: none;
      -moz-appearance: none;
-          appearance: none;
-  border-radius: 0; }
+          appearance: none;} */
 
 input[type='search'] {
   -webkit-box-sizing: border-box;
