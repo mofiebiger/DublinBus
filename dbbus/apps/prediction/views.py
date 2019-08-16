@@ -386,7 +386,7 @@ class PredictionRouteView(TemplateView):
                         value = predict_time(real_bus[j],real_bus[j+1],date,time)
                         total_time += value
                     except Exception as e:
-                        total_time += 40
+                        total_time += 60
                 text = str(round(total_time/60))+"min"
                 new_routes.append({'text':text,'value':total_time})
             else:
