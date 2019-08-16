@@ -8,6 +8,21 @@ body, html {
     width: 100%;
 }
 
+html h1 {
+  font-family: 'Allerta Stencil', sans-serif;
+  color: white;
+  float: left;
+}
+
+html hr {
+  color: white;
+}
+
+#Graph_div {
+  display:block;
+  margin: 0 auto;
+}
+
 /* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
 .center {
     width: 50%;
@@ -26,58 +41,35 @@ body, html {
     display: block;
 }
 
-
 #rightNow {
-    /* align-items: center; */
-    align-self: center;
-    width: 100%;
-    margin: auto;
     padding: 8px;
     font-family: 'Allerta Stencil', sans-serif;
 }
+
 #time-button {
-    /* align-items: center; */
-    width: 100%;
-    margin: auto;
     padding: 8px;
-    font-family: 'Allerta Stencil', sans-serif;
-}
-
-#today {
-    width: 100%;
-    padding: 8px;
-    font-family: 'Allerta Stencil', sans-serif;
-}
-
-#geoButton{
-    width: 50%;
-    font-family: 'Allerta Stencil', sans-serif;
-    align-items: center;
-    margin: 15px;
-    padding: 8px;
-    background-color: #ffe00b;
-    border-color: #ffe00b;
-    border-radius: 5px;
-}
-
-#navigateButton {
-    align-items: center;
-    margin: 15px;
-    padding: 8px;
-    background-color: #ffe00b;
-    border-color: #ffe00b;
-    border-radius: 5px;
     font-family: 'Allerta Stencil', sans-serif;
 }
 
 #directionsSteps {
-    margin: 9%;
-    background-color: white;
-    padding: 2%;
-    border-radius: 10px;
+    background-color: transparent;
     display: block;
-    font-family: 'Allerta Stencil', sans-serif;
 }
+
+.warnbox-content {
+  display: none;
+
+}
+
+.warnbox-c1, .warnbox-c2{
+  display: none;
+  background-color: transparent;
+}
+
+.adp-step{
+  border-radius: 5px;
+}
+
 #weather_stats {
     margin: 5%;
 }
@@ -114,8 +106,7 @@ body, html {
     -moz-border-right-colors: none;
     -moz-border-top-colors: none;
     background-color: #6D8ACC;
-    border-color: #717B87;
-    -moz-use-text-color: #717B87 #717B87;
+    border-color: #717B87 -moz-use-text-color #717B87 #717B87;
     border-style: solid none solid solid;
     border-width: 1px 0 1px 1px;
     color: #FFFFFF !important;
@@ -125,13 +116,21 @@ body, html {
 
 .tourismbutton {
   align-self: center;
+  width: 70%;
+  font-family: 'Allerta Stencil', sans-serif;
+  border: 2px solid #e5e5e5;
+  background-color: transparent;
+  text-decoration: none;
   margin: 15px;
   padding: 8px;
-  background-color: #ffe00b;
-  border-color: #ffe00b;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
   border-radius: 5px;
-  width: 50%;
-  font-family: 'Allerta Stencil', sans-serif;
+  color: #ffe00b;
+  transition: all ease 0.4s;
+  margin-bottom: 5px;
 }
 
 #container img {
@@ -142,34 +141,33 @@ body, html {
 
 }
 
-
-
 .websiteBtn {
-
+  font-family: 'Allerta Stencil', sans-serif;
+  border: 2px solid #e5e5e5;
+  background-color: transparent;
   margin: 15px;
   padding: 8px;
-  background-color: #ffe00b;
-  border-color: #ffe00b;
-  border-radius: 5px;
-  font-family: 'Allerta Stencil', sans-serif;
+  text-align: center;
   display: inline-block;
-
+  border-radius: 5px;
+  color: #ffe00b;
 }
 
 .tourismNavBtn {
-
+  font-family: 'Allerta Stencil', sans-serif;
+  border: 2px solid #e5e5e5;
+  background-color: transparent;
   margin: 15px;
   padding: 8px;
-  background-color: #ffe00b;
-  border-color: #ffe00b;
-  border-radius: 5px;
-  font-family: 'Allerta Stencil', sans-serif;
+  text-align: center;
   display: inline-block;
+  border-radius: 5px;
+  color: #ffe00b;
 }
 
 /*contact page*/
 .contact-panel-button {
-  background: #0a0a0a;
+  /* background: #0a0a0a;
   color: #fefefe;
   width: auto;
   padding: 0.25rem 1.25rem;
@@ -177,7 +175,21 @@ body, html {
   position: absolute;
   top: -30px;
   right: 20px;
-  transition: background 0.25s ease-in-out;
+  transition: background 0.25s ease-in-out; */
+  border: 2px solid #e5e5e5;
+  background-color: transparent;
+  text-decoration: none;
+  margin: 15px;
+  padding: 8px;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+  color: #ffe00b;
+  transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 .contact-panel-button:after {
@@ -266,7 +278,7 @@ body, html {
   color: #444;
   text-decoration: none;
   border-radius: .3em;
-  transition: all .3s ease-out;   
+  transition: all .3s ease-out;
 }
 
 .trafficfeedlist li:hover{
@@ -399,18 +411,9 @@ body, html {
   -webkit-transform: translateY(100%);
       -ms-transform: translateY(100%);
           transform: translateY(100%);
-    overflow-y: scroll;
-    overflow-x: hidden;
+          overflow-y: scroll;
+          overflow-x: hidden;
 }
-
-
-/*[data-whatinput='mouse'] .offcanvas-full-screen {*/
-  /*outline: 0;*/
-/*}*/
-
-/*.offcanvas-full-screen.is-transition-overlap {*/
-  /*z-index: 10;*/
-/*}*/
 
 .offcanvas-full-screen.is-transition-overlap.is-open {
   box-shadow: 0 0 10px rgba(10, 10, 10, 0.5);
@@ -429,7 +432,7 @@ body, html {
 }
 
 .offcanvas-full-screen.is-transition-push::after {
-  position: absolute;
+  /*position: absolute;*/
   top: 0;
   right: 0;
   height: 100%;
@@ -444,17 +447,11 @@ body, html {
           transform: none;
 }
 
-
 .offcanvas-full-screen-inner {
   padding: 1rem;
   text-align: center;
-
 }
-.inner-inner{
-    margin: 0;
-    align-self: center;
 
-}
 .offcanvas-full-screen-menu{
     margin: 0;
   list-style-type: none;
@@ -475,7 +472,6 @@ body, html {
 
 }
 
-
 .offcanvas-full-screen-menu a {
   color: #fefefe;
 }
@@ -495,36 +491,38 @@ body, html {
 
 .edit-favourite-button{
     border: 2px solid #e5e5e5;
-  background-color: transparent;
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #ffe00b;
-  transition: all ease 0.4s;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #ffe00b;
+    transition: all ease 0.4s;
     margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 .confirm-favourite-button{
 
     border: 2px solid #e5e5e5;
-  /*background-color: transparent;*/
-  text-decoration: none;
-  margin: 15px;
-  padding: 8px;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
-  color: #1a7bba;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
     background-color: #e5e5e5;
-  transition: all ease 0.4s;
+    transition: all ease 0.4s;
     margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
 }
 
 #offCanvasLeft .menu{
@@ -533,39 +531,135 @@ body, html {
 
 .route_start{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
+
 .route_end{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
 
 #route_list{
     text-align: center;
 }
+
 .bus_number{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
-  display: inline-block;
-  border-radius: 5px;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
 }
 .start_end{
     border: 2px solid #e5e5e5;
-  margin: 15px;
-  padding: 8px;
-  text-align: center;
+    margin: 15px;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.official_button{
+    border: 2px solid #e5e5e5;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #ffe00b;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+.delete_bus_number {
+    border: 2px solid #e5e5e5;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #ffe00b;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#select_stop{
+    border: 2px solid #e5e5e5;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
+    background-color: #e5e5e5;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+.stopNavBtn {
+    border: 2px solid #e5e5e5;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
+    background-color: #e5e5e5;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#searchBus {
+    border: 2px solid #e5e5e5;
+    /*background-color: transparent;*/
+    text-decoration: none;
+    margin: 15px;
+    padding: 8px;
+    position: relative;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    color: #1a7bba;
+    background-color: #e5e5e5;
+    transition: all ease 0.4s;
+    margin-bottom: 5px;
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#switch_position {
+  width: 30px;
+  height: 30px;
   display: inline-block;
-  border-radius: 5px;
 }
 
 .markerNavBtn{
@@ -774,5 +868,3 @@ body, html {
 #main-menu ul .active a::after {
   width: 100%;
 }
-
-

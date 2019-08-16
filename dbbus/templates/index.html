@@ -1,4 +1,3 @@
-
 <!doctype html>
 
 <html class="no-js" lang="en" dir="ltr">
@@ -13,24 +12,21 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Foundation for Sites</title>
-
-
-
+  <title>Dublin Bus</title>
 
   <!--external stylesheet-->
   <meta charset="utf-8">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
   <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
-{#  <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">#}
+  {#  <link rel="stylesheet" href="{% static 'css/foundation.min.css' %}">#}
 
-{#        <script type="text/javascript" src="{% static 'js/vendor/jquery.js' %}"></script>#}
-{#        <script type="text/javascript" src="{% static 'js/vendor/what-input.js' %}"></script>#}
-{#        <script type="text/javascript" src="{% static 'js/vendor/foundation.js' %}"></script>#}
-{#        <script type="text/javascript" src="{% static 'js/vendor/foundation.min.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/jquery.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/what-input.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/foundation.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/vendor/foundation.min.js' %}"></script>#}
+  {#      <script type="text/javascript" src="{% static 'js/app.js' %}"></script>#}
 
   <meta name="apple-mobile-web-app-capable" content="yes">
-
 
   <!--navBar Icons-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -82,167 +78,179 @@
       a.src = g;
       m.parentNode.insertBefore(a, m)
     })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
     ga('create', 'UA-2195009-2', 'auto');
     ga('send', 'pageview');
-    
     ga('create', 'UA-2195009-27', 'auto', {
       name: "foundation"
     });
     ga('foundation.send', 'pageview');
   </script>
-  
-  </head>
-  <body>
 
-<header>
-<div class="off-canvas-wrap" data-offcanvas>
+</head>
 
+<body>
 
-<div class="off-canvas position-bottom" id="navigator" data-off-canvas data-transition="overlap">
-    <button class="close-button" aria-label="Close menu" type="button" data-close>
+  <header>
+    <div class="off-canvas-wrap" data-offcanvas>
+
+      <div class="off-canvas position-bottom" id="navigator" data-off-canvas data-transition="overlap">
+        <button class="close-button" aria-label="Close menu" type="button" data-close>
             <span aria-hidden="true">&times;</span>
        </button>
-    <div class="grid-container">
-    <div class="grid-x grid-margin-x">
+        <div class="grid-container">
+        <div class="grid-x grid-margin-x">
         <div class="cell large-2"></div>
         <div class="cell small-12 large-6">
-    <div class="offcanvas-full-screen-inner">
-
-    <h1 style="color:#e5e5e5;"> Journey Planner </h1>
-            <div id="directionsPanel">
+        <div class="offcanvas-full-screen-inner">
+              <h1> Journey Planner </h1>
+              <hr>
+              <div id="directionsPanel">
               {% csrf_token %}
-              <button id="geoButton">Use Current Location</button>
+              <button id="geoButton" class="official_button">Use Current Location</button>
               <input id="directionsSource" class="controls" type="text" placeholder="Start">
-                <input id="switch_position" type="image" src="{% static 'images/switch.png' %}" style="width: 30px; height: 30px;"></button>
-                <input id="directionsDestination" class="controls" type="text" placeholder="End">
-
+              <input id="directionsDestination" class="controls" type="text" placeholder="End">
             </div>
-                 <div class='fav_buttons'>
-                  <button class="button-like" id='addFav_route'  style="display: none"><i class="fa fa-star"></i></button>
-                  <button class="button-dislike" id='removeFav_route'  style="display: none"><i class="fa fa-trash"></i></button>
-                  <button class='login-required' data-toggle="navigaor userPage" hidden>Login and add as favourite</button>
-                 </div>
-
 
             <div id="dateTime-panel">
-              <div id="date">
-                <input id="rightNow" type="date" name="fname" value="2019-02-02">
-              </div>
+                <div id="date">
+                  <input id="rightNow" type="date" name="fname" value="2019-02-02">
+                </div>
 
-              <div id="time">
-                <input id="time-button" type="time" name="fname">
-              </div>
-
-              <button id="navigateButton">Navigate</button>
+                <div id="time">
+                  <input id="time-button" type="time" name="fname">
+                </div>
             </div>
+
+              <div id="align-switch-fav">
+                <div class='fav_buttons'>
+                  <button class="button-like" id='addFav_route'  style="display: none"><i class="fa fa-star"></i></button>
+                  <button class="button-dislike" id='removeFav_route'  style="display: none"><i class="fa fa-trash"></i></button>
+                  <button class='login-required' data-toggle="stopPage userPage" hidden>Login and add as favourite</button>
+                </div>
+                <input id="switch_position" type="image" src="{% static 'images/switch.png' %}"></button>
+              </div>
+
+              <button id="navigateButton" class="official_button">Navigate</button>
+
             <div id="directionsSteps"></div>
               <p id="error"></p>
-            </div>
+          </div>
         </div>
         <div class="cell large-2"></div>
-    </div>
-    </div>
-
-</div>
-
-<div class="off-canvas position-bottom" id="tourismPage" data-off-canvas data-transition="overlap">
-    <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
-    <div class="grid-container">
-    <div class="grid-x grid-margin-x">
-    <div class="cell large-2"></div>
-<div class="cell small-12 large-6">
-    <div class="offcanvas-full-screen-inner">
-
-    <h1 style="color:#e5e5e5"> What to do in Dublin </h1>
-
-        <button id="tourismNatureBtn" class="tourismbutton">Nature</button>
-        <button id="tourismDrinkBtn" class="tourismbutton">Breweries</button>
-        <button id="tourismLandmarksBtn" class="tourismbutton">Landmarks</button>
-        <button id="tourismMuseumsBtn" class="tourismbutton">Museums & Galleries</button>
-        <button id="tourismChurchesBtn" class="tourismbutton">Churches</button>
-        <div id="container"></div>
-        <div class="touristInfo"></div>
-</div>
-</div>
-    <div class="cell large-2"></div>
-</div>
-</div>
-</div>
-
-
-<div class="off-canvas position-bottom" id="stopPage" data-off-canvas data-transition="overlap">
-     <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
-<div class="grid-container">
-    <div class="grid-x grid-margin-x">
-    <div class="cell large-2"></div>
-<div class="cell shrink small-12 large-6">
-    <div class="offcanvas-full-screen-inner">
-
-    {% csrf_token %}
-    <ul class="tabs" data-tabs id="search-tab-headers">
-                <li class="tabs-title is-active" id="search_stop_header"><a href="#stop-panel" aria-selected="true">Stops</a></li>
-                <li class="tabs-title" id="search_route_header"><a data-tabs-target="bus-panel" href="#bus-panel">Routes</a></li>
-    </ul>
-    <div class="tabs-content" data-tabs-content="search-tab-headers">
-        <div class="tabs-panel is-active" id="stop-panel">
-              <div id="search-by-stop-div">
-      <label>Type stop number or key word to select a stop:</label>
-      <input type="text" id="search_stop" list="stop_datalist" />
-      <datalist id="stop_datalist"></datalist>
-      <button id="select_stop">Show Detail</button>
-{#    </div>#}
-    <div id="content">
-      <div class='fav_buttons'>
-          <button class="button-like" id='addFav'  style="display: none"><i class="fa fa-star"></i></button>
-{#          <i class="button-like fa fa-star" id='addFav' style="display: none"></i>#}
-          <button class="button-dislike" id='removeFav' style="display: none"><i class="fa fa-trash"></i></button>
-
-          <button type='button' class='login-required' data-toggle="stopPage userPage" hidden>Login and add this stop as favourite</button>
       </div>
-      <div></div>
-      <div id="stop_content"></div>
     </div>
   </div>
-        </div>
 
-        <div class="tabs-panel" id="bus-panel">
-            <div id="search-by-bus-div">
-                <div id="busRoute">
-              <label>Type bus number to select a bus route:</label>
-              <input type="text" id="searchBusRoute" list="bus_datalist"  placeholder="Bus Route" class="controls"/>
-              <datalist id="bus_datalist"></datalist>
-              <button id="searchBus">Search</button>
-            </div>
-            <div id="route_content">
+            <div class="off-canvas position-bottom" id="tourismPage" data-off-canvas data-transition="overlap">
+            <button class="close-button" aria-label="Close menu" type="button" data-close>
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="grid-container">
+            <div class="grid-x grid-margin-x">
+            <div class="cell large-2"></div>
+            <div class="cell small-12 large-6">
+            <div class="offcanvas-full-screen-inner">
+              <h1> What to do in Dublin </h1>
+              <hr>
 
-              <div class='fav_buttons'>
-                  <button class="button-like" id='addFav_bus'  style="display: none"><i class="fa fa-star"></i></button>
-                  <button class="button-dislike" id='removeFav_bus'  style="display: none"><i class="fa fa-trash"></i></button>
-                  <button class='login-required' data-toggle="stopPage userPage" hidden>Login and add this route as favourite</button>
-              </div>
-              <div class='bus-details'style="display: none">
-                  <h3 id="search-bus-id"></h3>
-                  <p>From<span id="bus-departure"></span> to <span id="bus-destination"></span> </p>
-              </div>
+              <button id="tourismNatureBtn" class="tourismbutton">Nature</button>
+              <button id="tourismDrinkBtn" class="tourismbutton">Breweries</button>
+              <button id="tourismLandmarksBtn" class="tourismbutton">Landmarks</button>
+              <button id="tourismMuseumsBtn" class="tourismbutton">Museums & Galleries</button>
+              <button id="tourismChurchesBtn" class="tourismbutton">Churches</button>
+              <div id="container"></div>
+              <div class="touristInfo"></div>
             </div>
-            </div>
+          </div>
+           <div class="cell large-2"></div>
         </div>
+      </div>
     </div>
 
-</div>
-</div>
-        <div class="cell large-2"></div>
-</div>
-</div>
-</div>
+          <div class="off-canvas position-bottom" id="stopPage" data-off-canvas data-transition="overlap">
+          <button class="close-button" aria-label="Close menu" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="grid-container">
+          <div class="grid-x grid-margin-x">
+          <div class="cell large-2"></div>
+          <div class="cell shrink small-12 large-6">
+            <div class="offcanvas-full-screen-inner">
+
+              <h1> Bus Stops & Routes </h1>
+              <hr>
+              {% csrf_token %}
+              <ul class="tabs" data-tabs id="search-tab-headers">
+                <li class="tabs-title is-active" id="search_stop_header"><a href="#stop-panel"
+                    aria-selected="true">Stops</a></li>
+                <li class="tabs-title" id="search_route_header"><a data-tabs-target="bus-panel"
+                    href="#bus-panel">Routes</a></li>
+              </ul>
+              <div class="tabs-content" data-tabs-content="search-tab-headers">
+                <div class="tabs-panel is-active" id="stop-panel">
+                  <div id="search-by-stop-div">
+                    <label>Type stop number or key word to select a stop:</label>
+
+                    <datalist id="stop_datalist"></datalist>
+                    <input type="text" id="search_stop" list="stop_datalist" />
+                    <button id="select_stop" onclick="Generate_Graph()">Show Detail</button>
+                    {#    </div>#}
+                    <div id="content">
+                      <div class='fav_buttons'>
+                        <button class="button-like" id='addFav' style="display: none"><i
+                            class="fa fa-star"></i></button>
+                        {#          <i class="button-like fa fa-star" id='addFav' style="display: none"></i>#}
+                        <button class="button-dislike" id='removeFav' style="display: none"><i
+                            class="fa fa-trash"></i></button>
+
+                        <button type='button' class='login-required' data-toggle="stopPage userPage" hidden>Login and
+                          add this stop as favourite</button>
+                      </div>
+                      <div></div>
+                      <div id="stop_content"></div>
+                      <div id="Graph_div"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tabs-panel" id="bus-panel">
+                  <div id="search-by-bus-div">
+                    <div id="busRoute">
+                      <label>Type bus number to select a bus route:</label>
+                      <input type="text" id="searchBusRoute" list="bus_datalist" placeholder="Bus Route"
+                        class="controls" />
+                      <datalist id="bus_datalist"></datalist>
+                      <button id="searchBus">Search</button>
+                    </div>
+                    <div id="route_content">
+
+                      <div class='fav_buttons'>
+                        <button class="button-like" id='addFav_bus' style="display: none"><i
+                            class="fa fa-star"></i></button>
+                        <button class="button-dislike" id='removeFav_bus' style="display: none"><i
+                            class="fa fa-trash"></i></button>
+                        <button class='login-required' data-toggle="stopPage userPage" hidden>Login and add this route
+                          as favourite</button>
+                      </div>
+                      <div class='bus-details' style="display: none">
+                        <h3 id="search-bus-id"></h3>
+                        <p>From: <span id="bus-departure"></span> <br>
+                          To: <span id="bus-destination"></span> </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="cell large-2"></div>
+        </div>
+      </div>
+    </div>
 
 
-<div class="off-canvas position-bottom" id="favsPage" data-off-canvas data-transition="overlap">
+    <div class="off-canvas position-bottom" id="favsPage" data-off-canvas data-transition="overlap">
 <button class="close-button" aria-label="Close menu" type="button" data-close>
   <span aria-hidden="true">&times;</span>
 </button>
@@ -250,6 +258,8 @@
     <div class="grid-x grid-margin-x">
         <div class="cell large-2"></div>
         <div class="cell shrink small-12 large-6">
+          <h1> Your Favourites </h1>
+          <hr>
             {% csrf_token %}
             {% if user.is_authenticated %}
         <button id="delete_favs" class="edit-favourite-button">Manage Favourites</button>
@@ -279,39 +289,25 @@
 
         </div>
         <div class="cell large-2"></div>
-
-    <div class="cell large-2"></div>
 </div>
 </div>
 </div>
 
 <div class="off-canvas position-bottom" id="contactPage" data-off-canvas data-transition="overlap">
-     <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
+ <button class="close-button" aria-label="Close menu" type="button" data-close>
+<span aria-hidden="true">&times;</span>
 </button>
+<h1> Contact Us </h1>
+<hr>
 <div class="grid-container">
-    <div class="grid-x grid-margin-x">
-    <div class="cell large-2"></div>
+<div class="grid-x grid-margin-x">
+<div class="cell large-2"></div>
 <div class="cell shrink small-12 large-6" id="contact-div">
 </div>
-        <div class="cell large-2"></div>
+    <div class="cell large-2"></div>
 </div>
 </div>
 </div>
-
-{#<div class="off-canvas position-bottom" id="userPage" data-off-canvas data-transition="overlap">#}
-{#     <button class="close-button" aria-label="Close menu" type="button" data-close>#}
-{#  <span aria-hidden="true">&times;</span>#}
-{#</button>#}
-{#<div class="grid-container">#}
-{#    <div class="grid-x grid-margin-x">#}
-{#    <div class="cell large-2"></div>#}
-{#<div class="cell shrink small-12 large-6" id="user-div">#}
-{#</div>#}
-{#        <div class="cell large-2"></div>#}
-{#</div>#}
-{#</div>#}
-{#</div>#}
 
 <div  class="dropdown-pane"  data-position="bottom" data-alignment="center" data-dropdown data-auto-focus="true" id="userPage">
 
@@ -320,27 +316,27 @@
 
 </div>
 
-   
+
 <div class="off-canvas position-bottom" id="weatherPage" data-off-canvas data-transition="overlap">
 <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
+<span aria-hidden="true">&times;</span>
 </button>
 <div class="grid-container">
 
-    <div class="grid-x grid-margin-x">
-    <div class="cell large-2"></div>
+  <div class="grid-x grid-margin-x">
+  <div class="cell large-2"></div>
 <div class="cell shrink small-12 large-6">
-    <div class="offcanvas-full-screen-inner">
+  <div class="offcanvas-full-screen-inner">
+              <div id="weatherInfo">
 
-      <div id="weatherInfo">
+                <h1> Dublin Weather </h1>
+                <hr>
 
-        <h1 style="color:#e5e5e5;"> Current Weather </h1>
-
-        <div class="weatherDescription">
-        <div>
-        <canvas id="weatherIcon"></canvas>
-        <div id="currentTemperature"></div>
-        </div>
+                <div class="weatherDescription">
+                  <div>
+                    <canvas id="weatherIcon"></canvas>
+                    <div id="currentTemperature"></div>
+                  </div>
                 </div>
                 <hr>
                 <div id="weather_heading"></div>
@@ -352,65 +348,22 @@
                 <div id="weather_daily"></div>
               </div>
             </div>
-  </div>
-        <dic class="cell large-2"></dic>
-
-    <div class="cell large-2"></div>
-    </div>
-</div>
+            <div class="cell large-2"></div>
+          </div>
         </div>
+      </div>
 
+      <div class="off-canvas position-bottom" id="trafficPage" data-off-canvas data-transition="overlap" >
 
-{#<div class="dropdown-pane"  data-dropdown data-hover="true" data-hover-pane="true" id="weatherPage">#}
-{#<button class="close-button" aria-label="Close menu" type="button" data-close>#}
-{#  <span aria-hidden="true">&times;</span>#}
-{#</button>#}
-{#<div class="grid-container">#}
-{##}
-{#    <div class="grid-x grid-margin-x">#}
-{#    <div class="cell large-2"></div>#}
-{#<div class="cell shrink small-12 large-6">#}
-{#    <div class="offcanvas-full-screen-inner">#}
-{##}
-{#      <div id="weatherInfo">#}
-{##}
-{#        <h1 style="color:#e5e5e5;"> Current Weather </h1>#}
-{##}
-{#        <div class="weatherDescription">#}
-{#        <div>#}
-{#        <canvas id="weatherIcon"></canvas>#}
-{#        <div id="currentTemperature"></div>#}
-{#        </div>#}
-{#                </div>#}
-{#                <hr>#}
-{#                <div id="weather_heading"></div>#}
-{#                <hr>#}
-{#                <div id="weather_hourly"></div>#}
-{#                <hr>#}
-{#                <div id="weather_stats"></div>#}
-{#                <hr>#}
-{#                <div id="weather_daily"></div>#}
-{#              </div>#}
-{#            </div>#}
-{#  </div>#}
-{#        <dic class="cell large-2"></dic>#}
-{##}
-{#    <div class="cell large-2"></div>#}
-{#    </div>#}
-{#</div>#}
-{#        </div>#}
-    
-<div class="off-canvas position-bottom" id="trafficPage" data-off-canvas data-transition="overlap" >
-
-        {% comment %} Add X to close Window {% endcomment %}
-         <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
-<div class="grid-container">
-    <div class="grid-x grid-margin-x">
-    <div class="cell large-2"></div>
-          <div class="cell large-6">
-            <h3  style="color:#e5e5e5;"> Traffic Info </h3>
+      {% comment %} Add X to close Window {% endcomment %}
+     <button class="close-button" aria-label="Close menu" type="button" data-close>
+     <span aria-hidden="true">&times;</span>
+     </button>
+     <div class="grid-container">
+     <div class="grid-x grid-margin-x">
+      <div class="cell large-2"></div>
+            <div class="cell large-6">
+            <h1> Current Traffic Feed </h1>
 
             {% comment %} Render the traffic rss feed in here {% endcomment %}
             <hr>
@@ -418,46 +371,26 @@
               {% comment %} Fill in Data here from js function {% endcomment %}
             </div>
             <hr>
-
-            <img class="thumbnail" src="https://placehold.it/550x350">
           </div>
-
-    <div class="cell large-2"></div>
+          <div class="cell large-2"></div>
         </div>
       </div>
-</div>
+    </div>
 
-{#<div class="dropdown-pane"  data-dropdown data-hover="true" data-hover-pane="true" id="trafficPage">#}
-{##}
-{#          <div class="cell large-6">#}
-{#            <h3  style="color:#e5e5e5;"> Traffic Info </h3>#}
-{##}
-{#            {% comment %} Render the traffic rss feed in here {% endcomment %}#}
-{#            <hr>#}
-{#            <div id="trafficfeed">#}
-{#              {% comment %} Fill in Data here from js function {% endcomment %}#}
-{#            </div>#}
-{#            <hr>#}
-{##}
-            {#<img class="thumbnail" src="https://placehold.it/550x350">#}
-{#          </div>#}
-{##}
-{#</div>#}
-    
-<div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas data-transition="overlap">
+    <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas data-transition="overlap">
 <div>
-    <button class="close-button" aria-label="Close menu" type="button" data-close>
-            <span aria-hidden="true">&times;</span>
-       </button>
+  <button class="close-button" aria-label="Close menu" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+     </button>
 
-  <ul class="vertical menu" data-responsive-menu="drilldown medium-dropdown">
-    <li><a href="#" data-toggle="navigator offCanvasLeft" class="JP">Journey Planner</a></li>
-    <li><a href="#" data-toggle="tourismPage offCanvasLeft">Tourism</a></li>
-    <li><a href="#" data-toggle="stopPage offCanvasLeft">Stops/Routes</a></li>
-    <li><a href="#" data-toggle="favsPage offCanvasLeft">Favourites</a></li>
-    <li><a href="#" data-toggle="weatherPage offCanvasLeft">Weather</a></li>
-    <li><a href="#" class="TrafficMenu"data-toggle="trafficPage  offCanvasLeft">Traffic</a></li>
-    <li><a href="#"  data-toggle="contactPage offCanvasLeft">Contact</a></li>
+<ul class="vertical menu" data-responsive-menu="drilldown medium-dropdown">
+  <li><a href="#" data-toggle="navigator offCanvasLeft" class="JP">Journey Planner</a></li>
+  <li><a href="#" data-toggle="tourismPage offCanvasLeft">Tourism</a></li>
+  <li><a href="#" data-toggle="stopPage offCanvasLeft">Stops/Routes</a></li>
+  <li><a href="#" data-toggle="favsPage offCanvasLeft">Favourites</a></li>
+  <li><a href="#" data-toggle="weatherPage offCanvasLeft">Weather</a></li>
+  <li><a href="#" class="TrafficMenu"data-toggle="trafficPage  offCanvasLeft">Traffic</a></li>
+  <li><a href="#"  data-toggle="contactPage offCanvasLeft">Contact</a></li>
 {#      <hr>#}
 {#        {% if user.is_authenticated %}#}
 {#    <li><a href="#" data-toggle="userPage offCanvasLeft" id="user-trigger">My Account</a></li>#}
@@ -466,16 +399,16 @@
 {#      {% endif %}#}
 
 
-  </ul>
+</ul>
 </div>
 
 </div>
 
 <div class="hero-section hide-for-small-only">
-  <div class="hero-section-text">
+<div class="hero-section-text">
 {#      <img src="/static/images/dublin-bus-1-logo.png" height="40px" width="40px">#}
-    <h3>Dublin Bus | Journey Planner</h3>
-  </div>
+  <h3>Dublin Bus | Journey Planner</h3>
+</div>
 </div>
 
 <div class="off-canvas-content" data-off-canvas-content>
@@ -483,12 +416,12 @@
 <button class="menu-icon" type="button" data-toggle="offCanvasLeft"></button>
 <div class="title-bar-title">Dublin Bus | Journey Planner</div>
 <div class="title-bar-right">
-        {% if user.is_authenticated %}
+      {% if user.is_authenticated %}
 
-    <img class="navbar-image" src="{{ user.user_profile.url }}"   height="20px" width="20px" data-toggle="userPage" id="user-trigger">
-      {% else %}
-    <i  class="fa fa-user" data-toggle="userPage" id="user-trigger"></i>
-      {% endif %}</div>
+  <img class="navbar-image" src="{{ user.user_profile.url }}"   height="20px" width="20px" data-toggle="userPage" id="user-trigger">
+    {% else %}
+  <i  class="fa fa-user" data-toggle="userPage" id="user-trigger"></i>
+    {% endif %}</div>
 </div>
 <div class="top-bar align-center hide-for-small-only" id="main-menu" data-animate="hinge-in-from-top hinge-out-from-top">
 <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown" id="nav">
@@ -498,36 +431,36 @@
 <li><a href="#" data-toggle="favsPage">Favourites</a></li>
 <li><a href="#" data-toggle="contactPage">Contact</a></li>
 <li>
-    <a href="#" data-toggle="weatherPage">Weather</a>
+  <a href="#" data-toggle="weatherPage">Weather</a>
 
 </li>
 <li><a href="#" class="TrafficMenu" data-toggle="trafficPage">Traffic</a></li>
 </ul>
 <ul class="menu vertical medium-horizontal" data-responsive-menu="drilldown medium-dropdown">
-        {% if user.is_authenticated %}
+      {% if user.is_authenticated %}
 <li><a href="#" data-toggle="userPage" id="user-trigger">My Account</a></li>
 {#<li><a href="#" data-toggle="userPage" id="user-trigger">My Account</a></li>#}
-      {% else %}
-    <li><a href="#" data-toggle="userPage" id="user-trigger">Login</a></li>
+    {% else %}
+  <li><a href="#" data-toggle="userPage" id="user-trigger">Login</a></li>
 {#    <li><a href="#" data-toggle="userPage" id="user-trigger">Login</a></li>#}
-      {% endif %}
-          </ul>
-        </div>
+    {% endif %}
+        </ul>
       </div>
-
-
     </div>
-    </header>
+
+
+  </div>
+  </header>
 <!--The div element for the map -->
 
-    <div id="map"></div>
+  <div id="map"></div>
 
 
 <script>
-      $(document).foundation();
-      $('#nav a').click(function() {
-        $('body').css('overflow', 'hidden');
-        });
+    $(document).foundation();
+    $('#nav a').click(function() {
+      $('body').css('overflow', 'hidden');
+      });
 </script>
 
 </body>
