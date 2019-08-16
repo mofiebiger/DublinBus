@@ -30,11 +30,11 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], 
+        map: jQuery('#map')[0],
         directionsPanel: jQuery('#directionsPanel'),
         dirSrc: jQuery('#directionsSource'),
-        dirDst: jQuery('#directionsDestination'), 
-        navBtn: jQuery('#navigateButton'), 
+        dirDst: jQuery('#directionsDestination'),
+        navBtn: jQuery('#navigateButton'),
         directionsSteps: jQuery('#directionsSteps'),
         geoButton: jQuery('#geoButton')
     };
@@ -110,8 +110,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-    
-    
+
+
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -137,7 +137,7 @@ function initMap(position) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
                         if (_route.steps[i].transit.line.hasOwnProperty("name")) {
                             aList.push({
-                                
+
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
@@ -187,7 +187,7 @@ function initMap(position) {
                         }
                         response.routes[0].legs[0].duration.value = total_time;
                         response.routes[0].legs[0].duration.text = Math.round(total_time / 60) + 'mins';
-                        
+
 
                     }
                     // remove the points shown in the previous step
@@ -416,26 +416,14 @@ function initMap(position) {
                     var website = obj[i].link;
                     var latitude = obj[i].latitude;
                     var longitude = obj[i].longitude;
-
-                    function on1() {
-                        //document.getElementById("overlay1").style.display = "block";
-                        $("overlay1").show();
-                    }
-
-                    // Geo Tourism Location Btn
-                    //$('#tourismNavBtn').on('click', function(e) {
-
-                    // Geo Tourism Location Btn
-                    //$('#tourismNavBtn').on('click', function(e) {
-
+        
                     display += '<h2 style="color:#e5e5e5">' + locationName + '</h2>';
                     display += '<p style="color:#e5e5e5">' + short_description + '</p>';
                     display += '<img src ="/static/images/' + image + '" style="width: 300px"></img>';
                     display += '<p style="color:#e5e5e5">' + long_description + '</p>';
                     display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
-                    //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
-                    display += '<button type="button" class="tourismNavBtn"  data-toggle="navigator tourismPage">Navigate</button>'
-                    display += '<hr>'
+                    display += '<button type="button" class="tourismNavBtn"  data-toggle="navigator tourismPage">Navigate</button>';
+                    display += '<hr>';
                 }
             }
             $("#container").html(display);
@@ -574,7 +562,7 @@ function initMap(position) {
                                 icon: markerImage,
                             });
                         });
-                      
+
                         animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
@@ -956,12 +944,12 @@ function invokeAddStopBtn() {
             	if(result.res == 1){
                     //change the button displayed
                     $('#addFav').hide();
-                    $('#removeFav').show(); 		
+                    $('#removeFav').show();
         		swal("Add succesfully!", "success");
             	}else{
             	 swal("Add failed!",result.error_msg, "error");
-            	}                
-                
+            	}
+
             },
             error: function () {
                 swal("Added fail!", "Please try it later!", "error");
@@ -992,13 +980,13 @@ function invokeDeleteStopBtn() {
             	if(result.res == 1){
                     //change the button displayed
                     $('#addFav').show();
-                    $('#removeFav').hide();   		
+                    $('#removeFav').hide();
         		swal("Add succesfully!", "success");
             	}else{
             	 swal("Add failed!",result.error_msg, "error");
             	}
 
-                
+
             },
             error: function () {
                 swal("Remove failed!", "Please try it later!", "error");
@@ -1029,13 +1017,13 @@ function invokeAddBusBtn() {
             	if(result.res == 1){
                     //change the button displayed
                     $('#addFav_bus').hide();
-                    $('#removeFav_bus').show();      		
+                    $('#removeFav_bus').show();
         		swal("Add succesfully!", "success");
             	}else{
             	 swal("Add failed!",result.error_msg, "error");
             	}
 
-                
+
             },
             error: function () {
                 swal("Add failed!", "Please try it later!", "error");
@@ -1092,7 +1080,7 @@ function invokeAddStopBtn() {
             	if(result.res == 1){
                     //change the button displayed
                     $('#addFav').hide();
-                    $('#removeFav').show();         		
+                    $('#removeFav').show();
         		swal("Add succesfully!", "success");
             	}else{
             	 swal("Add failed!",result.error_msg, "error");
@@ -1126,7 +1114,7 @@ function invokeDeleteStopBtn() {
             success: function (result) {
             	if(result.res == 1){
                     $('#addFav').show();
-                    $('#removeFav').hide();          		
+                    $('#removeFav').hide();
         		swal("Delete succesfully!", "success");
             	}else{
             	 swal("Delete failed!",result.error_msg, "error");
@@ -1160,7 +1148,7 @@ function invokeAddBusBtn() {
             success: function (result) {
             	if(result.res == 1){
             		$('#addFav_bus').hide();
-            		$('#removeFav_bus').show();            		
+            		$('#removeFav_bus').show();
         		swal("Add succesfully!", "success");
             	}else{
             	 swal("Add failed!",result.error_msg, "error");
@@ -1199,7 +1187,7 @@ function invokeDeleteBusBtn() {
             success: function (result) {
             	if(result.res == 1){
                     $('#addFav_bus').show();
-                    $('#removeFav_bus').hide();           		
+                    $('#removeFav_bus').hide();
         		swal("Delete succesfully!", "success");
             	}else{
             	 swal("Delete failed!",result.error_msg, "error");
@@ -1266,7 +1254,7 @@ function get_user_bus_number(){
             	str += $(this).find('.end_point').html();
             	$('#searchBusRoute').val(str);
             	$('#searchBus').click();
-            	
+
             })
         },
         error: function () {
@@ -1341,7 +1329,7 @@ function get_user_stop(){
 }
 
 $(function(){
-	
+
 	$('#fav_stop').click(get_user_stop);
 	$('#fav_route').click(get_user_route);
 	$('#fav_bus').click(get_user_bus_number);
@@ -1425,9 +1413,9 @@ function deleteFavourites() {
                 async: true,
                 success: function (result) {
                 	if(result.res==1){
-                		swal("Delete successfully!", "", "success");                		
+                		swal("Delete successfully!", "", "success");
                 	}else{
-                		swal("Delete failed!", "", "error");                		                		
+                		swal("Delete failed!", "", "error");
                 	}
                 },
                 error: function () {
@@ -1454,9 +1442,9 @@ function deleteFavourites() {
                 async: true,
                 success: function (result) {
                 	if(result.res==1){
-                		swal("Delete successfully!", "", "success");                		
+                		swal("Delete successfully!", "", "success");
                 	}else{
-                		swal("Delete failed!", "", "error");                		                		
+                		swal("Delete failed!", "", "error");
                 	}
                 },
                 error: function () {
@@ -1484,9 +1472,9 @@ function deleteFavourites() {
                 async: true,
                 success: function (result) {
                 	if(result.res==1){
-                		swal("Delete successfully!", "", "success");                		
+                		swal("Delete successfully!", "", "success");
                 	}else{
-                		swal("Delete failed!", "", "error");                		                		
+                		swal("Delete failed!", "", "error");
                 	}
                 },
                 error: function () {
@@ -1525,7 +1513,7 @@ function seeStopDetail(stop_id) {
             if (result.res == 1) {
 
                 result = result.json_data[0]['fields'];
-                
+
                 var content_html = "<h2>" + result.stop_name + "</h2>" +
                     "<h3>" + result.stop_id + "</h3>" +
                     "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
@@ -1570,7 +1558,7 @@ function seeStopDetail(stop_id) {
                         }
                     },
                     error: function () {
-                    	swal("Network error!", "Please try it later", "error");                		                		
+                    	swal("Network error!", "Please try it later", "error");
                     },
                 });
             } else {
@@ -1939,7 +1927,7 @@ function deleteMarkers() {
 
 function Generate_Graph() {
 
-    // pull stop number 
+    // pull stop number
     // then get real time info on stop
     // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
     // pass that data to graph distribution
@@ -1960,7 +1948,7 @@ function Generate_Graph() {
             $("Graph_div").text("No Real Time Information Available for stop:" + stop_of_interest + "," + stop_of_interest_addr);
         } else {
 
-            
+
             var content = real_time_data.content.results.slice(0, 4);
 
             var routeids = [];
@@ -1980,7 +1968,7 @@ function Generate_Graph() {
 
                 var current_timestamp = Date.now();
 
-                // - 3600 specific to a bug with my laptop, for testing only. 
+                // - 3600 specific to a bug with my laptop, for testing only.
                 var time_diff_seconds = (ar_date.getTime() - current_timestamp) / 1000;
 
                 arrival_times.push(time_diff_seconds);
@@ -1989,7 +1977,7 @@ function Generate_Graph() {
 
             // add table to be filled
             $("#Graph_div_times").html("<table id=\"table_times\" class=\"responsive-card-table striped\"></table>");
-            
+
             // add header to table
             $("#table_times").html("<tr>\
             <th style=\"border-bottom:1pt solid black;\">Bus No.</th>\
@@ -2043,7 +2031,7 @@ function Generate_Graph() {
 
                         width: $("#Graph_div").width(),
                         height: $(window).height()*0.25,
-    
+
                         title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
                         legend: {
                             position: "top",
