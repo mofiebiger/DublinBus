@@ -141,19 +141,24 @@ function initMap(position) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
                         if (_route.steps[i].transit.line.hasOwnProperty("name")) {
                             aList.push({
+                                
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
-                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
+                                'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.headsign,
-                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
+                                'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
                             })
                         }
                     }
@@ -208,8 +213,8 @@ function initMap(position) {
                         map: map,
                         icon: markerB
                     });
-                //          marker_list.push(pinA);
-                //          marker_list.push(pinB);
+                          marker_list.push(pinA);
+                          marker_list.push(pinB);
             }
         });
     } //DirectionsRenderer Ends
@@ -545,17 +550,26 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
-                        //                     var Path = new google.maps.Polyline({
-                        // 					    					path: stops,
-                        // 					    					geodesic: true,
-                        // 					    					strokeColor: '#00BBFF',
-                        // 					    					strokeOpacity: 1.0,
-                        // 					    					strokeWeight: 5
-                        // 					    				});
-                        //                     Path.setMap(map);
-                        //                     marker_list.push(Path);
+                       var lineSymbol = {
+                        	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+//                        	    path: bus_image,
+                        	    scale: 5,
+                        	    strokeColor: '#1a7bba'
+                        	  }; var Path = new google.maps.Polyline({
+                         					    					path: stops,
+                         					    				    icons: [{
+                         					    				       icon: lineSymbol,
+                         					    				       offset: '100%'
+                         					    				     }],
+                         					    					geodesic: true,
+                         					    					strokeColor: '#00BBFF',
+                         					    					strokeOpacity: 1.0,
+                         					    					strokeWeight: 5
+                         					    				});
+                                             Path.setMap(map);
+                                             marker_list.push(Path);
 
-
+                         map.setCenter(stops[0]);
 
                         markerImage="/static/images/Map-Marker-Ball-Azure-icon.png";
                         var markers = stops.map(function (location, i) {
@@ -565,6 +579,8 @@ function initMap(position) {
                                 icon: markerImage,
                             });
                         });
+                      
+                        animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
                             marker_list.push(marker);
@@ -600,7 +616,16 @@ function initMap(position) {
         })
     }
     setBusRoute();
+function animateCircle(line) {
+        var count = 0;
+        window.setInterval(function() {
+          count = (count + 1) % 200;
 
+          var icons = line.get('icons');
+          icons[0].offset = (count / 2) + '%';
+          line.set('icons', icons);
+      }, 50);
+    }
 
 
 
@@ -684,7 +709,6 @@ function initAddFavRoutes() {
         },
         error: function () {
             alert("Oops, something wrong, please try again.");
-            console.log('show button fail')
         },
     });
 }
@@ -1177,13 +1201,13 @@ function initFavsPage() {
             var msg = "";
             if (result.res == 1) {
                 for (var i = 0; i < result['user_bus_list'].length; i++) {
-                    msg += "<li><a href='#'>" +
-                        "<span class='bus_number'>" + result['user_bus_list'][i]['bus_number'] + "</span>&nbsp;&nbsp;&nbsp;&nbsp;</a><button class='delete_bus_number' hidden>delete</button><br>" +
+                    msg += "<div><button class='delete_bus_number' hidden>delete</button><li class='favorite_bus_number' data-toggle='favsPage'><a href='#'>" +
+                        "<span class='bus_number' >" + result['user_bus_list'][i]['bus_number'] + "</span>&nbsp;&nbsp;&nbsp;&nbsp;</a>" +
                         " <span class='start_end'>" +
                         "<span class='start_point'>" + result['user_bus_list'][i]['start_point'] + "</span>&nbsp;&nbsp;" +
                         "<i class=\"fa fa-arrow-circle-right\"></i>&nbsp;&nbsp;" +
                         "<span class='end_point'>" + result['user_bus_list'][i]['end_point'] + "</span></span> " +
-                        "<hr></li>"
+                        "<hr></li></div>"
                 }
 
             } else {
@@ -1193,6 +1217,15 @@ function initFavsPage() {
 
             //write lis to bus_list div
             $('#bus_list').html(msg)
+            $('.favorite_bus_number').bind('click',function(){
+            	var str ="";
+            	str += $(this).find('.bus_number').html()+",";
+            	str += $(this).find('.start_point').html()+",";
+            	str += $(this).find('.end_point').html();
+            	$('#searchBusRoute').val(str);
+            	$('#searchBus').click();
+            	
+            })
         },
         error: function () {
             console.log('favorite bus number fail')
@@ -1233,11 +1266,11 @@ function initFavsPage() {
             var msg = "";
             if (result.res == 1) {
                 for (var i = 0; i < result['user_routes_list'].length; i++) {
-                    msg += "<li><a href='#'>" +
+                    msg += "<div><button class='delete_route' hidden>delete</button><li class='get_route_function' data-toggle='favsPage'><a href='#'>" +
                         "<span class='route_start'>" + result['user_routes_list'][i]['route_start'] + "</span><br>" +
                         "<i class=\"fa fa-arrow-circle-down\"></i><br>" +
                         "<span class='route_end'>" + result['user_routes_list'][i]['route_end'] + "</span><br> " +
-                        "</a><button class='delete_route' hidden>delete</button></li><hr>"
+                        "</a></li><hr></div>"
 
                 }
             } else {
@@ -1245,6 +1278,13 @@ function initFavsPage() {
             }
             //write lis to #route_list div
             $('#route_list').html(msg)
+            $('.get_route_function').bind('click',function(){
+            	var route_start= $(this).find('.route_start').html();
+            	var route_end= $(this).find('.route_end').html();
+            	$('#directionsSource').val(route_start);
+            	$('#directionsDestination').val(route_end);
+            	$('#navigateButton').click();
+        })
         },
         error: function () {
             alert("Oops, something wrong when showing the favourites, please try again.")
@@ -1274,9 +1314,9 @@ function deleteFavourites() {
         $('.delete_bus_number').on('click', function () {
             $(this).parent().hide();
             $(this).hide();
-            deleted_bus_number.push([$(this).prev().children(".bus_number").html(),
-                $(this).prev().children(".start_point").html(),
-                $(this).prev().children(".end_point").html()
+            deleted_bus_number.push([$(this).next().children(".bus_number").html(),
+                $(this).next().find(".start_point").html(),
+                $(this).next().find(".end_point").html()
             ]);
             console.log(deleted_bus_number)
         });
@@ -1546,7 +1586,7 @@ function TrafficFeed() {
         if (oldfeed != "TEST") {
             if (entries[0].title != oldfeed[0].title) {
 
-                // change the icon here to show a new noticifation 
+                // change the icon here to show a new noticifation
                 console.log("changed traffic feed");
             }
         };
@@ -1827,19 +1867,70 @@ function deleteMarkers() {
     marker_list = [];
 }
 
-function Generate_Graph(arrival_times) {
 
-    // Need to make the graph take inputs of time. So that mu can be changed as needed.
-    // sigma can be calucalted in the backend
+function Generate_Graph() {
 
-    arrival_times = [60, 300, 600];
+    // For building an alternate for when the real time data is down. 
+    var default_lat = 53.353440;
+    var default_lng = -6.332727;
+
+    // pull stop number 
+    // then get real time info on stop
+    // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
+    // pass that data to graph distribution
+
+    var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
+    var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
+    
+    // $.ajax({
+    //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
+    //     // 'type': 'POST',
+    //     'type': 'get',
+    //     'dataType': 'json',
+    // }).done(function (real_time_data){
+    //     content = real_time_data['results']
+
+    //     var routeids = []
+    //     var arrival_times = []
+
+    //     content.forEach(elem){
+    //         routeids.append(elem['route']);
+
+    //         var atime = elem["arrivaldatetime"];
+    //         var atime_date = atime.split(" ")[0].split("/");
+    //         var atime_time = atime.split(" ")[1].split(":");
+
+    //         var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    //         var now = Date();
+
+    //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+            
+    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
+
+    //         arrival_times.append(time_diff_seconds);
+    //     };
+    // });
+
+    var atime = "16/08/2019 00:22:00";
+    var atime_date = atime.split(" ")[0].split("/");
+    var atime_time = atime.split(" ")[1].split(":");
+
+    var ar_date = new Date(atime_date[2], atime_date[1], atime_date[0], atime_time[0], atime_time[1], atime_time[2]);
+    var now = Date();
+
+    var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
+    
+    console.log(time_diff_seconds);
+
+
+    var arrival_times = JSON.stringify(arrival_times);
 
     $.ajax({
         'url': window.location.protocol + "//" + window.location.host + "/user/Graph_distribution",
         // 'type': 'POST',
         'type': 'get',
         'dataType': 'json',
-        // 'data':{'mus':arrival_times}
+        'data':{'mus':arrival_times}
     }).done(function (graphdata) {
 
         graphdata = graphdata['graph_data'];
@@ -1851,39 +1942,31 @@ function Generate_Graph(arrival_times) {
 
         function prepareChart() {
 
-            var x_bound_upper = 0;
+            var data = new google.visualization.DataTable(graphdata);
 
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', 'Probability');
+            graphdata[0].forEach(function (elem) {
+                data.addColumn('number', elem);
+            });
 
-            graphdata.forEach(function (set) {
-
-                x = set['xvals'];
-                y = set['yvals'];
-
-                for (i = 0; i < x.length; i++) {
-                    data.addRow([x[i], y[i]]);
-
-                    if (x[i] > x_bound_upper)
-                        x_bound_upper = x[i];
-                }
+            graphdata.forEach(function (row) {
+                if (row[0] != "Time")
+                    data.addRow(row);
             });
 
             var options = {
-                title: 'Sample Chart',
+                title: 'Bus Arrival Times: Stop ' + stop_of_interest + ', ' + stop_of_interest_addr,
                 hAxis: {
                     title: 'Time',
                     titleTextStyle: {
                         color: '#333'
                     },
-                    minValue: 0,
-                    viewWindow: {
-                        max: x_bound_upper + 0.5 * x_bound_upper
-                    },
+                    minValue: -1,
                 },
                 vAxis: {
-                    minValue: 0
+                    minValue: 0,
+                    baselineColor: '#fff',
+                    gridlineColor: '#fff',
+                    textPosition: 'none'
                 },
                 'backgroundColor': 'transparent'
             };
