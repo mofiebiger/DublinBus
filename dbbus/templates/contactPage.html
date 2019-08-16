@@ -30,9 +30,9 @@
     <div class="row">
         <label>Message *
             {% if user.is_authenticated %}
-                <textarea placeholder="Describe your needs" rows="3"></textarea>
+                <textarea name="contact" placeholder="Describe your needs" rows="3"></textarea>
             {% else %}
-                <textarea placeholder="Describe your needs" rows="3"></textarea>
+                <textarea name="contact" placeholder="Describe your needs" rows="3"></textarea>
             {% endif %}
       </label>
     </div>
