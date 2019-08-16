@@ -151,6 +151,7 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #ffe00b;
+  width: 50%;
 }
 
 .tourismNavBtn {
@@ -163,6 +164,7 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #ffe00b;
+  width: 50%;
 }
 
 /*contact page*/
@@ -308,7 +310,7 @@ html hr {
   position: relative;
   vertical-align: middle;
   text-align: center;
-  display: inline-block;
+  display: inline-block !important;
   border-radius: 3rem;
     /*border-color: #f1e62a;*/
 
@@ -659,7 +661,8 @@ html hr {
 #switch_position {
   width: 30px;
   height: 30px;
-  display: inline-block;
+  display: inline-block !important;
+
 }
 
 .markerNavBtn{

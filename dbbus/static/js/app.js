@@ -30,11 +30,11 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0], 
+        map: jQuery('#map')[0],
         directionsPanel: jQuery('#directionsPanel'),
         dirSrc: jQuery('#directionsSource'),
-        dirDst: jQuery('#directionsDestination'), 
-        navBtn: jQuery('#navigateButton'), 
+        dirDst: jQuery('#directionsDestination'),
+        navBtn: jQuery('#navigateButton'),
         directionsSteps: jQuery('#directionsSteps'),
         geoButton: jQuery('#geoButton')
     };
@@ -110,8 +110,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-    
-    
+
+
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -138,7 +138,7 @@ function initMap(position) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
                         if (_route.steps[i].transit.line.hasOwnProperty("name")) {
                             aList.push({
-                                
+
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
@@ -419,24 +419,11 @@ function initMap(position) {
                     var latitude = obj[i].latitude;
                     var longitude = obj[i].longitude;
 
-                    function on1() {
-                        //document.getElementById("overlay1").style.display = "block";
-                        $("overlay1").show();
-                    }
-                    console.log(fetchTourismAddress(latitude, longitude));
-
-                    // Geo Tourism Location Btn
-                    //$('#tourismNavBtn').on('click', function(e) {
-
-                    // Geo Tourism Location Btn
-                    //$('#tourismNavBtn').on('click', function(e) {
-
                     display += '<h2 style="color:#e5e5e5">' + locationName + '</h2>';
                     display += '<p style="color:#e5e5e5">' + short_description + '</p>';
                     display += '<img src ="/static/images/' + image + '" style="width: 300px"></img>';
                     display += '<p style="color:#e5e5e5">' + long_description + '</p>';
                     display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
-                    //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
                     display += '<button type="button" class="tourismNavBtn"  data-toggle="navigator tourismPage">Navigate</button>'
                     display += '<hr>'
                 }
@@ -576,7 +563,7 @@ function initMap(position) {
                                 icon: markerImage,
                             });
                         });
-                      
+
                         animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
@@ -1221,7 +1208,7 @@ function initFavsPage() {
             	str += $(this).find('.end_point').html();
             	$('#searchBusRoute').val(str);
             	$('#searchBus').click();
-            	
+
             })
         },
         error: function () {
@@ -1867,18 +1854,18 @@ function deleteMarkers() {
 
 function Generate_Graph() {
 
-    // For building an alternate for when the real time data is down. 
+    // For building an alternate for when the real time data is down.
     var default_lat = 53.353440;
     var default_lng = -6.332727;
 
-    // pull stop number 
+    // pull stop number
     // then get real time info on stop
     // extract the arrival times and bus number od next 3-4 buses (or however many are in the dataset)
     // pass that data to graph distribution
 
     var stop_of_interest = $("input[id=search_stop]").val().split(",")[0];
     var stop_of_interest_addr = $("input[id=search_stop]").val().split(",")[1];
-    
+
     // $.ajax({
     //     'url': window.location.protocol + "//" + window.location.host + "/prediction/realtime_info/" + stop_of_interest,
     //     // 'type': 'POST',
@@ -1901,8 +1888,8 @@ function Generate_Graph() {
     //         var now = Date();
 
     //         var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-            
-    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only. 
+
+    //         time_difF_seconds -= 3600 // specific to a bug with my laptop, for testing only.
 
     //         arrival_times.append(time_diff_seconds);
     //     };
@@ -1916,7 +1903,7 @@ function Generate_Graph() {
     var now = Date();
 
     var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
-    
+
     console.log(time_diff_seconds);
 
 
