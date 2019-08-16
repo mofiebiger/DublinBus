@@ -208,7 +208,8 @@
                       </div>
                       <div></div>
                       <div id="stop_content"></div>
-                      <div id="Graph_div"></div>
+                      <div id="Graph_div"></div>                     
+                      <div id="Graph_div_times"></div>
                     </div>
                   </div>
                 </div>
@@ -453,16 +454,20 @@
 {#  </div>#}
   </header>
 <!--The div element for the map -->
-
   <div id="map"></div>
 
+  <footer>
+    <div class="frow columns large-10 large-centered text-center">
+      Weather Provided by @DarkSkyAPI
+    </div>
+  </footer>
 
-<script>
+  <script>
     $(document).foundation();
-    $('#nav a').click(function() {
+    $('#nav a').click(function () {
       $('body').css('overflow', 'hidden');
-      });
-</script>
+    });
+  </script>
 
 </body>
 
