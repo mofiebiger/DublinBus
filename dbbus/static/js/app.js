@@ -535,8 +535,10 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
+                        var bus_image = "/static/images/book-of-kells.jpg"
                         var lineSymbol = {
                         	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+//                        	    path: bus_image,
                         	    scale: 5,
                         	    strokeColor: '#1a7bba'
                         	  };
@@ -1827,7 +1829,7 @@ function Generate_Graph() {
 
     var time_diff_seconds = (ar_date.getTime() - now.getTime()) /1000;
     
-    console.log)time_diff_seconds);
+    console.log(time_diff_seconds);
 
 
     var arrival_times = JSON.stringify(arrival_times);
