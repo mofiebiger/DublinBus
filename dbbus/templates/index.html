@@ -380,11 +380,11 @@
     </div>
 
     <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas data-transition="overlap">
-  <button class="close-button" aria-label="Close menu" type="button" data-close>
-          <span aria-hidden="true">&times;</span>
-     </button>
 
-<ul class="vertical menu" data-responsive-menu="drilldown medium-dropdown">
+            <h1> Menu</h1>
+            <hr>
+
+<ul class="vertical menu" data-responsive-menu="drilldown medium-dropdown" id="small-screen-menu">
   <li><a href="#" data-toggle="navigator offCanvasLeft" class="JP">Journey Planner</a></li>
   <li><a href="#" data-toggle="tourismPage offCanvasLeft">Tourism</a></li>
   <li><a href="#" data-toggle="stopPage offCanvasLeft">Stops/Routes</a></li>
@@ -392,14 +392,6 @@
   <li><a href="#" data-toggle="weatherPage offCanvasLeft">Weather</a></li>
   <li><a href="#" class="TrafficMenu"data-toggle="trafficPage  offCanvasLeft">Traffic</a></li>
   <li><a href="#"  data-toggle="contactPage offCanvasLeft">Contact</a></li>
-{#      <hr>#}
-{#        {% if user.is_authenticated %}#}
-{#    <li><a href="#" data-toggle="userPage offCanvasLeft" id="user-trigger">My Account</a></li>#}
-{#      {% else %}#}
-{#    <li><a href="#" data-toggle="userPage offCanvasLeft" id="user-trigger">Login</a></li>#}
-{#      {% endif %}#}
-
-
 </ul>
 </div>
 
