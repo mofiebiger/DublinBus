@@ -1,8 +1,9 @@
 var staticCacheName = "django-pwa-v" + new Date().getTime();
 var filesToCache = [
 '/offline',
-'/static/css/style.css',
-'/static/js/maps.js',
+'/static/css/app.css',
+'/static/css/foundation.css',
+'/static/js/app.js',
 '/static/images/android-chrome-192x192.png',
 '/static/images/apple-touch-icon-114x114.png',
 '/static/images/android-launchericon-512-512.png',
