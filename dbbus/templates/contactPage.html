@@ -1,132 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <title>Contacts</title>
-    <style>
-.contact-panel-button {
-  background: #0a0a0a;
-  color: #fefefe;
-  width: auto;
-  padding: 0.25rem 1.25rem;
-  text-align: center;
-  position: absolute;
-  top: -30px;
-  right: 20px;
-  transition: background 0.25s ease-in-out;
-}
-
-.contact-panel-button:after {
-  content: "⥣";
-  margin-left: 5px;
-}
-
-.contact-panel-button:hover {
-  background: #242424;
-  color: #f0f0f0;
-}
-
-.is-active .contact-panel-button:after {
-  content: "⥥";
-}
-
-.contact-panel {
-  {#padding: 1rem;#}
-  z-index: 1;
-  {#background: #0a0a0a;#}
-  width: 350px;
-  height: 375px;
-  position: fixed;
-  {#bottom: -375px;#}
-  {#right: 20px;#}
-  transition: bottom 0.5s ease-in-out;
-}
-#contactPage {
-  background: #0a0a0a;
-}
-
-.contact-panel label {
-  color: #fefefe;
-  width: 100%;
-}
-
-.contact-panel input[type="text"],
-.contact-panel input[type="email"],
-.contact-panel textarea {
-  background: #303030;
-  border: #0a0a0a;
-  transition: background 0.3s ease-in-out;
-}
-
-.contact-panel input[type="text"]:focus,
-.contact-panel input[type="email"]:focus,
-.contact-panel textarea:focus {
-  background: #fefefe;
-}
-
-.contact-panel .contact-panel-actions {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.contact-panel .submit-button {
-  margin-bottom: 0;
-}
-
-.contact-panel .cancel-button {
-  margin-bottom: 0;
-  padding: 0.75rem 1rem;
-  color: #fefefe;
-  transition: background 0.25s ease-in-out;
-}
-
-.contact-panel .cancel-button:hover {
-  background: #242424;
-  color: #f0f0f0;
-}
-
-.contact-panel.is-active {
-  bottom: 0;
-}
-
-@media screen and (max-width: 39.9375em) {
-  .contact-panel {
-    width: 100%;
-    right: 0;
-  }
-}
-    </style>
-</head>
 <body>
-
-   <button class="close-button" aria-label="Close menu" type="button" data-close>
-  <span aria-hidden="true">&times;</span>
-</button>
-<div class="grid-y grid-padding-x" style="height: 100%;">
-<br>
-<div class="cell shrink">
-{#<h1> Contact Information </h1>#}
-{#        <h1> Send Us A Message </h1>#}
-{#          <form id="contact_info">#}
+<h1> Contact Us </h1>
+<hr>
+<div class="contact-panel" id="contact-panel">
               {% csrf_token %}
-{#            <textarea name="contact" rows="10" cols="50" placeholder="Give us feedback about how we can make your experience on the Dublin Bus App better!!!"></textarea>#}
-{#            <input type="submit" value="Send">#}
-{#          </form>#}
-<div class="contact-panel" id="contact-panel" data-toggler=".is-active">
-{#  <a class="contact-panel-button" data-toggle="contact-panel">Contact us</a>#}
   <form id="contact_info">
     <div class="row">
       <label>Full name *
           {% if user.is_authenticated %}
-              <input type="text" placeholder="{{ user.username }}">
+              <input type="text" value="{{ user.username }}">
           {% else %}
               <input type="text" placeholder="Full name">
           {% endif %}
@@ -136,7 +20,7 @@
     <div class="row">
       <label>Email *
           {% if user.is_authenticated %}
-              <input type="email" placeholder="{{ user.email }}">
+              <input type="email" value="{{ user.email }}">
           {% else %}
               <input type="email" placeholder="Email address">
           {% endif %}
@@ -146,23 +30,19 @@
     <div class="row">
         <label>Message *
             {% if user.is_authenticated %}
-                <textarea placeholder="Describe your needs" rows="3"></textarea>
+                <textarea name="contact" placeholder="Describe your needs" rows="3"></textarea>
             {% else %}
-                <textarea placeholder="Describe your needs" rows="3"></textarea>
+                <textarea name="contact" placeholder="Describe your needs" rows="3"></textarea>
             {% endif %}
       </label>
     </div>
     <div class="contact-panel-actions">
-{#      <button class="cancel-button" data-toggle="contact-panel">Nevermind</button>#}
-      <input type="submit" class="button submit-button" value="Submit">
+      <input type="submit" class="button" id="contact-submit-button" value="Submit">
     </div>
   </form>
-</div>
-
-</div>
-</div>
 
 
+</div>
 </body>
 <script>
     $('#contact_info').submit(function(){
@@ -179,12 +59,13 @@
 
 			}).done(function(result){
 				 if(result.res == 1){
-					 window.confirm(result.success_msg);
+           swal("Sent succesfully",result.success_msg,"success")
                     }else {
-                    	window.confirm(result.error_msg);
+                      swal("Sent failed",result.error_msg;_msg,"error")
+
 				 	}
 			}).fail(function(){
-				alert("false1");
+        swal("Network error","Please try it later","error")
 			});
 		return false;
 	});

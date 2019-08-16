@@ -24,16 +24,16 @@ class UserBusNumber(models.Model):
         db_table = 'favorite_bus_number'
         verbose_name = 'favorite_bus_number'
         verbose_name_plural = verbose_name
-    
+
 class UserRoute(models.Model):
-    route_start = models.CharField(max_length=50,verbose_name='route_start',null = False)
-    route_end  = models.CharField(max_length=50,verbose_name='route_end',null = False)
+    route_start = models.CharField(max_length=3000,verbose_name='route_start',null = False)
+    route_end  = models.CharField(max_length=3000,verbose_name='route_end',null = False)
     route_user = models.ForeignKey('User',on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'favorite_route'
         verbose_name = 'favorite_route'
-        verbose_name_plural = verbose_name    
+        verbose_name_plural = verbose_name
 
 class UserStop(models.Model):
     stop = models.IntegerField(verbose_name='favorite_stop',null = False,unique = True)

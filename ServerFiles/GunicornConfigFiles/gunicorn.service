@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=student
+Group=www-data
+WorkingDirectory=/home/student/DublinBus/dbbus
+ExecStart=/home/student/.conda/envs/dublinbus/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/student/DublinBus/dbbus/dbbus.sock dbbus.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

@@ -2,7 +2,7 @@ language: python
 python:
 - '3.6'
 before_script:
-  - psql -c "CREATE DATABASE travisdb;" -U postgres
+- psql -c "CREATE DATABASE travisdb;" -U postgres
 script:
 - cd dbbus/
 - python manage.py test
@@ -11,7 +11,7 @@ env:
   matrix:
   - DJANGO=2.2.3
   global:
-    secure: DdX87JgrUR8y+gWLD6s2RM6Uf/aQq+68r7WCceQ17Eni+agAoKlPz8Zaz9KbJ5eX5bSdDfNo9wicHBQhJsYT2NIRJRBUrPmPSWiDG/eO9EyQ21sNiGaXMaD5nJQmfZWQKG+g044/e09VamNYQl6sPMjbwR8fKM46tvDOWomUib4lbBq9mB6AzmutNgYhgDoQeGAwE/UQ5KULP36QvpkH9hmetWC4jQEVv8UOOkOjsCkb+Z8ZNrry7igZlq1LN4FUFNkbLdTRekFeUEV2swOxA4iugCX1W6SlARXUSzRbEFmakWVx+JKMV5UMWVeGL36ZR3yYdYxDXrtX2dPfVD4Pns/Rm+QUIUfNYEuSztatTJ1vJiHqPrxyG794b/qaTEKAy4QbnZPWpKQfkMwn5Elyi6f8fYrEj+2v8GH83BxZqI+Gm5e/P2tCCtWMYwn+eVwUJO6IlmiLsjuCtcKxtjCjw0A7P4cTrUD65/vLm/cR8JYI9dG6878TVQa88hdeHB3TUM1vLI2Ujtu36BOrznuTl7WyBoHXzvxmxcvJwLnCxGRg0rG+D/B7+0OLqfKvozaXPx5315tXfhXmH42QeJeA08gGxjSH8qJS6YH8yxf+bsbHpHIv3znluV/wzsXFpzptQGIY2XJ+GsAQPLwaa5HjIFHTtNJoWLeyK7sqTtp7csQ=
+    secure: ShYgO0WWIC+TfNgAAHHMC70MHLk+v6cZjR7k/fNvFh/eAhF+G1rM3qG739J3P7FC37PSM9BuUOdCUMFKIMeknljsFi8W6uUrXHUDC+6EemkPQfDFeswDnHWxeXqrohCW2rOUqi8tNvBxQMyqn8sbi+ZDGnJzorS1nmJV6u20iT3b8R9zbw3KxUMnXM8BQFJhHZBeVvFLxi1c8jCYiBrV0qAvQS55M8CNrlxczlwzOVz1qoKVbRZAfEcyAFKQJcHxjmDtYmHiX9MO48Z3s00kLSUk38hCxqwRWlI89jTnKtwuaPfSvkNUwTHrDZMoyvHkrOwSJ+QouS/CmrHQeFZQVgNz3U37JLfm91EW6kYLgxjbPjmVs2hVCMkTSVGxAA5J4N81KXSZVUS8A4UYjp+BiisPsgcVJwpTfU0NPcvYru4LAxEkPwGLySInjw5LZhlNyTUPoJkQK5Fw8JShAgZfcJiQ84fAnlQCx/2xwFJy1F/Jl1usVpFx+bfgDG4VrMAAFUwc7ihAoyNtW5f51tYCaQnqBwLrVRtPC9ztralXdUou6e0GCG7ZDJR5Puv2HvJYuyYibDaKOvQQPZGhZgCSe7Ef1rFIFhGa4etgvtGJhKNojJogzVOryDvzX/Iihrp4t5RhO3xY52aHOs/MtwQqwLlbQ/H7g5Nzn/TeOKHYJQA=
 before_install:
 - export DJANGO_SETTINGS_MODULE=dbbus.settings
 - export PYTHONPATH=$HOME/builds/mofiebiger/DublinBus

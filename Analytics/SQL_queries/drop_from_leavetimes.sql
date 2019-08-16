@@ -1,0 +1,10 @@
+ALTER TABLE leavetimes
+DROP COLUMN justificationid,
+DROP COLUMN suppressed,
+DROP COLUMN passengers,
+DROP COLUMN passengersin,
+DROP COLUMN passengersout,
+DROP COLUMN datasource,
+DROP COLUMN distance,
+DROP COLUMN note,
+DROP COLUMN lastupdate;

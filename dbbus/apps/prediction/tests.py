@@ -24,21 +24,25 @@ class PredictionTests(TestCase):
         #testing length of json response
         self.assertEqual(len(json_content), 9)
 
-    def test_stop_info_GET(self):
-        pass
-    #     request = self.factory.get('/prediction/stop_info/')
-    #     request.user = self.user
-    #     stop_id = 812
-    #     response = views.StopInfoView().get(request, stop_id)
-    #     json_content = response_to_json(response)
-    #     self.assertEqual(json_content, {
-    #                     "stop_id": 812,
-    #                     "stop_name": "North Circular Road",
-    #                     "stop_name_localized": "An Cuarbhóthar Tdh",
-    #                     "stop_lat": "53.3582580600",
-    #                     "stop_lon": "-6.2842180560",
-    #                     "stop_routes": "['46A']"
-    #                     })
+    def test_realtime_stop_info_GET(self):
+        stop_id = 812
+        request = self.factory.get('/prediction/realtime_info/' + str(stop_id))
+        request.user = self.user
+        response = views.RealTimeStopInfoView().get(request, stop_id)
+        json_content = response_to_json(response)
+
+        #testing length of json response
+        self.assertEqual(len(json_content), 2)
+
+    def test_realtime_stop_info_FALSE(self):
+        stop_id = 8888888
+        request = self.factory.get('/prediction/realtime_info/' + str(stop_id))
+        request.user = self.user
+        response = views.RealTimeStopInfoView().get(request, stop_id)
+        json_content = response_to_json(response)
+
+        #testing length of json response
+        self.assertEqual(json_content, {'res':0,'errmsg': 'The stop does not exist or has no information.'})
 
     def test_stops_near_me_GET(self):
         request = self.factory.get('/prediction/stops_nearby/?lat=53.3067&lon=-6.2231&radius=1.0')
@@ -58,15 +62,14 @@ class PredictionTests(TestCase):
         #testing length of json response
         self.assertEqual(len(json_content), 2)
 
-    def test_bus_route_prediction_POST(self):
-        pass
-        # request = self.factory.get('/prediction/route/')
-        # request.user = self.user
-        # response = views.PredictionRouteView().post(request)
-        #
-        # #testing the status code of the index page
-        # self.assertEqual(response.status_code, 200)
+    def test_bus_route_info_FALSE(self):
+        request = self.factory.get('/prediction/bus_route/?bus_number=8&origin=UCD%20Belfield&destination=Ongar/')
+        request.user = self.user
+        response = views.BusRouteView().get(request)
+        json_content = response_to_json(response)
 
+        #testing length of json response
+        self.assertEqual(json_content, {'res':0,'errmsg':'the route does not exist!'})
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
