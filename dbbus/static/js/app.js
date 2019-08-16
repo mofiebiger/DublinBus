@@ -143,16 +143,20 @@ function initMap(position) {
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
-                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
+                                'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.headsign,
-                                'lat':_route['steps'][i].transit.departure_stop.location.lat(),
-                                'lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
+                                'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
+                                'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
+                                'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
                             })
                         }
                     }
@@ -207,8 +211,8 @@ function initMap(position) {
                         map: map,
                         icon: markerB
                     });
-                //          marker_list.push(pinA);
-                //          marker_list.push(pinB);
+                          marker_list.push(pinA);
+                          marker_list.push(pinB);
             }
         });
     } //DirectionsRenderer Ends
@@ -534,23 +538,33 @@ function initMap(position) {
                             //remove the markers created before
                             deleteMarkers();
                         }
-                        //                     var Path = new google.maps.Polyline({
-                        // 					    					path: stops,
-                        // 					    					geodesic: true,
-                        // 					    					strokeColor: '#00BBFF',
-                        // 					    					strokeOpacity: 1.0,
-                        // 					    					strokeWeight: 5
-                        // 					    				});
-                        //                     Path.setMap(map);
-                        //                     marker_list.push(Path);
+                        var lineSymbol = {
+                        	    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                        	    scale: 5,
+                        	    strokeColor: '#1a7bba'
+                        	  };
+                                             var Path = new google.maps.Polyline({
+                         					    					path: stops,
+                         					    				    icons: [{
+                         					    				       icon: lineSymbol,
+                         					    				       offset: '100%'
+                         					    				     }],
+                         					    					geodesic: true,
+                         					    					strokeColor: '#00BBFF',
+                         					    					strokeOpacity: 1.0,
+                         					    					strokeWeight: 5
+                         					    				});
+                                             Path.setMap(map);
+                                             marker_list.push(Path);
 
-
+                         map.setCenter(stops[0]);
                         var markers = stops.map(function (location, i) {
                             return new google.maps.Marker({
                                 position: location,
                                 map: map,
                             });
                         });
+                        animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
                             marker_list.push(marker);
@@ -576,7 +590,16 @@ function initMap(position) {
     }
     setBusRoute();
 
+    function animateCircle(line) {
+        var count = 0;
+        window.setInterval(function() {
+          count = (count + 1) % 200;
 
+          var icons = line.get('icons');
+          icons[0].offset = (count / 2) + '%';
+          line.set('icons', icons);
+      }, 50);
+    }
 
 
     invokeAddRoutesBtn();

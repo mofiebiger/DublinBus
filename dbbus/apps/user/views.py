@@ -187,7 +187,6 @@ class LoginView(TemplateView):
         # get the user data
         username = request.POST.get('username')
         password = request.POST.get('pwd')
-        print(username, password)
         # verify the data,check if they are complete
         if not all([username, password]):
             return JsonResponse({"res": 0, "error_msg": 'Data is not complete'})
@@ -379,7 +378,6 @@ class AvatarUpdateView(LoginRequiredMixin, TemplateView):
         files_root = os.path.join(settings.MEDIA_ROOT, 'avatar')
         files = [file for root, dirs, total_files in os.walk(files_root) for file in total_files]
         for file in files:
-            print(file)
             res = re.match(r"^%s\.[a-zA-Z]{3,4}$" % user.username, file)
             if res.group():
                 my_file = os.path.join(files_root, file)
@@ -415,7 +413,6 @@ class ContactUsView(TemplateView):
             return JsonResponse({"res": 0, "error_msg": 'You have send email 3 times in one hour, Please try it later!'})
         user = request.user
         contact = request.POST.get('contact')
-        print(contact)
         if not contact:
             return JsonResponse({"res": 0, "error_msg": 'no information'})
         try:
