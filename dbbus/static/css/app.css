@@ -15,6 +15,11 @@ html hr {
 
 }
 
+#Graph_div {
+  display:block;
+  margin: 0 auto;
+}
+
 /* NavBar CSS from: https://www.w3schools.com/css/css_navbar.asp*/
 .center {
     width: 50%;

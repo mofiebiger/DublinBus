@@ -3,9 +3,6 @@ var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, mar
 var marker_list = [];
 var oldfeed = "TEST";
 
-
-
-
 function initMap(position) {
 
     // repeatedy refresh the traffic feed
@@ -1482,7 +1479,8 @@ function TrafficFeed() {
 
             innertext_ += entries[i].title;
 
-            innertext_ += "<br><a href=" + entries[i].link + ">more >>></a>"
+            innertext_ += "<br><a href=" + entries[i].link + ">more 
+          </a>"
 
             if (i < entries.length - 1) {
                 innertext_ += "</li><hr><li>";

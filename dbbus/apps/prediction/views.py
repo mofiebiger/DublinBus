@@ -15,7 +15,7 @@ import re
 import threading
 from time import sleep
 from datetime import date, time, datetime
-
+ 
 import numpy as np
 import pandas as pd
 import xgboost as xgb
@@ -198,8 +198,6 @@ def predict_time(StopA, StopB, PDate, PTime):
     
     return int(round(estimate.tolist()[0],0))
 
-print("prediction test :", predict_time("226", "228", "2019-08-16", "15:00"))
-
 class WeatherInfoView(TemplateView):
     '''This class is designed to get weather info from the darksky'''
     def get(self,request):
@@ -326,17 +324,71 @@ class PredictionRouteView(TemplateView):
         routes = content['routes']
         date = content['date']
         time = content['time']
-        print(routes)
         #transform data to the standard format
         new_routes = []
+        with open('static/json/bus_route.json','r') as load_f:
+             buses_data = json.load(load_f)
+             
         for i in range(len(routes)):
-            bus_route = routes[i]['short_name'].upper()
-            number_stops = routes[i]['num_stops']
-            try:
-                value = prediction_route(date,bus_route,time,number_stops)
-                text = str(round(value/60))+"min"
-                new_routes.append({'text':text,'value':value})
-            except Exception as e:
+            bus_route = routes[i]['short_name'].lower()
+            end_point = routes[i]['name'].split('-')[-1].strip().split(" ")[0]            
+            num_stops = routes[i]['num_stops']
+            buses_list = [j for j in buses_data if j['route'] == bus_route]
+
+            if buses_list:
+                real_bus = ""
+                for j in buses_list:
+                    res = re.search(r"%s" % end_point, j['destination'])
+                    try:
+                        if res.group():
+                            real_bus = j['stops']
+                            break
+                    except Exception as e:
+                        pass
+                if not real_bus:
+                    for k in buses_list:
+                        bus_route_list = k['stops']
+                        start_stop = 0
+                        end_stop = 0
+                        min_start_distance = 5000 
+                        min_end_distance = 5000                          
+                        for bus in bus_route_list:
+                            stop_info = StopInformation.objects.get(stop_id=bus) 
+                            if geodesic((routes[i]['departure_stop_lat'],routes[i]['departure_stop_lon']), (stop_info.stop_lat,stop_info.stop_lon)).km <= min_start_distance:
+                                min_start_distance = geodesic((routes[i]['departure_stop_lat'],routes[i]['departure_stop_lon']), (stop_info.stop_lat,stop_info.stop_lon)).km
+                                start_stop += 1
+                            else:
+                                break
+                        for bus in bus_route_list:
+                            if geodesic((routes[i]['arrival_stop_lat'],routes[i]['arrival_stop_lon']), (stop_info.stop_lat,stop_info.stop_lon)).km <= min_end_distance:
+                                min_end_distance = geodesic((routes[i]['arrival_stop_lat'],routes[i]['arrival_stop_lon']), (stop_info.stop_lat,stop_info.stop_lon)).km
+                                end_stop += 1
+                            else:
+                                break
+                        if start_stop < end_stop:
+                            real_bus = bus_route_list
+                            break
+                
+                start_point = 0
+                min_distance = 5000  
+                for j in real_bus:
+                    stop_info = StopInformation.objects.get(stop_id=j) 
+                    if geodesic((routes[i]['departure_stop_lat'],routes[i]['departure_stop_lon']), (stop_info.stop_lat,stop_info.stop_lon)).km <= min_distance:
+                        min_distance = geodesic((routes[i]['departure_stop_lat'],routes[i]['departure_stop_lon']), (stop_info.stop_lat,stop_info.stop_lon)).km
+                        start_point += 1
+                    else:
+                        break
+                real_bus = real_bus[start_point:start_point+num_stops]
+                
+                total_time = 0
+                for j in range(len(real_bus)-1):       
+                    try:
+                        value = predict_time(real_bus[j],real_bus[j+1],date,time)
+                        total_time += value
+                    except Exception as e:
+                        total_time += 60
+                text = str(round(total_time/60))+"min"
+                new_routes.append({'text':text,'value':total_time})
+            else:
                 new_routes.append({'text':"",'value':0})
-                print(repr(e))
         return JsonResponse({'res': 1,'response_leg':new_routes})
