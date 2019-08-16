@@ -1900,9 +1900,9 @@ $('#contact_info').submit(function () {
 
     }).done(function (result) {
         if (result.res == 1) {
-            window.confirm(result.success_msg);
+        	swal("Sent successfully", result.success_msg, "success");
         } else {
-            window.confirm(result.error_msg);
+        	swal("Sent failed", "Please try it later!", "error");
         }
     }).fail(function () {
         swal("Network failed", "Please try it later!", "error");
