@@ -1805,8 +1805,8 @@ function Generate_Graph() {
             
             // add header to table
             $("#table_times").html("<tr>\
-            <th style=\"background-color:#707070\">Bus No.</th>\
-            <th style=\"background-color:#707070\">Time to Arrival</th>\
+            <th style=\"border-bottom:1pt solid black;\">Bus No.</th>\
+            <th style=\"border-bottom:1pt solid black;\">Time to Arrival</th>\
             </tr>");
 
             $("#table_times").css("width:90%;");

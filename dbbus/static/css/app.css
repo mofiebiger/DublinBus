@@ -21,14 +21,20 @@
 }
 
 .flash {
-    background-color: black;
+    background-color: rgb(250, 242, 242);
     min-height: 100vh;
     color: white;
     text-align: center;
     display: block;
 }
 
-
+footer{
+  height:auto;
+  margin:0;
+  color:white;
+  align-content: center;
+  background-color: rgb(48, 47, 47);
+}
 #rightNow {
     /* align-items: center; */
     margin: 15px;
