@@ -99,7 +99,7 @@
        </button>
         <div class="grid-container">
         <div class="grid-x grid-margin-x">
-        <div class="cell large-2"></div>
+        <div class="cell large-3"></div>
         <div class="cell small-12 large-6">
         <div class="offcanvas-full-screen-inner">
               <h1> Journey Planner </h1>
@@ -133,10 +133,11 @@
               <button id="navigateButton" class="official_button">Navigate</button>
 
             <div id="directionsSteps"></div>
+            <div id="directionsSteps"></div>
               <p id="error"></p>
           </div>
         </div>
-        <div class="cell large-2"></div>
+        <div class="cell large-3"></div>
       </div>
     </div>
   </div>
@@ -147,7 +148,7 @@
             </button>
             <div class="grid-container">
             <div class="grid-x grid-margin-x">
-            <div class="cell large-2"></div>
+            <div class="cell large-3"></div>
             <div class="cell small-12 large-6">
             <div class="offcanvas-full-screen-inner">
               <h1> What to do in Dublin </h1>
@@ -162,7 +163,7 @@
               <div class="touristInfo"></div>
             </div>
           </div>
-           <div class="cell large-2"></div>
+           <div class="cell large-3"></div>
         </div>
       </div>
     </div>
@@ -173,7 +174,7 @@
           </button>
           <div class="grid-container">
           <div class="grid-x grid-margin-x">
-          <div class="cell large-2"></div>
+          <div class="cell large-3"></div>
           <div class="cell shrink small-12 large-6">
             <div class="offcanvas-full-screen-inner">
 
@@ -244,7 +245,7 @@
 
             </div>
           </div>
-          <div class="cell large-2"></div>
+          <div class="cell large-3"></div>
         </div>
       </div>
     </div>
@@ -256,7 +257,7 @@
 </button>
 <div class="grid-container">
     <div class="grid-x grid-margin-x">
-        <div class="cell large-2"></div>
+        <div class="cell large-3"></div>
         <div class="cell shrink small-12 large-6">
           <h1> Your Favourites </h1>
           <hr>
@@ -288,7 +289,7 @@
         </div>
 
         </div>
-        <div class="cell large-2"></div>
+        <div class="cell large-3"></div>
 </div>
 </div>
 </div>
@@ -297,14 +298,13 @@
  <button class="close-button" aria-label="Close menu" type="button" data-close>
 <span aria-hidden="true">&times;</span>
 </button>
-<h1> Contact Us </h1>
-<hr>
+
 <div class="grid-container">
 <div class="grid-x grid-margin-x">
-<div class="cell large-2"></div>
+<div class="cell large-3"></div>
 <div class="cell shrink small-12 large-6" id="contact-div">
 </div>
-    <div class="cell large-2"></div>
+    <div class="cell large-3"></div>
 </div>
 </div>
 </div>
@@ -324,8 +324,8 @@
 </button>
 <div class="grid-container">
 
-  <div class="grid-x grid-margin-x">
-  <div class="cell large-2"></div>
+  <div class="grid-x grid-margin-x" >
+  <div class="cell large-3"></div>
 <div class="cell shrink small-12 large-6">
   <div class="offcanvas-full-screen-inner">
               <div id="weatherInfo">
@@ -351,6 +351,8 @@
             </div>
             <div class="cell large-2"></div>
           </div>
+
+  <div class="cell large-3"></div>
         </div>
       </div>
 </div>
@@ -363,8 +365,8 @@
      </button>
      <div class="grid-container">
      <div class="grid-x grid-margin-x">
-      <div class="cell large-2"></div>
-            <div class="cell large-6">
+      <div class="cell large-3"></div>
+            <div class="cell small-12 large-6">
             <h1> Current Traffic Feed </h1>
 
             {% comment %} Render the traffic rss feed in here {% endcomment %}
@@ -374,14 +376,14 @@
             </div>
             <hr>
           </div>
-          <div class="cell large-2"></div>
+          <div class="cell large-3"></div>
         </div>
       </div>
     </div>
 
     <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas data-transition="overlap">
 
-            <h1> Menu</h1>
+            <h1 data-toggle="offCanvasLeft"> Menu</h1>
             <hr>
 
 <ul class="vertical menu" data-responsive-menu="drilldown medium-dropdown" id="small-screen-menu">
