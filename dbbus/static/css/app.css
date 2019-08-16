@@ -12,6 +12,7 @@ html h1 {
   font-family: 'Allerta Stencil', sans-serif;
   color: white;
   float: left;
+  margin-top: 27%;
 }
 
 html hr {
@@ -666,7 +667,7 @@ html hr {
 }
 
 .markerNavBtn{
-    border: 2px solid #e5e5e5;
+  border: 2px solid #e5e5e5;
   /*background-color: transparent;*/
   text-decoration: none;
   margin: 15px;
@@ -677,13 +678,14 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #1a7bba;
-    background-color: #e5e5e5;
+  background-color: #e5e5e5;
   transition: all ease 0.4s;
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
 }
 
 .toStopPage{
-    border: 2px solid #e5e5e5;
+  border: 2px solid #e5e5e5;
   /*background-color: transparent;*/
   text-decoration: none;
   margin: 15px;
@@ -694,9 +696,10 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #1a7bba;
-    background-color: #e5e5e5;
+  background-color: #e5e5e5;
   transition: all ease 0.4s;
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
 }
 
 .iw-container {
@@ -870,4 +873,26 @@ html hr {
 #main-menu ul a:hover::after,
 #main-menu ul .active a::after {
   width: 100%;
+}
+
+.delete_stop {
+  border: 2px solid #e5e5e5;
+  /*background-color: transparent;*/
+  text-decoration: none;
+  margin: 5px;
+  padding: 8px;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+  color: #1a7bba;
+  background-color: #e5e5e5;
+  transition: all ease 0.4s;
+  margin-bottom: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
+}
+
+#directionsSource{
+  margin-top: 5%;
 }

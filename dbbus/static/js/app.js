@@ -422,7 +422,7 @@ function initMap(position) {
                     display += '<h2 style="color:#e5e5e5">' + locationName + '</h2>';
                     display += '<p style="color:#e5e5e5">' + short_description + '</p>';
                     display += '<img src ="/static/images/' + image + '" style="width: 300px"></img>';
-                    display += '<p style="color:#e5e5e5">' + long_description + '</p>';
+                    display += '<h5 style="color:#e5e5e5; text-align:left;">' + long_description + '</h5>';
                     display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
                     display += '<button type="button" class="tourismNavBtn"  data-toggle="navigator tourismPage">Navigate</button>'
                     display += '<hr>'
