@@ -1,6 +1,11 @@
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
 #map {
-    height: 800px;
-    /* The height is 800 pixels */
+    height: 100%;
+    /*/* The height is 800 pixels */*/
     width: 100%;
     /* The width is the width of the web page */
 }
