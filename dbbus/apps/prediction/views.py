@@ -15,7 +15,8 @@ import re
 import threading
 from time import sleep
 from datetime import date, time, datetime
- 
+
+# from prediction import postgres
 import numpy as np
 import pandas as pd
 import xgboost as xgb
@@ -402,7 +403,7 @@ class StopInfoNearbyView(TemplateView):
         radius = 1.0
 
         #open json file
-        with open('static/json/stops_information.json','r') as load_f:
+        with open('static/json/stops_information.json','r',encoding="utf8") as load_f:
             stops_data = json.load(load_f)
 
         #add the stop into file where the distance is less than the radius
@@ -410,8 +411,6 @@ class StopInfoNearbyView(TemplateView):
         for stop in stops_data:
             if geodesic((lat,lon), (stop['stop_lat'],stop['stop_lon'])).km <= radius:
                 clean_data.append(stop)
-
-        print(stop)
 
         return JsonResponse({'stops':clean_data})
 
