@@ -1,3 +1,4 @@
+
 var map, directionService, directionsDisplay, autoSrc, autoDest, pinA, pinB, markerCluster, circle;
 var markerImage = '/static/images/bus_icon.png';
 
@@ -1384,7 +1385,7 @@ function deleteFavourites() {
 
         //hide the deleted stop info and store stop id
         $('.delete_stop').on('click', function () {
-            $(this).prarent().hide();
+            $(this).parent().hide();
 
             $(this).hide();
             deleted_stop.push($(this).prev().attr('id'));
