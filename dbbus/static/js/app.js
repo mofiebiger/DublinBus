@@ -1775,8 +1775,10 @@ function Generate_Graph() {
             $("Graph_div").text("No Real Time Information Available for stop:" + stop_of_interest + "," + stop_of_interest_addr);
         } else {
 
-            console.log(real_time_data);
-            var content = real_time_data.content.results.slice(0, 3);
+            
+            var content = real_time_data.content.results.slice(0, 4);
+
+            console.log(content);
 
             var routeids = [];
             var arrival_times = [];
@@ -1797,7 +1799,18 @@ function Generate_Graph() {
                 var time_diff_seconds = (ar_date.getTime() - current_timestamp) / 1000;
 
                 arrival_times.push(time_diff_seconds);
+
             });
+
+            $("#Graph_div_times").text("");
+
+            for (let j=0; j<arrival_times.length; j++){
+
+                $("#Graph_div_times").append("<div>");
+                $("#Graph_div_times").append("Bus No."+ routeids[j] +" arriving in ~" + Math.round(arrival_times[j]/60) + " minutes.");
+                $("#Graph_div_times").append("</div><br><br>");
+
+            };
 
             // Pass arrival times to back end
             arrival_times = JSON.stringify(arrival_times);
