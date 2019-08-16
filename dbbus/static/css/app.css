@@ -12,6 +12,7 @@ html h1 {
   font-family: 'Allerta Stencil', sans-serif;
   color: white;
   float: left;
+  margin-top: 27%;
 }
 
 html hr {
@@ -34,11 +35,20 @@ html hr {
 }
 
 .flash {
-    background-color: black;
+    background-color: rgb(250, 242, 242);
     min-height: 100vh;
     color: white;
     text-align: center;
     display: block;
+}
+
+
+footer{
+  height:auto;
+  margin:0;
+  color:white;
+  align-content: center;
+  background-color: rgb(48, 47, 47);
 }
 
 #rightNow {
@@ -151,6 +161,7 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #ffe00b;
+  width: 50%;
 }
 
 .tourismNavBtn {
@@ -163,6 +174,7 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #ffe00b;
+  width: 50%;
 }
 
 /*contact page*/
@@ -256,7 +268,7 @@ html hr {
   position: relative;
   vertical-align: middle;
   text-align: center;
-  display: inline-block;
+  display: inline-block !important;
   border-radius: 3rem;
     /*border-color: #f1e62a;*/
 
@@ -607,11 +619,12 @@ html hr {
 #switch_position {
   width: 30px;
   height: 30px;
-  display: inline-block;
+  display: inline-block !important;
+
 }
 
 .markerNavBtn{
-    border: 2px solid #e5e5e5;
+  border: 2px solid #e5e5e5;
   /*background-color: transparent;*/
   text-decoration: none;
   margin: 15px;
@@ -622,13 +635,14 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #1a7bba;
-    background-color: #e5e5e5;
+  background-color: #e5e5e5;
   transition: all ease 0.4s;
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
 }
 
 .toStopPage{
-    border: 2px solid #e5e5e5;
+  border: 2px solid #e5e5e5;
   /*background-color: transparent;*/
   text-decoration: none;
   margin: 15px;
@@ -639,9 +653,10 @@ html hr {
   display: inline-block;
   border-radius: 5px;
   color: #1a7bba;
-    background-color: #e5e5e5;
+  background-color: #e5e5e5;
   transition: all ease 0.4s;
-    margin-bottom: 5px;
+  margin-bottom: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
 }
 
 .iw-container {
@@ -857,4 +872,26 @@ html hr {
   /*margin-left: 1rem;*/
 
 
+}
+
+.delete_stop {
+  border: 2px solid #e5e5e5;
+  /*background-color: transparent;*/
+  text-decoration: none;
+  margin: 5px;
+  padding: 8px;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 5px;
+  color: #1a7bba;
+  background-color: #e5e5e5;
+  transition: all ease 0.4s;
+  margin-bottom: 5px;
+  font-family: 'Allerta Stencil', sans-serif;
+}
+
+#directionsSource{
+  margin-top: 5%;
 }
