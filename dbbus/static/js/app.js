@@ -30,11 +30,11 @@ function initMap(position) {
 
     // Caching the Selectors
     $Selectors = {
-        map: jQuery('#map')[0],
+        map: jQuery('#map')[0], 
         directionsPanel: jQuery('#directionsPanel'),
         dirSrc: jQuery('#directionsSource'),
-        dirDst: jQuery('#directionsDestination'),
-        navBtn: jQuery('#navigateButton'),
+        dirDst: jQuery('#directionsDestination'), 
+        navBtn: jQuery('#navigateButton'), 
         directionsSteps: jQuery('#directionsSteps'),
         geoButton: jQuery('#geoButton')
     };
@@ -110,8 +110,8 @@ function initMap(position) {
         directionsSetUp();
         trafficSetup();
     } //mapSetUp Ends
-
-
+    
+    
 
     DirectionsRenderer = function (source, destination, date, time) {
 
@@ -132,34 +132,29 @@ function initMap(position) {
 
                 var show_div = document.getElementById('directionsSteps');
                 var _route = response.routes[0].legs[0];
-                console.log(_route);
                 var aList = new Array();
                 for (var i = 0; i < _route['steps'].length; i++) {
                     if (_route['steps'][i].travel_mode == "TRANSIT") {
                         if (_route.steps[i].transit.line.hasOwnProperty("name")) {
                             aList.push({
-
+                                
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.line.name,
-
                                 'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
                                 'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
                                 'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
                                 'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
-
                             });
                         } else {
                             aList.push({
                                 'short_name': _route.steps[i].transit.line.short_name,
                                 'num_stops': _route.steps[i].transit.num_stops,
                                 'name': _route.steps[i].transit.headsign,
-
                                 'departure_stop_lat':_route['steps'][i].transit.departure_stop.location.lat(),
                                 'departure_stop_lon':_route['steps'][i].transit.departure_stop.location.lng(),
                                 'arrival_stop_lat':_route['steps'][i].transit.arrival_stop.location.lat(),
                                 'arrival_stop_lon':_route['steps'][i].transit.arrival_stop.location.lng(),
-
                             })
                         }
                     }
@@ -179,7 +174,6 @@ function initMap(position) {
                     dataType: 'json',
                     data: JSON.stringify(routes),
                 }).done(function (data) {
-                    console.log(data);
                     if (data.res == 1) {
                         var total_time = 0;
                         for (var i = 0, j = 0; i < _route['steps'].length; i++) {
@@ -193,6 +187,7 @@ function initMap(position) {
                         }
                         response.routes[0].legs[0].duration.value = total_time;
                         response.routes[0].legs[0].duration.text = Math.round(total_time / 60) + 'mins';
+                        
 
                     }
                     // remove the points shown in the previous step
@@ -422,11 +417,23 @@ function initMap(position) {
                     var latitude = obj[i].latitude;
                     var longitude = obj[i].longitude;
 
+                    function on1() {
+                        //document.getElementById("overlay1").style.display = "block";
+                        $("overlay1").show();
+                    }
+
+                    // Geo Tourism Location Btn
+                    //$('#tourismNavBtn').on('click', function(e) {
+
+                    // Geo Tourism Location Btn
+                    //$('#tourismNavBtn').on('click', function(e) {
+
                     display += '<h2 style="color:#e5e5e5">' + locationName + '</h2>';
                     display += '<p style="color:#e5e5e5">' + short_description + '</p>';
                     display += '<img src ="/static/images/' + image + '" style="width: 300px"></img>';
-                    display += '<h5 style="color:#e5e5e5; text-align:left;">' + long_description + '</h5>';
+                    display += '<p style="color:#e5e5e5">' + long_description + '</p>';
                     display += '<form action="' + website + '"><button class="websiteBtn" type="submit">Website</button></form>';
+                    //display += '<a action="#journeyInfo"><button id="tourismNavBtn" type="submit">Navigate</button></a>';
                     display += '<button type="button" class="tourismNavBtn"  data-toggle="navigator tourismPage">Navigate</button>'
                     display += '<hr>'
                 }
@@ -498,7 +505,8 @@ function initMap(position) {
         $('#searchBus').bind('click', function () {
             var bus_route = $('#busRoute #searchBusRoute').val();
             if (typeof (bus_route) == "undefined") {
-                alert("Please enter valid bus information.")
+            	swal("Search bus failed", "Please enter valid bus information.", "error");
+
             } else {
                 route_list = bus_route.split(',');
 
@@ -566,7 +574,7 @@ function initMap(position) {
                                 icon: markerImage,
                             });
                         });
-
+                      
                         animateCircle(Path)
                         for (var i = 0; i < markers.length; i++) {
                             var marker = markers[i];
@@ -695,7 +703,7 @@ function initAddFavRoutes() {
             }
         },
         error: function () {
-            alert("Oops, something wrong, please try again.");
+        	swal("Network error", "please try later.", "error");
         },
     });
 }
@@ -706,7 +714,8 @@ function invokeAddRoutesBtn() {
         var route_start = $('#directionsSource').val();
         var route_end = $('#directionsDestination').val();
         if ((route_start == route_end) || (route_start == "") || (route_end == "")) {
-            alert("Please enter valid departure and destination.");
+        	swal("Add failed", "Please enter valid departure and destination.", "error");
+
         } else {
             $.ajax({
                 cache: false,
@@ -724,13 +733,13 @@ function invokeAddRoutesBtn() {
                         $('#addFav_route').hide();
                         $('#removeFav_route').show();
                     } else if (add_route_result.res == 0) {
-                        alert(add_route_result.error_msg)
+                    	swal("Add failed", add_route_result.error_msg, "error");
                     } else {
-                        alert("Oops, something wring, please try again.")
+                    	swal("Add failed", add_route_result.error_msg, "error")
                     }
                 },
                 error: function () {
-                    alert("Oops, something wring, please try again.")
+                	swal("Network eroor", "Please try it later", "error");
                 },
             });
         }
@@ -763,14 +772,15 @@ function invokeDeleteRoutesBtn() {
                     //change the button displayed
                     $('#addFav_route').show();
                     $('#removeFav_route').hide();
+                    swal("Delete successfully", "", "success");
                 } else if (delete_route_result.res == 0) {
-                    alert(delete_route_result.error_msg)
+                	swal("Delete failed", delete_route_result.error_msg, "error");
                 } else {
-                    alert("Oops, something wring, please try again.")
+                    swal("Delete failed", delete_route_result.error_msg, "error");
                 }
             },
             error: function () {
-                alert("Oops, something wring, please try again.");
+            	swal("Network error","Please try it later", "error");
             },
         });
     });
@@ -805,7 +815,7 @@ function displayBusDetail() {
             }
         },
         error: function () {
-            console.log('result2 failed. show button fail')
+        	swal("Network error!", "Please try it later!", "error");
         },
     });
 }
@@ -823,7 +833,6 @@ function fetchMarkerAddress(lat, lng) {
             $Selectors.dirDst.val(_r.formatted_address);
         }
     });
-    console.log("fetch marker address end")
 } //fetchStopAddress Ends
 
 function fetchStopAddress(lat, lng) {
@@ -911,12 +920,13 @@ function writeStopDetails() {
                             }
                         },
                         error: function () {
-                            alert("Oops, something wrong, please try again.");
-                            console.log('show button fail')
+                        	swal("Network error","Please try it later", "error");
+
                         },
                     });
                 } else {
-                    alert(result.error_msg)
+                	swal("Get data error",result.error_msg, "error");
+
                 }
             },
             error: function () {
@@ -942,8 +952,16 @@ function invokeAddStopBtn() {
             async: true,
             success: function (result) {
                 //change the button displayed
-                $('#addFav').hide();
-                $('#removeFav').show();
+
+            	if(result.res == 1){
+                    //change the button displayed
+                    $('#addFav').hide();
+                    $('#removeFav').show(); 		
+        		swal("Add succesfully!", "success");
+            	}else{
+            	 swal("Add failed!",result.error_msg, "error");
+            	}                
+                
             },
             error: function () {
                 swal("Added fail!", "Please try it later!", "error");
@@ -971,8 +989,16 @@ function invokeDeleteStopBtn() {
             },
             async: true,
             success: function (result) {
-                $('#addFav').show();
-                $('#removeFav').hide();
+            	if(result.res == 1){
+                    //change the button displayed
+                    $('#addFav').show();
+                    $('#removeFav').hide();   		
+        		swal("Add succesfully!", "success");
+            	}else{
+            	 swal("Add failed!",result.error_msg, "error");
+            	}
+
+                
             },
             error: function () {
                 swal("Remove failed!", "Please try it later!", "error");
@@ -1000,8 +1026,16 @@ function invokeAddBusBtn() {
             },
             async: true,
             success: function (result) {
-                $('#addFav_bus').hide();
-                $('#removeFav_bus').show();
+            	if(result.res == 1){
+                    //change the button displayed
+                    $('#addFav_bus').hide();
+                    $('#removeFav_bus').show();      		
+        		swal("Add succesfully!", "success");
+            	}else{
+            	 swal("Add failed!",result.error_msg, "error");
+            	}
+
+                
             },
             error: function () {
                 swal("Add failed!", "Please try it later!", "error");
@@ -1054,9 +1088,15 @@ function invokeAddStopBtn() {
             },
             async: true,
             success: function (result) {
-                //change the button displayed
-                $('#addFav').hide();
-                $('#removeFav').show();
+
+            	if(result.res == 1){
+                    //change the button displayed
+                    $('#addFav').hide();
+                    $('#removeFav').show();         		
+        		swal("Add succesfully!", "success");
+            	}else{
+            	 swal("Add failed!",result.error_msg, "error");
+            	}
             },
             error: function () {
                 swal("Added fail!", "Please try it later!", "error");
@@ -1084,8 +1124,13 @@ function invokeDeleteStopBtn() {
             },
             async: true,
             success: function (result) {
-                $('#addFav').show();
-                $('#removeFav').hide();
+            	if(result.res == 1){
+                    $('#addFav').show();
+                    $('#removeFav').hide();          		
+        		swal("Delete succesfully!", "success");
+            	}else{
+            	 swal("Delete failed!",result.error_msg, "error");
+            	}
             },
             error: function () {
                 swal("Remove failed!", "Please try it later!", "error");
@@ -1113,8 +1158,13 @@ function invokeAddBusBtn() {
             },
             async: true,
             success: function (result) {
-                $('#addFav_bus').hide();
-                $('#removeFav_bus').show();
+            	if(result.res == 1){
+            		$('#addFav_bus').hide();
+            		$('#removeFav_bus').show();            		
+        		swal("Add succesfully!", "success");
+            	}else{
+            	 swal("Add failed!",result.error_msg, "error");
+            	}
             },
             error: function () {
                 swal("Add failed!", "Please try it later!", "error");
@@ -1146,9 +1196,15 @@ function invokeDeleteBusBtn() {
                 'csrfmiddlewaretoken': token
             },
             async: true,
-            success: function (result, status, xml) {
-                $('#addFav_bus').show();
-                $('#removeFav_bus').hide();
+            success: function (result) {
+            	if(result.res == 1){
+                    $('#addFav_bus').show();
+                    $('#removeFav_bus').hide();           		
+        		swal("Delete succesfully!", "success");
+            	}else{
+            	 swal("Delete failed!",result.error_msg, "error");
+            	}
+
             },
             error: function () {
                 swal("delete failed!", "Please try it later!", "error");
@@ -1178,8 +1234,7 @@ function initStopPage() {
     // invokeDeleteBusBtn();
 }
 
-function initFavsPage() {
-    //get bus number
+function get_user_bus_number(){
     $.ajax({
         type: "GET",
         url: window.location.protocol + "//" + window.location.host + '/user/favorite_bus_number',
@@ -1211,40 +1266,17 @@ function initFavsPage() {
             	str += $(this).find('.end_point').html();
             	$('#searchBusRoute').val(str);
             	$('#searchBus').click();
-
+            	
             })
         },
         error: function () {
-            console.log('favorite bus number fail')
+        	swal("Network fail!", "Please try it later!", "error");
         },
-    })
-    //get stop
-    $.ajax({
-        type: "GET",
-        url: window.location.protocol + "//" + window.location.host + '/user/favorite_stop',
-        async: true,
-        success: function (fav_result) {
-            var msg = "";
-            if (fav_result.res == 1) {
-                for (var i = 0; i < fav_result['user_stop_list'].length; i++) {
+    });
 
-                    msg += "<li><a href='#' id='" + fav_result['user_stop_list'][i] + "' onclick='seeStopDetail(" + fav_result['user_stop_list'][i] + ")' data-toggle='stopPage favsPage'>" +
-                        fav_result['user_stop_list'][i] +
-                        "</a><button class='delete_stop' hidden>delete</button></li>"
+}
 
-                }
-            } else {
-                msg = "";
-            }
-
-            // write lis tko stop_list div
-            $('#stop_list').html(msg)
-        },
-        error: function () {
-            console.log('favorite stop fail')
-        },
-    })
-    //get route
+function get_user_route(){
     $.ajax({
         type: "GET",
         url: window.location.protocol + "//" + window.location.host + '/user/favorite_route',
@@ -1274,10 +1306,53 @@ function initFavsPage() {
         })
         },
         error: function () {
-            alert("Oops, something wrong when showing the favourites, please try again.")
+        	swal("Network fail!", "Please try it later!", "error");
 
         },
     })
+}
+
+function get_user_stop(){
+    $.ajax({
+        type: "GET",
+        url: window.location.protocol + "//" + window.location.host + '/user/favorite_stop',
+        async: true,
+        success: function (fav_result) {
+            var msg = "";
+            if (fav_result.res == 1) {
+                for (var i = 0; i < fav_result['user_stop_list'].length; i++) {
+
+                    msg += "<li><a href='#' id='" + fav_result['user_stop_list'][i] + "' onclick='seeStopDetail(" + fav_result['user_stop_list'][i] + ")' data-toggle='stopPage favsPage'>" +
+                        fav_result['user_stop_list'][i] +
+                        "</a><button class='delete_stop' hidden>delete</button></li>"
+
+                }
+            } else {
+                msg = "";
+            }
+
+            // write lis tko stop_list div
+            $('#stop_list').html(msg)
+        },
+        error: function () {
+        	swal("Network fail!", "Please try it later!", "error");
+        },
+    })
+}
+
+$(function(){
+	
+	$('#fav_stop').click(get_user_stop);
+	$('#fav_route').click(get_user_route);
+	$('#fav_bus').click(get_user_bus_number);
+})
+function initFavsPage() {
+    //get bus number
+	get_user_bus_number();
+    //get stop
+	get_user_stop();
+    //get route
+	get_user_route();
 
     deleteFavourites();
 }
@@ -1305,7 +1380,6 @@ function deleteFavourites() {
                 $(this).next().find(".start_point").html(),
                 $(this).next().find(".end_point").html()
             ]);
-            console.log(deleted_bus_number)
         });
 
         //hide the deleted stop info and store stop id
@@ -1314,7 +1388,6 @@ function deleteFavourites() {
 
             $(this).hide();
             deleted_stop.push($(this).prev().attr('id'));
-            console.log(deleted_stop);
         });
 
         //hide the deleted route info and store route start, route end
@@ -1325,7 +1398,6 @@ function deleteFavourites() {
             deleted_route.push([$(this).prev().children(".route_start").html(),
                 $(this).prev().children(".route_end").html()
             ]);
-            console.log(deleted_route);
         });
     })
 
@@ -1352,7 +1424,11 @@ function deleteFavourites() {
                 },
                 async: true,
                 success: function (result) {
-                    console.log(result);
+                	if(result.res==1){
+                		swal("Delete successfully!", "", "success");                		
+                	}else{
+                		swal("Delete failed!", "", "error");                		                		
+                	}
                 },
                 error: function () {
                     swal("remove bus number failed", "Please try it later!", "error");
@@ -1377,7 +1453,11 @@ function deleteFavourites() {
                 },
                 async: true,
                 success: function (result) {
-                    console.log(result);
+                	if(result.res==1){
+                		swal("Delete successfully!", "", "success");                		
+                	}else{
+                		swal("Delete failed!", "", "error");                		                		
+                	}
                 },
                 error: function () {
                     swal("remove stop failed", "Please try it later!", "error");
@@ -1403,7 +1483,11 @@ function deleteFavourites() {
                 },
                 async: true,
                 success: function (result) {
-                    console.log(result);
+                	if(result.res==1){
+                		swal("Delete successfully!", "", "success");                		
+                	}else{
+                		swal("Delete failed!", "", "error");                		                		
+                	}
                 },
                 error: function () {
                     swal("remove route failed", "Please try it later!", "error");
@@ -1438,11 +1522,10 @@ function seeStopDetail(stop_id) {
         },
         async: true,
         success: function (result) {
-            console.log(result)
             if (result.res == 1) {
 
                 result = result.json_data[0]['fields'];
-                // console.log(result[0]['fields']);
+                
                 var content_html = "<h2>" + result.stop_name + "</h2>" +
                     "<h3>" + result.stop_id + "</h3>" +
                     "<button class='stopNavBtn' data-toggle='navigator stopPage'>Navigate</button>" +
@@ -1487,15 +1570,15 @@ function seeStopDetail(stop_id) {
                         }
                     },
                     error: function () {
-                        console.log('show button fail')
+                    	swal("Network error!", "Please try it later", "error");                		                		
                     },
                 });
             } else {
-                alert(result.error_msg);
+            	swal("Get data error!", "Please try it later!", "error");
             }
         },
         error: function () {
-            alert("result false");
+        	swal("Network fail!", "Please try it later!", "error");
         },
     })
 }
@@ -1534,7 +1617,6 @@ $(function () {
     });
 });
 $('.JP').on('click', function () {
-    console.log("click jp")
     invokeAddRoutesBtn();
     initAddFavRoutes();
     invokeDeleteRoutesBtn();
@@ -1574,7 +1656,7 @@ function TrafficFeed() {
             if (entries[0].title != oldfeed[0].title) {
 
                 // change the icon here to show a new noticifation
-                console.log("changed traffic feed");
+//                console.log("changed traffic feed");
             }
         };
         var innertext_ = "<ul class=\"trafficfeedlist\"><li>";
@@ -1877,15 +1959,16 @@ function Generate_Graph() {
         if (response_result == "0") {
             $("Graph_div").text("No Real Time Information Available for stop:" + stop_of_interest + "," + stop_of_interest_addr);
         } else {
+
             
             var content = real_time_data.content.results.slice(0, 4);
-
 
             var routeids = [];
             var arrival_times = [];
 
             content.forEach(function (elem) {
                 routeids.push(elem['route']);
+
 
                 var atime = elem["arrivaldatetime"];
                 var atime_date = atime.split(" ")[0].split("/");
